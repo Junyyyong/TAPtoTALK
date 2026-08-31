@@ -44,6 +44,16 @@
   --cool-deep: #286b98;
   --cool-dim: rgba(29, 35, 43, 0.12);
 
+  /* Primary interface accent, separate from success/error feedback. */
+  --accent: #4a55e0;
+  --accent-deep: #333dbd;
+
+  /* Board families: related, but distinguishable at tile size. */
+  --consonant-ink: #4a3fbd;
+  --consonant-face: #eceafb;
+  --vowel-ink: #2f63d6;
+  --vowel-face: #e8f0fe;
+
   /* Surfaces: a panel, the slab it presses into, the hollow it presses out of */
   --panel: rgba(255, 255, 255, 0.7);
   --panel-lit: rgba(255, 255, 255, 0.92);

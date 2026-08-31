@@ -119,14 +119,14 @@
 }
 
 .mode-name {
-  font-size: 21px;
-  font-weight: 800;
-  color: var(--cool);
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--accent);
 }
 
 .mode-desc {
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 400;
   color: var(--ink-soft);
 }
 
@@ -134,8 +134,8 @@
   padding: 8px 16px;
   font-family: inherit;
   font-size: 15px;
-  font-weight: 700;
-  color: var(--hot-deep);
+  font-weight: 500;
+  color: var(--accent-deep);
   text-decoration: underline;
   cursor: pointer;
   background: none;
