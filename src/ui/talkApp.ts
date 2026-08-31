@@ -1,14 +1,15 @@
 import { createLetterBoard, type LetterTile } from "../core/hangul/board";
 import { composeTokens } from "../core/hangul/compose";
 import { CONSONANTS, transformedConsonant, type BoardSymbol } from "../core/hangul/keys";
-import { evaluateWriting, scoreFromTime, type WritingEvaluation } from "../core/hangul/writing";
-import { FREE_MODE_CONFIG, SENTENCE_PROMPTS, WRITING_TOPICS, type SentencePrompt, type WritingTopic } from "../content/prompts";
+import { isWordMatch, wordCountLabel } from "../core/hangul/wordChallenge";
+import { scoreFromTime } from "../core/hangul/writing";
+import { SENTENCE_PROMPTS, WORD_MODE_CONFIG, WORD_TARGETS, type SentencePrompt, type WordTarget } from "../content/prompts";
 import { el } from "./dom";
 import { feedback } from "./feedback";
 import { Cheer } from "./screens/cheer";
 import { loadTalkPreferences, saveTalkPreferences, type TalkPreferences } from "./talkPreferences";
 
-type Mode = "sentence" | "free";
+type Mode = "sentence" | "word";
 interface TypedToken { value: string; tileId?: number; base?: BoardSymbol; strokeSteps?: number }
 
 const formatTime = (ms: number): string => {
@@ -28,7 +29,7 @@ const TUTORIAL_STEPS = [
   { title: "Build a syllable", body: "Tap in order: ㅊ → ㅣ → ㄴ", keys: ["ㅊ", "ㅣ", "ㄴ"], result: "친" },
   { title: "Make a vowel", body: "Tap ㅣ, then the Cheonjiin dot.", keys: ["ㅣ", "ㆍ"], result: "ㅏ" },
   { title: "Add a stroke", body: "Tap ㅅ, then Add stroke to make ㅆ.", keys: ["ㅅ", "stroke"], result: "ㅆ" },
-  { title: "Finish a sentence", body: "Add a space and punctuation, then submit.", keys: ["여행", " ", "좋아", "!", "submit"], result: "완료" },
+  { title: "Submit a word", body: "Make the target word, then tap Submit.", keys: ["사랑", "submit"], result: "1 word" },
 ] as const;
 
 /** Thin UI coordinator. Hangul behavior stays in core/hangul. */
@@ -41,7 +42,6 @@ export class TalkApp {
   private readonly targetLabel = el("target-label");
   private readonly targetText = el("target-text");
   private readonly targetHint = el("target-hint");
-  private readonly targetProgress = el("target-progress");
   private readonly typedText = el("typed-text");
   private readonly clock = el("run-clock");
   private readonly runMode = el("run-mode");
@@ -62,7 +62,8 @@ export class TalkApp {
   private tutorialSolved = false;
   private mode: Mode = "sentence";
   private prompt: SentencePrompt = SENTENCE_PROMPTS[0]!;
-  private topic: WritingTopic = WRITING_TOPICS[0]!;
+  private wordTarget: WordTarget = WORD_TARGETS[0]!;
+  private wordCount = 0;
   private tiles: LetterTile[] = [];
   private used = new Set<number>();
   private input: TypedToken[] = [];
@@ -72,14 +73,13 @@ export class TalkApp {
 
   constructor() {
     el("mode-sentence").addEventListener("click", () => this.start("sentence"));
-    el("mode-free").addEventListener("click", () => this.start("free"));
+    el("mode-free").addEventListener("click", () => this.start("word"));
     el("btn-back").addEventListener("click", () => this.showTitle());
     this.setupBackspace();
     el("btn-dot").addEventListener("click", () => this.typeFixed("ㆍ"));
     el("btn-stroke").addEventListener("click", () => this.addStroke());
-    document.querySelectorAll<HTMLButtonElement>(".punctuation").forEach((button) => button.addEventListener("click", () => this.typeFixed(button.dataset.value ?? "")));
     el("btn-space").addEventListener("click", () => this.typeFixed(" "));
-    el("btn-submit").addEventListener("click", () => this.submitWriting());
+    el("btn-submit").addEventListener("click", () => this.submitWord());
     el("btn-again").addEventListener("click", () => this.start(this.mode));
     el("btn-result-menu").addEventListener("click", () => this.showTitle());
     el("btn-title-tutorial").addEventListener("click", () => this.showTutorial());
@@ -101,20 +101,20 @@ export class TalkApp {
   private start(mode: Mode): void {
     this.cheer.stop();
     this.mode = mode;
+    this.wordCount = 0;
     if (mode === "sentence") this.prompt = SENTENCE_PROMPTS[Math.floor(Math.random() * SENTENCE_PROMPTS.length)]!;
-    else this.topic = WRITING_TOPICS[Math.floor(Math.random() * WRITING_TOPICS.length)]!;
+    else this.wordTarget = WORD_TARGETS[Math.floor(Math.random() * WORD_TARGETS.length)]!;
     this.input = []; this.used.clear();
-    const requiredText = mode === "sentence" ? this.prompt.text : this.topic.keyword;
+    const requiredText = mode === "sentence" ? this.prompt.text : this.wordTarget.word;
     this.tiles = createLetterBoard(requiredText);
-    this.targetLabel.textContent = mode === "sentence" ? "TARGET" : "WORD";
-    this.targetText.textContent = mode === "sentence" ? this.prompt.text : this.topic.keyword;
-    this.targetHint.textContent = mode === "sentence" ? "Copy this sentence." : "Use this word in a short sentence.";
-    this.targetProgress.textContent = mode === "sentence" ? `0 / ${this.prompt.text.length}` : "60 SEC";
-    this.typedText.dataset.empty = "Your sentence appears here.";
-    this.runMode.textContent = mode === "sentence" ? "Sentence Copy" : "Short Writing";
-    this.game.classList.toggle("is-free-mode", mode === "free");
+    this.targetLabel.textContent = "TARGET";
+    this.targetText.textContent = requiredText;
+    this.targetHint.textContent = mode === "sentence" ? "Copy this sentence." : "Make the word and tap Submit.";
+    this.typedText.dataset.empty = mode === "sentence" ? "Your sentence appears here." : "Your word appears here.";
+    this.runMode.textContent = mode === "sentence" ? "Sentence Copy" : "Word Challenge";
+    this.game.classList.toggle("is-word-mode", mode === "word");
     this.submitRow.classList.add("hidden");
-    this.submitButton.classList.toggle("hidden", mode !== "free");
+    this.submitButton.classList.toggle("hidden", mode !== "word");
     this.result.classList.add("hidden"); this.title.classList.add("hidden"); this.splash.classList.add("hidden"); this.game.classList.remove("hidden");
     this.renderBoard(); this.renderInput(); this.startClock();
   }
@@ -171,35 +171,39 @@ export class TalkApp {
       delay = undefined; repeat = undefined;
     };
     button.addEventListener("pointerdown", (event) => {
-      event.preventDefault(); repeated = false;
+      repeated = false;
       button.setPointerCapture?.(event.pointerId);
       delay = window.setTimeout(() => {
         repeated = true; this.backspace();
         repeat = window.setInterval(() => this.backspace(), 90);
       }, 420);
     });
-    button.addEventListener("pointerup", () => { stop(); if (!repeated) this.backspace(); });
+    button.addEventListener("pointerup", stop);
     button.addEventListener("pointercancel", stop);
     button.addEventListener("lostpointercapture", stop);
+    button.addEventListener("click", () => {
+      if (repeated) { repeated = false; return; }
+      this.backspace();
+    });
   }
 
   private renderInput(): void {
     const text = composeTokens(this.input.map((token) => token.value));
-    if (this.mode === "sentence") this.targetProgress.textContent = `${Math.min(text.length, this.prompt.text.length)} / ${this.prompt.text.length}`;
     this.typedText.textContent = text; this.typedText.classList.toggle("is-empty", text.length === 0);
-    this.typedText.classList.toggle("is-correct", this.mode === "sentence" && this.prompt.text.startsWith(text) && text.length > 0);
-    this.typedText.classList.toggle("is-wrong", this.mode === "sentence" && !this.prompt.text.startsWith(text));
+    const target = this.mode === "sentence" ? this.prompt.text : this.wordTarget.word;
+    this.typedText.classList.toggle("is-correct", target.startsWith(text) && text.length > 0);
+    this.typedText.classList.toggle("is-wrong", !target.startsWith(text));
     if (this.mode === "sentence" && text === this.prompt.text) this.finishSentence();
-    if (this.mode === "free") this.renderWritingFeedback();
+    if (this.mode === "word") this.clearWordFeedback();
   }
 
   private startClock(): void {
     this.stopClock(); this.startedAt = performance.now();
     const update = (): void => {
       this.elapsedMs = performance.now() - this.startedAt;
-      if (this.mode === "free") {
-        const remaining = Math.max(0, FREE_MODE_CONFIG.durationMs - this.elapsedMs); this.clock.textContent = formatTime(remaining);
-        if (remaining === 0) { this.finishWriting(false); return; }
+      if (this.mode === "word") {
+        const remaining = Math.max(0, WORD_MODE_CONFIG.durationMs - this.elapsedMs); this.clock.textContent = formatTime(remaining);
+        if (remaining === 0) { this.finishWordChallenge(); return; }
       } else this.clock.textContent = formatTime(this.elapsedMs);
       this.frame = requestAnimationFrame(update);
     };
@@ -209,43 +213,47 @@ export class TalkApp {
   private finishSentence(): void {
     this.stopClock();
     feedback.complete();
-    const score = scoreFromTime(this.elapsedMs, FREE_MODE_CONFIG.durationMs);
+    const score = scoreFromTime(this.elapsedMs, WORD_MODE_CONFIG.durationMs);
     this.showResult("Sentence complete!", `${score} points · ${this.prompt.text} · ${formatTime(this.elapsedMs)}`, score);
   }
-  private writingEvaluation(text = composeTokens(this.input.map((token) => token.value))): WritingEvaluation {
-    const remainingMs = Math.max(0, FREE_MODE_CONFIG.durationMs - this.elapsedMs);
-    return evaluateWriting(text, this.topic.keyword, remainingMs, FREE_MODE_CONFIG.durationMs, FREE_MODE_CONFIG);
-  }
-  private renderWritingFeedback(): void {
+  private clearWordFeedback(): void {
     this.writingFeedback.textContent = "";
     this.writingFeedback.classList.remove("needs-work");
     this.submitRow.classList.add("hidden");
   }
-  private submitWriting(): void {
-    const evaluation = this.writingEvaluation();
-    this.renderWritingFeedback();
-    if (evaluation.complete) this.finishWriting(true);
-    else {
+  private submitWord(): void {
+    const text = composeTokens(this.input.map((token) => token.value));
+    this.clearWordFeedback();
+    if (!isWordMatch(text, this.wordTarget.word)) {
       feedback.reject();
-      this.writingFeedback.textContent = "Use the word and finish the sentence.";
+      this.writingFeedback.textContent = "Check the word and try again.";
       this.writingFeedback.classList.add("needs-work");
       this.submitRow.classList.remove("hidden");
-    }
-  }
-  private finishWriting(submitted: boolean): void {
-    this.stopClock();
-    const text = composeTokens(this.input.map((token) => token.value));
-    const evaluation = this.writingEvaluation(text);
-    if (!evaluation.complete) {
-      feedback.fail();
-      this.showResult("Not finished yet", text ? "Use the word and finish the sentence." : "Write a short sentence first.");
       return;
     }
-    feedback.complete();
-    this.showResult(
-      submitted ? "Sentence sent!" : "Time is up!",
-      `${evaluation.score} points · ${formatTime(this.elapsedMs)}`, evaluation.score,
-    );
+    this.wordCount += 1;
+    feedback.clear(this.input.length);
+    this.startNextWord();
+  }
+  private startNextWord(): void {
+    const choices = WORD_TARGETS.filter((target) => target.id !== this.wordTarget.id);
+    this.wordTarget = choices[Math.floor(Math.random() * choices.length)] ?? WORD_TARGETS[0]!;
+    this.input = []; this.used.clear();
+    this.tiles = createLetterBoard(this.wordTarget.word);
+    this.targetText.textContent = this.wordTarget.word;
+    this.targetHint.textContent = `${wordCountLabel(this.wordCount)} complete · make the next word.`;
+    this.renderBoard(); this.renderInput();
+  }
+  private finishWordChallenge(): void {
+    this.stopClock();
+    const label = wordCountLabel(this.wordCount);
+    if (this.wordCount > 0) {
+      feedback.complete();
+      this.showResult("Time is up!", `${label} completed`, this.wordCount);
+    } else {
+      feedback.fail();
+      this.showResult("Time is up!", "0 words completed");
+    }
   }
   private showResult(title: string, detail: string, score?: number): void {
     const reveal = (): void => {
@@ -285,7 +293,7 @@ export class TalkApp {
       const button = document.createElement("button");
       button.type = "button";
       button.className = `tutorial-key${key === "stroke" || key === "submit" ? " tutorial-key--action" : ""}`;
-      button.textContent = key === "stroke" ? "Add stroke" : key === "submit" ? "Submit" : key === " " ? "Space" : key;
+      button.textContent = key === "stroke" ? "Add stroke" : key === "submit" ? "Submit" : key;
       button.addEventListener("click", () => this.playTutorialKey(key));
       keys.append(button);
     });
@@ -340,7 +348,7 @@ export class TalkApp {
   private showRules(): void {
     this.tutorialNav.classList.add("hidden");
     this.openHelp("Rules");
-    this.helpBody.innerHTML = `<div class="rules-list"><p><b>Sentence Copy</b><span>Type the Korean sentence exactly.</span></p><p><b>Short Writing</b><span>Use the Korean word and finish a short sentence.</span></p><p><b>One block, one use</b><span>A used block stays as a light mark on the board.</span></p><p><b>Score</b><span>Finish faster to get more points.</span></p></div>`;
+    this.helpBody.innerHTML = `<div class="rules-list"><p><b>Sentence Copy</b><span>Type the Korean sentence exactly. A faster finish gives more points.</span></p><p><b>Word Challenge</b><span>Make the target word and tap Submit. Complete as many words as you can in 60 seconds.</span></p><p><b>One block, one use</b><span>A used block stays as a light mark on the board.</span></p></div>`;
   }
 
   private showSettings(): void {

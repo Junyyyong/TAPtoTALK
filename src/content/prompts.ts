@@ -16,25 +16,30 @@ export const SENTENCE_PROMPTS: readonly SentencePrompt[] = [
   { id: "today-001", text: "오늘의 이야기를 들려줘", difficulty: 3 },
 ];
 
-export const FREE_MODE_CONFIG = {
+export const WORD_MODE_CONFIG = {
   durationMs: 60_000,
-  minSyllables: 8,
-  minWords: 2,
 } as const;
 
-export interface WritingTopic {
+export interface WordTarget {
   id: string;
-  keyword: string;
+  word: string;
 }
 
-/** The keyword gives free writing a visible goal and is guaranteed on the board. */
-export const WRITING_TOPICS: readonly WritingTopic[] = [
-  { id: "love", keyword: "사랑" },
-  { id: "today", keyword: "오늘" },
-  { id: "friend", keyword: "친구" },
-  { id: "travel", keyword: "여행" },
-  { id: "dream", keyword: "꿈" },
-  { id: "family", keyword: "가족" },
-  { id: "book", keyword: "책" },
-  { id: "spring", keyword: "봄" },
+/** Easy Korean words for the timed word challenge. */
+export const WORD_TARGETS: readonly WordTarget[] = [
+  { id: "love", word: "사랑" },
+  { id: "friendship", word: "우정" },
+  { id: "study", word: "공부" },
+  { id: "friend", word: "친구" },
+  { id: "family", word: "가족" },
+  { id: "travel", word: "여행" },
+  { id: "today", word: "오늘" },
+  { id: "dream", word: "꿈" },
+  { id: "book", word: "책" },
+  { id: "spring", word: "봄" },
+  { id: "heart", word: "마음" },
+  { id: "sky", word: "하늘" },
+  { id: "flower", word: "꽃" },
+  { id: "school", word: "학교" },
+  { id: "smile", word: "미소" },
 ];

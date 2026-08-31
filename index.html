@@ -16,7 +16,7 @@
         <header class="brand-block"><img class="brand-mark" src="./TAPtoTALK-logo.svg" alt="TAP to TALK" /></header>
         <nav class="mode-list" aria-label="Game mode">
           <button class="mode-btn" id="mode-sentence"><span class="mode-name">Sentence Copy</span><span class="mode-desc">Type the sentence as fast as you can.</span></button>
-          <button class="mode-btn" id="mode-free"><span class="mode-name">Short Writing</span><span class="mode-desc">Use the word and write a short sentence.</span></button>
+          <button class="mode-btn" id="mode-free"><span class="mode-name">Word Challenge</span><span class="mode-desc">Make as many Korean words as you can in 60 seconds.</span></button>
         </nav>
         <div class="title-links">
           <button class="text-btn" id="btn-title-tutorial">How to play</button>
@@ -34,11 +34,9 @@
         </header>
         <section class="writing-card" aria-live="polite">
           <div class="target-prompt">
-            <p class="target-label" id="target-label">TARGET</p><p class="target-progress" id="target-progress"></p><p class="target-text" id="target-text"></p>
+            <p class="target-label" id="target-label">TARGET</p><p class="target-text" id="target-text"></p>
             <p class="target-hint" id="target-hint">Copy the sentence below.</p>
-            <button class="submit-btn hidden" id="btn-submit">Submit</button>
           </div>
-          <p class="typed-label">YOUR TEXT</p>
           <p class="typed-text" id="typed-text" data-empty="Start typing below."></p>
           <div class="writing-submit-row hidden" id="writing-submit-row">
             <p class="writing-feedback" id="writing-feedback"></p>
@@ -46,12 +44,11 @@
         </section>
         <div class="letter-board" id="letter-board" aria-label="Hangul keyboard"></div>
         <footer class="fixed-controls" aria-label="Typing tools">
-          <button class="control-btn" id="btn-backspace" aria-label="Delete one input">⌫ Delete</button>
-          <button class="control-btn" id="btn-space">Space</button>
           <button class="control-btn vowel-control" id="btn-dot" aria-label="Cheonjiin dot">·</button>
           <button class="control-btn stroke-control" id="btn-stroke">Add stroke</button>
-          <button class="control-btn punctuation" data-value=".">.</button><button class="control-btn punctuation" data-value=",">,</button>
-          <button class="control-btn punctuation" data-value="!">!</button><button class="control-btn punctuation" data-value="?">?</button>
+          <button class="control-btn" id="btn-space">Space</button>
+          <button class="control-btn" id="btn-backspace" aria-label="Delete one input">⌫ Delete</button>
+          <button class="submit-btn hidden" id="btn-submit">Submit</button>
         </footer>
       </section>
       <div class="cheer hidden" id="cheer" aria-hidden="true">
