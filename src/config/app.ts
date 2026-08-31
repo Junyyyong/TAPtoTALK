@@ -10,5 +10,11 @@ export const APP_CONFIG = {
     splash: "./assets/brand/splash.webp",
     celebrationVideo: "./assets/brand/celebration.webm",
     celebrationAudio: "./assets/brand/celebration.mp3",
+    celebrations: [
+      { at: 900, layout: "hero", video: "./assets/brand/celebration.webm", sound: "./assets/brand/celebration.mp3" },
+      { at: 650, layout: "large", video: "./assets/brand/celebration.webm", sound: "./assets/brand/celebration.mp3" },
+      { at: 350, layout: "standard", video: "./assets/brand/celebration.webm", sound: "./assets/brand/celebration.mp3" },
+      { at: 0, layout: "compact", video: "./assets/brand/celebration.webm", sound: "./assets/brand/celebration.mp3" },
+    ],
   },
 } as const;

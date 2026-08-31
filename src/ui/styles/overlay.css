@@ -77,6 +77,10 @@
    The board dims, one word lands over it, a character dances. It sits above
    everything and takes no taps: it is a moment, not a screen. */
 .cheer {
+  --cheer-gap: 16px;
+  --cheer-top: clamp(56px, calc(var(--app-h, 100dvh) * 0.16), 150px);
+  --clip-width: min(86vw, 420px);
+  --clip-offset: 0px;
   position: absolute;
   inset: 0;
   z-index: 6;
@@ -98,7 +102,7 @@
   grid-template-columns: minmax(0, 1fr);
   grid-template-rows: auto minmax(0, 1fr) auto;
   justify-items: center;
-  gap: 16px;
+  gap: var(--cheer-gap);
   /*
    * The word sat right against the top edge, which read as having slipped off
    * rather than as being placed. It starts a good way down now — a share of
@@ -107,13 +111,20 @@
    * The clip's row is the flexible one, so this comes out of its slack and
    * nothing else moves.
    */
-  padding: clamp(56px, calc(var(--app-h, 100dvh) * 0.16), 150px) 0 24px;
+  padding: var(--cheer-top) 0 24px;
   pointer-events: none;
   /* Most of the way to black. The board is still there underneath — it is
      what was just finished — but it has receded far enough that everything
      bright on screen belongs to the word and the clip. */
   background: rgba(0, 0, 0, 0.68);
 }
+
+/* Each score band has its own staging. The media paths are replaceable in
+   config/app.ts, so future clips can be tuned without changing game flow. */
+.cheer-layout-compact { --cheer-gap: 22px; --cheer-top: clamp(72px, 18vh, 164px); --clip-width: min(72vw, 350px); --clip-offset: 8px; }
+.cheer-layout-standard { --cheer-gap: 16px; --cheer-top: clamp(62px, 16vh, 150px); --clip-width: min(82vw, 400px); --clip-offset: 2px; }
+.cheer-layout-large { --cheer-gap: 10px; --cheer-top: clamp(52px, 14vh, 132px); --clip-width: min(88vw, 440px); --clip-offset: -4px; }
+.cheer-layout-hero { --cheer-gap: 4px; --cheer-top: clamp(42px, 12vh, 112px); --clip-width: min(94vw, 480px); --clip-offset: -10px; }
 
 .cheer.hidden {
   display: none;
@@ -235,15 +246,17 @@
 .cheer-clip {
   grid-column: 1;
   grid-row: 2;
-  align-self: center;
+  align-self: start;
   /* A video element paints its own ground where the picture is transparent.
      Saying so explicitly costs nothing and rules it out as a suspect. */
   background: transparent;
   /* Fills its slot rather than sizing it: a clip of any shape lands in the
      same place, and swapping one for another moves nothing. */
-  width: min(86vw, 420px);
+  width: var(--clip-width);
   max-width: 100%;
-  height: 100%;
+  height: auto;
+  max-height: 100%;
+  margin-top: var(--clip-offset);
   object-fit: contain;
 }
 

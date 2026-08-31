@@ -25,6 +25,10 @@ TAPtoTALK은 레이아웃을 다시 디자인해도 한글 규칙을 건드리�
 | 성공 영상 | `public/assets/brand/celebration.webm` |
 | 성공 음원 | `public/assets/brand/celebration.mp3` |
 
+점수별 완료 영상은 `src/config/app.ts`의 `assets.celebrations` 네 항목에서
+경로를 각각 바꿀 수 있습니다. `compact`, `standard`, `large`, `hero` 레이아웃은
+`src/ui/styles/overlay.css`에서 영상 너비와 상단·문구 간격을 따로 조절합니다.
+
 경로 자체를 바꾸려면 `src/config/app.ts` 한 곳과, JavaScript가 실행되기 전 보이는
 시작 이미지 두 군데(`index.html`)만 수정합니다.
 

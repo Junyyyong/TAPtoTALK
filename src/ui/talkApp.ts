@@ -249,19 +249,20 @@ export class TalkApp {
     const label = wordCountLabel(this.wordCount);
     if (this.wordCount > 0) {
       feedback.complete();
-      this.showResult("Time is up!", `${label} completed`, this.wordCount);
+      const tierScore = this.wordCount >= 10 ? 900 : this.wordCount >= 7 ? 650 : this.wordCount >= 4 ? 350 : 0;
+      this.showResult("Time is up!", `${label} completed`, this.wordCount, tierScore);
     } else {
       feedback.fail();
       this.showResult("Time is up!", "0 words completed");
     }
   }
-  private showResult(title: string, detail: string, score?: number): void {
+  private showResult(title: string, detail: string, score?: number, tierScore = score): void {
     const reveal = (): void => {
       this.resultTitle.textContent = title;
       this.resultDetail.textContent = detail;
       this.result.classList.remove("hidden");
     };
-    if (score !== undefined && score > 0) this.cheer.play(title, score, cheerFor(score), reveal);
+    if (score !== undefined && score > 0) this.cheer.play(title, score, cheerFor(tierScore ?? score), reveal, tierScore);
     else reveal();
   }
 

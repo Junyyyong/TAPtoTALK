@@ -20,14 +20,17 @@ interface Clip {
   video: string;
   /** Its soundtrack, the same length. Optional. */
   sound?: string;
+  layout: "compact" | "standard" | "large" | "hero";
 }
 
-const CHEER_CLIPS: readonly Clip[] = [
-  {
-    video: APP_CONFIG.assets.celebrationVideo,
-    sound: APP_CONFIG.assets.celebrationAudio,
-  },
-];
+const CLIP_TIERS: readonly { at: number; clips: readonly Clip[] }[] = APP_CONFIG.assets.celebrations.map((item) => ({
+  at: item.at,
+  clips: [{ video: item.video, sound: item.sound, layout: item.layout }],
+}));
+
+export function poolFor(score: number): readonly Clip[] {
+  return CLIP_TIERS.find((tier) => score >= tier.at)?.clips ?? CLIP_TIERS[CLIP_TIERS.length - 1]!.clips;
+}
 
 /**
  * Four milliseconds of nothing, as a file.
@@ -69,10 +72,14 @@ const CLIP_CAP_MS = 15000;
  * the whole flourish down with it.
  */
 function start(media: HTMLMediaElement, src: string): Promise<void> {
+  load(media, src);
+  return media.play();
+}
+
+function load(media: HTMLMediaElement, src: string): void {
   const url = new URL(src, location.href).href;
   if (media.src === url) media.currentTime = 0;
   else media.src = url;
-  return media.play();
 }
 
 export class Cheer {
@@ -89,6 +96,7 @@ export class Cheer {
   private primed = false;
   /** Guards against the clip ending and the cap firing for the same play. */
   private done: (() => void) | undefined;
+  private pick: Clip | null = null;
 
   constructor() {
     // The clip stops on its own last frame; the player decides when to leave it.
@@ -127,14 +135,22 @@ export class Cheer {
    * `headline` is what ended the run and `score` what it was worth; they hold
    * the screen on their own before the dance begins.
    */
-  play(headline: string, score: number, text: string, then: () => void): void {
+  play(headline: string, score: number, text: string, then: () => void, tierScore = score): void {
     this.word.textContent = text;
     this.headline.textContent = headline;
     this.scoreEl.textContent = score.toLocaleString();
     this.done = then;
 
-    this.root.classList.remove("hidden", "cheer-hold", "cheer-run");
+    this.root.classList.remove("hidden", "cheer-hold", "cheer-run", "cheer-layout-compact", "cheer-layout-standard", "cheer-layout-large", "cheer-layout-hero");
     this.card.classList.remove("hidden");
+
+    const pool = poolFor(tierScore);
+    this.pick = pool.length ? pool[Math.floor(Math.random() * pool.length)]! : null;
+    if (this.pick) {
+      this.root.classList.add(`cheer-layout-${this.pick.layout}`);
+      load(this.clip, this.pick.video);
+      if (this.pick.sound) load(this.sound, this.pick.sound);
+    }
 
     window.clearTimeout(this.timer);
     this.timer = window.setTimeout(() => this.dance(), CARD_MS);
@@ -150,9 +166,7 @@ export class Cheer {
     void this.root.offsetWidth;
     this.root.classList.add("cheer-run");
 
-    const pick = CHEER_CLIPS.length
-      ? CHEER_CLIPS[Math.floor(Math.random() * CHEER_CLIPS.length)]!
-      : null;
+    const pick = this.pick;
 
     window.clearTimeout(this.timer);
     if (!pick) {
@@ -191,6 +205,7 @@ export class Cheer {
   stop(): void {
     window.clearTimeout(this.timer);
     this.done = undefined;
+    this.pick = null;
     this.hush();
     this.root.classList.add("hidden");
     this.root.classList.remove("cheer-hold");
