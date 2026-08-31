@@ -1,12 +1,6 @@
 export interface WritingRules {
   minSyllables: number;
   minWords: number;
-  completionPoints: number;
-  pointsPerSyllable: number;
-  maxLengthPoints: number;
-  pointsPerUniqueSyllable: number;
-  maxVarietyPoints: number;
-  maxTimePoints: number;
 }
 
 export interface WritingChecks {
@@ -23,6 +17,13 @@ export interface WritingEvaluation {
   score: number;
   syllableCount: number;
   uniqueSyllables: number;
+}
+
+/** One scoring rule for both modes: a completed answer is worth 100–1000 points based only on time. */
+export function scoreFromTime(elapsedMs: number, durationMs: number): number {
+  if (durationMs <= 0) return 100;
+  const remainingRatio = 1 - Math.max(0, Math.min(1, elapsedMs / durationMs));
+  return 100 + Math.round(900 * remainingRatio);
 }
 
 /** Objective, offline-checkable writing criteria. Semantic feedback can be added later. */
@@ -44,20 +45,13 @@ export function evaluateWriting(
   };
   const complete = Object.values(checks).every(Boolean);
   const uniqueSyllables = new Set(syllables).size;
-  const lengthPoints = Math.min(rules.maxLengthPoints, syllables.length * rules.pointsPerSyllable);
-  const varietyPoints = Math.min(
-    rules.maxVarietyPoints,
-    uniqueSyllables * rules.pointsPerUniqueSyllable,
-  );
-  const timeRatio = durationMs > 0 ? Math.max(0, Math.min(1, remainingMs / durationMs)) : 0;
-  const timePoints = Math.floor(rules.maxTimePoints * timeRatio);
+  const elapsedMs = Math.max(0, durationMs - remainingMs);
 
   return {
     complete,
     checks,
-    score: complete ? rules.completionPoints + lengthPoints + varietyPoints + timePoints : 0,
+    score: complete ? scoreFromTime(elapsedMs, durationMs) : 0,
     syllableCount: syllables.length,
     uniqueSyllables,
   };
 }
-

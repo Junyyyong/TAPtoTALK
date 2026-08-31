@@ -10,13 +10,14 @@
 .run-heading strong { font-variant-numeric: tabular-nums; }
 .writing-card { flex: 0 0 auto; padding: 2px 2px 4px; border: 0; background: transparent; box-shadow: none; }
 .target-prompt { display: grid; gap: 2px; }
-.target-label { margin: 0 0 3px; color: var(--ink-faint); font-size: 10px; font-weight: 500; letter-spacing: .12em; }
-.target-text,.typed-text { min-height: 1.45em; margin: 0; font-size: clamp(17px,4.7vw,24px); font-weight: 500; line-height: 1.45; word-break: keep-all; }
-.is-free-mode .target-prompt { grid-template-columns: minmax(0,1fr) auto; grid-template-rows: auto auto; column-gap: 10px; padding: 2px 0 4px 10px; border-left: 3px solid var(--accent); }
+.target-label,.typed-label { margin: 0; color: var(--accent-deep); font-size: 11px; font-weight: 700; letter-spacing: .1em; }
+.target-text,.typed-text { min-height: 1.45em; margin: 0; color: var(--ink); font-size: clamp(19px,5.2vw,26px); font-weight: 650; line-height: 1.4; word-break: keep-all; }
+.is-free-mode .target-prompt { grid-template-columns: minmax(0,1fr) auto; grid-template-rows: auto auto; column-gap: 8px; padding: 0; }
 .is-free-mode .target-label { margin: 0; color: var(--accent-deep); font-size: 11px; font-weight: 600; letter-spacing: .08em; }
 .is-free-mode .target-text { color: var(--ink); font-size: clamp(23px,6.4vw,30px); font-weight: 700; line-height: 1.2; }
-.is-free-mode .target-prompt .submit-btn { grid-column: 2; grid-row: 1 / 3; align-self: stretch; min-width: 96px; }
-.typed-text { margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--paper-edge); color: var(--cool-deep); }
+.is-free-mode .target-prompt .submit-btn { grid-column: 2; grid-row: 1 / 3; align-self: center; min-width: 86px; }
+.typed-label { margin-top: 7px; color: var(--ink-faint); }
+.typed-text { min-height: 2.5em; padding-top: 2px; color: var(--accent-deep); }
 .typed-text.is-empty::before { content: attr(data-empty); color: var(--ink-faint); font-size: 13px; font-weight: 500; }
 .typed-text.is-wrong { color: var(--ring-bad); } .typed-text.is-correct { color: var(--ring-ok); }
 .letter-board { display: grid; flex: 1 1 auto; grid-template-columns: repeat(9,minmax(0,1fr)); grid-template-rows: repeat(9,minmax(0,1fr)); gap: 3px; min-height: 0; padding: 0; background: transparent; }
@@ -29,8 +30,8 @@
 #btn-backspace { grid-area: back; } #btn-space { grid-area: space; }
 .punctuation[data-value="."] { grid-area: period; } .punctuation[data-value=","] { grid-area: comma; }
 .punctuation[data-value="!"] { grid-area: exclamation; } .punctuation[data-value="?"] { grid-area: question; }
-.control-btn { position: relative; min-width: 0; min-height: 44px; overflow: hidden; padding: 0 8px; border: 1px solid var(--paper-edge); border-radius: 12px; color: var(--ink); background: var(--panel-lit); box-shadow: inset 0 1px 0 rgba(255,255,255,.7),0 3px 0 var(--slab); font: 600 14px/1 inherit; }
-.control-btn:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--slab); }
+.control-btn { position: relative; min-width: 0; min-height: 44px; overflow: hidden; padding: 0 8px; border: 1px solid var(--paper-edge); border-radius: 12px; color: var(--ink); background: var(--panel-lit); box-shadow: inset 0 1px 0 rgba(255,255,255,.55),0 1px 2px rgba(29,35,43,.16); font: 600 13px/1 inherit; }
+.control-btn:active { transform: translateY(1px); box-shadow: inset 0 1px 0 rgba(255,255,255,.4); }
 .vowel-control { color: white; border-color: transparent; background: var(--vowel-face); font-size: 22px; }
 .stroke-control { color: var(--accent-deep); background: #eceafb; font-size: 12px; }
 .punctuation { font-size: 18px; }
@@ -40,7 +41,7 @@
 .writing-feedback { flex: 1; margin: 0; color: var(--ink-soft); font-size: 10px; font-weight: 700; line-height: 1.35; }
 .writing-feedback.is-ready { color: #237b6b; }
 .writing-feedback.needs-work { color: var(--hot-deep); }
-.submit-btn { position: relative; flex: 0 0 auto; width: auto; min-height: 42px; overflow: hidden; padding: 0 16px; border: 0; border-radius: 11px; color: white; background: linear-gradient(180deg,#5863ed,var(--accent-deep)); box-shadow: inset 0 1px 0 rgba(255,255,255,.45),0 3px 0 rgba(29,35,43,.2); font: 600 13px/1 inherit; }
+.submit-btn { position: relative; flex: 0 0 auto; width: auto; min-height: 36px; overflow: hidden; padding: 0 14px; border: 0; border-radius: 10px; color: white; background: linear-gradient(180deg,#5863ed,var(--accent-deep)); box-shadow: inset 0 1px 0 rgba(255,255,255,.38),0 1px 2px rgba(29,35,43,.18); font: 600 12px/1 inherit; }
 .submit-btn:active { transform: translateY(2px); box-shadow: 0 1px 0 rgba(29,35,43,.2); }
 .letter-tile::before,.control-btn::before,.submit-btn::before,.wood-btn::before { position: absolute; inset: 1px 8% auto; height: 42%; border-radius: inherit; content: ""; pointer-events: none; background: linear-gradient(180deg,rgba(255,255,255,.26),rgba(255,255,255,0)); }
 .result-layer { position: absolute; z-index: 20; inset: 0; display: grid; place-items: center; padding: 24px; background: var(--scrim); }
@@ -48,4 +49,4 @@
 .result-panel { width: min(100%,360px); padding: 28px; border-radius: 24px; text-align: center; background: var(--paper-lit); box-shadow: 0 12px 0 rgba(29,35,43,.22); }
 .result-kicker { margin: 0; color: var(--accent); font-size: 12px; font-weight: 600; letter-spacing: .18em; }
 .result-panel h2 { margin: 8px 0; font-weight: 600; } .result-panel .wood-btn { width: 100%; margin-top: 16px; } .result-panel .text-btn { margin-top: 14px; }
-@media (max-height:680px) { .talk-screen { gap: 5px; } .writing-card { padding-block: 7px; } .is-free-mode .target-prompt { padding-block: 5px; } .target-text,.typed-text { font-size: 16px; line-height: 1.2; } .is-free-mode .target-text { font-size: 20px; } .writing-submit-row { margin-top: 4px; } .submit-btn { min-height: 36px; } .control-btn { min-height: 36px; } .fixed-controls { gap: 3px; } }
+@media (max-height:680px) { .talk-screen { gap: 5px; } .writing-card { padding-block: 2px; } .target-text,.typed-text { font-size: 17px; line-height: 1.25; } .is-free-mode .target-text { font-size: 20px; } .typed-text { min-height: 2em; } .writing-submit-row { margin-top: 2px; } .submit-btn { min-height: 34px; } .control-btn { min-height: 36px; } .fixed-controls { gap: 3px; } }

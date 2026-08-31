@@ -1,7 +1,7 @@
 import { createLetterBoard, type LetterTile } from "../core/hangul/board";
 import { composeTokens } from "../core/hangul/compose";
 import { CONSONANTS, transformedConsonant, type BoardSymbol } from "../core/hangul/keys";
-import { evaluateWriting, type WritingEvaluation } from "../core/hangul/writing";
+import { evaluateWriting, scoreFromTime, type WritingEvaluation } from "../core/hangul/writing";
 import { FREE_MODE_CONFIG, SENTENCE_PROMPTS, WRITING_TOPICS, type SentencePrompt, type WritingTopic } from "../content/prompts";
 import { el } from "./dom";
 import { Cheer } from "./screens/cheer";
@@ -14,11 +14,6 @@ const formatTime = (ms: number): string => {
   const seconds = Math.floor(ms / 1000) % 60;
   const minutes = Math.floor(ms / 60_000);
   return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}.${tenths}`;
-};
-
-const objectParticle = (word: string): "을" | "를" => {
-  const last = word.codePointAt(word.length - 1) ?? 0;
-  return last >= 0xac00 && last <= 0xd7a3 && (last - 0xac00) % 28 !== 0 ? "을" : "를";
 };
 
 const cheerFor = (score: number): string => {
@@ -84,12 +79,12 @@ export class TalkApp {
     this.input = []; this.used.clear();
     const requiredText = mode === "sentence" ? this.prompt.text : this.topic.keyword;
     this.tiles = createLetterBoard(requiredText);
-    this.targetLabel.textContent = mode === "sentence" ? "목표 문장" : "제시어";
+    this.targetLabel.textContent = mode === "sentence" ? "TARGET" : "WORD";
     this.targetText.textContent = mode === "sentence" ? this.prompt.text : this.topic.keyword;
     this.typedText.dataset.empty = mode === "sentence"
-      ? "아래 자모를 눌러 입력하세요"
-      : `${this.topic.keyword}${objectParticle(this.topic.keyword)} 포함한 문장을 만드세요`;
-    this.runMode.textContent = mode === "sentence" ? "문장 따라쓰기" : "주제 글쓰기";
+      ? "Type the target sentence."
+      : "Write a short sentence using the word.";
+    this.runMode.textContent = mode === "sentence" ? "Sentence Copy" : "Short Writing";
     this.game.classList.toggle("is-free-mode", mode === "free");
     this.submitRow.classList.toggle("hidden", mode !== "free");
     this.submitButton.classList.toggle("hidden", mode !== "free");
@@ -142,7 +137,7 @@ export class TalkApp {
     this.typedText.classList.toggle("is-correct", this.mode === "sentence" && this.prompt.text.startsWith(text) && text.length > 0);
     this.typedText.classList.toggle("is-wrong", this.mode === "sentence" && !this.prompt.text.startsWith(text));
     if (this.mode === "sentence" && text === this.prompt.text) this.finishSentence();
-    if (this.mode === "free") this.renderWritingFeedback(this.writingEvaluation(text));
+    if (this.mode === "free") this.renderWritingFeedback();
   }
 
   private startClock(): void {
@@ -160,41 +155,37 @@ export class TalkApp {
   private stopClock(): void { if (this.frame !== undefined) cancelAnimationFrame(this.frame); this.frame = undefined; }
   private finishSentence(): void {
     this.stopClock();
-    const score = Math.max(100, Math.round(1000 - this.elapsedMs / 100));
-    this.showResult("문장 완성!", `${score}점 · ${this.prompt.text} · ${formatTime(this.elapsedMs)}`, score);
+    const score = scoreFromTime(this.elapsedMs, FREE_MODE_CONFIG.durationMs);
+    this.showResult("Sentence complete!", `${score} points · ${this.prompt.text} · ${formatTime(this.elapsedMs)}`, score);
   }
   private writingEvaluation(text = composeTokens(this.input.map((token) => token.value))): WritingEvaluation {
     const remainingMs = Math.max(0, FREE_MODE_CONFIG.durationMs - this.elapsedMs);
     return evaluateWriting(text, this.topic.keyword, remainingMs, FREE_MODE_CONFIG.durationMs, FREE_MODE_CONFIG);
   }
-  private renderWritingFeedback(evaluation: WritingEvaluation): void {
-    const checks = evaluation.checks;
-    const mark = (ok: boolean) => ok ? "✓" : "○";
-    this.writingFeedback.textContent = [
-      `${mark(checks.keyword)} 제시어`, `${mark(checks.words)} ${FREE_MODE_CONFIG.minWords}어절`,
-      `${mark(checks.syllables)} ${FREE_MODE_CONFIG.minSyllables}글자`, `${mark(checks.punctuation)} 문장부호`,
-      `${mark(checks.composed)} 글자 완성`,
-    ].join(" · ");
+  private renderWritingFeedback(): void {
+    this.writingFeedback.textContent = "Write a short sentence using the word.";
     this.writingFeedback.classList.remove("needs-work");
-    this.writingFeedback.classList.toggle("is-ready", evaluation.complete);
   }
   private submitWriting(): void {
     const evaluation = this.writingEvaluation();
-    this.renderWritingFeedback(evaluation);
+    this.renderWritingFeedback();
     if (evaluation.complete) this.finishWriting(true);
-    else this.writingFeedback.classList.add("needs-work");
+    else {
+      this.writingFeedback.textContent = "Use the word and finish the sentence.";
+      this.writingFeedback.classList.add("needs-work");
+    }
   }
   private finishWriting(submitted: boolean): void {
     this.stopClock();
     const text = composeTokens(this.input.map((token) => token.value));
     const evaluation = this.writingEvaluation(text);
     if (!evaluation.complete) {
-      this.showResult("아직 완성되지 않았어요", `조건을 확인해 다시 도전해 보세요 · ${text || "입력 없음"}`);
+      this.showResult("Not finished yet", text ? "Use the word and finish the sentence." : "Write a short sentence first.");
       return;
     }
     this.showResult(
-      submitted ? "문장 제출 완료!" : "시간 종료!",
-      `${evaluation.score}점 · ${evaluation.syllableCount}글자 · 서로 다른 음절 ${evaluation.uniqueSyllables}개`, evaluation.score,
+      submitted ? "Sentence sent!" : "Time is up!",
+      `${evaluation.score} points · ${formatTime(this.elapsedMs)}`, evaluation.score,
     );
   }
   private showResult(title: string, detail: string, score?: number): void {

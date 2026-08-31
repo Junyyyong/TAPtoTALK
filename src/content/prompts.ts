@@ -16,12 +16,6 @@ export const FREE_MODE_CONFIG = {
   durationMs: 60_000,
   minSyllables: 8,
   minWords: 2,
-  completionPoints: 100,
-  pointsPerSyllable: 3,
-  maxLengthPoints: 60,
-  pointsPerUniqueSyllable: 2,
-  maxVarietyPoints: 30,
-  maxTimePoints: 10,
 } as const;
 
 export interface WritingTopic {
