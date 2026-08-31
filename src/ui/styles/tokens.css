@@ -22,37 +22,37 @@
  */
 :root {
   /* Paper: the ground everything sits on, warm rather than white */
-  --paper: #fff6e9;
-  --paper-lit: #fffdf8;
-  --paper-deep: #f6e6d2;
-  --paper-edge: #e8d3ba;
+  --paper: #f2f3f5;
+  --paper-lit: #fafbfc;
+  --paper-deep: #e3e5e8;
+  --paper-edge: #cbd0d6;
 
   /* Maroon: every dark thing — text, outlines, the shadow under a block */
-  --ink: #3a0f0a;
-  --ink-soft: #8a6552;
-  --ink-faint: #b79a89;
+  --ink: #1d232b;
+  --ink-soft: #5f6975;
+  --ink-faint: #929aa4;
 
   /* Warm: the wordmark's own two, and the accent everything active uses */
-  --hot: #ff5000;
-  --hot-deep: #d43600;
-  --warm: #ffb500;
-  --warm-deep: #ff8b00;
-  --sun: #fff500;
+  --hot: #65717e;
+  --hot-deep: #454f5a;
+  --warm: #8c96a1;
+  --warm-deep: #6f7984;
+  --sun: #b9c0c8;
 
   /* Cool: kept for the things that must read as calm next to all that orange */
-  --cool: #2c7fe0;
-  --cool-deep: #1f5bb0;
-  --cool-dim: rgba(58, 15, 10, 0.14);
+  --cool: #60758a;
+  --cool-deep: #43596f;
+  --cool-dim: rgba(29, 35, 43, 0.12);
 
   /* Surfaces: a panel, the slab it presses into, the hollow it presses out of */
-  --panel: rgba(255, 255, 255, 0.72);
-  --panel-lit: rgba(255, 255, 255, 0.94);
-  --panel-deep: rgba(246, 230, 210, 0.9);
-  --slab: rgba(58, 15, 10, 0.22);
-  --slab-hard: rgba(58, 15, 10, 0.32);
-  --recess: rgba(58, 15, 10, 0.12);
+  --panel: rgba(255, 255, 255, 0.7);
+  --panel-lit: rgba(255, 255, 255, 0.92);
+  --panel-deep: rgba(226, 229, 233, 0.92);
+  --slab: rgba(29, 35, 43, 0.18);
+  --slab-hard: rgba(29, 35, 43, 0.28);
+  --recess: rgba(29, 35, 43, 0.1);
   --sheen: rgba(255, 255, 255, 0.9);
-  --scrim: rgba(58, 15, 10, 0.55);
+  --scrim: rgba(29, 35, 43, 0.58);
 
   /* Legacy names, kept so nothing has to be renamed twice. */
   --night: var(--paper);
@@ -61,7 +61,7 @@
   --house-lit: var(--paper-lit);
   --velvet: var(--paper-deep);
   --velvet-deep: var(--paper-deep);
-  --hot-dim: rgba(255, 80, 0, 0.16);
+  --hot-dim: rgba(69, 79, 90, 0.14);
   --brass-dark: var(--warm-deep);
   --brass: var(--warm-deep);
   --brass-bright: var(--warm);
@@ -73,9 +73,9 @@
 
   /* Blocks: saturated faces, white numerals, on paper */
   --tile-face: #ffffff;
-  --tile-face-low: #f0dcc4;
+  --tile-face-low: #d9dde2;
   --tile-ink: var(--ink);
-  --tile-sel: #fff2c4;
+  --tile-sel: #dce4ec;
 
   --ring-sel: var(--warm-deep);
   --ring-ok: #16a34a;
@@ -98,8 +98,8 @@
   --v9: #ca8a04;
 
   /* Panel buttons: go, choose, back. Green carries on everywhere. */
-  --go: #22a03f;
-  --go-deep: #16752c;
+  --go: #65717e;
+  --go-deep: #454f5a;
   --pick: var(--cool);
   --pick-deep: var(--cool-deep);
   --stop: #dc2626;
@@ -171,10 +171,7 @@ body {
   overflow: hidden;
   /* Two soft pools of the wordmark's own warmth over paper. No texture: the
      blocks and the pictures carry all the detail there is. */
-  background:
-    radial-gradient(62% 30% at 20% 10%, rgba(255, 181, 0, 0.18), transparent 70%),
-    radial-gradient(58% 28% at 84% 88%, rgba(255, 80, 0, 0.12), transparent 72%),
-    linear-gradient(180deg, var(--paper-lit) 0%, var(--paper) 52%, var(--paper-deep) 100%);
+  background: linear-gradient(180deg, var(--paper-lit) 0%, var(--paper) 52%, var(--paper-deep) 100%);
 }
 
 #app::before {
@@ -183,7 +180,7 @@ body {
   inset: 0;
   content: "";
   pointer-events: none;
-  background: linear-gradient(90deg, rgba(184, 148, 106, 0.16), transparent 14% 86%, rgba(184, 148, 106, 0.16));
+  background: linear-gradient(90deg, rgba(50, 58, 68, 0.08), transparent 14% 86%, rgba(50, 58, 68, 0.08));
 }
 
 .screen {

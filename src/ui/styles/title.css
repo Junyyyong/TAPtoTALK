@@ -30,6 +30,7 @@
   width: 100%;
   height: auto;
   transform: translateY(-50%);
+  filter: grayscale(1);
 }
 
 .title-screen {
@@ -50,9 +51,7 @@
   justify-content: space-evenly;
   gap: 10px;
   padding: max(3vh, 16px) 22px max(2.5vh, 14px);
-  background:
-    radial-gradient(58% 28% at 50% 24%, rgba(255, 181, 0, 0.14), transparent 75%),
-    linear-gradient(180deg, transparent, var(--recess));
+  background: linear-gradient(180deg, transparent, var(--recess));
 }
 
 .brand-block {
@@ -76,7 +75,7 @@
   height: auto;
   /* A little of the night thrown back up at it, so it sits on the background
      rather than on top of it. */
-  filter: drop-shadow(0 10px 24px var(--slab-hard));
+  filter: grayscale(1) drop-shadow(0 10px 24px var(--slab-hard));
 }
 
 .tagline {
