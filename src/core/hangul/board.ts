@@ -14,8 +14,8 @@ export type SymbolWeights = Readonly<Partial<Record<BoardSymbol, number>>>;
 
 /** Common Korean letters receive more of the board's spare positions. */
 export const DEFAULT_SYMBOL_WEIGHTS: SymbolWeights = {
-  "ㄱ": 8, "ㄴ": 8, "ㄹ": 7, "ㅁ": 6, "ㅂ": 4, "ㅅ": 8, "ㅇ": 10,
-  "ㅈ": 5, "ㅎ": 5, "ㅣ": 12, "ㆍ": 12, "ㅡ": 9,
+  "ㄱ": 8, "ㄴ": 8, "ㄷ": 5, "ㄹ": 7, "ㅁ": 6, "ㅂ": 4,
+  "ㅅ": 8, "ㅇ": 10, "ㅈ": 5, "ㅎ": 5, "ㅣ": 12, "ㅡ": 9,
 };
 
 function weightedPick(rng: () => number, weights: SymbolWeights): BoardSymbol {
@@ -53,4 +53,3 @@ export function createLetterBoard(
   }
   return shuffle(tiles, rng);
 }
-

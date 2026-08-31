@@ -1,4 +1,4 @@
-import type { BoardSymbol } from "./keys";
+import { consonantInput, transformedConsonant, type BoardSymbol } from "./keys";
 import { CHOSEONG, FINAL_PARTS, JONGSEONG, JUNGSEONG, VOWEL_STROKES } from "./layout";
 
 const HANGUL_BASE = 0xac00;
@@ -6,7 +6,16 @@ const HANGUL_END = 0xd7a3;
 const JUNG_COUNT = 21;
 const JONG_COUNT = 28;
 
-export type TargetToken = BoardSymbol | { control: "space" } | { control: "punctuation"; value: string };
+export type TargetToken =
+  | BoardSymbol
+  | { control: "dot" | "stroke" | "space" }
+  | { control: "punctuation"; value: string };
+
+function pushConsonant(tokens: TargetToken[], consonant: (typeof CHOSEONG)[number]): void {
+  const input = consonantInput(consonant);
+  tokens.push(input.base);
+  for (let index = 0; index < input.strokes; index++) tokens.push({ control: "stroke" });
+}
 
 /** Converts display text into the exact board taps and fixed controls it needs. */
 export function targetToTokens(text: string): TargetToken[] {
@@ -20,8 +29,11 @@ export function targetToTokens(text: string): TargetToken[] {
       const jungseong = JUNGSEONG[Math.floor((offset % (JUNG_COUNT * JONG_COUNT)) / JONG_COUNT)]!;
       const jongseong = JONGSEONG[offset % JONG_COUNT]!;
 
-      tokens.push(choseong, ...VOWEL_STROKES[jungseong]);
-      if (jongseong) tokens.push(...FINAL_PARTS[jongseong]);
+      pushConsonant(tokens, choseong);
+      for (const stroke of VOWEL_STROKES[jungseong]) {
+        tokens.push(stroke === "ㆍ" ? { control: "dot" } : stroke);
+      }
+      if (jongseong) FINAL_PARTS[jongseong].forEach((part) => pushConsonant(tokens, part));
       continue;
     }
 
@@ -36,3 +48,23 @@ export function requiredBoardSymbols(text: string): BoardSymbol[] {
   return targetToTokens(text).filter((token): token is BoardSymbol => typeof token === "string");
 }
 
+/** Resolves fixed-key actions to the stream consumed by the Hangul composer. */
+export function materializeTargetTokens(tokens: readonly TargetToken[]): string[] {
+  const values: string[] = [];
+  let transform: { index: number; base: BoardSymbol; steps: number } | undefined;
+  for (const token of tokens) {
+    if (typeof token === "string") {
+      values.push(token);
+      transform = { index: values.length - 1, base: token, steps: 0 };
+    } else if (token.control === "stroke" && transform) {
+      transform.steps++;
+      values[transform.index] = transformedConsonant(transform.base, transform.steps) ?? transform.base;
+    } else {
+      transform = undefined;
+      if (token.control === "dot") values.push("ㆍ");
+      else if (token.control === "space") values.push(" ");
+      else if (token.control === "punctuation") values.push(token.value);
+    }
+  }
+  return values;
+}

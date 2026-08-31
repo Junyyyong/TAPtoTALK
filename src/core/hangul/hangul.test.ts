@@ -2,20 +2,24 @@ import { describe, expect, it } from "vitest";
 import { createLetterBoard } from "./board";
 import { composeTokens } from "./compose";
 import { BOARD_SYMBOLS } from "./keys";
-import { requiredBoardSymbols, targetToTokens } from "./target";
+import { materializeTargetTokens, requiredBoardSymbols, targetToTokens } from "./target";
 
 describe("TAPtoTALK Hangul domain", () => {
-  it("defines exactly 22 random-board symbols", () => {
-    expect(BOARD_SYMBOLS).toHaveLength(22);
-    expect(new Set(BOARD_SYMBOLS).size).toBe(22);
+  it("keeps only primitive consonants and vowels on the random board", () => {
+    expect(BOARD_SYMBOLS).toHaveLength(12);
+    expect(new Set(BOARD_SYMBOLS).size).toBe(12);
+    expect(BOARD_SYMBOLS).not.toContain("ㆍ");
   });
 
   it("round-trips a target sentence through Cheonjiin board taps", () => {
     const target = "나는 너를 사랑해";
-    const input = targetToTokens(target).map((token) =>
-      typeof token === "string" ? token : token.control === "space" ? " " : token.value,
-    );
+    const input = materializeTargetTokens(targetToTokens(target));
     expect(composeTokens(input)).toBe(target);
+  });
+
+  it("builds tense and aspirated consonants through the fixed stroke key", () => {
+    const target = "까 타 빠 싸 짜 차";
+    expect(composeTokens(materializeTargetTokens(targetToTokens(target)))).toBe(target);
   });
 
   it("reserves every symbol needed by the target and fills 81 cells", () => {
@@ -32,4 +36,3 @@ describe("TAPtoTALK Hangul domain", () => {
     expect(() => createLetterBoard("가".repeat(41))).toThrow(RangeError);
   });
 });
-

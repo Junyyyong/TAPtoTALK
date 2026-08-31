@@ -17,3 +17,16 @@ export const FREE_MODE_CONFIG = {
   minimumLetters: 2,
 } as const;
 
+export interface WritingTopic {
+  id: string;
+  keyword: string;
+}
+
+/** The keyword gives free writing a visible goal and is guaranteed on the board. */
+export const WRITING_TOPICS: readonly WritingTopic[] = [
+  { id: "love", keyword: "사랑" },
+  { id: "today", keyword: "오늘" },
+  { id: "friend", keyword: "친구" },
+  { id: "travel", keyword: "여행" },
+  { id: "dream", keyword: "꿈" },
+];
