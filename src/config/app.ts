@@ -1,3 +1,9 @@
+const MOVIE_1 = {
+  video: new URL("../../movie/1.webm", import.meta.url).href,
+  iosVideo: new URL("../../movie/1.mp4", import.meta.url).href,
+  sound: new URL("../../movie/1.mp3", import.meta.url).href,
+} as const;
+
 /**
  * Product copy and replaceable media live here, away from game rules and UI.
  * Keep the public paths stable and a redesign only needs new asset files.
@@ -8,13 +14,13 @@ export const APP_CONFIG = {
   assets: {
     logo: new URL("../../TAPtoTALK-logo.svg", import.meta.url).href,
     splash: "./assets/brand/splash.webp",
-    celebrationVideo: "./assets/brand/celebration.webm",
-    celebrationAudio: "./assets/brand/celebration.mp3",
+    celebrationVideo: MOVIE_1.video,
+    celebrationAudio: MOVIE_1.sound,
     celebrations: [
-      { at: 900, layout: "hero", video: "./assets/brand/celebration.webm", sound: "./assets/brand/celebration.mp3" },
-      { at: 650, layout: "large", video: "./assets/brand/celebration.webm", sound: "./assets/brand/celebration.mp3" },
-      { at: 350, layout: "standard", video: "./assets/brand/celebration.webm", sound: "./assets/brand/celebration.mp3" },
-      { at: 0, layout: "compact", video: "./movie/1.webm", iosVideo: "./movie/1.mp4", sound: "./movie/1.mp3" },
+      { at: 900, layout: "hero", ...MOVIE_1 },
+      { at: 650, layout: "large", ...MOVIE_1 },
+      { at: 350, layout: "standard", ...MOVIE_1 },
+      { at: 0, layout: "compact", ...MOVIE_1 },
     ],
   },
 } as const;
