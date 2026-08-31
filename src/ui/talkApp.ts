@@ -28,7 +28,7 @@ const cheerFor = (score: number): string => {
 const TUTORIAL_STEPS = [
   { title: "Build a syllable", body: "Tap in order: ㅈ → ㅣ → ㄴ", keys: ["ㅈ", "ㅣ", "ㄴ"], result: "진" },
   { title: "Make a vowel", body: "Tap ㅣ, then the Cheonjiin dot.", keys: ["ㅣ", "ㆍ"], result: "ㅏ" },
-  { title: "Add a stroke", body: "Tap ㄱ, then 가획 to make ㅋ.", keys: ["ㄱ", "aspirate"], result: "ㅋ" },
+  { title: "Add a stroke", body: "Tap ㄱ, then Add stroke to make ㅋ.", keys: ["ㄱ", "aspirate"], result: "ㅋ" },
   { title: "Double a consonant", body: "Tap the same key twice: ㅅ → ㅅ makes ㅆ.", keys: ["ㅅ", "ㅅ"], result: "ㅆ" },
   { title: "Submit a word", body: "Make the target word, then tap Submit.", keys: ["사랑", "submit"], result: "1 word" },
 ] as const;
@@ -295,7 +295,7 @@ export class TalkApp {
       const category = key === "aspirate" ? "feature" : key === "submit" ? "submit" : ["ㅣ", "ㅡ", "ㆍ"].includes(key) ? "vowel" : "consonant";
       button.className = `tutorial-key tutorial-key--${category}`;
       button.dataset.tutorialKey = key;
-      button.textContent = key === "aspirate" ? "가획" : key === "submit" ? "Submit" : key;
+      button.textContent = key === "aspirate" ? "Add stroke" : key === "submit" ? "Submit" : key;
       button.addEventListener("click", () => this.playTutorialKey(key));
       keys.append(button);
     });
@@ -367,7 +367,7 @@ export class TalkApp {
   private showRules(): void {
     this.tutorialNav.classList.add("hidden");
     this.openHelp("Rules");
-    this.helpBody.innerHTML = `<div class="rules-list"><p><b>Sentence Copy</b><span>Type the Korean sentence exactly. A faster finish gives more points.</span></p><p><b>Word Challenge</b><span>Make the target word and tap Submit. Complete as many words as you can in 60 seconds.</span></p><p><b>Cheonjiin</b><span>Use ㆍ, ㅡ, and ㅣ to build vowels.</span></p><p><b>가획</b><span>가획 makes ㅋ, ㅌ, ㅍ, ㅊ.</span></p><p><b>Double consonants</b><span>Tap the same consonant twice to make ㄲ, ㄸ, ㅃ, ㅆ, ㅉ.</span></p><p><b>Combined finals</b><span>Tap consonants in order. For example, ㄹ then ㄱ makes ㄺ.</span></p><p><b>One block, one use</b><span>A used block stays as a light mark on the board.</span></p></div>`;
+    this.helpBody.innerHTML = `<div class="rules-list"><p><b>Sentence Copy</b><span>Type the Korean sentence exactly. A faster finish gives more points.</span></p><p><b>Word Challenge</b><span>Make the target word and tap Submit. Complete as many words as you can in 60 seconds.</span></p><p><b>Cheonjiin</b><span>Use ㆍ, ㅡ, and ㅣ to build vowels.</span></p><p><b>Add stroke</b><span>Add stroke makes ㅋ, ㅌ, ㅍ, ㅊ.</span></p><p><b>Double consonants</b><span>Tap the same consonant twice to make ㄲ, ㄸ, ㅃ, ㅆ, ㅉ.</span></p><p><b>Combined finals</b><span>Tap consonants in order. For example, ㄹ then ㄱ makes ㄺ.</span></p><p><b>One block, one use</b><span>A used block stays as a light mark on the board.</span></p></div>`;
   }
 
   private showSettings(): void {
