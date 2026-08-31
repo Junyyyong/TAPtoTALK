@@ -58,7 +58,7 @@
 }
 
 /*
- * The wordmark is drawn artwork, not type — public/cover-logo.svg. It is
+ * The wordmark is drawn artwork, not type — TAPtoTALK-logo.svg. It is
  * vector, so it is sized freely and stays sharp at any density, and it is
  * trimmed to its own edges so the layout aligns to the letters rather than to
  * a margin baked into the file. It is taller than it is wide, which is why

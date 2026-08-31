@@ -6,10 +6,9 @@ export const APP_CONFIG = {
   name: "TAP to TALK",
   board: { columns: 9, rows: 9 },
   assets: {
-    logo: "./assets/brand/logo.svg",
+    logo: new URL("../../TAPtoTALK-logo.svg", import.meta.url).href,
     splash: "./assets/brand/splash.webp",
     celebrationVideo: "./assets/brand/celebration.webm",
     celebrationAudio: "./assets/brand/celebration.mp3",
   },
 } as const;
-
