@@ -4,6 +4,7 @@ import { CONSONANTS, transformedConsonant, type BoardSymbol } from "../core/hang
 import { evaluateWriting, type WritingEvaluation } from "../core/hangul/writing";
 import { FREE_MODE_CONFIG, SENTENCE_PROMPTS, WRITING_TOPICS, type SentencePrompt, type WritingTopic } from "../content/prompts";
 import { el } from "./dom";
+import { Cheer } from "./screens/cheer";
 
 type Mode = "sentence" | "free";
 interface TypedToken { value: string; tileId?: number; base?: BoardSymbol; strokeSteps?: number }
@@ -20,8 +21,15 @@ const objectParticle = (word: string): "을" | "를" => {
   return last >= 0xac00 && last <= 0xd7a3 && (last - 0xac00) % 28 !== 0 ? "을" : "를";
 };
 
+const cheerFor = (score: number): string => {
+  if (score >= 700) return "AMAZING!";
+  if (score >= 350) return "GREAT!";
+  return "NICE!";
+};
+
 /** Thin UI coordinator. Hangul behavior stays in core/hangul. */
 export class TalkApp {
+  private readonly cheer = new Cheer();
   private readonly splash = el("screen-splash");
   private readonly title = el("screen-title");
   private readonly game = el("screen-game");
@@ -59,15 +67,17 @@ export class TalkApp {
     el("btn-submit").addEventListener("click", () => this.submitWriting());
     el("btn-again").addEventListener("click", () => this.start(this.mode));
     el("btn-result-menu").addEventListener("click", () => this.showTitle());
+    document.addEventListener("pointerdown", () => this.cheer.unlock(), { capture: true });
     window.setTimeout(() => this.showTitle(), 900);
   }
 
   private showTitle(): void {
-    this.stopClock();
+    this.stopClock(); this.cheer.stop();
     this.result.classList.add("hidden"); this.splash.classList.add("hidden"); this.game.classList.add("hidden"); this.title.classList.remove("hidden");
   }
 
   private start(mode: Mode): void {
+    this.cheer.stop();
     this.mode = mode;
     if (mode === "sentence") this.prompt = SENTENCE_PROMPTS[Math.floor(Math.random() * SENTENCE_PROMPTS.length)]!;
     else this.topic = WRITING_TOPICS[Math.floor(Math.random() * WRITING_TOPICS.length)]!;
@@ -148,7 +158,11 @@ export class TalkApp {
     update();
   }
   private stopClock(): void { if (this.frame !== undefined) cancelAnimationFrame(this.frame); this.frame = undefined; }
-  private finishSentence(): void { this.stopClock(); this.showResult("문장 완성!", `${this.prompt.text} · ${formatTime(this.elapsedMs)}`); }
+  private finishSentence(): void {
+    this.stopClock();
+    const score = Math.max(100, Math.round(1000 - this.elapsedMs / 100));
+    this.showResult("문장 완성!", `${score}점 · ${this.prompt.text} · ${formatTime(this.elapsedMs)}`, score);
+  }
   private writingEvaluation(text = composeTokens(this.input.map((token) => token.value))): WritingEvaluation {
     const remainingMs = Math.max(0, FREE_MODE_CONFIG.durationMs - this.elapsedMs);
     return evaluateWriting(text, this.topic.keyword, remainingMs, FREE_MODE_CONFIG.durationMs, FREE_MODE_CONFIG);
@@ -180,8 +194,16 @@ export class TalkApp {
     }
     this.showResult(
       submitted ? "문장 제출 완료!" : "시간 종료!",
-      `${evaluation.score}점 · ${evaluation.syllableCount}글자 · 서로 다른 음절 ${evaluation.uniqueSyllables}개`,
+      `${evaluation.score}점 · ${evaluation.syllableCount}글자 · 서로 다른 음절 ${evaluation.uniqueSyllables}개`, evaluation.score,
     );
   }
-  private showResult(title: string, detail: string): void { this.resultTitle.textContent = title; this.resultDetail.textContent = detail; this.result.classList.remove("hidden"); }
+  private showResult(title: string, detail: string, score?: number): void {
+    const reveal = (): void => {
+      this.resultTitle.textContent = title;
+      this.resultDetail.textContent = detail;
+      this.result.classList.remove("hidden");
+    };
+    if (score !== undefined && score > 0) this.cheer.play(title, score, cheerFor(score), reveal);
+    else reveal();
+  }
 }

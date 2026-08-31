@@ -31,6 +31,7 @@
         <section class="writing-card" aria-live="polite">
           <div class="target-prompt">
             <p class="target-label" id="target-label">목표 문장</p><p class="target-text" id="target-text"></p>
+            <button class="submit-btn hidden" id="btn-submit">제출하기</button>
           </div>
           <p class="typed-text" id="typed-text" data-empty="아래 자모를 눌러 입력하세요"></p>
           <div class="writing-submit-row hidden" id="writing-submit-row">
@@ -39,15 +40,25 @@
         </section>
         <div class="letter-board" id="letter-board" aria-label="천지인 자모판"></div>
         <footer class="fixed-controls" aria-label="고정 입력 키">
-          <button class="control-btn" id="btn-backspace" aria-label="한 입력 지우기">⌫</button>
+          <button class="control-btn" id="btn-backspace" aria-label="한 입력 지우기">⌫ 지우기</button>
           <button class="control-btn" id="btn-space">띄어쓰기</button>
           <button class="control-btn vowel-control" id="btn-dot" aria-label="천지인 점">·</button>
           <button class="control-btn stroke-control" id="btn-stroke">획추가</button>
           <button class="control-btn punctuation" data-value=".">.</button><button class="control-btn punctuation" data-value=",">,</button>
           <button class="control-btn punctuation" data-value="!">!</button><button class="control-btn punctuation" data-value="?">?</button>
         </footer>
-        <button class="submit-btn hidden" id="btn-submit">제출하기</button>
       </section>
+      <div class="cheer hidden" id="cheer" aria-hidden="true">
+        <div class="cheer-card" id="cheer-card">
+          <p class="cheer-headline" id="cheer-headline">COMPLETE</p>
+          <p class="cheer-score-label">SCORE</p>
+          <p class="cheer-score" id="cheer-score">0</p>
+        </div>
+        <div class="cheer-word" id="cheer-word">GREAT!</div>
+        <video class="cheer-clip hidden" id="cheer-clip" muted playsinline disablepictureinpicture preload="auto"></video>
+        <audio id="cheer-sound" preload="auto"></audio>
+        <p class="cheer-tap" id="cheer-tap">눌러서 계속하기</p>
+      </div>
       <div class="result-layer hidden" id="result-layer" role="dialog" aria-modal="true">
         <div class="result-panel"><p class="result-kicker">FINISH</p><h2 id="result-title">완성!</h2><p id="result-detail"></p>
           <button class="wood-btn" id="btn-again">다시 하기</button><button class="text-btn" id="btn-result-menu">메뉴</button>
