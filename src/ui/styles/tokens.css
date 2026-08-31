@@ -21,48 +21,48 @@
  * the board is read in groups, so no two digits may be confusable at 35px.
  */
 :root {
-  /* Cool paper keeps the board bright without turning the game clinical. */
-  --paper: #eef3f8;
-  --paper-lit: #f9fbfd;
-  --paper-deep: #dce6f0;
-  --paper-edge: #becddd;
+  /* Obangsaek: white ground, black type, blue structure, red action, yellow accent. */
+  --paper: #ffffff;
+  --paper-lit: #ffffff;
+  --paper-deep: rgba(29, 32, 136, 0.06);
+  --paper-edge: rgba(19, 19, 19, 0.18);
 
   /* Maroon: every dark thing — text, outlines, the shadow under a block */
-  --ink: #152840;
-  --ink-soft: #536a82;
-  --ink-faint: #8a9caf;
+  --ink: #131313;
+  --ink-soft: rgba(19, 19, 19, 0.68);
+  --ink-faint: rgba(19, 19, 19, 0.42);
 
   /* Warm: the wordmark's own two, and the accent everything active uses */
-  --hot: #e35f68;
-  --hot-deep: #bd3f4a;
-  --warm: #32a18b;
-  --warm-deep: #237b6b;
-  --sun: #f0a65a;
+  --hot: #ea5532;
+  --hot-deep: #ea5532;
+  --warm: #fdd000;
+  --warm-deep: #1d2088;
+  --sun: #fdd000;
 
   /* Cool: kept for the things that must read as calm next to all that orange */
-  --cool: #3f8fc2;
-  --cool-deep: #286b98;
-  --cool-dim: rgba(29, 35, 43, 0.12);
+  --cool: #1d2088;
+  --cool-deep: #1d2088;
+  --cool-dim: rgba(29, 32, 136, 0.12);
 
   /* Primary interface accent, separate from success/error feedback. */
-  --accent: #2f6fbb;
-  --accent-deep: #164a82;
+  --accent: #1d2088;
+  --accent-deep: #1d2088;
 
   /* Board families: related, but distinguishable at tile size. */
   --consonant-ink: #ffffff;
-  --consonant-face: #4c7fba;
-  --vowel-ink: #17466f;
-  --vowel-face: #cfe9f5;
+  --consonant-face: #1d2088;
+  --vowel-ink: #131313;
+  --vowel-face: #fdd000;
 
   /* Surfaces: a panel, the slab it presses into, the hollow it presses out of */
-  --panel: rgba(249, 252, 255, 0.72);
-  --panel-lit: rgba(253, 254, 255, 0.94);
-  --panel-deep: rgba(220, 231, 242, 0.94);
-  --slab: rgba(20, 57, 94, 0.15);
-  --slab-hard: rgba(20, 57, 94, 0.23);
-  --recess: rgba(35, 83, 128, 0.09);
+  --panel: rgba(255, 255, 255, 0.76);
+  --panel-lit: rgba(255, 255, 255, 0.96);
+  --panel-deep: rgba(29, 32, 136, 0.08);
+  --slab: rgba(19, 19, 19, 0.15);
+  --slab-hard: rgba(19, 19, 19, 0.24);
+  --recess: rgba(29, 32, 136, 0.08);
   --sheen: rgba(255, 255, 255, 0.9);
-  --scrim: rgba(12, 35, 58, 0.52);
+  --scrim: rgba(19, 19, 19, 0.56);
 
   /* Legacy names, kept so nothing has to be renamed twice. */
   --night: var(--paper);
@@ -83,13 +83,13 @@
 
   /* Blocks: saturated faces, white numerals, on paper */
   --tile-face: #ffffff;
-  --tile-face-low: #d9dde2;
+  --tile-face-low: rgba(29, 32, 136, 0.1);
   --tile-ink: var(--ink);
-  --tile-sel: #dce4ec;
+  --tile-sel: rgba(253, 208, 0, 0.24);
 
-  --ring-sel: var(--warm-deep);
-  --ring-ok: #16a34a;
-  --ring-bad: #dc2626;
+  --ring-sel: #fdd000;
+  --ring-ok: #1d2088;
+  --ring-bad: #ea5532;
 
   /*
    * One colour per digit, nine hues spread around the wheel. A board of
@@ -108,12 +108,12 @@
   --v9: #ca8a04;
 
   /* Panel buttons: go, choose, back. Green carries on everywhere. */
-  --go: #3379c7;
-  --go-deep: #17508c;
+  --go: #ea5532;
+  --go-deep: #ea5532;
   --pick: var(--cool);
   --pick-deep: var(--cool-deep);
-  --stop: #dc2626;
-  --stop-deep: #a01818;
+  --stop: #ea5532;
+  --stop-deep: #ea5532;
 
   --gap: 2px;
 }
@@ -190,7 +190,7 @@ body {
   inset: 0;
   content: "";
   pointer-events: none;
-  background: linear-gradient(90deg, rgba(50, 58, 68, 0.08), transparent 14% 86%, rgba(50, 58, 68, 0.08));
+  background: linear-gradient(90deg, rgba(29, 32, 136, 0.05), transparent 14% 86%, rgba(234, 85, 50, 0.035));
 }
 
 .screen {
