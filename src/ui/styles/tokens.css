@@ -1,3 +1,19 @@
+@font-face {
+  font-family: "TAP Sans KR";
+  src: url("/assets/fonts/NotoSansKR-Variable.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "TAP Serif KR";
+  src: url("/assets/fonts/NotoSerifKR-Variable.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 200 900;
+  font-display: swap;
+}
+
 /*
  * The palette comes off the wordmark: cyan-to-blue, pink-to-purple, and one
  * orange for the things that need to be found. Nothing else. If a new colour
@@ -166,7 +182,7 @@ body {
 }
 
 body {
-  font-family: "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", system-ui, sans-serif;
+  font-family: "TAP Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
   color: var(--ink);
   background: var(--paper);
   overscroll-behavior: none;
