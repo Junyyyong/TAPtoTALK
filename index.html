@@ -18,7 +18,11 @@
           <button class="mode-btn" id="mode-sentence"><span class="mode-name">Sentence Copy</span><span class="mode-desc">Type the sentence as fast as you can.</span></button>
           <button class="mode-btn" id="mode-free"><span class="mode-name">Short Writing</span><span class="mode-desc">Use the word and write a short sentence.</span></button>
         </nav>
-        <p class="prototype-note">This game is a work in progress.</p>
+        <div class="title-links">
+          <button class="text-btn" id="btn-title-tutorial">How to play</button>
+          <button class="text-btn" id="btn-title-settings">Settings</button>
+          <button class="text-btn" id="btn-title-rules">Rules</button>
+        </div>
       </section>
       <section class="screen talk-screen hidden" id="screen-game">
         <header class="hud">
@@ -64,6 +68,23 @@
         <div class="result-panel"><p class="result-kicker">FINISH</p><h2 id="result-title">Complete!</h2><p id="result-detail"></p>
           <button class="wood-btn" id="btn-again">Play again</button><button class="text-btn" id="btn-result-menu">Menu</button>
         </div>
+      </div>
+      <div class="help-layer hidden" id="help-layer" role="dialog" aria-modal="true" aria-labelledby="help-title">
+        <section class="help-panel">
+          <header class="help-head">
+            <button class="icon-btn" id="btn-help-close" aria-label="Close">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"></path></svg>
+            </button>
+            <h2 id="help-title">How to play</h2>
+            <span class="icon-spacer" aria-hidden="true"></span>
+          </header>
+          <div class="help-body" id="help-body"></div>
+          <footer class="tutorial-nav hidden" id="tutorial-nav">
+            <button class="text-btn" id="btn-tutorial-prev">Back</button>
+            <div class="tutorial-dots" id="tutorial-dots" aria-label="Tutorial progress"></div>
+            <button class="wood-btn" id="btn-tutorial-next">Next</button>
+          </footer>
+        </section>
       </div>
     </main>
     <script type="module" src="/src/main.ts"></script>

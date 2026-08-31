@@ -22,15 +22,15 @@
  */
 :root {
   /* Paper: the ground everything sits on, warm rather than white */
-  --paper: #f2f3f5;
-  --paper-lit: #fafbfc;
-  --paper-deep: #e3e5e8;
-  --paper-edge: #cbd0d6;
+  --paper: #f3eee5;
+  --paper-lit: #fbf8f1;
+  --paper-deep: #e6ded0;
+  --paper-edge: #d7c9b5;
 
   /* Maroon: every dark thing — text, outlines, the shadow under a block */
-  --ink: #1d232b;
-  --ink-soft: #5f6975;
-  --ink-faint: #929aa4;
+  --ink: #30251e;
+  --ink-soft: #75665a;
+  --ink-faint: #aa9d8d;
 
   /* Warm: the wordmark's own two, and the accent everything active uses */
   --hot: #e35f68;
@@ -45,24 +45,24 @@
   --cool-dim: rgba(29, 35, 43, 0.12);
 
   /* Primary interface accent, separate from success/error feedback. */
-  --accent: #4a55e0;
-  --accent-deep: #333dbd;
+  --accent: #725039;
+  --accent-deep: #4b3021;
 
   /* Board families: related, but distinguishable at tile size. */
-  --consonant-ink: #ffffff;
-  --consonant-face: #2f63d6;
-  --vowel-ink: #ffffff;
-  --vowel-face: #389fc9;
+  --consonant-ink: #3f2d20;
+  --consonant-face: #e9dfcf;
+  --vowel-ink: #3f2d20;
+  --vowel-face: #f1e8db;
 
   /* Surfaces: a panel, the slab it presses into, the hollow it presses out of */
-  --panel: rgba(255, 255, 255, 0.7);
-  --panel-lit: rgba(255, 255, 255, 0.92);
-  --panel-deep: rgba(226, 229, 233, 0.92);
-  --slab: rgba(29, 35, 43, 0.18);
-  --slab-hard: rgba(29, 35, 43, 0.28);
-  --recess: rgba(29, 35, 43, 0.1);
+  --panel: rgba(255, 252, 245, 0.7);
+  --panel-lit: rgba(255, 252, 245, 0.92);
+  --panel-deep: rgba(235, 226, 213, 0.92);
+  --slab: rgba(88, 63, 42, 0.15);
+  --slab-hard: rgba(88, 63, 42, 0.22);
+  --recess: rgba(117, 85, 55, 0.09);
   --sheen: rgba(255, 255, 255, 0.9);
-  --scrim: rgba(29, 35, 43, 0.58);
+  --scrim: rgba(54, 40, 29, 0.48);
 
   /* Legacy names, kept so nothing has to be renamed twice. */
   --night: var(--paper);
@@ -108,8 +108,8 @@
   --v9: #ca8a04;
 
   /* Panel buttons: go, choose, back. Green carries on everywhere. */
-  --go: #e35f68;
-  --go-deep: #bd3f4a;
+  --go: #765038;
+  --go-deep: #4b3021;
   --pick: var(--cool);
   --pick-deep: var(--cool-deep);
   --stop: #dc2626;

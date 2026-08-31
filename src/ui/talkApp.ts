@@ -4,7 +4,9 @@ import { CONSONANTS, transformedConsonant, type BoardSymbol } from "../core/hang
 import { evaluateWriting, scoreFromTime, type WritingEvaluation } from "../core/hangul/writing";
 import { FREE_MODE_CONFIG, SENTENCE_PROMPTS, WRITING_TOPICS, type SentencePrompt, type WritingTopic } from "../content/prompts";
 import { el } from "./dom";
+import { feedback } from "./feedback";
 import { Cheer } from "./screens/cheer";
+import { loadTalkPreferences, saveTalkPreferences, type TalkPreferences } from "./talkPreferences";
 
 type Mode = "sentence" | "free";
 interface TypedToken { value: string; tileId?: number; base?: BoardSymbol; strokeSteps?: number }
@@ -21,6 +23,13 @@ const cheerFor = (score: number): string => {
   if (score >= 350) return "GREAT!";
   return "NICE!";
 };
+
+const TUTORIAL_STEPS = [
+  { title: "Pick letters", body: "Tap the Hangul blocks to write. Each block can be used once.", demo: "ㄴ ㅏ  ㄴ ㅡ ㄴ" },
+  { title: "Make vowels", body: "Use · with ㅣ or ㅡ. For example, ㅣ + · becomes ㅏ.", demo: "ㅣ + · → ㅏ" },
+  { title: "Add a stroke", body: "Tap a consonant, then Add stroke. For example, ㅅ becomes ㅆ.", demo: "ㅅ + Add stroke → ㅆ" },
+  { title: "Finish fast", body: "Copy the target or use the given word. A faster finish gives a higher score.", demo: "여행 → 나는 여행을 간다!" },
+] as const;
 
 /** Thin UI coordinator. Hangul behavior stays in core/hangul. */
 export class TalkApp {
@@ -40,6 +49,13 @@ export class TalkApp {
   private readonly submitRow = el("writing-submit-row");
   private readonly submitButton = el("btn-submit");
   private readonly writingFeedback = el("writing-feedback");
+  private readonly help = el("help-layer");
+  private readonly helpTitle = el("help-title");
+  private readonly helpBody = el("help-body");
+  private readonly tutorialNav = el("tutorial-nav");
+  private readonly tutorialDots = el("tutorial-dots");
+  private preferences: TalkPreferences = loadTalkPreferences();
+  private tutorialStep = 0;
   private mode: Mode = "sentence";
   private prompt: SentencePrompt = SENTENCE_PROMPTS[0]!;
   private topic: WritingTopic = WRITING_TOPICS[0]!;
@@ -62,13 +78,23 @@ export class TalkApp {
     el("btn-submit").addEventListener("click", () => this.submitWriting());
     el("btn-again").addEventListener("click", () => this.start(this.mode));
     el("btn-result-menu").addEventListener("click", () => this.showTitle());
-    document.addEventListener("pointerdown", () => this.cheer.unlock(), { capture: true });
-    window.setTimeout(() => this.showTitle(), 900);
+    el("btn-title-tutorial").addEventListener("click", () => this.showTutorial());
+    el("btn-title-settings").addEventListener("click", () => this.showSettings());
+    el("btn-title-rules").addEventListener("click", () => this.showRules());
+    el("btn-help-close").addEventListener("click", () => this.closeHelp());
+    el("btn-tutorial-prev").addEventListener("click", () => this.moveTutorial(-1));
+    el("btn-tutorial-next").addEventListener("click", () => this.moveTutorial(1));
+    document.addEventListener("pointerdown", () => { this.cheer.unlock(); feedback.unlock(); }, { capture: true });
+    this.applyPreferences();
+    window.setTimeout(() => {
+      this.showTitle();
+      if (!this.preferences.tutorialDone) this.showTutorial();
+    }, 900);
   }
 
   private showTitle(): void {
     this.stopClock(); this.cheer.stop();
-    this.result.classList.add("hidden"); this.splash.classList.add("hidden"); this.game.classList.add("hidden"); this.title.classList.remove("hidden");
+    this.result.classList.add("hidden"); this.help.classList.add("hidden"); this.splash.classList.add("hidden"); this.game.classList.add("hidden"); this.title.classList.remove("hidden");
   }
 
   private start(mode: Mode): void {
@@ -106,16 +132,18 @@ export class TalkApp {
 
   private typeTile(tileId: number, value: BoardSymbol): void {
     if (this.used.has(tileId)) return;
+    feedback.pick(this.input.length + 1);
     this.used.add(tileId); this.input.push({ value, tileId, base: value, strokeSteps: 0 });
     this.board.querySelector<HTMLButtonElement>(`[data-tile-id="${tileId}"]`)!.disabled = true; this.renderInput();
   }
-  private typeFixed(value: string): void { this.input.push({ value }); this.renderInput(); }
+  private typeFixed(value: string): void { feedback.tap(); this.input.push({ value }); this.renderInput(); }
   private addStroke(): void {
     const last = this.input[this.input.length - 1];
-    if (!last?.base || !CONSONANTS.includes(last.value as never)) return;
+    if (!last?.base || !CONSONANTS.includes(last.value as never)) { feedback.reject(); return; }
     const nextSteps = (last.strokeSteps ?? 0) + 1;
     const transformed = transformedConsonant(last.base, nextSteps);
-    if (!transformed) return;
+    if (!transformed) { feedback.reject(); return; }
+    feedback.item();
     last.value = transformed; last.strokeSteps = nextSteps; this.renderInput();
   }
   private backspace(): void {
@@ -124,11 +152,11 @@ export class TalkApp {
       const previousSteps = (last.strokeSteps ?? 0) - 1;
       last.strokeSteps = previousSteps;
       last.value = transformedConsonant(last.base, previousSteps) ?? last.base;
-      this.renderInput(); return;
+      feedback.tap(); this.renderInput(); return;
     }
     const removed = this.input.pop();
     if (removed?.tileId !== undefined) { this.used.delete(removed.tileId); this.board.querySelector<HTMLButtonElement>(`[data-tile-id="${removed.tileId}"]`)!.disabled = false; }
-    this.renderInput();
+    feedback.tap(); this.renderInput();
   }
 
   private renderInput(): void {
@@ -155,6 +183,7 @@ export class TalkApp {
   private stopClock(): void { if (this.frame !== undefined) cancelAnimationFrame(this.frame); this.frame = undefined; }
   private finishSentence(): void {
     this.stopClock();
+    feedback.complete();
     const score = scoreFromTime(this.elapsedMs, FREE_MODE_CONFIG.durationMs);
     this.showResult("Sentence complete!", `${score} points · ${this.prompt.text} · ${formatTime(this.elapsedMs)}`, score);
   }
@@ -171,6 +200,7 @@ export class TalkApp {
     this.renderWritingFeedback();
     if (evaluation.complete) this.finishWriting(true);
     else {
+      feedback.reject();
       this.writingFeedback.textContent = "Use the word and finish the sentence.";
       this.writingFeedback.classList.add("needs-work");
     }
@@ -180,9 +210,11 @@ export class TalkApp {
     const text = composeTokens(this.input.map((token) => token.value));
     const evaluation = this.writingEvaluation(text);
     if (!evaluation.complete) {
+      feedback.fail();
       this.showResult("Not finished yet", text ? "Use the word and finish the sentence." : "Write a short sentence first.");
       return;
     }
+    feedback.complete();
     this.showResult(
       submitted ? "Sentence sent!" : "Time is up!",
       `${evaluation.score} points · ${formatTime(this.elapsedMs)}`, evaluation.score,
@@ -196,5 +228,76 @@ export class TalkApp {
     };
     if (score !== undefined && score > 0) this.cheer.play(title, score, cheerFor(score), reveal);
     else reveal();
+  }
+
+  private openHelp(title: string): void {
+    feedback.tap();
+    this.helpTitle.textContent = title;
+    this.help.classList.remove("hidden");
+  }
+
+  private closeHelp(): void {
+    feedback.tap();
+    this.help.classList.add("hidden");
+  }
+
+  private showTutorial(): void {
+    this.tutorialStep = 0;
+    this.tutorialNav.classList.remove("hidden");
+    this.openHelp("How to play");
+    this.renderTutorial();
+  }
+
+  private renderTutorial(): void {
+    const step = TUTORIAL_STEPS[this.tutorialStep]!;
+    this.helpBody.innerHTML = `<article class="tutorial-card"><p class="help-kicker">STEP ${this.tutorialStep + 1}</p><h3>${step.title}</h3><p>${step.body}</p><div class="tutorial-demo">${step.demo}</div></article>`;
+    this.tutorialDots.replaceChildren(...TUTORIAL_STEPS.map((_, index) => {
+      const dot = document.createElement("span");
+      dot.className = `dot${index === this.tutorialStep ? " now" : index < this.tutorialStep ? " done" : ""}`;
+      return dot;
+    }));
+    el<HTMLButtonElement>("btn-tutorial-prev").disabled = this.tutorialStep === 0;
+    el("btn-tutorial-next").textContent = this.tutorialStep === TUTORIAL_STEPS.length - 1 ? "Start" : "Next";
+  }
+
+  private moveTutorial(direction: number): void {
+    feedback.tap();
+    if (direction > 0 && this.tutorialStep === TUTORIAL_STEPS.length - 1) {
+      this.preferences.tutorialDone = true;
+      saveTalkPreferences(this.preferences);
+      this.closeHelp();
+      return;
+    }
+    this.tutorialStep = Math.max(0, Math.min(TUTORIAL_STEPS.length - 1, this.tutorialStep + direction));
+    this.renderTutorial();
+  }
+
+  private showRules(): void {
+    this.tutorialNav.classList.add("hidden");
+    this.openHelp("Rules");
+    this.helpBody.innerHTML = `<div class="rules-list"><p><b>Sentence Copy</b><span>Type the Korean sentence exactly.</span></p><p><b>Short Writing</b><span>Use the Korean word and finish a short sentence.</span></p><p><b>One block, one use</b><span>A used block stays as a light mark on the board.</span></p><p><b>Score</b><span>Finish faster to get more points.</span></p></div>`;
+  }
+
+  private showSettings(): void {
+    this.tutorialNav.classList.add("hidden");
+    this.openHelp("Settings");
+    const canVibrate = typeof navigator.vibrate === "function";
+    this.helpBody.innerHTML = `<div class="switch-list"><button class="switch-row" id="talk-sound"><span class="switch-text"><b>Sound</b><small>Button sounds and finish sounds</small></span><span class="switch" role="switch" aria-checked="${this.preferences.soundOn}"><span class="switch-knob"></span></span></button><button class="switch-row" id="talk-haptics"><span class="switch-text"><b>Vibration</b><small>Short feedback when you tap</small></span><span class="switch" role="switch" aria-checked="${this.preferences.hapticsOn}"><span class="switch-knob"></span></span></button>${canVibrate ? "" : '<p class="settings-note">Vibration may not work in this browser.</p>'}</div>`;
+    el("talk-sound").addEventListener("click", () => this.changePreference("soundOn"));
+    el("talk-haptics").addEventListener("click", () => this.changePreference("hapticsOn"));
+  }
+
+  private changePreference(key: "soundOn" | "hapticsOn"): void {
+    this.preferences[key] = !this.preferences[key];
+    saveTalkPreferences(this.preferences);
+    this.applyPreferences();
+    this.showSettings();
+    feedback.item();
+  }
+
+  private applyPreferences(): void {
+    feedback.setSound(this.preferences.soundOn);
+    feedback.setHaptics(this.preferences.hapticsOn);
+    this.cheer.setSound(this.preferences.soundOn);
   }
 }
