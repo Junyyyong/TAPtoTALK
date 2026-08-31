@@ -41,6 +41,7 @@ export class TalkApp {
   private readonly targetLabel = el("target-label");
   private readonly targetText = el("target-text");
   private readonly targetHint = el("target-hint");
+  private readonly targetProgress = el("target-progress");
   private readonly typedText = el("typed-text");
   private readonly clock = el("run-clock");
   private readonly runMode = el("run-mode");
@@ -108,12 +109,11 @@ export class TalkApp {
     this.targetLabel.textContent = mode === "sentence" ? "TARGET" : "WORD";
     this.targetText.textContent = mode === "sentence" ? this.prompt.text : this.topic.keyword;
     this.targetHint.textContent = mode === "sentence" ? "Copy this sentence." : "Use this word in a short sentence.";
-    this.typedText.dataset.empty = mode === "sentence"
-      ? "Type the target sentence."
-      : "Write a short sentence using the word.";
+    this.targetProgress.textContent = mode === "sentence" ? `0 / ${this.prompt.text.length}` : "60 SEC";
+    this.typedText.dataset.empty = "Your sentence appears here.";
     this.runMode.textContent = mode === "sentence" ? "Sentence Copy" : "Short Writing";
     this.game.classList.toggle("is-free-mode", mode === "free");
-    this.submitRow.classList.toggle("hidden", mode !== "free");
+    this.submitRow.classList.add("hidden");
     this.submitButton.classList.toggle("hidden", mode !== "free");
     this.result.classList.add("hidden"); this.title.classList.add("hidden"); this.splash.classList.add("hidden"); this.game.classList.remove("hidden");
     this.renderBoard(); this.renderInput(); this.startClock();
@@ -185,6 +185,7 @@ export class TalkApp {
 
   private renderInput(): void {
     const text = composeTokens(this.input.map((token) => token.value));
+    if (this.mode === "sentence") this.targetProgress.textContent = `${Math.min(text.length, this.prompt.text.length)} / ${this.prompt.text.length}`;
     this.typedText.textContent = text; this.typedText.classList.toggle("is-empty", text.length === 0);
     this.typedText.classList.toggle("is-correct", this.mode === "sentence" && this.prompt.text.startsWith(text) && text.length > 0);
     this.typedText.classList.toggle("is-wrong", this.mode === "sentence" && !this.prompt.text.startsWith(text));
@@ -216,8 +217,9 @@ export class TalkApp {
     return evaluateWriting(text, this.topic.keyword, remainingMs, FREE_MODE_CONFIG.durationMs, FREE_MODE_CONFIG);
   }
   private renderWritingFeedback(): void {
-    this.writingFeedback.textContent = "Write a short sentence using the word.";
+    this.writingFeedback.textContent = "";
     this.writingFeedback.classList.remove("needs-work");
+    this.submitRow.classList.add("hidden");
   }
   private submitWriting(): void {
     const evaluation = this.writingEvaluation();
@@ -227,6 +229,7 @@ export class TalkApp {
       feedback.reject();
       this.writingFeedback.textContent = "Use the word and finish the sentence.";
       this.writingFeedback.classList.add("needs-work");
+      this.submitRow.classList.remove("hidden");
     }
   }
   private finishWriting(submitted: boolean): void {

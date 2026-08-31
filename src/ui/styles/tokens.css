@@ -21,16 +21,16 @@
  * the board is read in groups, so no two digits may be confusable at 35px.
  */
 :root {
-  /* Paper: the ground everything sits on, warm rather than white */
-  --paper: #f3eee5;
-  --paper-lit: #fbf8f1;
-  --paper-deep: #e6ded0;
-  --paper-edge: #d7c9b5;
+  /* Cool paper keeps the board bright without turning the game clinical. */
+  --paper: #eef3f8;
+  --paper-lit: #f9fbfd;
+  --paper-deep: #dce6f0;
+  --paper-edge: #becddd;
 
   /* Maroon: every dark thing — text, outlines, the shadow under a block */
-  --ink: #30251e;
-  --ink-soft: #75665a;
-  --ink-faint: #aa9d8d;
+  --ink: #152840;
+  --ink-soft: #536a82;
+  --ink-faint: #8a9caf;
 
   /* Warm: the wordmark's own two, and the accent everything active uses */
   --hot: #e35f68;
@@ -45,24 +45,24 @@
   --cool-dim: rgba(29, 35, 43, 0.12);
 
   /* Primary interface accent, separate from success/error feedback. */
-  --accent: #725039;
-  --accent-deep: #4b3021;
+  --accent: #2f6fbb;
+  --accent-deep: #164a82;
 
   /* Board families: related, but distinguishable at tile size. */
-  --consonant-ink: #3f2d20;
-  --consonant-face: #e9dfcf;
-  --vowel-ink: #3f2d20;
-  --vowel-face: #f1e8db;
+  --consonant-ink: #ffffff;
+  --consonant-face: #4c7fba;
+  --vowel-ink: #17466f;
+  --vowel-face: #cfe9f5;
 
   /* Surfaces: a panel, the slab it presses into, the hollow it presses out of */
-  --panel: rgba(255, 252, 245, 0.7);
-  --panel-lit: rgba(255, 252, 245, 0.92);
-  --panel-deep: rgba(235, 226, 213, 0.92);
-  --slab: rgba(88, 63, 42, 0.15);
-  --slab-hard: rgba(88, 63, 42, 0.22);
-  --recess: rgba(117, 85, 55, 0.09);
+  --panel: rgba(249, 252, 255, 0.72);
+  --panel-lit: rgba(253, 254, 255, 0.94);
+  --panel-deep: rgba(220, 231, 242, 0.94);
+  --slab: rgba(20, 57, 94, 0.15);
+  --slab-hard: rgba(20, 57, 94, 0.23);
+  --recess: rgba(35, 83, 128, 0.09);
   --sheen: rgba(255, 255, 255, 0.9);
-  --scrim: rgba(54, 40, 29, 0.48);
+  --scrim: rgba(12, 35, 58, 0.52);
 
   /* Legacy names, kept so nothing has to be renamed twice. */
   --night: var(--paper);
@@ -108,8 +108,8 @@
   --v9: #ca8a04;
 
   /* Panel buttons: go, choose, back. Green carries on everywhere. */
-  --go: #765038;
-  --go-deep: #4b3021;
+  --go: #3379c7;
+  --go-deep: #17508c;
   --pick: var(--cool);
   --pick-deep: var(--cool-deep);
   --stop: #dc2626;
