@@ -33,15 +33,15 @@
   --ink-faint: #929aa4;
 
   /* Warm: the wordmark's own two, and the accent everything active uses */
-  --hot: #65717e;
-  --hot-deep: #454f5a;
-  --warm: #8c96a1;
-  --warm-deep: #6f7984;
-  --sun: #b9c0c8;
+  --hot: #e35f68;
+  --hot-deep: #bd3f4a;
+  --warm: #32a18b;
+  --warm-deep: #237b6b;
+  --sun: #f0a65a;
 
   /* Cool: kept for the things that must read as calm next to all that orange */
-  --cool: #60758a;
-  --cool-deep: #43596f;
+  --cool: #3f8fc2;
+  --cool-deep: #286b98;
   --cool-dim: rgba(29, 35, 43, 0.12);
 
   /* Surfaces: a panel, the slab it presses into, the hollow it presses out of */
@@ -98,8 +98,8 @@
   --v9: #ca8a04;
 
   /* Panel buttons: go, choose, back. Green carries on everywhere. */
-  --go: #65717e;
-  --go-deep: #454f5a;
+  --go: #e35f68;
+  --go-deep: #bd3f4a;
   --pick: var(--cool);
   --pick-deep: var(--cool-deep);
   --stop: #dc2626;

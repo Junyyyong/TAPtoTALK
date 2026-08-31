@@ -30,7 +30,6 @@
   width: 100%;
   height: auto;
   transform: translateY(-50%);
-  filter: grayscale(1);
 }
 
 .title-screen {
@@ -75,7 +74,7 @@
   height: auto;
   /* A little of the night thrown back up at it, so it sits on the background
      rather than on top of it. */
-  filter: grayscale(1) drop-shadow(0 10px 24px var(--slab-hard));
+  filter: drop-shadow(0 10px 24px var(--slab-hard));
 }
 
 .tagline {

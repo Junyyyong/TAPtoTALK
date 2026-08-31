@@ -1,6 +1,7 @@
 import { createLetterBoard, type LetterTile } from "../core/hangul/board";
 import { composeTokens } from "../core/hangul/compose";
 import { CONSONANTS, transformedConsonant, type BoardSymbol } from "../core/hangul/keys";
+import { evaluateWriting, type WritingEvaluation } from "../core/hangul/writing";
 import { FREE_MODE_CONFIG, SENTENCE_PROMPTS, WRITING_TOPICS, type SentencePrompt, type WritingTopic } from "../content/prompts";
 import { el } from "./dom";
 
@@ -32,6 +33,8 @@ export class TalkApp {
   private readonly result = el("result-layer");
   private readonly resultTitle = el("result-title");
   private readonly resultDetail = el("result-detail");
+  private readonly submitRow = el("writing-submit-row");
+  private readonly writingFeedback = el("writing-feedback");
   private mode: Mode = "sentence";
   private prompt: SentencePrompt = SENTENCE_PROMPTS[0]!;
   private topic: WritingTopic = WRITING_TOPICS[0]!;
@@ -51,6 +54,7 @@ export class TalkApp {
     el("btn-stroke").addEventListener("click", () => this.addStroke());
     document.querySelectorAll<HTMLButtonElement>(".punctuation").forEach((button) => button.addEventListener("click", () => this.typeFixed(button.dataset.value ?? "")));
     el("btn-space").addEventListener("click", () => this.typeFixed(" "));
+    el("btn-submit").addEventListener("click", () => this.submitWriting());
     el("btn-again").addEventListener("click", () => this.start(this.mode));
     el("btn-result-menu").addEventListener("click", () => this.showTitle());
     window.setTimeout(() => this.showTitle(), 900);
@@ -72,6 +76,7 @@ export class TalkApp {
       ? this.prompt.text
       : `“${this.topic.keyword}”${objectParticle(this.topic.keyword)} 포함한 문장을 만드세요`;
     this.runMode.textContent = mode === "sentence" ? "문장 따라쓰기" : "주제 글쓰기";
+    this.submitRow.classList.toggle("hidden", mode !== "free");
     this.result.classList.add("hidden"); this.title.classList.add("hidden"); this.splash.classList.add("hidden"); this.game.classList.remove("hidden");
     this.renderBoard(); this.renderInput(); this.startClock();
   }
@@ -121,6 +126,7 @@ export class TalkApp {
     this.typedText.classList.toggle("is-correct", this.mode === "sentence" && this.prompt.text.startsWith(text) && text.length > 0);
     this.typedText.classList.toggle("is-wrong", this.mode === "sentence" && !this.prompt.text.startsWith(text));
     if (this.mode === "sentence" && text === this.prompt.text) this.finishSentence();
+    if (this.mode === "free") this.renderWritingFeedback(this.writingEvaluation(text));
   }
 
   private startClock(): void {
@@ -129,7 +135,7 @@ export class TalkApp {
       this.elapsedMs = performance.now() - this.startedAt;
       if (this.mode === "free") {
         const remaining = Math.max(0, FREE_MODE_CONFIG.durationMs - this.elapsedMs); this.clock.textContent = formatTime(remaining);
-        if (remaining === 0) { this.finishFree(); return; }
+        if (remaining === 0) { this.finishWriting(false); return; }
       } else this.clock.textContent = formatTime(this.elapsedMs);
       this.frame = requestAnimationFrame(update);
     };
@@ -137,12 +143,39 @@ export class TalkApp {
   }
   private stopClock(): void { if (this.frame !== undefined) cancelAnimationFrame(this.frame); this.frame = undefined; }
   private finishSentence(): void { this.stopClock(); this.showResult("문장 완성!", `${this.prompt.text} · ${formatTime(this.elapsedMs)}`); }
-  private finishFree(): void {
+  private writingEvaluation(text = composeTokens(this.input.map((token) => token.value))): WritingEvaluation {
+    const remainingMs = Math.max(0, FREE_MODE_CONFIG.durationMs - this.elapsedMs);
+    return evaluateWriting(text, this.topic.keyword, remainingMs, FREE_MODE_CONFIG.durationMs, FREE_MODE_CONFIG);
+  }
+  private renderWritingFeedback(evaluation: WritingEvaluation): void {
+    const checks = evaluation.checks;
+    const mark = (ok: boolean) => ok ? "✓" : "○";
+    this.writingFeedback.textContent = [
+      `${mark(checks.keyword)} 제시어`, `${mark(checks.words)} ${FREE_MODE_CONFIG.minWords}어절`,
+      `${mark(checks.syllables)} ${FREE_MODE_CONFIG.minSyllables}글자`, `${mark(checks.punctuation)} 문장부호`,
+      `${mark(checks.composed)} 글자 완성`,
+    ].join(" · ");
+    this.writingFeedback.classList.remove("needs-work");
+    this.writingFeedback.classList.toggle("is-ready", evaluation.complete);
+  }
+  private submitWriting(): void {
+    const evaluation = this.writingEvaluation();
+    this.renderWritingFeedback(evaluation);
+    if (evaluation.complete) this.finishWriting(true);
+    else this.writingFeedback.classList.add("needs-work");
+  }
+  private finishWriting(submitted: boolean): void {
     this.stopClock();
     const text = composeTokens(this.input.map((token) => token.value));
-    const included = text.includes(this.topic.keyword);
-    const score = text.replace(/[^가-힣]/g, "").length * 10 + (included ? 100 : 0);
-    this.showResult("시간 종료!", `${score}점 · 제시어 ${included ? "성공 +100" : "미포함"} · ${text || "입력 없음"}`);
+    const evaluation = this.writingEvaluation(text);
+    if (!evaluation.complete) {
+      this.showResult("아직 완성되지 않았어요", `조건을 확인해 다시 도전해 보세요 · ${text || "입력 없음"}`);
+      return;
+    }
+    this.showResult(
+      submitted ? "문장 제출 완료!" : "시간 종료!",
+      `${evaluation.score}점 · ${evaluation.syllableCount}글자 · 서로 다른 음절 ${evaluation.uniqueSyllables}개`,
+    );
   }
   private showResult(title: string, detail: string): void { this.resultTitle.textContent = title; this.resultDetail.textContent = detail; this.result.classList.remove("hidden"); }
 }
