@@ -25,10 +25,10 @@ const cheerFor = (score: number): string => {
 };
 
 const TUTORIAL_STEPS = [
-  { title: "Pick letters", body: "Tap the Hangul blocks to write. Each block can be used once.", demo: "ㄴ ㅏ  ㄴ ㅡ ㄴ" },
-  { title: "Make vowels", body: "Use · with ㅣ or ㅡ. For example, ㅣ + · becomes ㅏ.", demo: "ㅣ + · → ㅏ" },
-  { title: "Add a stroke", body: "Tap a consonant, then Add stroke. For example, ㅅ becomes ㅆ.", demo: "ㅅ + Add stroke → ㅆ" },
-  { title: "Finish fast", body: "Copy the target or use the given word. A faster finish gives a higher score.", demo: "여행 → 나는 여행을 간다!" },
+  { title: "Build a syllable", body: "Tap in order: ㅊ → ㅣ → ㄴ", keys: ["ㅊ", "ㅣ", "ㄴ"], result: "친" },
+  { title: "Make a vowel", body: "Tap ㅣ, then the Cheonjiin dot.", keys: ["ㅣ", "ㆍ"], result: "ㅏ" },
+  { title: "Add a stroke", body: "Tap ㅅ, then Add stroke to make ㅆ.", keys: ["ㅅ", "stroke"], result: "ㅆ" },
+  { title: "Finish a sentence", body: "Add a space and punctuation, then submit.", keys: ["여행", " ", "좋아", "!", "submit"], result: "완료" },
 ] as const;
 
 /** Thin UI coordinator. Hangul behavior stays in core/hangul. */
@@ -40,6 +40,7 @@ export class TalkApp {
   private readonly board = el("letter-board");
   private readonly targetLabel = el("target-label");
   private readonly targetText = el("target-text");
+  private readonly targetHint = el("target-hint");
   private readonly typedText = el("typed-text");
   private readonly clock = el("run-clock");
   private readonly runMode = el("run-mode");
@@ -56,6 +57,8 @@ export class TalkApp {
   private readonly tutorialDots = el("tutorial-dots");
   private preferences: TalkPreferences = loadTalkPreferences();
   private tutorialStep = 0;
+  private tutorialProgress = 0;
+  private tutorialSolved = false;
   private mode: Mode = "sentence";
   private prompt: SentencePrompt = SENTENCE_PROMPTS[0]!;
   private topic: WritingTopic = WRITING_TOPICS[0]!;
@@ -70,7 +73,7 @@ export class TalkApp {
     el("mode-sentence").addEventListener("click", () => this.start("sentence"));
     el("mode-free").addEventListener("click", () => this.start("free"));
     el("btn-back").addEventListener("click", () => this.showTitle());
-    el("btn-backspace").addEventListener("click", () => this.backspace());
+    this.setupBackspace();
     el("btn-dot").addEventListener("click", () => this.typeFixed("ㆍ"));
     el("btn-stroke").addEventListener("click", () => this.addStroke());
     document.querySelectorAll<HTMLButtonElement>(".punctuation").forEach((button) => button.addEventListener("click", () => this.typeFixed(button.dataset.value ?? "")));
@@ -86,10 +89,7 @@ export class TalkApp {
     el("btn-tutorial-next").addEventListener("click", () => this.moveTutorial(1));
     document.addEventListener("pointerdown", () => { this.cheer.unlock(); feedback.unlock(); }, { capture: true });
     this.applyPreferences();
-    window.setTimeout(() => {
-      this.showTitle();
-      if (!this.preferences.tutorialDone) this.showTutorial();
-    }, 900);
+    window.setTimeout(() => this.showTitle(), 900);
   }
 
   private showTitle(): void {
@@ -107,6 +107,7 @@ export class TalkApp {
     this.tiles = createLetterBoard(requiredText);
     this.targetLabel.textContent = mode === "sentence" ? "TARGET" : "WORD";
     this.targetText.textContent = mode === "sentence" ? this.prompt.text : this.topic.keyword;
+    this.targetHint.textContent = mode === "sentence" ? "Copy this sentence." : "Use this word in a short sentence.";
     this.typedText.dataset.empty = mode === "sentence"
       ? "Type the target sentence."
       : "Write a short sentence using the word.";
@@ -157,6 +158,29 @@ export class TalkApp {
     const removed = this.input.pop();
     if (removed?.tileId !== undefined) { this.used.delete(removed.tileId); this.board.querySelector<HTMLButtonElement>(`[data-tile-id="${removed.tileId}"]`)!.disabled = false; }
     feedback.tap(); this.renderInput();
+  }
+
+  private setupBackspace(): void {
+    const button = el<HTMLButtonElement>("btn-backspace");
+    let delay: number | undefined;
+    let repeat: number | undefined;
+    let repeated = false;
+    const stop = (): void => {
+      if (delay !== undefined) window.clearTimeout(delay);
+      if (repeat !== undefined) window.clearInterval(repeat);
+      delay = undefined; repeat = undefined;
+    };
+    button.addEventListener("pointerdown", (event) => {
+      event.preventDefault(); repeated = false;
+      button.setPointerCapture?.(event.pointerId);
+      delay = window.setTimeout(() => {
+        repeated = true; this.backspace();
+        repeat = window.setInterval(() => this.backspace(), 90);
+      }, 420);
+    });
+    button.addEventListener("pointerup", () => { stop(); if (!repeated) this.backspace(); });
+    button.addEventListener("pointercancel", stop);
+    button.addEventListener("lostpointercapture", stop);
   }
 
   private renderInput(): void {
@@ -243,6 +267,8 @@ export class TalkApp {
 
   private showTutorial(): void {
     this.tutorialStep = 0;
+    this.tutorialProgress = 0;
+    this.tutorialSolved = false;
     this.tutorialNav.classList.remove("hidden");
     this.openHelp("How to play");
     this.renderTutorial();
@@ -250,14 +276,48 @@ export class TalkApp {
 
   private renderTutorial(): void {
     const step = TUTORIAL_STEPS[this.tutorialStep]!;
-    this.helpBody.innerHTML = `<article class="tutorial-card"><p class="help-kicker">STEP ${this.tutorialStep + 1}</p><h3>${step.title}</h3><p>${step.body}</p><div class="tutorial-demo">${step.demo}</div></article>`;
+    this.helpBody.innerHTML = `<article class="tutorial-card"><p class="help-kicker">훈민정음 익히기 · ${this.tutorialStep + 1}/${TUTORIAL_STEPS.length}</p><h3>${step.title}</h3><p>${step.body}</p><div class="tutorial-practice"><p class="tutorial-output" id="tutorial-output">직접 눌러 보세요</p><div class="tutorial-keys" id="tutorial-keys"></div></div></article>`;
+    const keys = el("tutorial-keys");
+    [...new Set(step.keys)].forEach((key) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = `tutorial-key${key === "stroke" || key === "submit" ? " tutorial-key--action" : ""}`;
+      button.textContent = key === "stroke" ? "Add stroke" : key === "submit" ? "Submit" : key === " " ? "Space" : key;
+      button.addEventListener("click", () => this.playTutorialKey(key));
+      keys.append(button);
+    });
     this.tutorialDots.replaceChildren(...TUTORIAL_STEPS.map((_, index) => {
       const dot = document.createElement("span");
       dot.className = `dot${index === this.tutorialStep ? " now" : index < this.tutorialStep ? " done" : ""}`;
       return dot;
     }));
     el<HTMLButtonElement>("btn-tutorial-prev").disabled = this.tutorialStep === 0;
+    el<HTMLButtonElement>("btn-tutorial-next").disabled = !this.tutorialSolved;
     el("btn-tutorial-next").textContent = this.tutorialStep === TUTORIAL_STEPS.length - 1 ? "Start" : "Next";
+  }
+
+  private playTutorialKey(key: string): void {
+    const step = TUTORIAL_STEPS[this.tutorialStep]!;
+    if (key !== step.keys[this.tutorialProgress]) {
+      feedback.reject();
+      this.tutorialProgress = 0;
+      el("tutorial-output").textContent = "순서대로 다시 눌러 보세요";
+      return;
+    }
+    feedback.tap();
+    this.tutorialProgress += 1;
+    const entered = step.keys.slice(0, this.tutorialProgress);
+    let output = "";
+    if (this.tutorialStep < 2) output = composeTokens(entered.filter((value) => value !== "stroke"));
+    else if (this.tutorialStep === 2) output = this.tutorialProgress === 2 ? "ㅆ" : "ㅅ";
+    else output = entered.filter((value) => value !== "submit").join("");
+    if (this.tutorialProgress === step.keys.length) {
+      this.tutorialSolved = true;
+      output = step.result;
+      feedback.complete();
+      el<HTMLButtonElement>("btn-tutorial-next").disabled = false;
+    }
+    el("tutorial-output").textContent = output || "·";
   }
 
   private moveTutorial(direction: number): void {
@@ -269,6 +329,8 @@ export class TalkApp {
       return;
     }
     this.tutorialStep = Math.max(0, Math.min(TUTORIAL_STEPS.length - 1, this.tutorialStep + direction));
+    this.tutorialProgress = 0;
+    this.tutorialSolved = false;
     this.renderTutorial();
   }
 
