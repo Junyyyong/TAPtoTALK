@@ -6,7 +6,7 @@ export const CONSONANTS = [
 
 export const CHEONJIIN_STROKES = ["ㅣ", "ㆍ", "ㅡ"] as const;
 
-/** Only primitive, consumable tiles. Dot and stroke-addition are fixed keys. */
+/** Only primitive, consumable tiles. Cheonjiin and consonant transforms are fixed keys. */
 export const BASE_CONSONANTS = ["ㄱ", "ㄴ", "ㄷ", "ㄹ", "ㅁ", "ㅂ", "ㅅ", "ㅇ", "ㅈ", "ㅎ"] as const;
 export const BOARD_VOWELS = ["ㅣ", "ㅡ"] as const;
 export const BOARD_SYMBOLS = [...BASE_CONSONANTS, ...BOARD_VOWELS] as const;
@@ -16,27 +16,25 @@ export type CheonjiinStroke = (typeof CHEONJIIN_STROKES)[number];
 export type BoardSymbol = (typeof BOARD_SYMBOLS)[number];
 
 /** Controls never consume a random board tile. */
-export type FixedControl = "backspace" | "space" | "punctuation" | "dot" | "stroke";
+export type FixedControl = "backspace" | "space" | "punctuation" | "dot" | "aspirate" | "double";
 
-export const CONSONANT_CYCLES = {
-  "ㄱ": ["ㄱ", "ㄲ", "ㅋ"],
-  "ㄷ": ["ㄷ", "ㄸ", "ㅌ"],
-  "ㅂ": ["ㅂ", "ㅃ", "ㅍ"],
-  "ㅅ": ["ㅅ", "ㅆ"],
-  "ㅈ": ["ㅈ", "ㅉ", "ㅊ"],
-} as const satisfies Partial<Record<BoardSymbol, readonly Consonant[]>>;
+export type ConsonantTransform = "aspirate" | "double";
 
-export function transformedConsonant(base: BoardSymbol, steps: number): Consonant | undefined {
-  const cycle = CONSONANT_CYCLES[base as keyof typeof CONSONANT_CYCLES];
-  return cycle?.[steps];
+export const ASPIRATED_CONSONANTS = { "ㄱ": "ㅋ", "ㄷ": "ㅌ", "ㅂ": "ㅍ", "ㅈ": "ㅊ" } as const;
+export const DOUBLE_CONSONANTS = { "ㄱ": "ㄲ", "ㄷ": "ㄸ", "ㅂ": "ㅃ", "ㅅ": "ㅆ", "ㅈ": "ㅉ" } as const;
+
+export function transformedConsonant(base: BoardSymbol, transform: ConsonantTransform): Consonant | undefined {
+  const table = transform === "aspirate" ? ASPIRATED_CONSONANTS : DOUBLE_CONSONANTS;
+  return table[base as keyof typeof table];
 }
 
-export function consonantInput(value: Consonant): { base: BoardSymbol; strokes: number } {
-  for (const [base, cycle] of Object.entries(CONSONANT_CYCLES)) {
-    const strokes = (cycle as readonly Consonant[]).indexOf(value);
-    if (strokes >= 0) return { base: base as BoardSymbol, strokes };
+export function consonantInput(value: Consonant): { base: BoardSymbol; transform?: ConsonantTransform } {
+  for (const transform of ["aspirate", "double"] as const) {
+    const table = transform === "aspirate" ? ASPIRATED_CONSONANTS : DOUBLE_CONSONANTS;
+    const entry = Object.entries(table).find(([, transformed]) => transformed === value);
+    if (entry) return { base: entry[0] as BoardSymbol, transform };
   }
-  return { base: value as BoardSymbol, strokes: 0 };
+  return { base: value as BoardSymbol };
 }
 
 export function isBoardSymbol(value: string): value is BoardSymbol {

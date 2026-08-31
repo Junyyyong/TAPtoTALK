@@ -8,13 +8,13 @@ const JONG_COUNT = 28;
 
 export type TargetToken =
   | BoardSymbol
-  | { control: "dot" | "stroke" | "space" }
+  | { control: "dot" | "aspirate" | "double" | "space" }
   | { control: "punctuation"; value: string };
 
 function pushConsonant(tokens: TargetToken[], consonant: (typeof CHOSEONG)[number]): void {
   const input = consonantInput(consonant);
   tokens.push(input.base);
-  for (let index = 0; index < input.strokes; index++) tokens.push({ control: "stroke" });
+  if (input.transform) tokens.push({ control: input.transform });
 }
 
 /** Converts display text into the exact board taps and fixed controls it needs. */
@@ -51,14 +51,13 @@ export function requiredBoardSymbols(text: string): BoardSymbol[] {
 /** Resolves fixed-key actions to the stream consumed by the Hangul composer. */
 export function materializeTargetTokens(tokens: readonly TargetToken[]): string[] {
   const values: string[] = [];
-  let transform: { index: number; base: BoardSymbol; steps: number } | undefined;
+  let transform: { index: number; base: BoardSymbol } | undefined;
   for (const token of tokens) {
     if (typeof token === "string") {
       values.push(token);
-      transform = { index: values.length - 1, base: token, steps: 0 };
-    } else if (token.control === "stroke" && transform) {
-      transform.steps++;
-      values[transform.index] = transformedConsonant(transform.base, transform.steps) ?? transform.base;
+      transform = { index: values.length - 1, base: token };
+    } else if ((token.control === "aspirate" || token.control === "double") && transform) {
+      values[transform.index] = transformedConsonant(transform.base, token.control) ?? transform.base;
     } else {
       transform = undefined;
       if (token.control === "dot") values.push("ㆍ");

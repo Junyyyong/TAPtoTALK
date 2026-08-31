@@ -18,6 +18,8 @@ import { APP_CONFIG } from "../../config/app";
 interface Clip {
   /** The picture, muted. */
   video: string;
+  /** H.264 fallback used by iPhone/iPad Safari. */
+  iosVideo?: string;
   /** Its soundtrack, the same length. Optional. */
   sound?: string;
   layout: "compact" | "standard" | "large" | "hero";
@@ -25,8 +27,16 @@ interface Clip {
 
 const CLIP_TIERS: readonly { at: number; clips: readonly Clip[] }[] = APP_CONFIG.assets.celebrations.map((item) => ({
   at: item.at,
-  clips: [{ video: item.video, sound: item.sound, layout: item.layout }],
+  clips: [{ video: item.video, iosVideo: "iosVideo" in item ? item.iosVideo : undefined, sound: item.sound, layout: item.layout }],
 }));
+
+const prefersIosVideo = (): boolean => {
+  if (typeof navigator === "undefined") return false;
+  return /iPhone|iPad|iPod/i.test(navigator.userAgent)
+    || (/Macintosh/i.test(navigator.userAgent) && navigator.maxTouchPoints > 1);
+};
+
+const videoFor = (clip: Clip): string => prefersIosVideo() && clip.iosVideo ? clip.iosVideo : clip.video;
 
 export function poolFor(score: number): readonly Clip[] {
   return CLIP_TIERS.find((tier) => score >= tier.at)?.clips ?? CLIP_TIERS[CLIP_TIERS.length - 1]!.clips;
@@ -148,7 +158,7 @@ export class Cheer {
     this.pick = pool.length ? pool[Math.floor(Math.random() * pool.length)]! : null;
     if (this.pick) {
       this.root.classList.add(`cheer-layout-${this.pick.layout}`);
-      load(this.clip, this.pick.video);
+      load(this.clip, videoFor(this.pick));
       if (this.pick.sound) load(this.sound, this.pick.sound);
     }
 
@@ -178,7 +188,7 @@ export class Cheer {
     this.clip.classList.remove("hidden");
     // Muted and inline, so this is allowed without a gesture; a refusal still
     // lands on `finish` rather than stalling the run.
-    void start(this.clip, pick.video).catch(() => this.finish());
+    void start(this.clip, videoFor(pick)).catch(() => this.finish());
 
     // The two tracks are the same length and both start here, which is as
     // close to in step as two elements get. Sound is a courtesy: if it will

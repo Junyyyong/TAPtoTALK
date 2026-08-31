@@ -51,8 +51,8 @@
   /* Board families: related, but distinguishable at tile size. */
   --consonant-ink: #ffffff;
   --consonant-face: #1d2088;
-  --vowel-ink: #131313;
-  --vowel-face: #fdd000;
+  --vowel-ink: #ffffff;
+  --vowel-face: #ea5532;
 
   /* Surfaces: a panel, the slab it presses into, the hollow it presses out of */
   --panel: rgba(255, 255, 255, 0.76);

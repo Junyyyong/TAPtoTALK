@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { createLetterBoard } from "./board";
 import { composeTokens } from "./compose";
-import { BOARD_SYMBOLS } from "./keys";
+import { ASPIRATED_CONSONANTS, BOARD_SYMBOLS, DOUBLE_CONSONANTS } from "./keys";
 import { materializeTargetTokens, requiredBoardSymbols, targetToTokens } from "./target";
 
 describe("TAPtoTALK Hangul domain", () => {
@@ -17,9 +17,14 @@ describe("TAPtoTALK Hangul domain", () => {
     expect(composeTokens(input)).toBe(target);
   });
 
-  it("builds tense and aspirated consonants through the fixed stroke key", () => {
+  it("builds tense and aspirated consonants through separate fixed keys", () => {
     const target = "까 타 빠 싸 짜 차";
     expect(composeTokens(materializeTargetTokens(targetToTokens(target)))).toBe(target);
+  });
+
+  it("keeps the requested gahoeck and byeongseo mappings separate", () => {
+    expect(ASPIRATED_CONSONANTS).toEqual({ "ㄱ": "ㅋ", "ㄷ": "ㅌ", "ㅂ": "ㅍ", "ㅈ": "ㅊ" });
+    expect(DOUBLE_CONSONANTS).toEqual({ "ㄱ": "ㄲ", "ㄷ": "ㄸ", "ㅂ": "ㅃ", "ㅅ": "ㅆ", "ㅈ": "ㅉ" });
   });
 
   it("reserves every symbol needed by the target and fills 81 cells", () => {
