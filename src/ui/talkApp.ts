@@ -26,6 +26,7 @@ export class TalkApp {
   private readonly title = el("screen-title");
   private readonly game = el("screen-game");
   private readonly board = el("letter-board");
+  private readonly targetLabel = el("target-label");
   private readonly targetText = el("target-text");
   private readonly typedText = el("typed-text");
   private readonly clock = el("run-clock");
@@ -34,6 +35,7 @@ export class TalkApp {
   private readonly resultTitle = el("result-title");
   private readonly resultDetail = el("result-detail");
   private readonly submitRow = el("writing-submit-row");
+  private readonly submitButton = el("btn-submit");
   private readonly writingFeedback = el("writing-feedback");
   private mode: Mode = "sentence";
   private prompt: SentencePrompt = SENTENCE_PROMPTS[0]!;
@@ -72,11 +74,15 @@ export class TalkApp {
     this.input = []; this.used.clear();
     const requiredText = mode === "sentence" ? this.prompt.text : this.topic.keyword;
     this.tiles = createLetterBoard(requiredText);
-    this.targetText.textContent = mode === "sentence"
-      ? this.prompt.text
-      : `“${this.topic.keyword}”${objectParticle(this.topic.keyword)} 포함한 문장을 만드세요`;
+    this.targetLabel.textContent = mode === "sentence" ? "목표 문장" : "제시어";
+    this.targetText.textContent = mode === "sentence" ? this.prompt.text : this.topic.keyword;
+    this.typedText.dataset.empty = mode === "sentence"
+      ? "아래 자모를 눌러 입력하세요"
+      : `${this.topic.keyword}${objectParticle(this.topic.keyword)} 포함한 문장을 만드세요`;
     this.runMode.textContent = mode === "sentence" ? "문장 따라쓰기" : "주제 글쓰기";
+    this.game.classList.toggle("is-free-mode", mode === "free");
     this.submitRow.classList.toggle("hidden", mode !== "free");
+    this.submitButton.classList.toggle("hidden", mode !== "free");
     this.result.classList.add("hidden"); this.title.classList.add("hidden"); this.splash.classList.add("hidden"); this.game.classList.remove("hidden");
     this.renderBoard(); this.renderInput(); this.startClock();
   }

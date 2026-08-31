@@ -29,11 +29,12 @@
           <span class="icon-spacer" aria-hidden="true"></span>
         </header>
         <section class="writing-card" aria-live="polite">
-          <p class="target-label">목표 문장</p><p class="target-text" id="target-text"></p>
+          <div class="target-prompt">
+            <p class="target-label" id="target-label">목표 문장</p><p class="target-text" id="target-text"></p>
+          </div>
           <p class="typed-text" id="typed-text" data-empty="아래 자모를 눌러 입력하세요"></p>
           <div class="writing-submit-row hidden" id="writing-submit-row">
             <p class="writing-feedback" id="writing-feedback"></p>
-            <button class="submit-btn" id="btn-submit">제출하기</button>
           </div>
         </section>
         <div class="letter-board" id="letter-board" aria-label="천지인 자모판"></div>
@@ -45,6 +46,7 @@
           <button class="control-btn punctuation" data-value=".">.</button><button class="control-btn punctuation" data-value=",">,</button>
           <button class="control-btn punctuation" data-value="!">!</button><button class="control-btn punctuation" data-value="?">?</button>
         </footer>
+        <button class="submit-btn hidden" id="btn-submit">제출하기</button>
       </section>
       <div class="result-layer hidden" id="result-layer" role="dialog" aria-modal="true">
         <div class="result-panel"><p class="result-kicker">FINISH</p><h2 id="result-title">완성!</h2><p id="result-detail"></p>

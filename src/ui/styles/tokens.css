@@ -49,10 +49,10 @@
   --accent-deep: #333dbd;
 
   /* Board families: related, but distinguishable at tile size. */
-  --consonant-ink: #4a3fbd;
-  --consonant-face: #eceafb;
-  --vowel-ink: #2f63d6;
-  --vowel-face: #e8f0fe;
+  --consonant-ink: #ffffff;
+  --consonant-face: #2f63d6;
+  --vowel-ink: #ffffff;
+  --vowel-face: #389fc9;
 
   /* Surfaces: a panel, the slab it presses into, the hollow it presses out of */
   --panel: rgba(255, 255, 255, 0.7);
