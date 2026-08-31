@@ -1,6 +1,6 @@
 import { createLetterBoard, type LetterTile } from "../core/hangul/board";
 import { composeTokens } from "../core/hangul/compose";
-import { CONSONANTS, transformedConsonant, type BoardSymbol, type ConsonantTransform } from "../core/hangul/keys";
+import { CONSONANTS, transformedConsonant, type BoardSymbol } from "../core/hangul/keys";
 import { isWordMatch, wordCountLabel } from "../core/hangul/wordChallenge";
 import { scoreFromTime } from "../core/hangul/writing";
 import { SENTENCE_PROMPTS, WORD_MODE_CONFIG, WORD_TARGETS, type SentencePrompt, type WordTarget } from "../content/prompts";
@@ -10,7 +10,7 @@ import { Cheer } from "./screens/cheer";
 import { loadTalkPreferences, saveTalkPreferences, type TalkPreferences } from "./talkPreferences";
 
 type Mode = "sentence" | "word";
-interface TypedToken { value: string; tileId?: number; base?: BoardSymbol; transform?: ConsonantTransform }
+interface TypedToken { value: string; tileId?: number; base?: BoardSymbol; transformed?: boolean }
 
 const formatTime = (ms: number): string => {
   const tenths = Math.floor(ms / 100) % 10;
@@ -29,7 +29,7 @@ const TUTORIAL_STEPS = [
   { title: "Build a syllable", body: "Tap in order: ㅈ → ㅣ → ㄴ", keys: ["ㅈ", "ㅣ", "ㄴ"], result: "진" },
   { title: "Make a vowel", body: "Tap ㅣ, then the Cheonjiin dot.", keys: ["ㅣ", "ㆍ"], result: "ㅏ" },
   { title: "Add a stroke", body: "Tap ㄱ, then 가획 to make ㅋ.", keys: ["ㄱ", "aspirate"], result: "ㅋ" },
-  { title: "Double a consonant", body: "Tap ㅅ, then 병서 to make ㅆ.", keys: ["ㅅ", "double"], result: "ㅆ" },
+  { title: "Double a consonant", body: "Tap the same key twice: ㅅ → ㅅ makes ㅆ.", keys: ["ㅅ", "ㅅ"], result: "ㅆ" },
   { title: "Submit a word", body: "Make the target word, then tap Submit.", keys: ["사랑", "submit"], result: "1 word" },
 ] as const;
 
@@ -78,8 +78,7 @@ export class TalkApp {
     el("btn-back").addEventListener("click", () => this.showTitle());
     this.setupBackspace();
     el("btn-dot").addEventListener("click", () => this.typeFixed("ㆍ"));
-    el("btn-aspirate").addEventListener("click", () => this.applyConsonantTransform("aspirate"));
-    el("btn-double").addEventListener("click", () => this.applyConsonantTransform("double"));
+    el("btn-aspirate").addEventListener("click", () => this.addStroke());
     el("btn-space").addEventListener("click", () => this.typeFixed(" "));
     el("btn-submit").addEventListener("click", () => this.submitWord());
     el("btn-again").addEventListener("click", () => this.start(this.mode));
@@ -140,18 +139,18 @@ export class TalkApp {
     this.board.querySelector<HTMLButtonElement>(`[data-tile-id="${tileId}"]`)!.disabled = true; this.renderInput();
   }
   private typeFixed(value: string): void { feedback.tap(); this.input.push({ value }); this.renderInput(); }
-  private applyConsonantTransform(transform: ConsonantTransform): void {
+  private addStroke(): void {
     const last = this.input[this.input.length - 1];
     if (!last?.base || !CONSONANTS.includes(last.base as never)) { feedback.reject(); return; }
-    const transformed = transformedConsonant(last.base, transform);
+    const transformed = transformedConsonant(last.base);
     if (!transformed) { feedback.reject(); return; }
     feedback.item();
-    last.value = transformed; last.transform = transform; this.renderInput();
+    last.value = transformed; last.transformed = true; this.renderInput();
   }
   private backspace(): void {
     const last = this.input[this.input.length - 1];
-    if (last?.base && last.transform) {
-      last.transform = undefined;
+    if (last?.base && last.transformed) {
+      last.transformed = false;
       last.value = last.base;
       feedback.tap(); this.renderInput(); return;
     }
@@ -293,10 +292,10 @@ export class TalkApp {
     [...new Set(step.keys)].forEach((key) => {
       const button = document.createElement("button");
       button.type = "button";
-      const category = key === "aspirate" || key === "double" ? "feature" : key === "submit" ? "submit" : ["ㅣ", "ㅡ", "ㆍ"].includes(key) ? "vowel" : "consonant";
+      const category = key === "aspirate" ? "feature" : key === "submit" ? "submit" : ["ㅣ", "ㅡ", "ㆍ"].includes(key) ? "vowel" : "consonant";
       button.className = `tutorial-key tutorial-key--${category}`;
       button.dataset.tutorialKey = key;
-      button.textContent = key === "aspirate" ? "가획" : key === "double" ? "병서" : key === "submit" ? "Submit" : key;
+      button.textContent = key === "aspirate" ? "가획" : key === "submit" ? "Submit" : key;
       button.addEventListener("click", () => this.playTutorialKey(key));
       keys.append(button);
     });
@@ -324,7 +323,7 @@ export class TalkApp {
     let output = "";
     if (this.tutorialStep < 2) output = composeTokens(entered);
     else if (this.tutorialStep === 2) output = this.tutorialProgress === 2 ? "ㅋ" : "ㄱ";
-    else if (this.tutorialStep === 3) output = this.tutorialProgress === 2 ? "ㅆ" : "ㅅ";
+    else if (this.tutorialStep === 3) output = composeTokens(entered);
     else output = entered.filter((value) => value !== "submit").join("");
     if (this.tutorialProgress === step.keys.length) {
       this.tutorialSolved = true;
@@ -341,11 +340,13 @@ export class TalkApp {
   private updateTutorialKeys(): void {
     const step = TUTORIAL_STEPS[this.tutorialStep]!;
     this.helpBody.querySelectorAll<HTMLButtonElement>("[data-tutorial-key]").forEach((button) => {
-      const index = step.keys.indexOf(button.dataset.tutorialKey as never);
-      const used = index >= 0 && index < this.tutorialProgress;
+      const key = button.dataset.tutorialKey;
+      const usedBefore = step.keys.slice(0, this.tutorialProgress).includes(key as never);
+      const neededAgain = step.keys.slice(this.tutorialProgress).includes(key as never);
+      const used = usedBefore && !neededAgain;
       button.disabled = used;
       button.classList.toggle("is-used", used);
-      button.classList.toggle("is-next", !this.tutorialSolved && index === this.tutorialProgress);
+      button.classList.toggle("is-next", !this.tutorialSolved && key === step.keys[this.tutorialProgress]);
     });
   }
 
@@ -366,7 +367,7 @@ export class TalkApp {
   private showRules(): void {
     this.tutorialNav.classList.add("hidden");
     this.openHelp("Rules");
-    this.helpBody.innerHTML = `<div class="rules-list"><p><b>Sentence Copy</b><span>Type the Korean sentence exactly. A faster finish gives more points.</span></p><p><b>Word Challenge</b><span>Make the target word and tap Submit. Complete as many words as you can in 60 seconds.</span></p><p><b>Cheonjiin</b><span>Use ㆍ, ㅡ, and ㅣ to build vowels.</span></p><p><b>가획 & 병서</b><span>가획 makes ㅋ, ㅌ, ㅍ, ㅊ. 병서 makes ㄲ, ㄸ, ㅃ, ㅆ, ㅉ.</span></p><p><b>One block, one use</b><span>A used block stays as a light mark on the board.</span></p></div>`;
+    this.helpBody.innerHTML = `<div class="rules-list"><p><b>Sentence Copy</b><span>Type the Korean sentence exactly. A faster finish gives more points.</span></p><p><b>Word Challenge</b><span>Make the target word and tap Submit. Complete as many words as you can in 60 seconds.</span></p><p><b>Cheonjiin</b><span>Use ㆍ, ㅡ, and ㅣ to build vowels.</span></p><p><b>가획</b><span>가획 makes ㅋ, ㅌ, ㅍ, ㅊ.</span></p><p><b>Double consonants</b><span>Tap the same consonant twice to make ㄲ, ㄸ, ㅃ, ㅆ, ㅉ.</span></p><p><b>Combined finals</b><span>Tap consonants in order. For example, ㄹ then ㄱ makes ㄺ.</span></p><p><b>One block, one use</b><span>A used block stays as a light mark on the board.</span></p></div>`;
   }
 
   private showSettings(): void {

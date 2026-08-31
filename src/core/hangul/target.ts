@@ -8,12 +8,12 @@ const JONG_COUNT = 28;
 
 export type TargetToken =
   | BoardSymbol
-  | { control: "dot" | "aspirate" | "double" | "space" }
+  | { control: "dot" | "aspirate" | "space" }
   | { control: "punctuation"; value: string };
 
 function pushConsonant(tokens: TargetToken[], consonant: (typeof CHOSEONG)[number]): void {
   const input = consonantInput(consonant);
-  tokens.push(input.base);
+  for (let index = 0; index < input.repeats; index++) tokens.push(input.base);
   if (input.transform) tokens.push({ control: input.transform });
 }
 
@@ -56,8 +56,8 @@ export function materializeTargetTokens(tokens: readonly TargetToken[]): string[
     if (typeof token === "string") {
       values.push(token);
       transform = { index: values.length - 1, base: token };
-    } else if ((token.control === "aspirate" || token.control === "double") && transform) {
-      values[transform.index] = transformedConsonant(transform.base, token.control) ?? transform.base;
+    } else if (token.control === "aspirate" && transform) {
+      values[transform.index] = transformedConsonant(transform.base) ?? transform.base;
     } else {
       transform = undefined;
       if (token.control === "dot") values.push("ㆍ");

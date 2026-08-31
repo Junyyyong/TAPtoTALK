@@ -16,25 +16,23 @@ export type CheonjiinStroke = (typeof CHEONJIIN_STROKES)[number];
 export type BoardSymbol = (typeof BOARD_SYMBOLS)[number];
 
 /** Controls never consume a random board tile. */
-export type FixedControl = "backspace" | "space" | "punctuation" | "dot" | "aspirate" | "double";
+export type FixedControl = "backspace" | "space" | "punctuation" | "dot" | "aspirate";
 
-export type ConsonantTransform = "aspirate" | "double";
+export type ConsonantTransform = "aspirate";
 
 export const ASPIRATED_CONSONANTS = { "ㄱ": "ㅋ", "ㄷ": "ㅌ", "ㅂ": "ㅍ", "ㅈ": "ㅊ" } as const;
 export const DOUBLE_CONSONANTS = { "ㄱ": "ㄲ", "ㄷ": "ㄸ", "ㅂ": "ㅃ", "ㅅ": "ㅆ", "ㅈ": "ㅉ" } as const;
 
-export function transformedConsonant(base: BoardSymbol, transform: ConsonantTransform): Consonant | undefined {
-  const table = transform === "aspirate" ? ASPIRATED_CONSONANTS : DOUBLE_CONSONANTS;
-  return table[base as keyof typeof table];
+export function transformedConsonant(base: BoardSymbol): Consonant | undefined {
+  return ASPIRATED_CONSONANTS[base as keyof typeof ASPIRATED_CONSONANTS];
 }
 
-export function consonantInput(value: Consonant): { base: BoardSymbol; transform?: ConsonantTransform } {
-  for (const transform of ["aspirate", "double"] as const) {
-    const table = transform === "aspirate" ? ASPIRATED_CONSONANTS : DOUBLE_CONSONANTS;
-    const entry = Object.entries(table).find(([, transformed]) => transformed === value);
-    if (entry) return { base: entry[0] as BoardSymbol, transform };
-  }
-  return { base: value as BoardSymbol };
+export function consonantInput(value: Consonant): { base: BoardSymbol; repeats: number; transform?: ConsonantTransform } {
+  const aspirated = Object.entries(ASPIRATED_CONSONANTS).find(([, transformed]) => transformed === value);
+  if (aspirated) return { base: aspirated[0] as BoardSymbol, repeats: 1, transform: "aspirate" };
+  const doubled = Object.entries(DOUBLE_CONSONANTS).find(([, transformed]) => transformed === value);
+  if (doubled) return { base: doubled[0] as BoardSymbol, repeats: 2 };
+  return { base: value as BoardSymbol, repeats: 1 };
 }
 
 export function isBoardSymbol(value: string): value is BoardSymbol {

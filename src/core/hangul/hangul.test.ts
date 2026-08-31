@@ -17,14 +17,20 @@ describe("TAPtoTALK Hangul domain", () => {
     expect(composeTokens(input)).toBe(target);
   });
 
-  it("builds tense and aspirated consonants through separate fixed keys", () => {
+  it("builds tense consonants by repeating a base key and aspirated consonants with gahoeck", () => {
     const target = "까 타 빠 싸 짜 차";
     expect(composeTokens(materializeTargetTokens(targetToTokens(target)))).toBe(target);
+    expect(composeTokens(["ㄱ", "ㄱ", "ㅣ", "ㆍ"])).toBe("까");
   });
 
-  it("keeps the requested gahoeck and byeongseo mappings separate", () => {
+  it("keeps the requested gahoeck and repeated-consonant mappings separate", () => {
     expect(ASPIRATED_CONSONANTS).toEqual({ "ㄱ": "ㅋ", "ㄷ": "ㅌ", "ㅂ": "ㅍ", "ㅈ": "ㅊ" });
     expect(DOUBLE_CONSONANTS).toEqual({ "ㄱ": "ㄲ", "ㄷ": "ㄸ", "ㅂ": "ㅃ", "ㅅ": "ㅆ", "ㅈ": "ㅉ" });
+  });
+
+  it("composes combined final consonants in entered order", () => {
+    expect(composeTokens(["ㅂ", "ㅡ", "ㆍ", "ㆍ", "ㅣ", "ㅣ", "ㄹ", "ㄱ"])).toBe("뷁");
+    expect(composeTokens(materializeTargetTokens(targetToTokens("뷁")))).toBe("뷁");
   });
 
   it("reserves every symbol needed by the target and fills 81 cells", () => {
