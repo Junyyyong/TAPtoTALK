@@ -306,7 +306,7 @@ export class TalkApp {
       const best = this.sentenceProgress.bestScores[level.id] ?? 0;
       const button = document.createElement("button");
       button.type = "button"; button.className = "level-btn";
-      button.innerHTML = `<strong>${level.name}</strong><span>5 phrases · Top tier ${Math.round(level.targetMs / 1000)}s</span><small>${best ? `BEST ${best.toLocaleString()}` : "NEW"}</small>`;
+      button.innerHTML = `<strong>${level.name}</strong><span>${level.description}</span><em>5 phrases · Top tier ${Math.round(level.targetMs / 1000)}s</em><small>${best ? `BEST ${best.toLocaleString()}` : "NEW"}</small>`;
       button.addEventListener("click", () => this.startSentenceLevel(index));
       list.append(button);
     });
