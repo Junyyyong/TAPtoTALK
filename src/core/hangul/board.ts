@@ -1,14 +1,26 @@
-import { BOARD_SYMBOLS, type BoardSymbol } from "./keys";
+import { BOARD_SYMBOLS, PUNCTUATION_SYMBOLS, type BoardSymbol } from "./keys";
 import { requiredBoardSymbols } from "./target";
 
 export const BOARD_SIZE = 81;
 export const TARGET_SYMBOL_BUFFER = 1.5;
+export type MirrorAxis = "horizontal" | "vertical";
+
+const HORIZONTAL_MIRROR_SYMBOLS = ["ㄱ", "ㄴ", "ㄷ", "ㄹ", "ㅋ", "ㅌ"] as const;
+const VERTICAL_MIRROR_SYMBOLS = ["ㅂ", "ㅅ", "ㅈ", "ㅎ"] as const;
+
+export function mirrorAxisFor(symbol: BoardSymbol): MirrorAxis | undefined {
+  if ((HORIZONTAL_MIRROR_SYMBOLS as readonly string[]).includes(symbol)) return "horizontal";
+  if ((VERTICAL_MIRROR_SYMBOLS as readonly string[]).includes(symbol)) return "vertical";
+  return undefined;
+}
 
 export interface LetterTile {
   id: number;
   symbol: BoardSymbol;
   /** True when this copy was reserved to make the target solvable. */
   required: boolean;
+  /** Punctuation-free word boards may show spare consonants in reverse. */
+  mirror?: MirrorAxis;
 }
 
 export type SymbolWeights = Readonly<Partial<Record<BoardSymbol, number>>>;
@@ -22,15 +34,15 @@ export const DEFAULT_SYMBOL_WEIGHTS: SymbolWeights = {
   ".": 1, "!": 1, "?": 1,
 };
 
-function weightedPick(rng: () => number, weights: SymbolWeights): BoardSymbol {
-  const entries = BOARD_SYMBOLS.map((symbol) => [symbol, Math.max(0, weights[symbol] ?? 2)] as const);
+function weightedPick(rng: () => number, weights: SymbolWeights, symbols: readonly BoardSymbol[]): BoardSymbol {
+  const entries = symbols.map((symbol) => [symbol, Math.max(0, weights[symbol] ?? 2)] as const);
   const total = entries.reduce((sum, [, weight]) => sum + weight, 0);
   let cursor = rng() * total;
   for (const [symbol, weight] of entries) {
     cursor -= weight;
     if (cursor <= 0) return symbol;
   }
-  return BOARD_SYMBOLS[BOARD_SYMBOLS.length - 1]!;
+  return symbols[symbols.length - 1]!;
 }
 
 function shuffle<T>(values: T[], rng: () => number): T[] {
@@ -47,6 +59,12 @@ export function createLetterBoard(
   weights: SymbolWeights = DEFAULT_SYMBOL_WEIGHTS,
 ): LetterTile[] {
   const targetSymbols = requiredBoardSymbols(target);
+  const punctuationFree = !targetSymbols.some((symbol) =>
+    (PUNCTUATION_SYMBOLS as readonly string[]).includes(symbol),
+  );
+  const dealSymbols = punctuationFree
+    ? BOARD_SYMBOLS.filter((symbol) => !(PUNCTUATION_SYMBOLS as readonly string[]).includes(symbol))
+    : BOARD_SYMBOLS;
   const bufferedCount = Math.ceil(targetSymbols.length * TARGET_SYMBOL_BUFFER);
   const required = [...targetSymbols];
   for (let index = required.length; index < bufferedCount; index += 1) {
@@ -58,7 +76,9 @@ export function createLetterBoard(
 
   const tiles: LetterTile[] = required.map((symbol, id) => ({ id, symbol, required: true }));
   while (tiles.length < BOARD_SIZE) {
-    tiles.push({ id: tiles.length, symbol: weightedPick(rng, weights), required: false });
+    const symbol = weightedPick(rng, weights, dealSymbols);
+    const axis = punctuationFree && rng() < 0.5 ? mirrorAxisFor(symbol) : undefined;
+    tiles.push({ id: tiles.length, symbol, required: false, ...(axis ? { mirror: axis } : {}) });
   }
   return shuffle(tiles, rng);
 }

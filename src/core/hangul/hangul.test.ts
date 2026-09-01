@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { createLetterBoard, TARGET_SYMBOL_BUFFER } from "./board";
+import { createLetterBoard, mirrorAxisFor, TARGET_SYMBOL_BUFFER } from "./board";
 import { composeTokens } from "./compose";
 import { BOARD_SYMBOLS, CHEONJIIN_STROKES, CONSONANTS, PUNCTUATION_SYMBOLS } from "./keys";
 import { materializeTargetTokens, requiredBoardSymbols, targetToTokens } from "./target";
@@ -54,6 +54,16 @@ describe("TAPtoTALK Hangul domain", () => {
     const reserved = createLetterBoard("사랑해", () => 0.42).filter((tile) => tile.required);
     expect(reserved).toHaveLength(Math.ceil(needed.length * 1.5));
     for (const stroke of CHEONJIIN_STROKES) expect(BOARD_SYMBOLS).toContain(stroke);
+  });
+
+  it("replaces punctuation with correctly oriented mirror blocks on word boards", () => {
+    const board = createLetterBoard("사랑", () => 0.42);
+    expect(board.some((tile) => PUNCTUATION_SYMBOLS.includes(tile.symbol as never))).toBe(false);
+    const mirrored = board.filter((tile) => tile.mirror);
+    expect(mirrored.length).toBeGreaterThan(0);
+    for (const tile of mirrored) expect(tile.mirror).toBe(mirrorAxisFor(tile.symbol));
+    expect(mirrorAxisFor("ㄱ")).toBe("horizontal");
+    expect(mirrorAxisFor("ㅂ")).toBe("vertical");
   });
 
   it("rejects a target that cannot fit on one board", () => {

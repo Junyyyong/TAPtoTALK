@@ -1,4 +1,4 @@
-import { createLetterBoard, type LetterTile } from "../core/hangul/board";
+import { createLetterBoard, type LetterTile, type MirrorAxis } from "../core/hangul/board";
 import { composeTokens } from "../core/hangul/compose";
 import { CHEONJIIN_STROKES, CONSONANTS, PUNCTUATION_SYMBOLS, type BoardSymbol } from "../core/hangul/keys";
 import { isWordMatch, wordCountLabel } from "../core/hangul/wordChallenge";
@@ -24,13 +24,22 @@ const formatTime = (ms: number): string => {
 /** Nine decorative colours repeat evenly across 81 positions, independently of jamo. */
 const boardColorAt = (index: number): number => ((index * 5 + Math.floor(index / 9) * 2) % 9) + 1;
 
-const TUTORIAL_STEPS = [
-  { title: "Pick one consonant", body: "Every consonant has its own block. Tap ㅋ once.", keys: ["ㅋ"], result: "ㅋ" },
+interface TutorialStep {
+  title: string;
+  body: string;
+  keys: readonly string[];
+  result: string;
+  mirrors?: Readonly<Partial<Record<string, MirrorAxis>>>;
+}
+
+const TUTORIAL_STEPS: readonly TutorialStep[] = [
+  { title: "Pick one consonant", body: "The nine colours are mixed. Tap ㅋ once; a used block turns grey.", keys: ["ㅋ"], result: "ㅋ" },
   { title: "Build a syllable", body: "Tap ㅊ, then ㅣ and ㄴ.", keys: ["ㅊ", "ㅣ", "ㄴ"], result: "친" },
-  { title: "Make a vowel", body: "Tap ㅣ, then the Cheonjiin dot.", keys: ["ㅣ", "ㆍ"], result: "ㅏ" },
-  { title: "Add punctuation", body: "Punctuation also has its own block. Tap ! once.", keys: ["!"], result: "!" },
+  { title: "Make a vowel", body: "Use the square Cheonjiin dot with ㅣ and ㅡ. Tap ㅣ, then ㆍ.", keys: ["ㅣ", "ㆍ"], result: "ㅏ" },
+  { title: "Add punctuation", body: "Only a small period, !, and ? are used. Tap the period.", keys: ["."], result: "." },
+  { title: "Read reversed blocks", body: "Word boards may reverse spare consonants. Tap the sideways ㄱ, then the upside-down ㅂ.", keys: ["ㄱ", "ㅂ"], result: "ㄱ → ㅂ", mirrors: { "ㄱ": "horizontal", "ㅂ": "vertical" } },
   { title: "Finish a word", body: "A correct target word is counted automatically.", keys: ["ㅅ", "ㅣ", "ㆍ", "ㄹ", "ㅣ", "ㆍ", "ㅇ"], result: "사랑 · 1 word" },
-] as const;
+];
 
 /** Thin UI coordinator. Hangul behavior stays in core/hangul. */
 export class TalkApp {
@@ -136,12 +145,16 @@ export class TalkApp {
       const button = document.createElement("button");
       const color = boardColorAt(index);
       button.className = `letter-tile letter-tile--color-${color}`; button.type = "button";
-      button.textContent = tile.symbol === "ㆍ" ? "━" : tile.symbol;
+      const glyph = document.createElement("span");
+      glyph.className = "letter-glyph";
+      glyph.textContent = tile.symbol === "ㆍ" ? "━" : tile.symbol;
+      button.append(glyph);
       if (CONSONANTS.includes(tile.symbol as never)) button.classList.add("letter-tile--consonant");
       else if (CHEONJIIN_STROKES.includes(tile.symbol as never)) button.classList.add("letter-tile--vowel");
       else button.classList.add("letter-tile--punctuation");
       if (tile.symbol === "ㆍ") button.classList.add("letter-tile--cheonjiin-dot");
       if (tile.symbol === ".") button.classList.add("letter-tile--period");
+      if (tile.mirror) button.classList.add(`letter-tile--flip-${tile.mirror === "horizontal" ? "x" : "y"}`);
       button.dataset.tileId = String(tile.id); button.setAttribute("aria-label", tile.symbol === "ㆍ" ? "Cheonjiin dot" : tile.symbol);
       button.addEventListener("click", () => this.typeTile(tile.id, tile.symbol)); fragment.append(button);
     });
@@ -371,7 +384,13 @@ export class TalkApp {
       const category = PUNCTUATION_SYMBOLS.includes(key as never) ? "feature" : ["ㅣ", "ㅡ", "ㆍ"].includes(key) ? "vowel" : "consonant";
       button.className = `tutorial-key tutorial-key--${category}`;
       button.dataset.tutorialKey = key;
-      button.textContent = key;
+      const glyph = document.createElement("span");
+      glyph.className = "tutorial-glyph";
+      glyph.textContent = key;
+      button.append(glyph);
+      if (key === ".") button.classList.add("tutorial-key--period");
+      const mirror = step.mirrors?.[key];
+      if (mirror) button.classList.add(`tutorial-key--flip-${mirror === "horizontal" ? "x" : "y"}`);
       button.addEventListener("click", () => this.playTutorialKey(key));
       keys.append(button);
     });
@@ -439,7 +458,7 @@ export class TalkApp {
   private showRules(): void {
     this.tutorialNav.classList.add("hidden");
     this.openHelp("Rules");
-    this.helpBody.innerHTML = `<div class="rules-list"><p><b>Sentence Copy</b><span>Complete five phrases. The full run is worth up to 1,500 points and your best score is saved.</span></p><p><b>Lv.5 time bands</b><span>150s OH MY GOD · 180s UNBELIEVABLE · 200s AMAZING · 240s GREAT</span></p><p><b>Word Challenge</b><span>Make as many target words as you can in 60 seconds. A correct word is counted automatically.</span></p><p><b>One letter, one block</b><span>Consonants, Cheonjiin vowels, and punctuation use the coloured board.</span></p><p><b>Vowels</b><span>Use ㆍ, ㅡ, and ㅣ blocks to build vowels.</span></p><p><b>One block, one use</b><span>A used block stays as a light mark. Use Delete to return the latest block.</span></p></div>`;
+    this.helpBody.innerHTML = `<div class="rules-list"><p><b>Sentence Copy</b><span>Complete five phrases. The full run is worth up to 1,500 points and your best score is saved.</span></p><p><b>Lv.5 time bands</b><span>150s OH MY GOD · 180s UNBELIEVABLE · 200s AMAZING · 240s GREAT</span></p><p><b>Word Challenge</b><span>Make as many target words as you can in 60 seconds. A correct word is counted automatically.</span></p><p><b>Nine mixed colours</b><span>Colours do not belong to a particular letter. A used block turns grey.</span></p><p><b>Vowels</b><span>Use the square ㆍ with ㅡ and ㅣ to build vowels.</span></p><p><b>Punctuation</b><span>Only the small period, !, and ? are used.</span></p><p><b>Reversed blocks</b><span>On punctuation-free word boards, spare ㄱ ㄴ ㄷ ㄹ ㅋ ㅌ may flip sideways; ㅂ ㅅ ㅈ ㅎ may flip upside down. They still type the original consonant.</span></p><p><b>One block, one use</b><span>A used block stays as a light mark. Use Delete to return the latest block.</span></p></div>`;
   }
 
   private showSettings(): void {
