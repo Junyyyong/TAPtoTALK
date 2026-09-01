@@ -50,7 +50,9 @@
   justify-content: space-evenly;
   gap: 10px;
   padding: max(3vh, 16px) 22px max(2.5vh, 14px);
-  background: linear-gradient(180deg, transparent, var(--recess));
+  background:
+    radial-gradient(58% 28% at 50% 24%, rgba(255, 181, 0, 0.14), transparent 75%),
+    linear-gradient(180deg, transparent, var(--recess));
 }
 
 .brand-block {
@@ -136,18 +138,6 @@
   color: var(--accent);
 }
 
-#mode-sentence {
-  border-top: 3px solid #1d2088;
-}
-
-#mode-free {
-  border-top: 3px solid #ea5532;
-}
-
-#mode-free .mode-name {
-  color: #ea5532;
-}
-
 .mode-desc {
   font-size: 13px;
   font-weight: 400;
@@ -182,9 +172,6 @@
 .title-links .text-btn {
   padding: 8px 6px;
   font-size: 14px;
-  text-decoration-color: #fdd000;
-  text-decoration-thickness: 3px;
-  text-underline-offset: 4px;
 }
 
 /*

@@ -138,6 +138,7 @@ export class TalkApp {
       else if (CHEONJIIN_STROKES.includes(tile.symbol as never)) button.classList.add("letter-tile--vowel");
       else button.classList.add("letter-tile--punctuation");
       if (tile.symbol === "ㆍ") button.classList.add("letter-tile--cheonjiin-dot");
+      if (tile.symbol === ".") button.classList.add("letter-tile--period");
       button.dataset.tileId = String(tile.id); button.setAttribute("aria-label", tile.symbol === "ㆍ" ? "Cheonjiin dot" : tile.symbol);
       button.addEventListener("click", () => this.typeTile(tile.id, tile.symbol)); fragment.append(button);
     });
