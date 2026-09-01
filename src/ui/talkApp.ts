@@ -1,6 +1,6 @@
 import { createLetterBoard, type LetterTile } from "../core/hangul/board";
 import { composeTokens } from "../core/hangul/compose";
-import { CHEONJIIN_STROKES, CONSONANTS, PUNCTUATION_SYMBOLS, type BoardSymbol } from "../core/hangul/keys";
+import { BOARD_SYMBOLS, CHEONJIIN_STROKES, CONSONANTS, PUNCTUATION_SYMBOLS, type BoardSymbol } from "../core/hangul/keys";
 import { isWordMatch, wordCountLabel } from "../core/hangul/wordChallenge";
 import { lessonCheerFor, lessonScoreFromTime } from "../core/hangul/writing";
 import { SENTENCE_LEVELS, SENTENCE_PROMPTS, WORD_MODE_CONFIG, WORD_TARGETS, type SentencePrompt, type WordTarget } from "../content/prompts";
@@ -117,7 +117,7 @@ export class TalkApp {
     this.tiles = createLetterBoard(requiredText);
     this.targetLabel.textContent = mode === "sentence" ? `${SENTENCE_LEVELS[this.sentenceLevel]!.name} · ${this.sentenceIndex + 1}/5` : "TARGET";
     this.targetText.textContent = requiredText;
-    this.targetHint.textContent = mode === "sentence" ? "Copy this sentence." : "Make the word and tap Submit.";
+    this.targetHint.textContent = mode === "sentence" ? "Copy this sentence." : "Complete the target word.";
     this.typedText.dataset.empty = mode === "sentence" ? "Your sentence appears here." : "Your word appears here.";
     this.runMode.textContent = mode === "sentence" ? "Sentence Copy" : "Word Challenge";
     this.game.classList.toggle("is-word-mode", mode === "word");
@@ -130,11 +130,14 @@ export class TalkApp {
     const fragment = document.createDocumentFragment();
     for (const tile of this.tiles) {
       const button = document.createElement("button");
-      button.className = "letter-tile"; button.type = "button"; button.textContent = tile.symbol;
+      const color = BOARD_SYMBOLS.indexOf(tile.symbol) % 9 + 1;
+      button.className = `letter-tile letter-tile--color-${color}`; button.type = "button";
+      button.textContent = tile.symbol === "ㆍ" ? "━" : tile.symbol;
       if (CONSONANTS.includes(tile.symbol as never)) button.classList.add("letter-tile--consonant");
       else if (CHEONJIIN_STROKES.includes(tile.symbol as never)) button.classList.add("letter-tile--vowel");
       else button.classList.add("letter-tile--punctuation");
-      button.dataset.tileId = String(tile.id); button.setAttribute("aria-label", tile.symbol);
+      if (tile.symbol === "ㆍ") button.classList.add("letter-tile--cheonjiin-dot");
+      button.dataset.tileId = String(tile.id); button.setAttribute("aria-label", tile.symbol === "ㆍ" ? "Cheonjiin dot" : tile.symbol);
       button.addEventListener("click", () => this.typeTile(tile.id, tile.symbol)); fragment.append(button);
     }
     this.board.replaceChildren(fragment);

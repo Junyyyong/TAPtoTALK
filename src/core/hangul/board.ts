@@ -2,6 +2,7 @@ import { BOARD_SYMBOLS, type BoardSymbol } from "./keys";
 import { requiredBoardSymbols } from "./target";
 
 export const BOARD_SIZE = 81;
+export const TARGET_SYMBOL_BUFFER = 1.5;
 
 export interface LetterTile {
   id: number;
@@ -45,9 +46,14 @@ export function createLetterBoard(
   rng: () => number = Math.random,
   weights: SymbolWeights = DEFAULT_SYMBOL_WEIGHTS,
 ): LetterTile[] {
-  const required = requiredBoardSymbols(target);
+  const targetSymbols = requiredBoardSymbols(target);
+  const bufferedCount = Math.ceil(targetSymbols.length * TARGET_SYMBOL_BUFFER);
+  const required = [...targetSymbols];
+  for (let index = required.length; index < bufferedCount; index += 1) {
+    required.push(targetSymbols[index % targetSymbols.length]!);
+  }
   if (required.length > BOARD_SIZE) {
-    throw new RangeError(`Target needs ${required.length} board taps; maximum is ${BOARD_SIZE}.`);
+    throw new RangeError(`Target needs ${required.length} buffered board symbols; maximum is ${BOARD_SIZE}.`);
   }
 
   const tiles: LetterTile[] = required.map((symbol, id) => ({ id, symbol, required: true }));

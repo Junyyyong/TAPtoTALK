@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { createLetterBoard } from "./board";
+import { createLetterBoard, TARGET_SYMBOL_BUFFER } from "./board";
 import { composeTokens } from "./compose";
 import { BOARD_SYMBOLS, CHEONJIIN_STROKES, CONSONANTS, PUNCTUATION_SYMBOLS } from "./keys";
 import { materializeTargetTokens, requiredBoardSymbols, targetToTokens } from "./target";
@@ -42,7 +42,14 @@ describe("TAPtoTALK Hangul domain", () => {
     const reserved = board.filter((tile) => tile.required).map((tile) => tile.symbol);
 
     expect(board).toHaveLength(81);
-    expect(reserved.sort()).toEqual([...needed].sort());
+    expect(reserved).toHaveLength(Math.ceil(needed.length * TARGET_SYMBOL_BUFFER));
+    for (const symbol of needed) expect(reserved).toContain(symbol);
+  });
+
+  it("provides about 1.5 times as many target jamo as the sample needs", () => {
+    const needed = requiredBoardSymbols("사랑해");
+    const reserved = createLetterBoard("사랑해", () => 0.42).filter((tile) => tile.required);
+    expect(reserved).toHaveLength(Math.ceil(needed.length * 1.5));
   });
 
   it("rejects a target that cannot fit on one board", () => {
