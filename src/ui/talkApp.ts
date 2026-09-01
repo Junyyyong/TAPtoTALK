@@ -151,7 +151,7 @@ export class TalkApp {
   private typeTile(tileId: number, value: BoardSymbol): void {
     if (this.inputLocked || this.paused) return;
     const target = this.mode === "sentence" ? this.prompt.text : this.wordTarget.word;
-    if (!canAcceptInput(this.input.map((token) => token.value), value, target)) return;
+    if (!canAcceptInput(this.input.length, target)) return;
     if (this.used.has(tileId)) return;
     feedback.pick(this.input.length + 1);
     this.used.add(tileId); this.input.push({ value, tileId });
@@ -161,7 +161,7 @@ export class TalkApp {
   private typeFixed(value: string): void {
     if (this.inputLocked || this.paused) return;
     const target = this.mode === "sentence" ? this.prompt.text : this.wordTarget.word;
-    if (!canAcceptInput(this.input.map((token) => token.value), value, target)) return;
+    if (!canAcceptInput(this.input.length, target)) return;
     feedback.tap(); this.input.push({ value }); this.renderInput();
   }
   private backspace(): void {
