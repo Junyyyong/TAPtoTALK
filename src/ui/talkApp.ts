@@ -6,6 +6,7 @@ import { lessonCheerFor, lessonScoreFromTime } from "../core/hangul/writing";
 import { SENTENCE_LEVELS, SENTENCE_PROMPTS, WORD_MODE_CONFIG, WORD_TARGETS, type SentencePrompt, type WordTarget } from "../content/prompts";
 import { el } from "./dom";
 import { feedback } from "./feedback";
+import { canAcceptInput } from "./inputCapacity";
 import { Cheer } from "./screens/cheer";
 import { loadSentenceProgress, saveSentenceProgress } from "./sentenceProgress";
 import { loadTalkPreferences, saveTalkPreferences, type TalkPreferences } from "./talkPreferences";
@@ -149,13 +150,20 @@ export class TalkApp {
 
   private typeTile(tileId: number, value: BoardSymbol): void {
     if (this.inputLocked || this.paused) return;
+    const target = this.mode === "sentence" ? this.prompt.text : this.wordTarget.word;
+    if (!canAcceptInput(this.input.map((token) => token.value), value, target)) return;
     if (this.used.has(tileId)) return;
     feedback.pick(this.input.length + 1);
     this.used.add(tileId); this.input.push({ value, tileId });
     this.board.querySelector<HTMLButtonElement>(`[data-tile-id="${tileId}"]`)!.disabled = true;
     this.renderInput();
   }
-  private typeFixed(value: string): void { if (this.inputLocked || this.paused) return; feedback.tap(); this.input.push({ value }); this.renderInput(); }
+  private typeFixed(value: string): void {
+    if (this.inputLocked || this.paused) return;
+    const target = this.mode === "sentence" ? this.prompt.text : this.wordTarget.word;
+    if (!canAcceptInput(this.input.map((token) => token.value), value, target)) return;
+    feedback.tap(); this.input.push({ value }); this.renderInput();
+  }
   private backspace(): void {
     if (this.inputLocked || this.paused) return;
     const removed = this.input.pop();
