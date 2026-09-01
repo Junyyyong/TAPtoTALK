@@ -112,7 +112,7 @@
    * nothing else moves.
    */
   padding: var(--cheer-top) 0 24px;
-  pointer-events: none;
+  pointer-events: auto;
   /* Most of the way to black. The board is still there underneath — it is
      what was just finished — but it has receded far enough that everything
      bright on screen belongs to the word and the clip. */

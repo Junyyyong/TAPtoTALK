@@ -75,6 +75,9 @@ export class TalkApp {
   private sentenceLevel = 0;
   private sentenceIndex = 0;
   private sentenceRunScore = 0;
+  private inputLocked = true;
+  private paused = false;
+  private sentenceTimer?: number;
   private tiles: LetterTile[] = [];
   private used = new Set<number>();
   private input: TypedToken[] = [];
@@ -86,6 +89,7 @@ export class TalkApp {
     el("mode-sentence").addEventListener("click", () => this.showLevelSelect());
     el("mode-free").addEventListener("click", () => this.start("word"));
     el("btn-back").addEventListener("click", () => this.showTitle());
+    el("btn-pause").addEventListener("click", () => this.pauseGame());
     this.setupBackspace();
     el("btn-dot").addEventListener("click", () => this.typeFixed("ㆍ"));
     this.punctuationButton.addEventListener("click", () => this.typePunctuation());
@@ -96,21 +100,29 @@ export class TalkApp {
     el("btn-title-tutorial").addEventListener("click", () => this.showTutorial());
     el("btn-title-settings").addEventListener("click", () => this.showSettings());
     el("btn-title-rules").addEventListener("click", () => this.showRules());
-    el("btn-help-close").addEventListener("click", () => this.closeHelp());
+    el("btn-help-close").addEventListener("click", () => this.paused ? this.resumeGame() : this.closeHelp());
     el("btn-tutorial-prev").addEventListener("click", () => this.moveTutorial(-1));
     el("btn-tutorial-next").addEventListener("click", () => this.moveTutorial(1));
     document.addEventListener("pointerdown", () => { this.cheer.unlock(); feedback.unlock(); }, { capture: true });
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden && !this.game.classList.contains("hidden")) this.pauseGame();
+    });
     this.applyPreferences();
     window.setTimeout(() => this.showTitle(), 900);
   }
 
   private showTitle(): void {
+    window.clearTimeout(this.sentenceTimer);
+    this.inputLocked = true; this.paused = false;
     this.stopClock(); this.cheer.stop();
     this.result.classList.add("hidden"); this.help.classList.add("hidden"); this.splash.classList.add("hidden"); this.game.classList.add("hidden"); this.title.classList.remove("hidden");
   }
 
   private start(mode: Mode): void {
+    window.clearTimeout(this.sentenceTimer);
     this.cheer.stop();
+    this.inputLocked = false; this.paused = false;
+    this.game.classList.remove("is-input-locked");
     this.mode = mode;
     this.wordCount = 0;
     if (mode === "word") el("btn-again").textContent = "Play again";
@@ -147,6 +159,7 @@ export class TalkApp {
   }
 
   private typeTile(tileId: number, value: BoardSymbol): void {
+    if (this.inputLocked || this.paused) return;
     const last = this.input[this.input.length - 1];
     if (last?.tileId === tileId && last.base) {
       last.tapIndex = ((last.tapIndex ?? 0) + 1);
@@ -165,8 +178,9 @@ export class TalkApp {
     const button = this.board.querySelector<HTMLButtonElement>(`[data-tile-id="${active.tileId}"]`);
     if (button) { button.classList.remove("is-active"); button.disabled = true; }
   }
-  private typeFixed(value: string): void { this.finalizeActiveTile(); feedback.tap(); this.input.push({ value }); this.renderInput(); }
+  private typeFixed(value: string): void { if (this.inputLocked || this.paused) return; this.finalizeActiveTile(); feedback.tap(); this.input.push({ value }); this.renderInput(); }
   private typePunctuation(): void {
+    if (this.inputLocked || this.paused) return;
     this.finalizeActiveTile();
     const last = this.input.at(-1);
     if (last?.punctuation) {
@@ -176,6 +190,7 @@ export class TalkApp {
     feedback.tap(); this.renderInput();
   }
   private backspace(): void {
+    if (this.inputLocked || this.paused) return;
     const removed = this.input.pop();
     if (removed?.tileId !== undefined) {
       this.used.delete(removed.tileId);
@@ -222,8 +237,9 @@ export class TalkApp {
     if (this.mode === "word") this.clearWordFeedback();
   }
 
-  private startClock(): void {
-    this.stopClock(); this.startedAt = performance.now();
+  private startClock(resume = false): void {
+    this.stopClock();
+    this.startedAt = resume ? performance.now() - this.elapsedMs : performance.now();
     const update = (): void => {
       this.elapsedMs = performance.now() - this.startedAt;
       if (this.mode === "word") {
@@ -236,7 +252,9 @@ export class TalkApp {
   }
   private stopClock(): void { if (this.frame !== undefined) cancelAnimationFrame(this.frame); this.frame = undefined; }
   private finishSentence(): void {
-    if (this.frame === undefined) return;
+    if (this.frame === undefined || this.inputLocked) return;
+    this.inputLocked = true;
+    this.game.classList.add("is-input-locked");
     this.stopClock();
     feedback.complete();
     const targetMs = 5_000 + targetToTokens(this.prompt.text).length * 800;
@@ -247,22 +265,21 @@ export class TalkApp {
     if (finalSentence) {
       const previousBest = this.sentenceProgress.bestScores[level.id] ?? 0;
       this.sentenceProgress.bestScores[level.id] = Math.max(previousBest, this.sentenceRunScore);
-      this.sentenceProgress.unlockedLevel = Math.max(this.sentenceProgress.unlockedLevel, Math.min(SENTENCE_LEVELS.length - 1, this.sentenceLevel + 1));
       saveSentenceProgress(this.sentenceProgress);
       el("btn-again").textContent = "Choose level";
       this.showResult("Level complete!", `${this.sentenceRunScore.toLocaleString()} points · Best ${this.sentenceProgress.bestScores[level.id]!.toLocaleString()}`, this.sentenceRunScore, score);
     } else {
-      el("btn-again").textContent = "Next sentence";
-      this.showResult("Sentence complete!", `${score} points · Total ${this.sentenceRunScore.toLocaleString()}`, score);
+      this.sentenceTimer = window.setTimeout(() => {
+        this.sentenceIndex += 1;
+        this.start("sentence");
+      }, 520);
     }
   }
 
   private continueFromResult(): void {
     this.result.classList.add("hidden");
     if (this.mode === "sentence") {
-      const last = this.sentenceIndex === SENTENCE_LEVELS[this.sentenceLevel]!.prompts.length - 1;
-      if (last) { this.showLevelSelect(); return; }
-      this.sentenceIndex += 1; this.start("sentence"); return;
+      this.showLevelSelect(); return;
     }
     this.start("word");
   }
@@ -330,11 +347,10 @@ export class TalkApp {
     this.helpBody.innerHTML = `<p class="level-intro">Complete five phrases. Your fastest run becomes the level high score.</p><div class="level-list" id="level-list"></div>`;
     const list = el("level-list");
     SENTENCE_LEVELS.forEach((level, index) => {
-      const locked = index > this.sentenceProgress.unlockedLevel;
       const best = this.sentenceProgress.bestScores[level.id] ?? 0;
       const button = document.createElement("button");
-      button.type = "button"; button.className = "level-btn"; button.disabled = locked;
-      button.innerHTML = `<strong>${level.name}</strong><span>${locked ? "Complete the previous level" : "5 phrases"}</span><small>${locked ? "LOCKED" : best ? `BEST ${best.toLocaleString()}` : "NEW"}</small>`;
+      button.type = "button"; button.className = "level-btn";
+      button.innerHTML = `<strong>${level.name}</strong><span>5 phrases</span><small>${best ? `BEST ${best.toLocaleString()}` : "NEW"}</small>`;
       button.addEventListener("click", () => this.startSentenceLevel(index));
       list.append(button);
     });
@@ -344,6 +360,23 @@ export class TalkApp {
     this.sentenceLevel = index; this.sentenceIndex = 0; this.sentenceRunScore = 0;
     this.help.classList.add("hidden");
     this.start("sentence");
+  }
+
+  private pauseGame(): void {
+    if (this.inputLocked || this.paused || this.game.classList.contains("hidden")) return;
+    this.paused = true; this.stopClock();
+    this.tutorialNav.classList.add("hidden");
+    this.openHelp("Paused");
+    this.helpBody.innerHTML = `<div class="pause-card"><p>Take a break. The clock is stopped.</p><button class="wood-btn" id="btn-resume">Resume</button><button class="text-btn" id="btn-pause-menu">Main menu</button></div>`;
+    el("btn-resume").addEventListener("click", () => this.resumeGame());
+    el("btn-pause-menu").addEventListener("click", () => this.showTitle());
+  }
+
+  private resumeGame(): void {
+    if (!this.paused) return;
+    this.paused = false; this.help.classList.add("hidden");
+    this.startClock(true);
+    feedback.tap();
   }
 
   private closeHelp(): void {

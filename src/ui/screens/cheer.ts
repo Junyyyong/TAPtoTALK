@@ -112,7 +112,9 @@ export class Cheer {
     // The clip stops on its own last frame; the player decides when to leave it.
     this.clip.addEventListener("ended", () => this.hold());
     this.clip.addEventListener("error", () => this.finish());
-    this.root.addEventListener("pointerdown", () => this.finish());
+    this.root.addEventListener("pointerdown", () => {
+      if (this.root.classList.contains("cheer-hold")) this.finish();
+    });
   }
 
   /**
