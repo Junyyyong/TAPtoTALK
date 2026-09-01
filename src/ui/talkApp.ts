@@ -1,6 +1,6 @@
 import { createLetterBoard, type LetterTile } from "../core/hangul/board";
 import { composeTokens } from "../core/hangul/compose";
-import { CONSONANTS, PUNCTUATION_SYMBOLS, type BoardSymbol } from "../core/hangul/keys";
+import { CHEONJIIN_STROKES, CONSONANTS, PUNCTUATION_SYMBOLS, type BoardSymbol } from "../core/hangul/keys";
 import { isWordMatch, wordCountLabel } from "../core/hangul/wordChallenge";
 import { lessonCheerFor, lessonScoreFromTime } from "../core/hangul/writing";
 import { SENTENCE_LEVELS, SENTENCE_PROMPTS, WORD_MODE_CONFIG, WORD_TARGETS, type SentencePrompt, type WordTarget } from "../content/prompts";
@@ -82,9 +82,6 @@ export class TalkApp {
     el("btn-back").addEventListener("click", () => this.showTitle());
     el("btn-pause").addEventListener("click", () => this.pauseGame());
     this.setupBackspace();
-    el("btn-cheon").addEventListener("click", () => this.typeFixed("ㆍ"));
-    el("btn-eu").addEventListener("click", () => this.typeFixed("ㅡ"));
-    el("btn-i").addEventListener("click", () => this.typeFixed("ㅣ"));
     el("btn-space").addEventListener("click", () => this.typeFixed(" "));
     el("btn-again").addEventListener("click", () => this.continueFromResult());
     el("btn-result-menu").addEventListener("click", () => this.showTitle());
@@ -141,8 +138,11 @@ export class TalkApp {
       button.className = `letter-tile letter-tile--color-${color}`; button.type = "button";
       button.textContent = tile.symbol === "ㆍ" ? "━" : tile.symbol;
       if (CONSONANTS.includes(tile.symbol as never)) button.classList.add("letter-tile--consonant");
+      else if (CHEONJIIN_STROKES.includes(tile.symbol as never)) button.classList.add("letter-tile--vowel");
       else button.classList.add("letter-tile--punctuation");
-      button.dataset.tileId = String(tile.id); button.setAttribute("aria-label", tile.symbol);
+      if (tile.symbol === "ㆍ") button.classList.add("letter-tile--cheonjiin-dot");
+      if (tile.symbol === ".") button.classList.add("letter-tile--period");
+      button.dataset.tileId = String(tile.id); button.setAttribute("aria-label", tile.symbol === "ㆍ" ? "Cheonjiin dot" : tile.symbol);
       button.addEventListener("click", () => this.typeTile(tile.id, tile.symbol)); fragment.append(button);
     });
     this.board.replaceChildren(fragment);
@@ -439,7 +439,7 @@ export class TalkApp {
   private showRules(): void {
     this.tutorialNav.classList.add("hidden");
     this.openHelp("Rules");
-    this.helpBody.innerHTML = `<div class="rules-list"><p><b>Sentence Copy</b><span>Complete five phrases. The full run is worth up to 1,500 points and your best score is saved.</span></p><p><b>Lv.5 time bands</b><span>150s OH MY GOD · 180s UNBELIEVABLE · 200s AMAZING · 240s GREAT</span></p><p><b>Word Challenge</b><span>Make as many target words as you can in 60 seconds. A correct word is counted automatically.</span></p><p><b>One letter, one block</b><span>Consonants and ! ? use the coloured board.</span></p><p><b>Vowels</b><span>Use the fixed ㆍ, ㅡ, and ㅣ buttons below the board.</span></p><p><b>One block, one use</b><span>A used consonant or punctuation block stays as a light mark. Use Delete to return the latest block.</span></p></div>`;
+    this.helpBody.innerHTML = `<div class="rules-list"><p><b>Sentence Copy</b><span>Complete five phrases. The full run is worth up to 1,500 points and your best score is saved.</span></p><p><b>Lv.5 time bands</b><span>150s OH MY GOD · 180s UNBELIEVABLE · 200s AMAZING · 240s GREAT</span></p><p><b>Word Challenge</b><span>Make as many target words as you can in 60 seconds. A correct word is counted automatically.</span></p><p><b>One letter, one block</b><span>Consonants, Cheonjiin vowels, and punctuation use the coloured board.</span></p><p><b>Vowels</b><span>Use ㆍ, ㅡ, and ㅣ blocks to build vowels.</span></p><p><b>One block, one use</b><span>A used block stays as a light mark. Use Delete to return the latest block.</span></p></div>`;
   }
 
   private showSettings(): void {
