@@ -24,21 +24,14 @@
 .typed-text.is-wrong { color: var(--ring-bad); } .typed-text.is-correct { color: var(--ring-ok); }
 .letter-board { display: grid; flex: 0 1 auto; width: min(100%,52vh); aspect-ratio: 1; align-self: center; grid-template-columns: repeat(9,minmax(0,1fr)); grid-template-rows: repeat(9,minmax(0,1fr)); gap: clamp(3px,1vw,5px); min-height: 0; margin-block: auto; padding: 0; background: transparent; }
 .letter-tile { position: relative; min-width: 0; min-height: 0; overflow: hidden; padding: 0; border: 0; border-radius: clamp(3px,1.2vw,7px); color: var(--tile-ink); background: var(--tile-face); box-shadow: inset 0 1px 0 rgba(255,255,255,.42),0 2px 0 var(--slab); font-family: inherit; font-size: clamp(13px,4.2vw,22px); font-weight: 600; touch-action: manipulation; }
-.letter-tile--consonant { color: var(--consonant-ink); background: var(--consonant-face); font-size: clamp(8px,2.7vw,14px); letter-spacing: -.08em; }
+.letter-tile--consonant { color: var(--consonant-ink); background: var(--consonant-face); }
 .letter-tile--vowel { color: var(--vowel-ink); background: var(--vowel-face); }
+.letter-tile--punctuation { color: var(--ink); background: var(--warm); }
 .letter-tile:active { transform: translateY(1px); }
-.letter-tile.is-active { outline: 3px solid var(--warm); outline-offset: 1px; }
 .letter-tile:disabled { color: rgba(19,19,19,.2); background: rgba(19,19,19,.06); box-shadow: inset 0 0 0 1px rgba(19,19,19,.07); }
-.fixed-controls { display: grid; flex: 0 0 auto; grid-template-columns: repeat(6,minmax(0,1fr)); grid-template-areas: "dot dot dot punctuation punctuation punctuation" "space space space back back back"; gap: 5px 4px; }
-.fixed-controls.no-punctuation { grid-template-areas: "dot dot dot dot dot dot" "space space space back back back"; }
-#btn-dot { grid-area: dot; } #btn-punctuation { grid-area: punctuation; }
-#btn-backspace { grid-area: back; } #btn-space { grid-area: space; }
-#btn-submit { grid-area: submit; }
-.is-word-mode .fixed-controls { grid-template-areas: "dot dot dot dot dot dot" "space space back back submit submit"; }
+.fixed-controls { display: grid; flex: 0 0 auto; grid-template-columns: 1fr 1fr; gap: 5px; }
 .control-btn { position: relative; min-width: 0; min-height: 44px; overflow: hidden; padding: 0 8px; border: 1px solid var(--paper-edge); border-radius: 12px; color: var(--ink); background: var(--panel-lit); box-shadow: inset 0 1px 0 rgba(255,255,255,.55),0 1px 2px rgba(29,35,43,.16); font: 600 13px/1 inherit; }
 .control-btn:active { transform: translateY(1px); box-shadow: inset 0 1px 0 rgba(255,255,255,.4); }
-.vowel-control { color: var(--vowel-ink); border-color: var(--paper-edge); background: var(--vowel-face); font-size: 22px; }
-.punctuation-control { color: var(--ink); border-color: rgba(19,19,19,.14); background: var(--warm); font-size: 16px; letter-spacing: .12em; }
 #btn-backspace,#btn-space { color: var(--ink); background: linear-gradient(180deg,#fff,var(--paper-lit)); }
 .space-control svg { width: 29px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .writing-submit-row { display: flex; align-items: center; gap: 8px; margin-top: 8px; }

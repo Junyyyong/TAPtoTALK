@@ -1,15 +1,15 @@
 import { describe, expect, it } from "vitest";
 import { createLetterBoard } from "./board";
 import { composeTokens } from "./compose";
-import { BOARD_SYMBOLS, CONSONANT_KEY_CYCLES, consonantInput } from "./keys";
+import { BOARD_SYMBOLS, CHEONJIIN_STROKES, CONSONANTS, PUNCTUATION_SYMBOLS } from "./keys";
 import { materializeTargetTokens, requiredBoardSymbols, targetToTokens } from "./target";
 import { SENTENCE_LEVELS } from "../../content/prompts";
 
 describe("TAPtoTALK Hangul domain", () => {
-  it("keeps only primitive consonants and vowels on the random board", () => {
-    expect(BOARD_SYMBOLS).toHaveLength(9);
-    expect(new Set(BOARD_SYMBOLS).size).toBe(9);
-    expect(BOARD_SYMBOLS).not.toContain("ㆍ");
+  it("gives every consonant, Cheonjiin stroke, and punctuation mark its own board symbol", () => {
+    expect(BOARD_SYMBOLS).toHaveLength(27);
+    expect(new Set(BOARD_SYMBOLS).size).toBe(27);
+    expect(BOARD_SYMBOLS).toEqual([...CONSONANTS, ...CHEONJIIN_STROKES, ...PUNCTUATION_SYMBOLS]);
   });
 
   it("round-trips a target sentence through Cheonjiin board taps", () => {
@@ -18,16 +18,16 @@ describe("TAPtoTALK Hangul domain", () => {
     expect(composeTokens(input)).toBe(target);
   });
 
-  it("builds tense and aspirated consonants through Galaxy-style repeated taps", () => {
+  it("builds tense and aspirated consonants from independent tiles", () => {
     const target = "까 타 빠 싸 짜 차";
     expect(composeTokens(materializeTargetTokens(targetToTokens(target)))).toBe(target);
   });
 
-  it("uses the Galaxy Cheonjiin consonant groups", () => {
-    expect(CONSONANT_KEY_CYCLES["ㄱ"]).toEqual(["ㄱ", "ㅋ", "ㄲ"]);
-    expect(CONSONANT_KEY_CYCLES["ㅅ"]).toEqual(["ㅅ", "ㅎ", "ㅆ"]);
-    expect(consonantInput("ㅋ")).toEqual({ base: "ㄱ", taps: 2 });
-    expect(consonantInput("ㄲ")).toEqual({ base: "ㄱ", taps: 3 });
+  it("keeps ㄱ, ㅋ, and ㄲ as three independent board choices", () => {
+    expect(BOARD_SYMBOLS).toContain("ㄱ");
+    expect(BOARD_SYMBOLS).toContain("ㅋ");
+    expect(BOARD_SYMBOLS).toContain("ㄲ");
+    expect(targetToTokens("까")[0]).toBe("ㄲ");
   });
 
   it("composes combined final consonants in entered order", () => {

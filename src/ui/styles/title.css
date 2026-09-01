@@ -70,7 +70,7 @@
 }
 
 .brand-mark {
-  width: min(85.8vw, 330px);
+  width: min(68vw, 250px);
   height: auto;
   /* A little of the night thrown back up at it, so it sits on the background
      rather than on top of it. */
@@ -193,7 +193,7 @@
  */
 @media (max-height: 700px) {
   .brand-mark {
-    width: min(71.5vw, 275px);
+    width: min(58vw, 215px);
   }
 
   .mode-btn {
@@ -203,6 +203,6 @@
 
 @media (max-height: 580px) {
   .brand-mark {
-    width: min(55vw, 209px);
+    width: min(44vw, 165px);
   }
 }

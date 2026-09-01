@@ -42,5 +42,5 @@ ui → content → core/hangul
 
 `core/hangul`은 DOM이나 CSS를 참조하지 않습니다. 게임 규칙 테스트도 브라우저 없이 실행됩니다.
 
-자음/모음 타일의 색은 `talk.css`의 `.letter-tile--consonant`와
-`.letter-tile--vowel`만 수정하면 됩니다.
+자음/모음/문장부호 타일의 색은 `talk.css`의 `.letter-tile--consonant`,
+`.letter-tile--vowel`, `.letter-tile--punctuation`만 수정하면 됩니다.

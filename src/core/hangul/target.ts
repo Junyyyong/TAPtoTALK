@@ -1,4 +1,4 @@
-import { consonantInput, cycleConsonant, type BoardSymbol } from "./keys";
+import { isBoardSymbol, type BoardSymbol } from "./keys";
 import { CHOSEONG, FINAL_PARTS, JONGSEONG, JUNGSEONG, VOWEL_STROKES } from "./layout";
 
 const HANGUL_BASE = 0xac00;
@@ -6,15 +6,10 @@ const HANGUL_END = 0xd7a3;
 const JUNG_COUNT = 21;
 const JONG_COUNT = 28;
 
-export type TargetToken =
-  | BoardSymbol
-  | { control: "dot" | "cycle" | "space" }
-  | { control: "punctuation"; value: string };
+export type TargetToken = BoardSymbol | { control: "space" };
 
 function pushConsonant(tokens: TargetToken[], consonant: (typeof CHOSEONG)[number]): void {
-  const input = consonantInput(consonant);
-  tokens.push(input.base);
-  for (let index = 1; index < input.taps; index++) tokens.push({ control: "cycle" });
+  tokens.push(consonant);
 }
 
 /** Converts display text into the exact board taps and fixed controls it needs. */
@@ -31,14 +26,14 @@ export function targetToTokens(text: string): TargetToken[] {
 
       pushConsonant(tokens, choseong);
       for (const stroke of VOWEL_STROKES[jungseong]) {
-        tokens.push(stroke === "ㆍ" ? { control: "dot" } : stroke);
+        tokens.push(stroke);
       }
       if (jongseong) FINAL_PARTS[jongseong].forEach((part) => pushConsonant(tokens, part));
       continue;
     }
 
     if (character === " ") tokens.push({ control: "space" });
-    else tokens.push({ control: "punctuation", value: character });
+    else if (isBoardSymbol(character)) tokens.push(character);
   }
 
   return tokens;
@@ -51,20 +46,9 @@ export function requiredBoardSymbols(text: string): BoardSymbol[] {
 /** Resolves fixed-key actions to the stream consumed by the Hangul composer. */
 export function materializeTargetTokens(tokens: readonly TargetToken[]): string[] {
   const values: string[] = [];
-  let transform: { index: number; base: BoardSymbol; steps: number } | undefined;
   for (const token of tokens) {
-    if (typeof token === "string") {
-      values.push(token);
-      transform = { index: values.length - 1, base: token, steps: 0 };
-    } else if (token.control === "cycle" && transform) {
-      transform.steps++;
-      values[transform.index] = cycleConsonant(transform.base, transform.steps) ?? transform.base;
-    } else {
-      transform = undefined;
-      if (token.control === "dot") values.push("ㆍ");
-      else if (token.control === "space") values.push(" ");
-      else if (token.control === "punctuation") values.push(token.value);
-    }
+    if (typeof token === "string") values.push(token);
+    else if (token.control === "space") values.push(" ");
   }
   return values;
 }
