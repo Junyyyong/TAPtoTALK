@@ -26,11 +26,23 @@ export function scoreFromTime(elapsedMs: number, durationMs: number): number {
   return 100 + Math.round(900 * remainingRatio);
 }
 
-/** One score for a complete five-phrase lesson: 500–5000 based on total time. */
+export const LESSON_SCORE_TIERS = [
+  { at: 1400, label: "OH MY GOD~!" },
+  { at: 1000, label: "UNBELIEVABLE!!" },
+  { at: 600, label: "AMAZING!" },
+  { at: 300, label: "GREAT!" },
+  { at: 0, label: "GOOD TRY!" },
+] as const;
+
+/** One score for a complete five-phrase lesson: 0–1500 based on total time. */
 export function lessonScoreFromTime(elapsedMs: number, targetMs: number): number {
-  if (targetMs <= 0) return 500;
+  if (targetMs <= 0) return 0;
   const remainingRatio = 1 - Math.max(0, Math.min(1, elapsedMs / targetMs));
-  return 500 + Math.round(4500 * remainingRatio);
+  return Math.round(1500 * remainingRatio);
+}
+
+export function lessonCheerFor(score: number): string {
+  return LESSON_SCORE_TIERS.find((tier) => score >= tier.at)?.label ?? "GOOD TRY!";
 }
 
 /** Objective, offline-checkable writing criteria. Semantic feedback can be added later. */

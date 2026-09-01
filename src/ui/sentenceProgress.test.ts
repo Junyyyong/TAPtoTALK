@@ -10,7 +10,7 @@ describe("Sentence Copy progress", () => {
     });
     expect(loadSentenceProgress()).toEqual({ unlockedLevel: 0, bestScores: {} });
     saveSentenceProgress({ unlockedLevel: 2, bestScores: { "level-1": 4321 } });
-    expect(loadSentenceProgress()).toEqual({ unlockedLevel: 2, bestScores: { "level-1": 4321 } });
+    expect(loadSentenceProgress()).toEqual({ unlockedLevel: 2, bestScores: { "level-1": 1500 } });
     vi.unstubAllGlobals();
   });
 });

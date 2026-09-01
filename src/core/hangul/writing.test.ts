@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { evaluateWriting, lessonScoreFromTime, scoreFromTime, type WritingRules } from "./writing";
+import { evaluateWriting, lessonCheerFor, lessonScoreFromTime, scoreFromTime, type WritingRules } from "./writing";
 
 const rules: WritingRules = {
   minSyllables: 8,
@@ -27,8 +27,14 @@ describe("topic writing evaluation", () => {
   });
 
   it("scores one complete five-phrase lesson from its total time", () => {
-    expect(lessonScoreFromTime(0, 60_000)).toBe(5000);
-    expect(lessonScoreFromTime(30_000, 60_000)).toBe(2750);
-    expect(lessonScoreFromTime(60_000, 60_000)).toBe(500);
+    expect(lessonScoreFromTime(0, 60_000)).toBe(1500);
+    expect(lessonScoreFromTime(30_000, 60_000)).toBe(750);
+    expect(lessonScoreFromTime(60_000, 60_000)).toBe(0);
+  });
+
+  it("uses the five TAPtoTEN score bands", () => {
+    expect([0, 300, 600, 1000, 1400].map(lessonCheerFor)).toEqual([
+      "GOOD TRY!", "GREAT!", "AMAZING!", "UNBELIEVABLE!!", "OH MY GOD~!",
+    ]);
   });
 });

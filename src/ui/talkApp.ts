@@ -2,7 +2,7 @@ import { createLetterBoard, type LetterTile } from "../core/hangul/board";
 import { composeTokens } from "../core/hangul/compose";
 import { CONSONANTS, consonantKeyLabel, cycleConsonant, type BoardSymbol } from "../core/hangul/keys";
 import { isWordMatch, wordCountLabel } from "../core/hangul/wordChallenge";
-import { lessonScoreFromTime } from "../core/hangul/writing";
+import { lessonCheerFor, lessonScoreFromTime } from "../core/hangul/writing";
 import { SENTENCE_LEVELS, SENTENCE_PROMPTS, WORD_MODE_CONFIG, WORD_TARGETS, type SentencePrompt, type WordTarget } from "../content/prompts";
 import { el } from "./dom";
 import { feedback } from "./feedback";
@@ -20,12 +20,6 @@ const formatTime = (ms: number): string => {
   const seconds = Math.floor(ms / 1000) % 60;
   const minutes = Math.floor(ms / 60_000);
   return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}.${tenths}`;
-};
-
-const cheerFor = (score: number): string => {
-  if (score >= 700) return "AMAZING!";
-  if (score >= 350) return "GREAT!";
-  return "NICE!";
 };
 
 const TUTORIAL_STEPS = [
@@ -263,7 +257,7 @@ export class TalkApp {
       this.sentenceProgress.bestScores[level.id] = Math.max(previousBest, score);
       saveSentenceProgress(this.sentenceProgress);
       el("btn-again").textContent = "Choose level";
-      this.showResult("Level complete!", `${score.toLocaleString()} points · ${formatTime(this.elapsedMs)} · Best ${this.sentenceProgress.bestScores[level.id]!.toLocaleString()}`, score, Math.round(score / 5));
+      this.showResult("Level complete!", `${score.toLocaleString()} / 1,500 · ${formatTime(this.elapsedMs)} · Best ${this.sentenceProgress.bestScores[level.id]!.toLocaleString()}`, score);
     } else {
       this.sentenceTimer = window.setTimeout(() => {
         this.sentenceIndex += 1;
@@ -325,7 +319,7 @@ export class TalkApp {
       this.resultDetail.textContent = detail;
       this.result.classList.remove("hidden");
     };
-    if (score !== undefined && score > 0) this.cheer.play(title, score, cheerFor(tierScore ?? score), reveal, tierScore);
+    if (score !== undefined) this.cheer.play(title, score, lessonCheerFor(tierScore ?? score), reveal, tierScore);
     else reveal();
   }
 
@@ -340,7 +334,7 @@ export class TalkApp {
     this.result.classList.add("hidden"); this.game.classList.add("hidden"); this.title.classList.remove("hidden");
     this.tutorialNav.classList.add("hidden");
     this.openHelp("Sentence Copy");
-    this.helpBody.innerHTML = `<p class="level-intro">Complete five phrases. Your fastest run becomes the level high score.</p><div class="level-list" id="level-list"></div>`;
+    this.helpBody.innerHTML = `<p class="level-intro">Complete five phrases for up to 1,500 points. Your fastest run becomes the level high score.</p><div class="level-list" id="level-list"></div>`;
     const list = el("level-list");
     SENTENCE_LEVELS.forEach((level, index) => {
       const best = this.sentenceProgress.bestScores[level.id] ?? 0;
@@ -472,7 +466,7 @@ export class TalkApp {
   private showRules(): void {
     this.tutorialNav.classList.add("hidden");
     this.openHelp("Rules");
-    this.helpBody.innerHTML = `<div class="rules-list"><p><b>Sentence Copy</b><span>Complete five phrases. Faster typing earns more points, and your best level score is saved.</span></p><p><b>Word Challenge</b><span>Make the target word and tap Submit. Complete as many words as you can in 60 seconds.</span></p><p><b>Galaxy Cheonjiin</b><span>Tap one consonant block again to cycle its letters, such as ㄱ → ㅋ → ㄲ.</span></p><p><b>Vowels</b><span>Use ㆍ, ㅡ, and ㅣ to build vowels.</span></p><p><b>Punctuation</b><span>Tap the .,! ?~ block repeatedly until the needed mark appears.</span></p><p><b>One block, one use</b><span>After moving to another block, a used block stays as a light mark.</span></p></div>`;
+    this.helpBody.innerHTML = `<div class="rules-list"><p><b>Sentence Copy</b><span>Complete five phrases. The full run is worth up to 1,500 points and your best score is saved.</span></p><p><b>Score bands</b><span>0 GOOD TRY · 300 GREAT · 600 AMAZING · 1,000 UNBELIEVABLE · 1,400 OH MY GOD</span></p><p><b>Word Challenge</b><span>Make the target word and tap Submit. Complete as many words as you can in 60 seconds.</span></p><p><b>Galaxy Cheonjiin</b><span>Tap one consonant block again to cycle its letters, such as ㄱ → ㅋ → ㄲ.</span></p><p><b>Vowels</b><span>Use ㆍ, ㅡ, and ㅣ to build vowels.</span></p><p><b>Punctuation</b><span>Tap the .,! ?~ block repeatedly until the needed mark appears.</span></p><p><b>One block, one use</b><span>After moving to another block, a used block stays as a light mark.</span></p></div>`;
   }
 
   private showSettings(): void {

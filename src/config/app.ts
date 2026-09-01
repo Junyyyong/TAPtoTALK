@@ -17,9 +17,10 @@ export const APP_CONFIG = {
     celebrationVideo: MOVIE_1.video,
     celebrationAudio: MOVIE_1.sound,
     celebrations: [
-      { at: 900, layout: "hero", ...MOVIE_1 },
-      { at: 650, layout: "large", ...MOVIE_1 },
-      { at: 350, layout: "standard", ...MOVIE_1 },
+      { at: 1400, layout: "hero", ...MOVIE_1 },
+      { at: 1000, layout: "hero", ...MOVIE_1 },
+      { at: 600, layout: "large", ...MOVIE_1 },
+      { at: 300, layout: "standard", ...MOVIE_1 },
       { at: 0, layout: "compact", ...MOVIE_1 },
     ],
   },
