@@ -1,6 +1,6 @@
 import { createLetterBoard, type LetterTile } from "../core/hangul/board";
 import { composeTokens } from "../core/hangul/compose";
-import { BOARD_SYMBOLS, CHEONJIIN_STROKES, CONSONANTS, PUNCTUATION_SYMBOLS, type BoardSymbol } from "../core/hangul/keys";
+import { CHEONJIIN_STROKES, CONSONANTS, PUNCTUATION_SYMBOLS, type BoardSymbol } from "../core/hangul/keys";
 import { isWordMatch, wordCountLabel } from "../core/hangul/wordChallenge";
 import { lessonCheerFor, lessonScoreFromTime } from "../core/hangul/writing";
 import { SENTENCE_LEVELS, SENTENCE_PROMPTS, WORD_MODE_CONFIG, WORD_TARGETS, type SentencePrompt, type WordTarget } from "../content/prompts";
@@ -128,9 +128,10 @@ export class TalkApp {
 
   private renderBoard(): void {
     const fragment = document.createDocumentFragment();
-    for (const tile of this.tiles) {
+    this.tiles.forEach((tile, position) => {
       const button = document.createElement("button");
-      const color = BOARD_SYMBOLS.indexOf(tile.symbol) % 9 + 1;
+      const row = Math.floor(position / 9);
+      const color = (position + row * 2) % 9 + 1;
       button.className = `letter-tile letter-tile--color-${color}`; button.type = "button";
       button.textContent = tile.symbol === "ㆍ" ? "━" : tile.symbol;
       if (CONSONANTS.includes(tile.symbol as never)) button.classList.add("letter-tile--consonant");
@@ -139,7 +140,7 @@ export class TalkApp {
       if (tile.symbol === "ㆍ") button.classList.add("letter-tile--cheonjiin-dot");
       button.dataset.tileId = String(tile.id); button.setAttribute("aria-label", tile.symbol === "ㆍ" ? "Cheonjiin dot" : tile.symbol);
       button.addEventListener("click", () => this.typeTile(tile.id, tile.symbol)); fragment.append(button);
-    }
+    });
     this.board.replaceChildren(fragment);
   }
 
