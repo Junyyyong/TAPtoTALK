@@ -72,11 +72,24 @@
 }
 
 .brand-mark {
+  display: block;
   width: min(89.76vw, 330px);
   height: auto;
   /* A little of the night thrown back up at it, so it sits on the background
      rather than on top of it. */
   filter: drop-shadow(0 10px 24px var(--slab-hard));
+}
+
+.brand-version {
+  margin: 7px 0 0;
+  padding-left: .58em;
+  color: #131313;
+  font-family: "TAP Sans KR", sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: .58em;
+  text-align: center;
 }
 
 .tagline {
