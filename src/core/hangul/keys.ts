@@ -6,8 +6,8 @@ export const CONSONANTS = [
 
 export const CHEONJIIN_STROKES = ["ㅣ", "ㆍ", "ㅡ"] as const;
 
-/** Only primitive, consumable tiles. Cheonjiin and consonant transforms are fixed keys. */
-export const BASE_CONSONANTS = ["ㄱ", "ㄴ", "ㄷ", "ㄹ", "ㅁ", "ㅂ", "ㅅ", "ㅇ", "ㅈ", "ㅎ"] as const;
+/** Galaxy Cheonjiin consonant keys. Repeated taps cycle within each group. */
+export const BASE_CONSONANTS = ["ㄱ", "ㄴ", "ㄷ", "ㅂ", "ㅅ", "ㅇ", "ㅈ"] as const;
 export const BOARD_VOWELS = ["ㅣ", "ㅡ"] as const;
 export const BOARD_SYMBOLS = [...BASE_CONSONANTS, ...BOARD_VOWELS] as const;
 
@@ -16,23 +16,33 @@ export type CheonjiinStroke = (typeof CHEONJIIN_STROKES)[number];
 export type BoardSymbol = (typeof BOARD_SYMBOLS)[number];
 
 /** Controls never consume a random board tile. */
-export type FixedControl = "backspace" | "space" | "punctuation" | "dot" | "aspirate";
+export type FixedControl = "backspace" | "space" | "punctuation" | "dot" | "cycle";
 
-export type ConsonantTransform = "aspirate";
+export const CONSONANT_KEY_CYCLES = {
+  "ㄱ": ["ㄱ", "ㅋ", "ㄲ"],
+  "ㄴ": ["ㄴ", "ㄹ"],
+  "ㄷ": ["ㄷ", "ㅌ", "ㄸ"],
+  "ㅂ": ["ㅂ", "ㅍ", "ㅃ"],
+  "ㅅ": ["ㅅ", "ㅎ", "ㅆ"],
+  "ㅇ": ["ㅇ", "ㅁ"],
+  "ㅈ": ["ㅈ", "ㅊ", "ㅉ"],
+} as const satisfies Partial<Record<BoardSymbol, readonly Consonant[]>>;
 
-export const ASPIRATED_CONSONANTS = { "ㄱ": "ㅋ", "ㄷ": "ㅌ", "ㅂ": "ㅍ", "ㅈ": "ㅊ" } as const;
-export const DOUBLE_CONSONANTS = { "ㄱ": "ㄲ", "ㄷ": "ㄸ", "ㅂ": "ㅃ", "ㅅ": "ㅆ", "ㅈ": "ㅉ" } as const;
-
-export function transformedConsonant(base: BoardSymbol): Consonant | undefined {
-  return ASPIRATED_CONSONANTS[base as keyof typeof ASPIRATED_CONSONANTS];
+export function cycleConsonant(base: BoardSymbol, tapIndex: number): Consonant | undefined {
+  const cycle = CONSONANT_KEY_CYCLES[base as keyof typeof CONSONANT_KEY_CYCLES];
+  return cycle?.[tapIndex % cycle.length];
 }
 
-export function consonantInput(value: Consonant): { base: BoardSymbol; repeats: number; transform?: ConsonantTransform } {
-  const aspirated = Object.entries(ASPIRATED_CONSONANTS).find(([, transformed]) => transformed === value);
-  if (aspirated) return { base: aspirated[0] as BoardSymbol, repeats: 1, transform: "aspirate" };
-  const doubled = Object.entries(DOUBLE_CONSONANTS).find(([, transformed]) => transformed === value);
-  if (doubled) return { base: doubled[0] as BoardSymbol, repeats: 2 };
-  return { base: value as BoardSymbol, repeats: 1 };
+export function consonantKeyLabel(base: BoardSymbol): string {
+  return CONSONANT_KEY_CYCLES[base as keyof typeof CONSONANT_KEY_CYCLES]?.join("") ?? base;
+}
+
+export function consonantInput(value: Consonant): { base: BoardSymbol; taps: number } {
+  for (const [base, cycle] of Object.entries(CONSONANT_KEY_CYCLES)) {
+    const index = (cycle as readonly Consonant[]).indexOf(value);
+    if (index >= 0) return { base: base as BoardSymbol, taps: index + 1 };
+  }
+  return { base: value as BoardSymbol, taps: 1 };
 }
 
 export function isBoardSymbol(value: string): value is BoardSymbol {

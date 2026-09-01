@@ -1,4 +1,4 @@
-import { consonantInput, transformedConsonant, type BoardSymbol } from "./keys";
+import { consonantInput, cycleConsonant, type BoardSymbol } from "./keys";
 import { CHOSEONG, FINAL_PARTS, JONGSEONG, JUNGSEONG, VOWEL_STROKES } from "./layout";
 
 const HANGUL_BASE = 0xac00;
@@ -8,13 +8,13 @@ const JONG_COUNT = 28;
 
 export type TargetToken =
   | BoardSymbol
-  | { control: "dot" | "aspirate" | "space" }
+  | { control: "dot" | "cycle" | "space" }
   | { control: "punctuation"; value: string };
 
 function pushConsonant(tokens: TargetToken[], consonant: (typeof CHOSEONG)[number]): void {
   const input = consonantInput(consonant);
-  for (let index = 0; index < input.repeats; index++) tokens.push(input.base);
-  if (input.transform) tokens.push({ control: input.transform });
+  tokens.push(input.base);
+  for (let index = 1; index < input.taps; index++) tokens.push({ control: "cycle" });
 }
 
 /** Converts display text into the exact board taps and fixed controls it needs. */
@@ -51,13 +51,14 @@ export function requiredBoardSymbols(text: string): BoardSymbol[] {
 /** Resolves fixed-key actions to the stream consumed by the Hangul composer. */
 export function materializeTargetTokens(tokens: readonly TargetToken[]): string[] {
   const values: string[] = [];
-  let transform: { index: number; base: BoardSymbol } | undefined;
+  let transform: { index: number; base: BoardSymbol; steps: number } | undefined;
   for (const token of tokens) {
     if (typeof token === "string") {
       values.push(token);
-      transform = { index: values.length - 1, base: token };
-    } else if (token.control === "aspirate" && transform) {
-      values[transform.index] = transformedConsonant(transform.base) ?? transform.base;
+      transform = { index: values.length - 1, base: token, steps: 0 };
+    } else if (token.control === "cycle" && transform) {
+      transform.steps++;
+      values[transform.index] = cycleConsonant(transform.base, transform.steps) ?? transform.base;
     } else {
       transform = undefined;
       if (token.control === "dot") values.push("ㆍ");

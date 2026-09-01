@@ -20,20 +20,23 @@
 .typed-text.is-wrong { color: var(--ring-bad); } .typed-text.is-correct { color: var(--ring-ok); }
 .letter-board { display: grid; flex: 0 1 auto; width: min(100%,52vh); aspect-ratio: 1; align-self: center; grid-template-columns: repeat(9,minmax(0,1fr)); grid-template-rows: repeat(9,minmax(0,1fr)); gap: clamp(3px,1vw,5px); min-height: 0; margin-block: auto; padding: 0; background: transparent; }
 .letter-tile { position: relative; min-width: 0; min-height: 0; overflow: hidden; padding: 0; border: 0; border-radius: clamp(3px,1.2vw,7px); color: var(--tile-ink); background: var(--tile-face); box-shadow: inset 0 1px 0 rgba(255,255,255,.42),0 2px 0 var(--slab); font-family: inherit; font-size: clamp(13px,4.2vw,22px); font-weight: 600; touch-action: manipulation; }
-.letter-tile--consonant { color: var(--consonant-ink); background: var(--consonant-face); }
+.letter-tile--consonant { color: var(--consonant-ink); background: var(--consonant-face); font-size: clamp(8px,2.7vw,14px); letter-spacing: -.08em; }
 .letter-tile--vowel { color: var(--vowel-ink); background: var(--vowel-face); }
 .letter-tile:active { transform: translateY(1px); }
+.letter-tile.is-active { outline: 3px solid var(--warm); outline-offset: 1px; }
 .letter-tile:disabled { color: rgba(19,19,19,.2); background: rgba(19,19,19,.06); box-shadow: inset 0 0 0 1px rgba(19,19,19,.07); }
-.fixed-controls { display: grid; flex: 0 0 auto; grid-template-columns: repeat(6,minmax(0,1fr)); grid-template-areas: "dot dot dot aspirate aspirate aspirate" "space space space back back back"; gap: 5px 4px; }
-#btn-dot { grid-area: dot; } #btn-aspirate { grid-area: aspirate; }
+.fixed-controls { display: grid; flex: 0 0 auto; grid-template-columns: repeat(6,minmax(0,1fr)); grid-template-areas: "dot dot dot punctuation punctuation punctuation" "space space space back back back"; gap: 5px 4px; }
+.fixed-controls.no-punctuation { grid-template-areas: "dot dot dot dot dot dot" "space space space back back back"; }
+#btn-dot { grid-area: dot; } #btn-punctuation { grid-area: punctuation; }
 #btn-backspace { grid-area: back; } #btn-space { grid-area: space; }
 #btn-submit { grid-area: submit; }
-.is-word-mode .fixed-controls { grid-template-areas: "dot dot dot aspirate aspirate aspirate" "space space back back submit submit"; }
+.is-word-mode .fixed-controls { grid-template-areas: "dot dot dot dot dot dot" "space space back back submit submit"; }
 .control-btn { position: relative; min-width: 0; min-height: 44px; overflow: hidden; padding: 0 8px; border: 1px solid var(--paper-edge); border-radius: 12px; color: var(--ink); background: var(--panel-lit); box-shadow: inset 0 1px 0 rgba(255,255,255,.55),0 1px 2px rgba(29,35,43,.16); font: 600 13px/1 inherit; }
 .control-btn:active { transform: translateY(1px); box-shadow: inset 0 1px 0 rgba(255,255,255,.4); }
 .vowel-control { color: var(--vowel-ink); border-color: var(--paper-edge); background: var(--vowel-face); font-size: 22px; }
-.feature-control { color: var(--ink); border-color: rgba(19,19,19,.14); background: var(--warm); font-size: 13px; }
+.punctuation-control { color: var(--ink); border-color: rgba(19,19,19,.14); background: var(--warm); font-size: 16px; letter-spacing: .12em; }
 #btn-backspace,#btn-space { color: var(--ink); background: linear-gradient(180deg,#fff,var(--paper-lit)); }
+.space-control svg { width: 29px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .writing-submit-row { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
 .writing-submit-row.hidden { display: none; }
 .writing-feedback { flex: 1; margin: 0; color: var(--ink-soft); font-size: 10px; font-weight: 700; line-height: 1.35; }
@@ -78,6 +81,13 @@
 .letter-tile:focus-visible,.control-btn:focus-visible,.submit-btn:focus-visible,.tutorial-key:focus-visible { outline: 3px solid rgba(253,208,0,.72); outline-offset: 2px; }
 .tutorial-dots .dot.done { background: var(--ring-ok); }
 .tutorial-dots .dot.now { background: var(--accent); transform: scale(1.25); }
+.level-list { display: grid; gap: 9px; }
+.level-intro { margin: 0 0 14px; color: var(--ink-soft); font-size: 13px; line-height: 1.5; }
+.level-btn { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; align-items: center; width: 100%; padding: 13px 15px; border: 1px solid var(--paper-edge); border-radius: 12px; color: var(--ink); background: var(--panel-lit); text-align: left; }
+.level-btn strong { color: var(--accent); font-family: "TAP Serif KR", serif; font-size: 17px; }
+.level-btn span { color: var(--ink-soft); font-size: 12px; }
+.level-btn small { grid-column: 2; grid-row: 1 / span 2; color: var(--hot); font-size: 12px; font-weight: 800; }
+.level-btn:disabled { opacity: .42; filter: grayscale(1); }
 .rules-list { display: grid; gap: 10px; }
 .rules-list p { display: grid; gap: 4px; margin: 0; padding: 14px 0; border-bottom: 1px solid var(--paper-edge); }
 .rules-list b { color: var(--ink); font-size: 16px; }

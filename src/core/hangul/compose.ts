@@ -1,5 +1,5 @@
 import type { BoardSymbol, CheonjiinStroke, Consonant } from "./keys";
-import { CHEONJIIN_STROKES, CONSONANTS, DOUBLE_CONSONANTS } from "./keys";
+import { CHEONJIIN_STROKES, CONSONANTS } from "./keys";
 import {
   CHOSEONG,
   FINAL_FROM_PARTS,
@@ -74,11 +74,6 @@ export function composeTokens(tokens: readonly string[]): string {
     }
 
     if (current.strokes.length === 0) {
-      const doubled = DOUBLE_CONSONANTS[current.initial as keyof typeof DOUBLE_CONSONANTS];
-      if (token === current.initial && doubled) {
-        current.initial = doubled;
-        continue;
-      }
       flush();
       current.initial = token;
       continue;

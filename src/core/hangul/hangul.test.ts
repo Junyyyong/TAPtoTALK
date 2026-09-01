@@ -1,13 +1,14 @@
 import { describe, expect, it } from "vitest";
 import { createLetterBoard } from "./board";
 import { composeTokens } from "./compose";
-import { ASPIRATED_CONSONANTS, BOARD_SYMBOLS, DOUBLE_CONSONANTS } from "./keys";
+import { BOARD_SYMBOLS, CONSONANT_KEY_CYCLES, consonantInput } from "./keys";
 import { materializeTargetTokens, requiredBoardSymbols, targetToTokens } from "./target";
+import { SENTENCE_LEVELS } from "../../content/prompts";
 
 describe("TAPtoTALK Hangul domain", () => {
   it("keeps only primitive consonants and vowels on the random board", () => {
-    expect(BOARD_SYMBOLS).toHaveLength(12);
-    expect(new Set(BOARD_SYMBOLS).size).toBe(12);
+    expect(BOARD_SYMBOLS).toHaveLength(9);
+    expect(new Set(BOARD_SYMBOLS).size).toBe(9);
     expect(BOARD_SYMBOLS).not.toContain("ㆍ");
   });
 
@@ -17,15 +18,16 @@ describe("TAPtoTALK Hangul domain", () => {
     expect(composeTokens(input)).toBe(target);
   });
 
-  it("builds tense consonants by repeating a base key and aspirated consonants with gahoeck", () => {
+  it("builds tense and aspirated consonants through Galaxy-style repeated taps", () => {
     const target = "까 타 빠 싸 짜 차";
     expect(composeTokens(materializeTargetTokens(targetToTokens(target)))).toBe(target);
-    expect(composeTokens(["ㄱ", "ㄱ", "ㅣ", "ㆍ"])).toBe("까");
   });
 
-  it("keeps the requested gahoeck and repeated-consonant mappings separate", () => {
-    expect(ASPIRATED_CONSONANTS).toEqual({ "ㄱ": "ㅋ", "ㄷ": "ㅌ", "ㅂ": "ㅍ", "ㅈ": "ㅊ" });
-    expect(DOUBLE_CONSONANTS).toEqual({ "ㄱ": "ㄲ", "ㄷ": "ㄸ", "ㅂ": "ㅃ", "ㅅ": "ㅆ", "ㅈ": "ㅉ" });
+  it("uses the Galaxy Cheonjiin consonant groups", () => {
+    expect(CONSONANT_KEY_CYCLES["ㄱ"]).toEqual(["ㄱ", "ㅋ", "ㄲ"]);
+    expect(CONSONANT_KEY_CYCLES["ㅅ"]).toEqual(["ㅅ", "ㅎ", "ㅆ"]);
+    expect(consonantInput("ㅋ")).toEqual({ base: "ㄱ", taps: 2 });
+    expect(consonantInput("ㄲ")).toEqual({ base: "ㄱ", taps: 3 });
   });
 
   it("composes combined final consonants in entered order", () => {
@@ -45,5 +47,13 @@ describe("TAPtoTALK Hangul domain", () => {
 
   it("rejects a target that cannot fit on one board", () => {
     expect(() => createLetterBoard("가".repeat(41))).toThrow(RangeError);
+  });
+
+  it("keeps every lesson phrase solvable on one 81-block board", () => {
+    expect(SENTENCE_LEVELS).toHaveLength(6);
+    for (const level of SENTENCE_LEVELS) {
+      expect(level.prompts).toHaveLength(5);
+      for (const prompt of level.prompts) expect(() => createLetterBoard(prompt.text)).not.toThrow();
+    }
   });
 });
