@@ -5,7 +5,7 @@ export const CONSONANTS = [
 ] as const;
 
 export const CHEONJIIN_STROKES = ["ㅣ", "ㆍ", "ㅡ"] as const;
-export const PUNCTUATION_SYMBOLS = [".", "!", "?", "~"] as const;
+export const PUNCTUATION_SYMBOLS = [".", "!", "?"] as const;
 
 /** The random 9×9 board owns every writing symbol; only Space/Delete stay fixed. */
 export const BOARD_SYMBOLS = [...CONSONANTS, ...CHEONJIIN_STROKES, ...PUNCTUATION_SYMBOLS] as const;

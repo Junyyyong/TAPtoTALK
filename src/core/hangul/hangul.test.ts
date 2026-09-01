@@ -7,11 +7,12 @@ import { SENTENCE_LEVELS } from "../../content/prompts";
 
 describe("TAPtoTALK Hangul domain", () => {
   it("deals consonants, Cheonjiin strokes, and punctuation without a comma", () => {
-    expect(BOARD_SYMBOLS).toHaveLength(26);
-    expect(new Set(BOARD_SYMBOLS).size).toBe(26);
+    expect(BOARD_SYMBOLS).toHaveLength(25);
+    expect(new Set(BOARD_SYMBOLS).size).toBe(25);
     expect(BOARD_SYMBOLS).toEqual([...CONSONANTS, ...CHEONJIIN_STROKES, ...PUNCTUATION_SYMBOLS]);
-    expect(PUNCTUATION_SYMBOLS).toEqual([".", "!", "?", "~"]);
+    expect(PUNCTUATION_SYMBOLS).toEqual([".", "!", "?"]);
     expect(BOARD_SYMBOLS).not.toContain(",");
+    expect(BOARD_SYMBOLS).not.toContain("~");
   });
 
   it("round-trips a target sentence through Cheonjiin board taps", () => {

@@ -19,7 +19,7 @@ export const DEFAULT_SYMBOL_WEIGHTS: SymbolWeights = {
   "ㅂ": 6, "ㅃ": 2, "ㅅ": 10, "ㅆ": 3, "ㅇ": 14, "ㅈ": 6, "ㅉ": 2,
   "ㅊ": 4, "ㅋ": 3, "ㅌ": 3, "ㅍ": 3, "ㅎ": 7,
   "ㅣ": 12, "ㆍ": 14, "ㅡ": 9,
-  ".": 1, "!": 1, "?": 1, "~": 1,
+  ".": 1, "!": 1, "?": 1,
 };
 
 function weightedPick(rng: () => number, weights: SymbolWeights): BoardSymbol {

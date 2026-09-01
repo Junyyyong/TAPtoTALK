@@ -33,7 +33,7 @@
 .letter-tile--cheonjiin-dot,.letter-tile--period { font-size: 0; }
 .letter-tile--cheonjiin-dot::after,.letter-tile--period::after { position: absolute; top: 50%; left: 50%; width: 8px; height: 8px; background: currentColor; content: ""; transform: translate(-50%,-50%); }
 .letter-tile--cheonjiin-dot::after { border-radius: 1px; }
-.letter-tile--period::after { width: 6px; height: 6px; border-radius: 50%; }
+.letter-tile--period::after { width: 4px; height: 4px; border-radius: 50%; }
 .letter-tile:active { transform: translateY(1px); }
 .letter-tile:disabled { color: rgba(58,15,10,.2); background: rgba(58,15,10,.06); box-shadow: inset 0 0 0 1px rgba(58,15,10,.07); text-shadow: none; }
 .letter-tile:disabled::before { display: none; }
