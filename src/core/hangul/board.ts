@@ -23,6 +23,12 @@ export interface LetterTile {
   mirror?: MirrorAxis;
 }
 
+export const MIRROR_TRAP_TOKEN = "×";
+
+export function inputValueForTile(tile: Pick<LetterTile, "symbol" | "mirror">): BoardSymbol | typeof MIRROR_TRAP_TOKEN {
+  return tile.mirror ? MIRROR_TRAP_TOKEN : tile.symbol;
+}
+
 export type SymbolWeights = Readonly<Partial<Record<BoardSymbol, number>>>;
 
 /** Common Korean letters receive more of the board's spare positions. */

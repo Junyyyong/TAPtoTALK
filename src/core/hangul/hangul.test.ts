@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { createLetterBoard, mirrorAxisFor, TARGET_SYMBOL_BUFFER } from "./board";
+import { createLetterBoard, inputValueForTile, mirrorAxisFor, MIRROR_TRAP_TOKEN, TARGET_SYMBOL_BUFFER } from "./board";
 import { composeTokens } from "./compose";
 import { BOARD_SYMBOLS, CHEONJIIN_STROKES, CONSONANTS, PUNCTUATION_SYMBOLS } from "./keys";
 import { materializeTargetTokens, requiredBoardSymbols, targetToTokens } from "./target";
@@ -64,6 +64,8 @@ describe("TAPtoTALK Hangul domain", () => {
     for (const tile of mirrored) expect(tile.mirror).toBe(mirrorAxisFor(tile.symbol));
     expect(mirrorAxisFor("ㄱ")).toBe("horizontal");
     expect(mirrorAxisFor("ㅂ")).toBe("vertical");
+    expect(inputValueForTile({ symbol: "ㄱ", mirror: "horizontal" })).toBe(MIRROR_TRAP_TOKEN);
+    expect(inputValueForTile({ symbol: "ㄱ" })).toBe("ㄱ");
   });
 
   it("rejects a target that cannot fit on one board", () => {

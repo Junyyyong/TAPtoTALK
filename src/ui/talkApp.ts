@@ -1,4 +1,4 @@
-import { createLetterBoard, type LetterTile, type MirrorAxis } from "../core/hangul/board";
+import { createLetterBoard, inputValueForTile, MIRROR_TRAP_TOKEN, type LetterTile, type MirrorAxis } from "../core/hangul/board";
 import { composeTokens } from "../core/hangul/compose";
 import { CHEONJIIN_STROKES, CONSONANTS, PUNCTUATION_SYMBOLS, type BoardSymbol } from "../core/hangul/keys";
 import { isWordMatch, wordCountLabel } from "../core/hangul/wordChallenge";
@@ -29,7 +29,7 @@ interface TutorialStep {
   body: string;
   keys: readonly string[];
   result: string;
-  mirrors?: Readonly<Partial<Record<string, MirrorAxis>>>;
+  decoys?: readonly { key: string; mirror: MirrorAxis }[];
 }
 
 const TUTORIAL_STEPS: readonly TutorialStep[] = [
@@ -37,7 +37,7 @@ const TUTORIAL_STEPS: readonly TutorialStep[] = [
   { title: "Build a syllable", body: "Tap ㅊ, then ㅣ and ㄴ.", keys: ["ㅊ", "ㅣ", "ㄴ"], result: "친" },
   { title: "Make a vowel", body: "Use the square Cheonjiin dot with ㅣ and ㅡ. Tap ㅣ, then ㆍ.", keys: ["ㅣ", "ㆍ"], result: "ㅏ" },
   { title: "Add punctuation", body: "Only a small period, !, and ? are used. Tap the period.", keys: ["."], result: "." },
-  { title: "Read reversed blocks", body: "Word boards may reverse spare consonants. Tap the sideways ㄱ, then the upside-down ㅂ.", keys: ["ㄱ", "ㅂ"], result: "ㄱ → ㅂ", mirrors: { "ㄱ": "horizontal", "ㅂ": "vertical" } },
+  { title: "Avoid reversed traps", body: "Reversed consonants are traps. Try one, then tap the normal ㅇ.", keys: ["ㅇ"], result: "ㅇ · trap avoided", decoys: [{ key: "ㄱ", mirror: "horizontal" }, { key: "ㅂ", mirror: "vertical" }] },
   { title: "Finish a word", body: "A correct target word is counted automatically.", keys: ["ㅅ", "ㅣ", "ㆍ", "ㄹ", "ㅣ", "ㆍ", "ㅇ"], result: "사랑 · 1 word" },
 ];
 
@@ -156,7 +156,7 @@ export class TalkApp {
       if (tile.symbol === ".") button.classList.add("letter-tile--period");
       if (tile.mirror) button.classList.add(`letter-tile--flip-${tile.mirror === "horizontal" ? "x" : "y"}`);
       button.dataset.tileId = String(tile.id); button.setAttribute("aria-label", tile.symbol === "ㆍ" ? "Cheonjiin dot" : tile.symbol);
-      button.addEventListener("click", () => this.typeTile(tile.id, tile.symbol)); fragment.append(button);
+      button.addEventListener("click", () => inputValueForTile(tile) === MIRROR_TRAP_TOKEN ? this.typeTrapTile(tile.id) : this.typeTile(tile.id, tile.symbol)); fragment.append(button);
     });
     this.board.replaceChildren(fragment);
   }
@@ -168,6 +168,15 @@ export class TalkApp {
     if (this.used.has(tileId)) return;
     feedback.pick(this.input.length + 1);
     this.used.add(tileId); this.input.push({ value, tileId });
+    this.board.querySelector<HTMLButtonElement>(`[data-tile-id="${tileId}"]`)!.disabled = true;
+    this.renderInput();
+  }
+  private typeTrapTile(tileId: number): void {
+    if (this.inputLocked || this.paused || this.used.has(tileId)) return;
+    const target = this.mode === "sentence" ? this.prompt.text : this.wordTarget.word;
+    if (!canAcceptInput(this.input.length, target)) return;
+    feedback.reject();
+    this.used.add(tileId); this.input.push({ value: MIRROR_TRAP_TOKEN, tileId });
     this.board.querySelector<HTMLButtonElement>(`[data-tile-id="${tileId}"]`)!.disabled = true;
     this.renderInput();
   }
@@ -389,10 +398,25 @@ export class TalkApp {
       glyph.textContent = key;
       button.append(glyph);
       if (key === ".") button.classList.add("tutorial-key--period");
-      const mirror = step.mirrors?.[key];
-      if (mirror) button.classList.add(`tutorial-key--flip-${mirror === "horizontal" ? "x" : "y"}`);
       button.addEventListener("click", () => this.playTutorialKey(key));
       keys.append(button);
+    });
+    step.decoys?.forEach(({ key, mirror }) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = `tutorial-key tutorial-key--consonant tutorial-key--flip-${mirror === "horizontal" ? "x" : "y"}`;
+      button.dataset.tutorialDecoy = key;
+      const glyph = document.createElement("span");
+      glyph.className = "tutorial-glyph"; glyph.textContent = key;
+      button.append(glyph);
+      button.addEventListener("click", () => {
+        feedback.reject();
+        button.disabled = true; button.classList.add("is-used");
+        const output = el("tutorial-output");
+        output.textContent = "× Trap! Choose the normal block.";
+        output.classList.remove("is-empty");
+      });
+      keys.prepend(button);
     });
     this.updateTutorialKeys();
     this.tutorialDots.replaceChildren(...TUTORIAL_STEPS.map((_, index) => {
@@ -458,7 +482,7 @@ export class TalkApp {
   private showRules(): void {
     this.tutorialNav.classList.add("hidden");
     this.openHelp("Rules");
-    this.helpBody.innerHTML = `<div class="rules-list"><p><b>Sentence Copy</b><span>Complete five phrases. The full run is worth up to 1,500 points and your best score is saved.</span></p><p><b>Lv.5 time bands</b><span>150s OH MY GOD · 180s UNBELIEVABLE · 200s AMAZING · 240s GREAT</span></p><p><b>Word Challenge</b><span>Make as many target words as you can in 60 seconds. A correct word is counted automatically.</span></p><p><b>Nine mixed colours</b><span>Colours do not belong to a particular letter. A used block turns grey.</span></p><p><b>Vowels</b><span>Use the square ㆍ with ㅡ and ㅣ to build vowels.</span></p><p><b>Punctuation</b><span>Only the small period, !, and ? are used.</span></p><p><b>Reversed blocks</b><span>On punctuation-free word boards, spare ㄱ ㄴ ㄷ ㄹ ㅋ ㅌ may flip sideways; ㅂ ㅅ ㅈ ㅎ may flip upside down. They still type the original consonant.</span></p><p><b>One block, one use</b><span>A used block stays as a light mark. Use Delete to return the latest block.</span></p></div>`;
+    this.helpBody.innerHTML = `<div class="rules-list"><p><b>Sentence Copy</b><span>Complete five phrases. The full run is worth up to 1,500 points and your best score is saved.</span></p><p><b>Lv.5 time bands</b><span>150s OH MY GOD · 180s UNBELIEVABLE · 200s AMAZING · 240s GREAT</span></p><p><b>Word Challenge</b><span>Make as many target words as you can in 60 seconds. A correct word is counted automatically.</span></p><p><b>Nine mixed colours</b><span>Colours do not belong to a particular letter. A used block turns grey.</span></p><p><b>Vowels</b><span>Use the square ㆍ with ㅡ and ㅣ to build vowels.</span></p><p><b>Punctuation</b><span>Only the small period, !, and ? are used.</span></p><p><b>Reversed traps</b><span>On punctuation-free word boards, sideways ㄱ ㄴ ㄷ ㄹ ㅋ ㅌ and upside-down ㅂ ㅅ ㅈ ㅎ are traps. A trap enters ×, turns the line red, and must be removed with Delete.</span></p><p><b>One block, one use</b><span>A used block stays as a light mark. Use Delete to return the latest block.</span></p></div>`;
   }
 
   private showSettings(): void {
