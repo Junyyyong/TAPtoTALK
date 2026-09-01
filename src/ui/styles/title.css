@@ -72,7 +72,7 @@
 }
 
 .brand-mark {
-  width: min(81.6vw, 300px);
+  width: min(89.76vw, 330px);
   height: auto;
   /* A little of the night thrown back up at it, so it sits on the background
      rather than on top of it. */
@@ -94,9 +94,7 @@
 }
 
 .mode-btn {
-  position: relative;
   display: flex;
-  overflow: hidden;
   flex-direction: column;
   gap: 4px;
   padding: 16px 20px;
@@ -114,16 +112,6 @@
   transition: transform 120ms ease, background 160ms ease;
 }
 
-.mode-btn::before {
-  position: absolute;
-  inset: 1px 7% auto;
-  height: 44%;
-  border-radius: inherit;
-  content: "";
-  pointer-events: none;
-  background: linear-gradient(180deg, rgba(255,255,255,.62), rgba(255,255,255,0));
-}
-
 .mode-btn:active {
   background: linear-gradient(180deg, var(--panel-lit), var(--panel-deep));
   transform: translateY(2px);
@@ -133,14 +121,14 @@
 }
 
 .mode-name {
-  font-size: 20px;
-  font-weight: 500;
-  color: var(--accent);
+  font-size: 21px;
+  font-weight: 800;
+  color: var(--cool);
 }
 
 .mode-desc {
   font-size: 13px;
-  font-weight: 400;
+  font-weight: 700;
   color: var(--ink-soft);
 }
 
@@ -148,8 +136,8 @@
   padding: 8px 16px;
   font-family: inherit;
   font-size: 15px;
-  font-weight: 500;
-  color: var(--accent-deep);
+  font-weight: 700;
+  color: var(--hot-deep);
   text-decoration: underline;
   cursor: pointer;
   background: none;
@@ -180,7 +168,7 @@
  */
 @media (max-height: 700px) {
   .brand-mark {
-    width: min(69.6vw, 258px);
+    width: min(76.56vw, 284px);
   }
 
   .mode-btn {
@@ -190,6 +178,6 @@
 
 @media (max-height: 580px) {
   .brand-mark {
-    width: min(52.8vw, 198px);
+    width: min(58.08vw, 218px);
   }
 }
