@@ -27,9 +27,18 @@ describe("topic writing evaluation", () => {
   });
 
   it("scores one complete five-phrase lesson from its total time", () => {
-    expect(lessonScoreFromTime(0, 60_000)).toBe(1500);
-    expect(lessonScoreFromTime(30_000, 60_000)).toBe(750);
-    expect(lessonScoreFromTime(60_000, 60_000)).toBe(0);
+    expect(lessonScoreFromTime(0, 150_000)).toBe(1500);
+    expect(lessonScoreFromTime(150_000, 150_000)).toBe(1400);
+    expect(lessonScoreFromTime(180_000, 150_000)).toBe(1000);
+    expect(lessonScoreFromTime(200_000, 150_000)).toBe(600);
+    expect(lessonScoreFromTime(240_000, 150_000)).toBe(300);
+    expect(lessonScoreFromTime(300_000, 150_000)).toBe(0);
+  });
+
+  it("maps the Lv.5 time boundaries to the intended result labels", () => {
+    expect([150_000, 180_000, 200_000, 240_000, 300_000].map((time) => lessonCheerFor(lessonScoreFromTime(time, 150_000)))).toEqual([
+      "OH MY GOD~!", "UNBELIEVABLE!!", "AMAZING!", "GREAT!", "GOOD TRY!",
+    ]);
   });
 
   it("uses the five TAPtoTEN score bands", () => {

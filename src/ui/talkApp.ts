@@ -340,7 +340,7 @@ export class TalkApp {
       const best = this.sentenceProgress.bestScores[level.id] ?? 0;
       const button = document.createElement("button");
       button.type = "button"; button.className = "level-btn";
-      button.innerHTML = `<strong>${level.name}</strong><span>5 phrases · Goal ${Math.round(level.targetMs / 1000)}s</span><small>${best ? `BEST ${best.toLocaleString()}` : "NEW"}</small>`;
+      button.innerHTML = `<strong>${level.name}</strong><span>5 phrases · Top tier ${Math.round(level.targetMs / 1000)}s</span><small>${best ? `BEST ${best.toLocaleString()}` : "NEW"}</small>`;
       button.addEventListener("click", () => this.startSentenceLevel(index));
       list.append(button);
     });
@@ -466,7 +466,7 @@ export class TalkApp {
   private showRules(): void {
     this.tutorialNav.classList.add("hidden");
     this.openHelp("Rules");
-    this.helpBody.innerHTML = `<div class="rules-list"><p><b>Sentence Copy</b><span>Complete five phrases. The full run is worth up to 1,500 points and your best score is saved.</span></p><p><b>Score bands</b><span>0 GOOD TRY · 300 GREAT · 600 AMAZING · 1,000 UNBELIEVABLE · 1,400 OH MY GOD</span></p><p><b>Word Challenge</b><span>Make the target word and tap Submit. Complete as many words as you can in 60 seconds.</span></p><p><b>Galaxy Cheonjiin</b><span>Tap one consonant block again to cycle its letters, such as ㄱ → ㅋ → ㄲ.</span></p><p><b>Vowels</b><span>Use ㆍ, ㅡ, and ㅣ to build vowels.</span></p><p><b>Punctuation</b><span>Tap the .,! ?~ block repeatedly until the needed mark appears.</span></p><p><b>One block, one use</b><span>After moving to another block, a used block stays as a light mark.</span></p></div>`;
+    this.helpBody.innerHTML = `<div class="rules-list"><p><b>Sentence Copy</b><span>Complete five phrases. The full run is worth up to 1,500 points and your best score is saved.</span></p><p><b>Lv.5 time bands</b><span>150s OH MY GOD · 180s UNBELIEVABLE · 200s AMAZING · 240s GREAT</span></p><p><b>Word Challenge</b><span>Make the target word and tap Submit. Complete as many words as you can in 60 seconds.</span></p><p><b>Galaxy Cheonjiin</b><span>Tap one consonant block again to cycle its letters, such as ㄱ → ㅋ → ㄲ.</span></p><p><b>Vowels</b><span>Use ㆍ, ㅡ, and ㅣ to build vowels.</span></p><p><b>Punctuation</b><span>Tap the .,! ?~ block repeatedly until the needed mark appears.</span></p><p><b>One block, one use</b><span>After moving to another block, a used block stays as a light mark.</span></p></div>`;
   }
 
   private showSettings(): void {

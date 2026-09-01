@@ -34,11 +34,33 @@ export const LESSON_SCORE_TIERS = [
   { at: 0, label: "GOOD TRY!" },
 ] as const;
 
-/** One score for a complete five-phrase lesson: 0–1500 based on total time. */
+const LESSON_TIME_SCORE_POINTS = [
+  { ratio: 0, score: 1500 },
+  { ratio: 1, score: 1400 },
+  { ratio: 1.2, score: 1000 },
+  { ratio: 4 / 3, score: 600 },
+  { ratio: 1.6, score: 300 },
+  { ratio: 2, score: 0 },
+] as const;
+
+/**
+ * One score for a complete five-phrase lesson, based on its total time.
+ * `targetMs` is the OH MY GOD cutoff; slower tier boundaries are derived from it.
+ */
 export function lessonScoreFromTime(elapsedMs: number, targetMs: number): number {
   if (targetMs <= 0) return 0;
-  const remainingRatio = 1 - Math.max(0, Math.min(1, elapsedMs / targetMs));
-  return Math.round(1500 * remainingRatio);
+  const ratio = Math.max(0, elapsedMs / targetMs);
+
+  for (let index = 1; index < LESSON_TIME_SCORE_POINTS.length; index += 1) {
+    const previous = LESSON_TIME_SCORE_POINTS[index - 1]!;
+    const next = LESSON_TIME_SCORE_POINTS[index]!;
+    if (ratio <= next.ratio) {
+      const progress = (ratio - previous.ratio) / (next.ratio - previous.ratio);
+      return Math.round(previous.score + (next.score - previous.score) * progress);
+    }
+  }
+
+  return 0;
 }
 
 export function lessonCheerFor(score: number): string {
