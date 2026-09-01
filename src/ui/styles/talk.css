@@ -23,12 +23,21 @@
 .typed-text.is-empty::before { content: attr(data-empty); color: var(--ink-faint); font-family: "TAP Sans KR", sans-serif; font-size: 15px; font-weight: 500; }
 .typed-text.is-wrong { color: var(--ring-bad); } .typed-text.is-correct { color: var(--ring-ok); }
 .letter-board { display: grid; flex: 0 1 auto; width: min(100%,52vh); aspect-ratio: 1; align-self: center; grid-template-columns: repeat(9,minmax(0,1fr)); grid-template-rows: repeat(9,minmax(0,1fr)); gap: clamp(3px,1vw,5px); min-height: 0; margin-block: auto; padding: 0; background: transparent; }
-.letter-tile { position: relative; min-width: 0; min-height: 0; overflow: hidden; padding: 0; border: 1px solid var(--slab); border-radius: clamp(3px,1.2vw,7px); color: #fff; box-shadow: inset 0 2px 0 rgba(255,255,255,.72),inset 0 -2px 3px var(--slab),0 2px 0 var(--slab); font-family: inherit; font-size: clamp(13px,4.2vw,22px); font-weight: 800; text-shadow: 0 1px 0 var(--slab); touch-action: manipulation; }
-.letter-tile--color-1 { background: var(--v1); } .letter-tile--color-2 { background: var(--v2); }
-.letter-tile--color-3 { background: var(--v3); } .letter-tile--color-4 { background: var(--v4); }
-.letter-tile--color-5 { background: var(--v5); } .letter-tile--color-6 { background: var(--v6); }
-.letter-tile--color-7 { background: var(--v7); } .letter-tile--color-8 { background: var(--v8); }
-.letter-tile--color-9 { background: var(--v9); }
+.letter-tile { position: relative; min-width: 0; min-height: 0; overflow: hidden; padding: 0; border: 1px solid var(--slab); border-radius: 6px; color: #fff; background: linear-gradient(180deg,color-mix(in srgb,var(--face) 76%,white),var(--face)); box-shadow: inset 0 2px 0 rgba(255,255,255,.85),inset 0 -2px 3px var(--slab),0 2px 0 var(--slab); font-family: inherit; font-size: clamp(17px,4.9vw,21px); font-weight: 900; line-height: 1; text-shadow: 0 2px 0 var(--slab); touch-action: manipulation; }
+.letter-tile--color-1 { --face: var(--v1); } .letter-tile--color-2 { --face: var(--v2); }
+.letter-tile--color-3 { --face: var(--v3); } .letter-tile--color-4 { --face: var(--v4); }
+.letter-tile--color-5 { --face: var(--v5); } .letter-tile--color-6 { --face: var(--v6); }
+.letter-tile--color-7 { --face: var(--v7); } .letter-tile--color-8 { --face: var(--v8); }
+.letter-tile--color-9 { --face: var(--v9); } .letter-tile--color-10 { --face: var(--j10); }
+.letter-tile--color-11 { --face: var(--j11); } .letter-tile--color-12 { --face: var(--j12); }
+.letter-tile--color-13 { --face: var(--j13); } .letter-tile--color-14 { --face: var(--j14); }
+.letter-tile--color-15 { --face: var(--j15); } .letter-tile--color-16 { --face: var(--j16); }
+.letter-tile--color-17 { --face: var(--j17); } .letter-tile--color-18 { --face: var(--j18); }
+.letter-tile--color-19 { --face: var(--j19); } .letter-tile--color-20 { --face: var(--j20); }
+.letter-tile--color-21 { --face: var(--j21); } .letter-tile--color-22 { --face: var(--j22); }
+.letter-tile--color-23 { --face: var(--j23); } .letter-tile--color-24 { --face: var(--j24); }
+.letter-tile--color-25 { --face: var(--j25); } .letter-tile--color-26 { --face: var(--j26); }
+.letter-tile--color-27 { --face: var(--j27); }
 .letter-tile--punctuation { font-size: clamp(18px,5vw,25px); font-weight: 800; }
 .letter-tile--cheonjiin-dot,.letter-tile--period { font-size: 0; }
 .letter-tile--cheonjiin-dot::after,.letter-tile--period::after { position: absolute; top: 50%; left: 50%; width: 8px; height: 8px; background: currentColor; content: ""; transform: translate(-50%,-50%); }

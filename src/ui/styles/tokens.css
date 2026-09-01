@@ -123,6 +123,26 @@
   --v8: #92400e;
   --v9: #ca8a04;
 
+  /* TAPtoTALK extends TAPtoTEN's nine block colors to 27 unique symbols. */
+  --j10: #0891b2;
+  --j11: #059669;
+  --j12: #4d7c0f;
+  --j13: #b45309;
+  --j14: #c2410c;
+  --j15: #e11d48;
+  --j16: #be185d;
+  --j17: #a21caf;
+  --j18: #6d28d9;
+  --j19: #4f46e5;
+  --j20: #0369a1;
+  --j21: #0f766e;
+  --j22: #15803d;
+  --j23: #3f6212;
+  --j24: #a16207;
+  --j25: #9a3412;
+  --j26: #9f1239;
+  --j27: #7e22ce;
+
   /* Panel buttons: go, choose, back. Green carries on everywhere. */
   --go: #22a03f;
   --go-deep: #16752c;
