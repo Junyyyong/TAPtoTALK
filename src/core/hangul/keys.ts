@@ -5,17 +5,19 @@ export const CONSONANTS = [
 ] as const;
 
 export const CHEONJIIN_STROKES = ["ㅣ", "ㆍ", "ㅡ"] as const;
-export const PUNCTUATION_SYMBOLS = [".", ",", "!", "?", "~"] as const;
+export const PUNCTUATION_SYMBOLS = ["!", "?"] as const;
 
-/** The random 9×9 board owns all writing symbols; only Space/Delete stay fixed. */
+/** Every input symbol accepted by the composer. */
 export const BOARD_SYMBOLS = [...CONSONANTS, ...CHEONJIIN_STROKES, ...PUNCTUATION_SYMBOLS] as const;
+/** The 9×9 board excludes the three reusable Cheonjiin controls. */
+export const TILE_SYMBOLS = [...CONSONANTS, ...PUNCTUATION_SYMBOLS] as const;
 
 export type Consonant = (typeof CONSONANTS)[number];
 export type CheonjiinStroke = (typeof CHEONJIIN_STROKES)[number];
 export type BoardSymbol = (typeof BOARD_SYMBOLS)[number];
 
 /** Controls never consume a random board tile. */
-export type FixedControl = "backspace" | "space";
+export type FixedControl = "backspace" | "space" | CheonjiinStroke;
 
 export function isBoardSymbol(value: string): value is BoardSymbol {
   return (BOARD_SYMBOLS as readonly string[]).includes(value);

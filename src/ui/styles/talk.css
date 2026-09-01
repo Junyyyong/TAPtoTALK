@@ -29,17 +29,19 @@
 .letter-tile--color-5 { --face: var(--v5); } .letter-tile--color-6 { --face: var(--v6); }
 .letter-tile--color-7 { --face: var(--v7); } .letter-tile--color-8 { --face: var(--v8); }
 .letter-tile--color-9 { --face: var(--v9); }
-.letter-tile--punctuation { font-size: clamp(18px,5vw,25px); font-weight: 800; }
+.letter-tile--punctuation { font-size: clamp(25px,6.8vw,31px); font-weight: 900; }
 .letter-tile--cheonjiin-dot,.letter-tile--period { font-size: 0; }
 .letter-tile--cheonjiin-dot::after,.letter-tile--period::after { position: absolute; top: 50%; left: 50%; width: 8px; height: 8px; background: currentColor; content: ""; transform: translate(-50%,-50%); }
 .letter-tile--cheonjiin-dot::after { border-radius: 1px; }
 .letter-tile--period::after { border-radius: 50%; }
 .letter-tile:active { transform: translateY(1px); }
 .letter-tile:disabled { color: rgba(58,15,10,.2); background: rgba(58,15,10,.06); box-shadow: inset 0 0 0 1px rgba(58,15,10,.07); }
-.fixed-controls { display: grid; flex: 0 0 auto; grid-template-columns: 1fr 1fr; gap: 5px; }
+.fixed-controls { display: grid; flex: 0 0 auto; grid-template-columns: repeat(3,minmax(38px,44px)) minmax(0,1fr) minmax(0,1fr); gap: 5px; }
 .control-btn { position: relative; min-width: 0; min-height: 44px; overflow: hidden; padding: 0 8px; border: 1px solid var(--paper-edge); border-radius: 12px; color: var(--ink); background: var(--panel-lit); box-shadow: inset 0 1px 0 rgba(255,255,255,.55),0 1px 2px rgba(29,35,43,.16); font: 600 13px/1 inherit; }
 .control-btn:active { transform: translateY(1px); box-shadow: inset 0 1px 0 rgba(255,255,255,.4); }
-#btn-backspace,#btn-space { color: var(--ink); background: linear-gradient(180deg,#fff,var(--paper-lit)); }
+#btn-backspace,#btn-space,.vowel-control { color: var(--ink); background: linear-gradient(180deg,#fff,var(--paper-lit)); }
+.vowel-control { display: grid; place-items: center; padding: 0; font-family: "TAP Serif KR",serif; font-size: 22px; font-weight: 800; }
+.cheon-control span { width: 9px; height: 9px; border-radius: 50%; background: currentColor; }
 .space-control svg { width: 29px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .writing-submit-row { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
 .writing-submit-row.hidden { display: none; }
