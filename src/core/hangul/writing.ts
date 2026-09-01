@@ -26,6 +26,13 @@ export function scoreFromTime(elapsedMs: number, durationMs: number): number {
   return 100 + Math.round(900 * remainingRatio);
 }
 
+/** One score for a complete five-phrase lesson: 500–5000 based on total time. */
+export function lessonScoreFromTime(elapsedMs: number, targetMs: number): number {
+  if (targetMs <= 0) return 500;
+  const remainingRatio = 1 - Math.max(0, Math.min(1, elapsedMs / targetMs));
+  return 500 + Math.round(4500 * remainingRatio);
+}
+
 /** Objective, offline-checkable writing criteria. Semantic feedback can be added later. */
 export function evaluateWriting(
   text: string,

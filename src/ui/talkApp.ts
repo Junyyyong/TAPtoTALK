@@ -1,9 +1,8 @@
 import { createLetterBoard, type LetterTile } from "../core/hangul/board";
 import { composeTokens } from "../core/hangul/compose";
 import { CONSONANTS, consonantKeyLabel, cycleConsonant, type BoardSymbol } from "../core/hangul/keys";
-import { targetToTokens } from "../core/hangul/target";
 import { isWordMatch, wordCountLabel } from "../core/hangul/wordChallenge";
-import { scoreFromTime } from "../core/hangul/writing";
+import { lessonScoreFromTime } from "../core/hangul/writing";
 import { SENTENCE_LEVELS, SENTENCE_PROMPTS, WORD_MODE_CONFIG, WORD_TARGETS, type SentencePrompt, type WordTarget } from "../content/prompts";
 import { el } from "./dom";
 import { feedback } from "./feedback";
@@ -74,7 +73,6 @@ export class TalkApp {
   private wordCount = 0;
   private sentenceLevel = 0;
   private sentenceIndex = 0;
-  private sentenceRunScore = 0;
   private inputLocked = true;
   private paused = false;
   private sentenceTimer?: number;
@@ -108,7 +106,7 @@ export class TalkApp {
       if (document.hidden && !this.game.classList.contains("hidden")) this.pauseGame();
     });
     this.applyPreferences();
-    window.setTimeout(() => this.showTitle(), 900);
+    window.setTimeout(() => this.showTitle(), 4_000);
   }
 
   private showTitle(): void {
@@ -118,7 +116,7 @@ export class TalkApp {
     this.result.classList.add("hidden"); this.help.classList.add("hidden"); this.splash.classList.add("hidden"); this.game.classList.add("hidden"); this.title.classList.remove("hidden");
   }
 
-  private start(mode: Mode): void {
+  private start(mode: Mode, keepLessonTime = false): void {
     window.clearTimeout(this.sentenceTimer);
     this.cheer.stop();
     this.inputLocked = false; this.paused = false;
@@ -143,7 +141,7 @@ export class TalkApp {
     this.submitRow.classList.add("hidden");
     this.submitButton.classList.toggle("hidden", mode !== "word");
     this.result.classList.add("hidden"); this.title.classList.add("hidden"); this.splash.classList.add("hidden"); this.game.classList.remove("hidden");
-    this.renderBoard(); this.renderInput(); this.startClock();
+    this.renderBoard(); this.renderInput(); this.startClock(mode === "sentence" && keepLessonTime);
   }
 
   private renderBoard(): void {
@@ -257,21 +255,19 @@ export class TalkApp {
     this.game.classList.add("is-input-locked");
     this.stopClock();
     feedback.complete();
-    const targetMs = 5_000 + targetToTokens(this.prompt.text).length * 800;
-    const score = scoreFromTime(this.elapsedMs, targetMs);
-    this.sentenceRunScore += score;
     const level = SENTENCE_LEVELS[this.sentenceLevel]!;
     const finalSentence = this.sentenceIndex === level.prompts.length - 1;
     if (finalSentence) {
+      const score = lessonScoreFromTime(this.elapsedMs, level.targetMs);
       const previousBest = this.sentenceProgress.bestScores[level.id] ?? 0;
-      this.sentenceProgress.bestScores[level.id] = Math.max(previousBest, this.sentenceRunScore);
+      this.sentenceProgress.bestScores[level.id] = Math.max(previousBest, score);
       saveSentenceProgress(this.sentenceProgress);
       el("btn-again").textContent = "Choose level";
-      this.showResult("Level complete!", `${this.sentenceRunScore.toLocaleString()} points · Best ${this.sentenceProgress.bestScores[level.id]!.toLocaleString()}`, this.sentenceRunScore, score);
+      this.showResult("Level complete!", `${score.toLocaleString()} points · ${formatTime(this.elapsedMs)} · Best ${this.sentenceProgress.bestScores[level.id]!.toLocaleString()}`, score, Math.round(score / 5));
     } else {
       this.sentenceTimer = window.setTimeout(() => {
         this.sentenceIndex += 1;
-        this.start("sentence");
+        this.start("sentence", true);
       }, 520);
     }
   }
@@ -350,14 +346,14 @@ export class TalkApp {
       const best = this.sentenceProgress.bestScores[level.id] ?? 0;
       const button = document.createElement("button");
       button.type = "button"; button.className = "level-btn";
-      button.innerHTML = `<strong>${level.name}</strong><span>5 phrases</span><small>${best ? `BEST ${best.toLocaleString()}` : "NEW"}</small>`;
+      button.innerHTML = `<strong>${level.name}</strong><span>5 phrases · Goal ${Math.round(level.targetMs / 1000)}s</span><small>${best ? `BEST ${best.toLocaleString()}` : "NEW"}</small>`;
       button.addEventListener("click", () => this.startSentenceLevel(index));
       list.append(button);
     });
   }
 
   private startSentenceLevel(index: number): void {
-    this.sentenceLevel = index; this.sentenceIndex = 0; this.sentenceRunScore = 0;
+    this.sentenceLevel = index; this.sentenceIndex = 0; this.elapsedMs = 0;
     this.help.classList.add("hidden");
     this.start("sentence");
   }

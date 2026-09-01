@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { evaluateWriting, scoreFromTime, type WritingRules } from "./writing";
+import { evaluateWriting, lessonScoreFromTime, scoreFromTime, type WritingRules } from "./writing";
 
 const rules: WritingRules = {
   minSyllables: 8,
@@ -24,5 +24,11 @@ describe("topic writing evaluation", () => {
     expect(scoreFromTime(0, 60_000)).toBe(1000);
     expect(scoreFromTime(30_000, 60_000)).toBe(550);
     expect(scoreFromTime(60_000, 60_000)).toBe(100);
+  });
+
+  it("scores one complete five-phrase lesson from its total time", () => {
+    expect(lessonScoreFromTime(0, 60_000)).toBe(5000);
+    expect(lessonScoreFromTime(30_000, 60_000)).toBe(2750);
+    expect(lessonScoreFromTime(60_000, 60_000)).toBe(500);
   });
 });
