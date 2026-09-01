@@ -3,6 +3,7 @@ import { requiredBoardSymbols } from "./target";
 
 export const BOARD_SIZE = 81;
 export const TARGET_SYMBOL_BUFFER = 1.5;
+export const MIRROR_TRAP_CHANCE = 0.2;
 export type MirrorAxis = "horizontal" | "vertical";
 
 const HORIZONTAL_MIRROR_SYMBOLS = ["ㄱ", "ㄴ", "ㄷ", "ㄹ", "ㅋ", "ㅌ"] as const;
@@ -83,7 +84,7 @@ export function createLetterBoard(
   const tiles: LetterTile[] = required.map((symbol, id) => ({ id, symbol, required: true }));
   while (tiles.length < BOARD_SIZE) {
     const symbol = weightedPick(rng, weights, dealSymbols);
-    const axis = punctuationFree && rng() < 0.5 ? mirrorAxisFor(symbol) : undefined;
+    const axis = punctuationFree && rng() < MIRROR_TRAP_CHANCE ? mirrorAxisFor(symbol) : undefined;
     tiles.push({ id: tiles.length, symbol, required: false, ...(axis ? { mirror: axis } : {}) });
   }
   return shuffle(tiles, rng);
