@@ -12,8 +12,8 @@ export const APP_CONFIG = {
   name: "TAP to TALK",
   board: { columns: 9, rows: 9 },
   assets: {
-    logo: new URL("../../TAPtoTALK-logo.svg", import.meta.url).href,
-    splash: "./assets/brand/splash.webp",
+    logo: new URL("../../TAPtoTALK-logo-0901.svg", import.meta.url).href,
+    splash: new URL("../../taptotalk-cover.png", import.meta.url).href,
     celebrationVideo: MOVIE_1.video,
     celebrationAudio: MOVIE_1.sound,
     celebrations: [
