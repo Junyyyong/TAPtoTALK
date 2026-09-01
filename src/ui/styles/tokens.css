@@ -113,35 +113,15 @@
    * read in groups, which is what the game actually asks for. They are drawn
    * from the cast on the cover so the board and the characters are one world.
    */
-  --v1: #2c7fe0;
-  --v2: #0d9488;
-  --v3: #43a73f;
-  --v4: #7c3aed;
-  --v5: #dc2626;
-  --v6: #ea580c;
-  --v7: #db2777;
-  --v8: #92400e;
-  --v9: #ca8a04;
-
-  /* Extra symbol colours deliberately vary hue and brightness as well as hex. */
-  --j10: #003049;
-  --j11: #00a6c7;
-  --j12: #7a8f35;
-  --j13: #4a4e69;
-  --j14: #780000;
-  --j15: #ff4d6d;
-  --j16: #5a189a;
-  --j17: #8a9a00;
-  --j18: #b5179e;
-  --j19: #3a0ca3;
-  --j20: #4361ee;
-  --j21: #006d77;
-  --j22: #52a96b;
-  --j23: #283618;
-  --j24: #bc6c25;
-  --j25: #6f1d1b;
-  --j26: #ff006e;
-  --j27: #374151;
+  --v1: #f238a0;
+  --v2: #ee2b35;
+  --v3: #f47b16;
+  --v4: #f2cf0b;
+  --v5: #17d65b;
+  --v6: #08a936;
+  --v7: #16b7e8;
+  --v8: #155ce5;
+  --v9: #9a35e8;
 
   /* Panel buttons: go, choose, back. Green carries on everywhere. */
   --go: #22a03f;
