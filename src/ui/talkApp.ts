@@ -20,6 +20,19 @@ const formatTime = (ms: number): string => {
   return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}.${tenths}`;
 };
 
+/** Stable TAPtoTEN color families, balanced so common jamo do not share one color. */
+const SYMBOL_COLOR: Readonly<Record<BoardSymbol, number>> = {
+  "ㆍ": 1, "ㅈ": 1,
+  "ㅇ": 2, "ㄸ": 2,
+  "ㅊ": 3, "ㅋ": 3, "ㅌ": 3, "ㅍ": 3, "ㅃ": 3, "?": 3,
+  "ㄴ": 4, "ㅆ": 4, ".": 4,
+  "ㅣ": 5, "ㄲ": 5, "ㅉ": 5,
+  "ㅅ": 6, "ㅂ": 6,
+  "ㄹ": 7, "ㅁ": 7,
+  "ㅡ": 8, "ㄷ": 8, ",": 8,
+  "ㄱ": 9, "ㅎ": 9, "!": 9, "~": 9,
+};
+
 const TUTORIAL_STEPS = [
   { title: "Pick one consonant", body: "Every consonant has its own block. Tap ㅋ once.", keys: ["ㅋ"], result: "ㅋ" },
   { title: "Build a syllable", body: "Tap ㅊ, then ㅣ and ㄴ.", keys: ["ㅊ", "ㅣ", "ㄴ"], result: "친" },
@@ -128,10 +141,9 @@ export class TalkApp {
 
   private renderBoard(): void {
     const fragment = document.createDocumentFragment();
-    this.tiles.forEach((tile, position) => {
+    this.tiles.forEach((tile) => {
       const button = document.createElement("button");
-      const row = Math.floor(position / 9);
-      const color = (position + row * 2) % 9 + 1;
+      const color = SYMBOL_COLOR[tile.symbol];
       button.className = `letter-tile letter-tile--color-${color}`; button.type = "button";
       button.textContent = tile.symbol === "ㆍ" ? "━" : tile.symbol;
       if (CONSONANTS.includes(tile.symbol as never)) button.classList.add("letter-tile--consonant");
