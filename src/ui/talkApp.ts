@@ -178,7 +178,7 @@ export class TalkApp {
       const first = course.levels[0]!.number; const last = course.levels.at(-1)!.number;
       const button = document.createElement("button");
       button.type = "button"; button.className = "level-btn alphabet-course-btn";
-      button.innerHTML = `<strong>${course.name}</strong><span>${course.description}</span><em>Lv.${first} → Lv.${last} · 5 tasks each</em><small>START</small>`;
+      button.innerHTML = `<strong>${course.name}</strong><span>${course.description}</span><em>Lv.${first} → Lv.${last} · required order</em><small>START</small>`;
       button.addEventListener("click", () => this.startAlphabetCourse(index));
       list.append(button);
     });
@@ -667,7 +667,7 @@ export class TalkApp {
   private showRules(): void {
     this.tutorialNav.classList.add("hidden");
     this.openHelp("Rules");
-    this.helpBody.innerHTML = `<div class="rules-list"><p><b>Korean Alphabet</b><span>Choose Consonants, Vowels, or Syllables. Each course starts at its first level and all four levels must be completed in order.</span></p><p><b>Alphabet tasks</b><span>Every level has five tasks and a fresh timer. A timeout retries the current level instead of returning to the first.</span></p><p><b>Sentence Copy</b><span>Complete five phrases. The full run is worth up to 1,500 points and your best score is saved.</span></p><p><b>Lv.5 time bands</b><span>150s OH MY GOD · 180s UNBELIEVABLE · 200s AMAZING · 240s GREAT</span></p><p><b>Word Challenge</b><span>Make as many target words as you can in 60 seconds. A correct word is counted automatically.</span></p><p><b>Nine mixed colours</b><span>Colours do not belong to a particular letter. A used block turns grey.</span></p><p><b>Vowels</b><span>Use only ㆍ, ㅡ, and ㅣ to build the displayed vowels.</span></p><p><b>Reversed traps</b><span>Mirrored consonants are traps from Lv.1. They never count as the original consonant.</span></p><p><b>One block, one use</b><span>A correct used block stays as a light mark.</span></p></div>`;
+    this.helpBody.innerHTML = `<div class="rules-list"><p><b>Korean Alphabet</b><span>Choose Consonants, Vowels, or Syllables. Each course starts at its first level and all four levels must be completed in order.</span></p><p><b>Alphabet tasks</b><span>Each level has a fresh timer. A timeout retries the current level instead of returning to the first.</span></p><p><b>Sentence Copy</b><span>Complete five phrases. The full run is worth up to 1,500 points and your best score is saved.</span></p><p><b>Lv.5 time bands</b><span>150s OH MY GOD · 180s UNBELIEVABLE · 200s AMAZING · 240s GREAT</span></p><p><b>Word Challenge</b><span>Make as many target words as you can in 60 seconds. A correct word is counted automatically.</span></p><p><b>Nine mixed colours</b><span>Colours do not belong to a particular letter. A used block turns grey.</span></p><p><b>Vowels</b><span>Use only ㆍ, ㅡ, and ㅣ to build the displayed vowels.</span></p><p><b>Reversed traps</b><span>Mirrored consonants are traps from Lv.1. They never count as the original consonant.</span></p><p><b>One block, one use</b><span>A correct used block stays as a light mark.</span></p></div>`;
   }
 
   private showSettings(): void {

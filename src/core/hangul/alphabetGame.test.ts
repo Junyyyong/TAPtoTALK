@@ -3,17 +3,25 @@ import { ALPHABET_COURSES } from "../../content/prompts";
 import { checkSequenceTap, createAlphabetBoard, decomposeAlphabetTarget } from "./alphabetGame";
 
 describe("Korean Alphabet courses", () => {
-  it("offers three courses with four mandatory levels and five tasks each", () => {
+  it("offers three courses with four mandatory levels", () => {
     expect(ALPHABET_COURSES.map((course) => course.id)).toEqual(["consonants", "vowels", "syllables"]);
     expect(ALPHABET_COURSES.flatMap((course) => course.levels.map((level) => level.number))).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
     for (const course of ALPHABET_COURSES) {
       expect(course.levels).toHaveLength(4);
       for (const level of course.levels) {
-        expect(level.sequence).toHaveLength(5);
-        expect(level.tapGroups).toHaveLength(5);
+        expect(level.sequence.length).toBeGreaterThan(0);
+        expect(level.tapGroups).toHaveLength(level.sequence.length);
         expect(level.tapGroups.flat().length).toBeLessThanOrEqual(81);
       }
     }
+  });
+
+  it("runs the full consonant order once before the added-stroke groups", () => {
+    const [basic, strokes] = ALPHABET_COURSES[0]!.levels;
+    expect(basic!.durationMs).toBe(60_000);
+    expect(basic!.sequence).toEqual(["ㄱㄴㄷㄹㅁㅂㅅㅇㅈㅊㅋㅌㅍㅎ"]);
+    expect(strokes!.durationMs).toBe(75_000);
+    expect(strokes!.sequence).toEqual(["ㄱㅋ", "ㄴㄷㄹ", "ㅁㅂㅍ", "ㅅㅈㅊ", "ㅇㅎ"]);
   });
 
   it("adds mirrored traps from the first consonant level", () => {
