@@ -69,6 +69,7 @@
 | 2026-09-02 | `d150139` | Vowels 자판에 모음천과 헷갈리는 작은 마침표 함정을 섞고 각 레벨의 마지막 종합 반복을 제거했다. Syllables도 마지막 반복을 제거하고 완성 모음 대신 `ㆍ·ㅡ·ㅣ`를 조합해 입력하도록 변경했다. ([모음](screenshots/2026-09-02-vowel-period-traps.png), [음절](screenshots/2026-09-02-syllable-cheonjiin-strokes.png)) |
 | 2026-09-02 | `07ac6e1` | 자소별 완료·현재·오입력 색상, 현재 문제 Retry, 완료 목표 박스 반전을 추가했다. Word Challenge는 받침 없음·받침 있음·감탄사·의성의태어·복모음의 5단계에서 3단어씩 학습하도록 바꾸고, Sentence Copy의 기존 단어 2단계를 이동했다. Syllables는 받침 한 글자부터 `개·왜·꾀`의 복모음까지 `ㆍ·ㅡ·ㅣ`로 조합한다. ([진행 표시](screenshots/2026-09-02-alphabet-visible-progress-retry.png), [완료 반전](screenshots/2026-09-02-alphabet-target-negative-complete.png), [단어 단계](screenshots/2026-09-02-word-learning-levels.png), [받침](screenshots/2026-09-02-syllable-final-sounds.png), [복모음](screenshots/2026-09-02-syllable-compound-vowels.png)) |
 | 2026-09-02 | `586c420` | Korean Alphabet에서 한 번에 제시하는 목표를 최대 5자소로 제한했다. Lv.1은 전체 자음 순서를 5·5·4개로 나누고, Lv.3은 3·4·5개, Lv.4는 5개씩 출제하며 모음의 6자 목표도 5자로 줄였다. ([스크린샷](screenshots/2026-09-02-alphabet-five-jamo-maximum.png)) |
+| 2026-09-02 | `ded575e` | Word Challenge와 Sentence Copy에도 입력한 글자, 자소별 완료·현재·오류 상태, 전체 자소 대비 입력 수를 표시하고 완료 시 목표 박스를 반전하도록 했다. 알파벳 코스의 중복 `required order` 행을 제거하고 메인 게임 설명을 짧은 한 줄로 정리했다. ([단어](screenshots/2026-09-02-word-jamo-progress-error.png), [문장](screenshots/2026-09-02-sentence-jamo-progress-error.png), [코스 선택](screenshots/2026-09-02-simple-alphabet-course-picker.png)) |
 
 ## 현재 기준
 
