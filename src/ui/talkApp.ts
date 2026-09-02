@@ -6,6 +6,7 @@ import { isWordMatch, pickLessonTargets, wordCountLabel } from "../core/hangul/w
 import { lessonCheerFor, lessonScoreFromTime } from "../core/hangul/writing";
 import { materializeTargetTokens, targetCharacterProgress, targetToTokens } from "../core/hangul/target";
 import { ALPHABET_COURSES, SENTENCE_LEVELS, SENTENCE_PROMPTS, WORD_LEVELS, WORD_TARGETS, alphabetTargetNote, type AlphabetLevel, type SentencePrompt, type WordTarget } from "../content/prompts";
+import { APP_CONFIG } from "../config/app";
 import { el } from "./dom";
 import { feedback } from "./feedback";
 import { canAcceptInput } from "./inputCapacity";
@@ -48,6 +49,7 @@ const TUTORIAL_STEPS: readonly TutorialStep[] = [
 /** Thin UI coordinator. Hangul behavior stays in core/hangul. */
 export class TalkApp {
   private readonly cheer = new Cheer();
+  private readonly studioSplash = el("screen-studio-splash");
   private readonly splash = el("screen-splash");
   private readonly title = el("screen-title");
   private readonly game = el("screen-game");
@@ -126,14 +128,20 @@ export class TalkApp {
       if (document.hidden && !this.game.classList.contains("hidden")) this.pauseGame();
     });
     this.applyPreferences();
-    window.setTimeout(() => this.showTitle(), 4_000);
+    window.setTimeout(() => this.showProductSplash(), APP_CONFIG.timing.studioSplashMs);
+    window.setTimeout(() => this.showTitle(), APP_CONFIG.timing.studioSplashMs + APP_CONFIG.timing.productSplashMs);
+  }
+
+  private showProductSplash(): void {
+    this.studioSplash.classList.add("hidden");
+    this.splash.classList.remove("hidden");
   }
 
   private showTitle(): void {
     window.clearTimeout(this.sentenceTimer);
     this.inputLocked = true; this.paused = false;
     this.stopClock(); this.cheer.stop();
-    this.result.classList.add("hidden"); this.help.classList.add("hidden"); this.splash.classList.add("hidden"); this.game.classList.add("hidden"); this.title.classList.remove("hidden");
+    this.result.classList.add("hidden"); this.help.classList.add("hidden"); this.studioSplash.classList.add("hidden"); this.splash.classList.add("hidden"); this.game.classList.add("hidden"); this.title.classList.remove("hidden");
   }
 
   private start(mode: Mode, keepLessonTime = false): void {
