@@ -75,6 +75,7 @@
 | 2026-09-02 | `a5cd9ad` | 글꼴 위치에 의존하던 자소 영역 추정 표시를 되돌리고 목표 음절 전체의 현재·완료·오류 표시로 복원했다. 입력 영역은 64px로 줄이고 9×9 자판은 축소되지 않는 정사각형으로 고정했다. ([전체 화면](screenshots/2026-09-02-square-board-whole-syllable-progress.png), [입력 후](screenshots/2026-09-02-whole-syllable-progress-after-tap.png)) |
 | 2026-09-02 | `8026c89` | Korean Alphabet의 자음은 표준 명칭, 모음은 표준 소리로 안내하고 음절에는 짧은 영문 뜻을 표시했다. 애매한 `외`는 `귀 / ear`로 교체했다. 모든 게임의 한글 제시어를 28px로 통일하고 단어 번역을 독립된 한 줄로 분리했으며, 입력 글자를 밑줄 가까이 내렸다. ([자소](screenshots/2026-09-02-alphabet-standard-pronunciation.png), [단어](screenshots/2026-09-02-word-stacked-translation-input-line.png), [입력](screenshots/2026-09-02-lowered-typed-text.png)) |
 | 2026-09-02 | `0fbb8ec` | Syllables를 Lv.9–13의 생활 중심 5단계로 확장했다. `나·너`에서 시작해 신체, 일상, 자연을 거쳐 `힘·꾀·꿈·개·소·말·닭·술·춤`으로 마무리하며 각 음절에 짧은 영문 뜻을 제공한다. ([스크린샷](screenshots/2026-09-02-syllables-lv9-na-neo.png)) |
+| 2026-09-02 | `f12d632` | 기존 TAPtoTALK 커버 앞에 3초 TapeeTepee 스튜디오 시작 화면을 추가했다. 원본 배경색 `#1d2087`로 전체 화면을 채우고 이미지를 `contain`으로 배치해 기기 비율이 달라도 빈 띠가 생기지 않으며, 1290px 폭으로 최적화해 모바일 디코딩 지연을 줄였다. 이후 기존 커버가 4초 표시된다. ([스튜디오](screenshots/2026-09-02-tapeetepee-studio-splash.png), [기존 커버](screenshots/2026-09-02-studio-to-product-cover.png)) |
 
 ## 현재 기준
 
