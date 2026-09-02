@@ -72,6 +72,7 @@
 | 2026-09-02 | `ded575e` | Word Challenge와 Sentence Copy에도 입력한 글자, 자소별 완료·현재·오류 상태, 전체 자소 대비 입력 수를 표시하고 완료 시 목표 박스를 반전하도록 했다. 알파벳 코스의 중복 `required order` 행을 제거하고 메인 게임 설명을 짧은 한 줄로 정리했다. ([단어](screenshots/2026-09-02-word-jamo-progress-error.png), [문장](screenshots/2026-09-02-sentence-jamo-progress-error.png), [코스 선택](screenshots/2026-09-02-simple-alphabet-course-picker.png)) |
 | 2026-09-02 | `5f17754` | Word Challenge와 Sentence Copy의 별도 자소 블록 줄을 제거하고 목표 단어·문장의 해당 글자가 입력 진행에 따라 현재·완료·오류 색상으로 직접 바뀌게 했다. 목표 글자 크기는 28px로 고정하고 입력 수 표시는 유지했다. ([진행](screenshots/2026-09-02-word-target-character-progress.png), [오류](screenshots/2026-09-02-word-target-character-error.png), [문장](screenshots/2026-09-02-sentence-target-character-progress.png)) |
 | 2026-09-02 | `af81b01` | 합성 글자 전체가 아니라 입력한 초성·모음·받침 영역만 색이 변하도록 세로모음형·가로모음형·복모음형 레이어를 분리했다. 입력 안내와 실제 입력은 동일한 92px 공간을 사용해 입력 전후 자판 위치가 움직이지 않는다. ([입력 전](screenshots/2026-09-02-fixed-input-space-before.png), [초성 색상](screenshots/2026-09-02-initial-component-color.png)) |
+| 2026-09-02 | `a5cd9ad` | 글꼴 위치에 의존하던 자소 영역 추정 표시를 되돌리고 목표 음절 전체의 현재·완료·오류 표시로 복원했다. 입력 영역은 64px로 줄이고 9×9 자판은 축소되지 않는 정사각형으로 고정했다. ([전체 화면](screenshots/2026-09-02-square-board-whole-syllable-progress.png), [입력 후](screenshots/2026-09-02-whole-syllable-progress-after-tap.png)) |
 
 ## 현재 기준
 
