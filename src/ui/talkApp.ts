@@ -135,6 +135,7 @@ export class TalkApp {
   private showProductSplash(): void {
     this.studioSplash.classList.add("hidden");
     this.splash.classList.remove("hidden");
+    document.querySelector<HTMLMetaElement>('meta[name="theme-color"]')?.setAttribute("content", "#ffffff");
   }
 
   private showTitle(): void {
