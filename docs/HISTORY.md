@@ -84,6 +84,7 @@
 | 2026-09-02 | `3a5a07f` | 첫 스튜디오 화면 다음에 4초간 표시되는 TAPtoTALK 커버를 새 `taptotalk-cover7.png`로 교체했다. 4837px 원본을 모바일용 1290px 폭으로 최적화하고 초기 HTML과 앱 설정 경로를 함께 변경했다. ([스크린샷](screenshots/2026-09-02-cover7-splash.png)) |
 | 2026-09-03 | `9a5d6b4` | GitHub에 업로드된 새 `TAPtoTALK-logo2.svg`를 메인 로고로 연결했다. Consonants의 Long Memory Lv.4를 제거해 Lv.1–3만 순서대로 진행하며, 선택 화면 설명을 `order, added strokes`로 간소화했다. ([메인](screenshots/2026-09-03-main-logo2.png), [코스 선택](screenshots/2026-09-03-consonants-lv1-3.png)) |
 | 2026-09-03 | `e13b3fc` | Korean Alphabet은 오입력이 진행에 반영되지 않는 구조이므로 불필요한 `Retry this item` 버튼과 전용 초기화 상태·처리 코드를 제거했다. ([스크린샷](screenshots/2026-09-03-alphabet-no-retry.png)) |
+| 2026-09-03 | `6751e42` | 게임 완료 시 `4`, 태피, 티피, 후피, 해피, 재피의 WebM·MP4·MP3 여섯 묶음 중 하나를 무작위로 선택하도록 확장했다. 점수별 영상 크기·위치는 유지하고, macOS·Linux 배포 호환성을 위해 한글 미디어 파일명을 안전한 영문 이름으로 정리했다. ([스크린샷](screenshots/2026-09-03-random-celebration-video.png)) |
 
 ## 현재 기준
 
