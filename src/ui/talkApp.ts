@@ -92,7 +92,6 @@ export class TalkApp {
   private alphabetTiles: AlphabetTile[] = [];
   private alphabetSequence: readonly string[] = [];
   private alphabetTapGroups: readonly (readonly string[])[] = [];
-  private alphabetCurrentUsed: number[] = [];
   private alphabetWrong = false;
   private alphabetTotalMs = 0;
   private alphabetCourseComplete = false;
@@ -114,7 +113,6 @@ export class TalkApp {
     el("btn-pause").addEventListener("click", () => this.pauseGame());
     this.setupBackspace();
     el("btn-space").addEventListener("click", () => this.typeFixed(" "));
-    el("btn-alphabet-retry").addEventListener("click", () => this.retryAlphabetTarget());
     el("btn-again").addEventListener("click", () => this.continueFromResult());
     el("btn-result-menu").addEventListener("click", () => this.showTitle());
     el("btn-title-tutorial").addEventListener("click", () => this.showTutorial());
@@ -229,7 +227,7 @@ export class TalkApp {
     const course = ALPHABET_COURSES[this.alphabetCourseIndex]!;
     const level = this.currentAlphabetLevel();
     this.alphabetTargetIndex = 0; this.alphabetPartIndex = 0;
-    this.alphabetCurrentUsed = []; this.alphabetWrong = false;
+    this.alphabetWrong = false;
     this.targetPrompt.classList.remove("is-alphabet-complete");
     this.used.clear();
     this.alphabetSequence = level.randomizeTargets
@@ -285,7 +283,6 @@ export class TalkApp {
     }
     feedback.pick(this.alphabetTargetIndex + result.nextIndex);
     this.used.add(tile.id); button.disabled = true;
-    this.alphabetCurrentUsed.push(tile.id);
     this.alphabetPartIndex = result.nextIndex;
     if (result.complete) {
       this.inputLocked = true;
@@ -293,7 +290,7 @@ export class TalkApp {
       this.renderAlphabetProgress();
       window.setTimeout(() => {
         this.targetPrompt.classList.remove("is-alphabet-complete");
-        this.alphabetTargetIndex += 1; this.alphabetPartIndex = 0; this.alphabetCurrentUsed = [];
+        this.alphabetTargetIndex += 1; this.alphabetPartIndex = 0;
         if (this.alphabetTargetIndex === this.alphabetSequence.length) this.completeAlphabetLevel();
         else { this.inputLocked = false; this.renderAlphabetProgress(); }
       }, 340);
@@ -327,17 +324,6 @@ export class TalkApp {
     this.typedText.dataset.empty = "";
     this.typedText.classList.remove("is-empty", "is-wrong", "is-correct");
     this.targetHint.textContent = `${preview}${this.alphabetTargetIndex + 6 < this.alphabetSequence.length ? " → …" : ""}`;
-  }
-
-  private retryAlphabetTarget(): void {
-    if (this.mode !== "alphabet" || this.paused || this.inputLocked) return;
-    this.alphabetCurrentUsed.forEach((tileId) => {
-      this.used.delete(tileId);
-      const button = this.board.querySelector<HTMLButtonElement>(`[data-tile-id="${tileId}"]`);
-      if (button) button.disabled = false;
-    });
-    this.alphabetCurrentUsed = []; this.alphabetPartIndex = 0; this.alphabetWrong = false;
-    feedback.tap(); this.renderAlphabetProgress();
   }
 
   private completeAlphabetLevel(): void {

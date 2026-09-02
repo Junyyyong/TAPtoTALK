@@ -8,11 +8,8 @@
 .wood-btn { position: relative; min-height: 48px; overflow: hidden; padding: 0 20px; border: 0; border-radius: 14px; color: white; background: linear-gradient(180deg,var(--go),var(--go-deep)); box-shadow: inset 0 1px 0 rgba(255,255,255,.42),0 4px 0 rgba(29,35,43,.26); font: 600 16px/1 inherit; }
 .talk-screen { gap: 12px; padding-inline: max(12px, env(safe-area-inset-left)); padding-bottom: max(10px, env(safe-area-inset-bottom)); }
 .talk-screen .hud { flex: 0 0 auto; padding-inline: 0; }
-.talk-screen.is-input-locked .letter-board,.talk-screen.is-input-locked .fixed-controls,.talk-screen.is-input-locked .alphabet-controls { pointer-events: none; }
+.talk-screen.is-input-locked .letter-board,.talk-screen.is-input-locked .fixed-controls { pointer-events: none; }
 .talk-screen.is-alphabet-mode .fixed-controls { display: none; }
-.alphabet-controls { display: none; }
-.talk-screen.is-alphabet-mode .alphabet-controls { display: grid; flex: 0 0 auto; }
-.alphabet-controls .control-btn { height: 42px; color: var(--accent-deep); background: var(--panel-lit); }
 .talk-screen.is-alphabet-mode .target-prompt { min-height: 122px; }
 .talk-screen.is-alphabet-mode .target-text { color: var(--ink); font-size: 28px; line-height: 1.15; }
 .talk-screen.is-alphabet-mode .target-text.is-medium-sequence { font-size: 28px; letter-spacing: .04em; }
