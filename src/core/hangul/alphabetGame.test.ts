@@ -5,6 +5,7 @@ import { ALPHABET_ROUNDS } from "../../content/prompts";
 describe("Korean Alphabet sequence game", () => {
   it("teaches consonants, vowels, syllables, then complex sound words", () => {
     expect(ALPHABET_ROUNDS.map((round) => round.id)).toEqual(["consonants", "vowels", "syllables", "sounds"]);
+    expect(ALPHABET_ROUNDS.map((round) => round.durationMs)).toEqual([40_000, 40_000, 120_000, 90_000]);
     expect(ALPHABET_ROUNDS[0]!.sequence.slice(0, 4)).toEqual(["ㄱ", "ㄴ", "ㄷ", "ㄹ"]);
     expect(ALPHABET_ROUNDS[1]!.sequence).toEqual(["ㅏ", "ㅑ", "ㅓ", "ㅕ", "ㅗ", "ㅛ", "ㅜ", "ㅠ", "ㅡ", "ㅣ"]);
     expect(ALPHABET_ROUNDS[3]!.sequence.slice(0, 3)).toEqual(["쾅", "쿵", "꽥"]);

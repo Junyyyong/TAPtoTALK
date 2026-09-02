@@ -4,7 +4,7 @@ import { composeTokens } from "../core/hangul/compose";
 import { CHEONJIIN_STROKES, CONSONANTS, PUNCTUATION_SYMBOLS, type BoardSymbol } from "../core/hangul/keys";
 import { isWordMatch, wordCountLabel } from "../core/hangul/wordChallenge";
 import { lessonCheerFor, lessonScoreFromTime } from "../core/hangul/writing";
-import { ALPHABET_MODE_CONFIG, ALPHABET_ROUNDS, SENTENCE_LEVELS, SENTENCE_PROMPTS, WORD_MODE_CONFIG, WORD_TARGETS, type SentencePrompt, type WordTarget } from "../content/prompts";
+import { ALPHABET_ROUNDS, SENTENCE_LEVELS, SENTENCE_PROMPTS, WORD_MODE_CONFIG, WORD_TARGETS, type SentencePrompt, type WordTarget } from "../content/prompts";
 import { el } from "./dom";
 import { feedback } from "./feedback";
 import { canAcceptInput } from "./inputCapacity";
@@ -81,6 +81,7 @@ export class TalkApp {
   private alphabetTargetIndex = 0;
   private alphabetPartIndex = 0;
   private alphabetTiles: AlphabetTile[] = [];
+  private alphabetTotalMs = 0;
   private inputLocked = true;
   private paused = false;
   private sentenceTimer?: number;
@@ -166,7 +167,7 @@ export class TalkApp {
     this.inputLocked = false; this.paused = false;
     this.game.classList.remove("is-input-locked");
     if (!resume) {
-      this.alphabetRound = 0; this.alphabetTargetIndex = 0; this.alphabetPartIndex = 0; this.elapsedMs = 0;
+      this.alphabetRound = 0; this.alphabetTargetIndex = 0; this.alphabetPartIndex = 0; this.alphabetTotalMs = 0; this.elapsedMs = 0;
     }
     el("btn-again").textContent = "Play again";
     this.result.classList.add("hidden"); this.title.classList.add("hidden"); this.splash.classList.add("hidden"); this.game.classList.remove("hidden");
@@ -241,18 +242,22 @@ export class TalkApp {
 
   private completeAlphabetRound(): void {
     this.inputLocked = true;
+    this.stopClock();
+    this.alphabetTotalMs += this.elapsedMs;
     feedback.complete();
     if (this.alphabetRound === ALPHABET_ROUNDS.length - 1) {
-      this.stopClock();
-      const remaining = Math.max(0, ALPHABET_MODE_CONFIG.durationMs - this.elapsedMs);
-      const score = Math.max(1, Math.round(1500 * remaining / ALPHABET_MODE_CONFIG.durationMs));
-      this.showResult("Alphabet complete!", `${ALPHABET_ROUNDS.length} rounds · ${formatTime(this.elapsedMs)}`, score);
+      const availableMs = ALPHABET_ROUNDS.reduce((total, round) => total + round.durationMs, 0);
+      const remaining = Math.max(0, availableMs - this.alphabetTotalMs);
+      const score = Math.max(1, Math.round(1500 * remaining / availableMs));
+      this.showResult("Alphabet complete!", `${ALPHABET_ROUNDS.length} rounds · ${formatTime(this.alphabetTotalMs)}`, score);
       return;
     }
     this.sentenceTimer = window.setTimeout(() => {
       this.alphabetRound += 1;
+      this.elapsedMs = 0;
       this.inputLocked = false;
       this.loadAlphabetRound();
+      this.startClock();
     }, 520);
   }
 
@@ -366,7 +371,7 @@ export class TalkApp {
     const update = (): void => {
       this.elapsedMs = performance.now() - this.startedAt;
       if (this.mode === "word" || this.mode === "alphabet") {
-        const duration = this.mode === "word" ? WORD_MODE_CONFIG.durationMs : ALPHABET_MODE_CONFIG.durationMs;
+        const duration = this.mode === "word" ? WORD_MODE_CONFIG.durationMs : ALPHABET_ROUNDS[this.alphabetRound]!.durationMs;
         const remaining = Math.max(0, duration - this.elapsedMs); this.clock.textContent = formatTime(remaining);
         if (remaining === 0) {
           if (this.mode === "word") this.finishWordChallenge();
@@ -611,7 +616,7 @@ export class TalkApp {
   private showRules(): void {
     this.tutorialNav.classList.add("hidden");
     this.openHelp("Rules");
-    this.helpBody.innerHTML = `<div class="rules-list"><p><b>Korean Alphabet</b><span>Finish four rounds in 90 seconds. Find consonants, vowels, syllable rows, and sound words in the shown order.</span></p><p><b>Sentence Copy</b><span>Complete five phrases. The full run is worth up to 1,500 points and your best score is saved.</span></p><p><b>Lv.5 time bands</b><span>150s OH MY GOD · 180s UNBELIEVABLE · 200s AMAZING · 240s GREAT</span></p><p><b>Word Challenge</b><span>Make as many target words as you can in 60 seconds. A correct word is counted automatically.</span></p><p><b>Nine mixed colours</b><span>Colours do not belong to a particular letter. A used block turns grey.</span></p><p><b>Vowels</b><span>Use the square ㆍ with ㅡ and ㅣ to build vowels.</span></p><p><b>Punctuation</b><span>Only the small period, !, and ? are used.</span></p><p><b>Reversed traps</b><span>On punctuation-free word boards, sideways ㄱ ㄴ ㄷ ㄹ ㅋ ㅌ and upside-down ㅂ ㅅ ㅈ ㅎ are traps. A trap enters ×, turns the line red, and must be removed with Delete.</span></p><p><b>One block, one use</b><span>A used block stays as a light mark. Use Delete to return the latest block.</span></p></div>`;
+    this.helpBody.innerHTML = `<div class="rules-list"><p><b>Korean Alphabet</b><span>Each round has a fresh clock: 40s consonants · 40s vowels · 120s syllables · 90s sound words.</span></p><p><b>Sentence Copy</b><span>Complete five phrases. The full run is worth up to 1,500 points and your best score is saved.</span></p><p><b>Lv.5 time bands</b><span>150s OH MY GOD · 180s UNBELIEVABLE · 200s AMAZING · 240s GREAT</span></p><p><b>Word Challenge</b><span>Make as many target words as you can in 60 seconds. A correct word is counted automatically.</span></p><p><b>Nine mixed colours</b><span>Colours do not belong to a particular letter. A used block turns grey.</span></p><p><b>Vowels</b><span>Use the square ㆍ with ㅡ and ㅣ to build vowels.</span></p><p><b>Punctuation</b><span>Only the small period, !, and ? are used.</span></p><p><b>Reversed traps</b><span>On punctuation-free word boards, sideways ㄱ ㄴ ㄷ ㄹ ㅋ ㅌ and upside-down ㅂ ㅅ ㅈ ㅎ are traps. A trap enters ×, turns the line red, and must be removed with Delete.</span></p><p><b>One block, one use</b><span>A used block stays as a light mark. Use Delete to return the latest block.</span></p></div>`;
   }
 
   private showSettings(): void {

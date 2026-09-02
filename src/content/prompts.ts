@@ -9,6 +9,7 @@ export interface SentencePrompt {
 export interface AlphabetRound {
   id: string;
   name: string;
+  durationMs: number;
   sequence: readonly string[];
   tapGroups: readonly (readonly string[])[];
   pool: readonly string[];
@@ -22,13 +23,11 @@ const SYLLABLE_ROWS = [
 ];
 const SOUND_WORDS = ["쾅", "쿵", "꽥", "쨍", "뿅", "뻥", "탁", "휙"];
 
-export const ALPHABET_MODE_CONFIG = { durationMs: 90_000 } as const;
-
 export const ALPHABET_ROUNDS: readonly AlphabetRound[] = [
-  { id: "consonants", name: "Consonants", sequence: BASIC_CONSONANTS, tapGroups: BASIC_CONSONANTS.map(decomposeAlphabetTarget), pool: BASIC_CONSONANTS },
-  { id: "vowels", name: "Vowels", sequence: BASIC_VOWELS, tapGroups: BASIC_VOWELS.map(decomposeAlphabetTarget), pool: BASIC_VOWELS },
-  { id: "syllables", name: "Syllables", sequence: SYLLABLE_ROWS, tapGroups: SYLLABLE_ROWS.map(decomposeAlphabetTarget), pool: [...new Set(SYLLABLE_ROWS.flatMap(decomposeAlphabetTarget))] },
-  { id: "sounds", name: "Sound Words", sequence: SOUND_WORDS, tapGroups: SOUND_WORDS.map(decomposeAlphabetTarget), pool: [...new Set(SOUND_WORDS.flatMap(decomposeAlphabetTarget))] },
+  { id: "consonants", name: "Consonants", durationMs: 40_000, sequence: BASIC_CONSONANTS, tapGroups: BASIC_CONSONANTS.map(decomposeAlphabetTarget), pool: BASIC_CONSONANTS },
+  { id: "vowels", name: "Vowels", durationMs: 40_000, sequence: BASIC_VOWELS, tapGroups: BASIC_VOWELS.map(decomposeAlphabetTarget), pool: BASIC_VOWELS },
+  { id: "syllables", name: "Syllables", durationMs: 120_000, sequence: SYLLABLE_ROWS, tapGroups: SYLLABLE_ROWS.map(decomposeAlphabetTarget), pool: [...new Set(SYLLABLE_ROWS.flatMap(decomposeAlphabetTarget))] },
+  { id: "sounds", name: "Sound Words", durationMs: 90_000, sequence: SOUND_WORDS, tapGroups: SOUND_WORDS.map(decomposeAlphabetTarget), pool: [...new Set(SOUND_WORDS.flatMap(decomposeAlphabetTarget))] },
 ];
 
 export interface SentenceLevel {
