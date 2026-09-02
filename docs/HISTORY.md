@@ -81,6 +81,7 @@
 | 2026-09-02 | `6621b40` | `#1d2087` 테마색을 첫 3초 TapeeTepee 화면에만 제한했다. 기존 커버가 나타나는 순간 브라우저 테마색을 흰색으로 복원해 커버와 메인 화면은 원래 종이색 디자인을 유지한다. ([커버](screenshots/2026-09-02-product-cover-restored-theme.png), [메인](screenshots/2026-09-02-main-menu-restored-theme.png)) |
 | 2026-09-02 | `e052cfb` | iPhone Safari가 최초 테마색을 상·하단 브라우저 UI에 계속 유지하는 동작을 반영해 HTML 테마색을 처음부터 흰색으로 고정했다. 파란색은 첫 스튜디오 화면의 콘텐츠 배경에만 적용된다. ([메인](screenshots/2026-09-02-static-white-browser-theme-main.png)) |
 | 2026-09-02 | `c509b5c` | 외국인 학습자를 위해 Korean Alphabet의 자소 안내를 글자 이름에서 IPA 음가로 변경했다. 자음은 위치 변이를 `[k~ɡ]`처럼, 모음은 `[a]`처럼 표시하고 `ㅇ`은 `∅ / [ŋ]`로 안내한다. 음절의 영문 뜻은 유지하고 Rules에 IPA 범위 표기 설명을 추가했다. ([자음](screenshots/2026-09-02-alphabet-ipa-sound-guide.png), [모음](screenshots/2026-09-02-vowel-ipa-sound-guide.png)) |
+| 2026-09-02 | `3a5a07f` | 첫 스튜디오 화면 다음에 4초간 표시되는 TAPtoTALK 커버를 새 `taptotalk-cover7.png`로 교체했다. 4837px 원본을 모바일용 1290px 폭으로 최적화하고 초기 HTML과 앱 설정 경로를 함께 변경했다. ([스크린샷](screenshots/2026-09-02-cover7-splash.png)) |
 
 ## 현재 기준
 
