@@ -1,8 +1,35 @@
-const MOVIE_1 = {
-  video: new URL("../../movie/1.webm", import.meta.url).href,
-  iosVideo: new URL("../../movie/1.mp4", import.meta.url).href,
-  sound: new URL("../../movie/1.mp3", import.meta.url).href,
-} as const;
+const CELEBRATION_MOVIES = [
+  {
+    video: new URL("../../movie/4.webm", import.meta.url).href,
+    iosVideo: new URL("../../movie/4.mp4", import.meta.url).href,
+    sound: new URL("../../movie/4.mp3", import.meta.url).href,
+  },
+  {
+    video: new URL("../../movie/taepi.webm", import.meta.url).href,
+    iosVideo: new URL("../../movie/taepi.mp4", import.meta.url).href,
+    sound: new URL("../../movie/taepi.mp3", import.meta.url).href,
+  },
+  {
+    video: new URL("../../movie/tipi.webm", import.meta.url).href,
+    iosVideo: new URL("../../movie/tipi.mp4", import.meta.url).href,
+    sound: new URL("../../movie/tipi.mp3", import.meta.url).href,
+  },
+  {
+    video: new URL("../../movie/hupi.webm", import.meta.url).href,
+    iosVideo: new URL("../../movie/hupi.mp4", import.meta.url).href,
+    sound: new URL("../../movie/hupi.mp3", import.meta.url).href,
+  },
+  {
+    video: new URL("../../movie/haepi.webm", import.meta.url).href,
+    iosVideo: new URL("../../movie/haepi.mp4", import.meta.url).href,
+    sound: new URL("../../movie/haepi.mp3", import.meta.url).href,
+  },
+  {
+    video: new URL("../../movie/jaepi.webm", import.meta.url).href,
+    iosVideo: new URL("../../movie/jaepi.mp4", import.meta.url).href,
+    sound: new URL("../../movie/jaepi.mp3", import.meta.url).href,
+  },
+] as const;
 
 /**
  * Product copy and replaceable media live here, away from game rules and UI.
@@ -16,14 +43,14 @@ export const APP_CONFIG = {
     studioSplash: new URL("../../public/assets/brand/tapeetepee-studio-mark.png", import.meta.url).href,
     logo: new URL("../../TAPtoTALK-logo2.svg", import.meta.url).href,
     splash: new URL("../../public/assets/brand/taptotalk-cover7.png", import.meta.url).href,
-    celebrationVideo: MOVIE_1.video,
-    celebrationAudio: MOVIE_1.sound,
+    celebrationVideo: CELEBRATION_MOVIES[0]!.video,
+    celebrationAudio: CELEBRATION_MOVIES[0]!.sound,
     celebrations: [
-      { at: 1400, layout: "hero", ...MOVIE_1 },
-      { at: 1000, layout: "hero", ...MOVIE_1 },
-      { at: 600, layout: "large", ...MOVIE_1 },
-      { at: 300, layout: "standard", ...MOVIE_1 },
-      { at: 0, layout: "compact", ...MOVIE_1 },
+      { at: 1400, layout: "hero", clips: CELEBRATION_MOVIES },
+      { at: 1000, layout: "hero", clips: CELEBRATION_MOVIES },
+      { at: 600, layout: "large", clips: CELEBRATION_MOVIES },
+      { at: 300, layout: "standard", clips: CELEBRATION_MOVIES },
+      { at: 0, layout: "compact", clips: CELEBRATION_MOVIES },
     ],
   },
 } as const;

@@ -25,9 +25,9 @@ interface Clip {
   layout: "compact" | "standard" | "large" | "hero";
 }
 
-const CLIP_TIERS: readonly { at: number; clips: readonly Clip[] }[] = APP_CONFIG.assets.celebrations.map((item) => ({
-  at: item.at,
-  clips: [{ video: item.video, iosVideo: "iosVideo" in item ? item.iosVideo : undefined, sound: item.sound, layout: item.layout }],
+const CLIP_TIERS: readonly { at: number; clips: readonly Clip[] }[] = APP_CONFIG.assets.celebrations.map((tier) => ({
+  at: tier.at,
+  clips: tier.clips.map((clip) => ({ ...clip, layout: tier.layout })),
 }));
 
 const prefersIosVideo = (): boolean => {
@@ -40,6 +40,11 @@ const videoFor = (clip: Clip): string => prefersIosVideo() && clip.iosVideo ? cl
 
 export function poolFor(score: number): readonly Clip[] {
   return CLIP_TIERS.find((tier) => score >= tier.at)?.clips ?? CLIP_TIERS[CLIP_TIERS.length - 1]!.clips;
+}
+
+export function randomClipFor(score: number, random: () => number = Math.random): Clip | null {
+  const pool = poolFor(score);
+  return pool.length ? pool[Math.floor(random() * pool.length)]! : null;
 }
 
 /**
@@ -156,8 +161,7 @@ export class Cheer {
     this.root.classList.remove("hidden", "cheer-hold", "cheer-run", "cheer-layout-compact", "cheer-layout-standard", "cheer-layout-large", "cheer-layout-hero");
     this.card.classList.remove("hidden");
 
-    const pool = poolFor(tierScore);
-    this.pick = pool.length ? pool[Math.floor(Math.random() * pool.length)]! : null;
+    this.pick = randomClipFor(tierScore);
     if (this.pick) {
       this.root.classList.add(`cheer-layout-${this.pick.layout}`);
       load(this.clip, videoFor(this.pick));

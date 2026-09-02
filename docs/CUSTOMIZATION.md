@@ -25,8 +25,13 @@ TAPtoTALK은 레이아웃을 다시 디자인해도 한글 규칙을 건드리�
 | 성공 영상 | `public/assets/brand/celebration.webm` |
 | 성공 음원 | `public/assets/brand/celebration.mp3` |
 
-점수별 완료 영상은 `src/config/app.ts`의 `assets.celebrations` 네 항목에서
-경로를 각각 바꿀 수 있습니다. `compact`, `standard`, `large`, `hero` 레이아웃은
+완료 영상은 `src/config/app.ts`의 `CELEBRATION_MOVIES`에 등록합니다. 현재 `4`,
+`taepi`, `tipi`, `hupi`, `haepi`, `jaepi` 여섯 묶음 중 하나가 매 결과마다 무작위로
+선택됩니다. 각 묶음은 일반·Android용 WebM, iPhone용 MP4, 동기화 음원 MP3로
+구성합니다. 파일명에 한글을 사용하면 macOS와 Linux에서 유니코드 정규화 방식이
+달라질 수 있으므로 미디어 파일명은 영문으로 유지합니다.
+
+점수별 `compact`, `standard`, `large`, `hero` 레이아웃은
 `src/ui/styles/overlay.css`에서 영상 너비와 상단·문구 간격을 따로 조절합니다.
 
 경로 자체를 바꾸려면 `src/config/app.ts` 한 곳과, JavaScript가 실행되기 전 보이는
