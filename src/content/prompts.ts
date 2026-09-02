@@ -35,8 +35,10 @@ const VOWEL_SOUNDS: Readonly<Record<string, string>> = {
   "ㅏ": "아", "ㅑ": "야", "ㅓ": "어", "ㅕ": "여", "ㅗ": "오", "ㅛ": "요", "ㅜ": "우", "ㅠ": "유", "ㅡ": "으", "ㅣ": "이",
 };
 const SYLLABLE_MEANINGS: Readonly<Record<string, string>> = {
-  "산": "mountain", "강": "river", "물": "water", "문": "door", "밥": "rice", "집": "home", "꽃": "flower", "책": "book",
-  "개": "dog", "게": "crab", "내": "my", "네": "yes", "왜": "why", "와": "come", "꾀": "wits", "귀": "ear",
+  "나": "I", "너": "you", "몸": "body", "피": "blood", "눈": "eye", "코": "nose", "입": "mouth", "손": "hand", "발": "foot",
+  "집": "home", "일": "work", "밥": "meal", "옷": "clothes", "잠": "sleep", "땅": "earth", "물": "water", "불": "fire", "비": "rain",
+  "산": "mountain", "강": "river", "해": "sun", "달": "moon", "별": "star", "힘": "strength", "꾀": "wits", "꿈": "dream",
+  "개": "dog", "소": "cow", "말": "horse", "닭": "chicken", "술": "drink", "춤": "dance",
 };
 
 export function alphabetTargetNote(courseId: AlphabetCourse["id"], target: string): string {
@@ -84,20 +86,21 @@ const VOWEL_LEVELS: readonly AlphabetLevel[] = VOWEL_LEVEL_SEQUENCES.map((sequen
 );
 
 const SYLLABLE_LEVEL_SEQUENCES = [
-  ["산", "강", "물", "문"],
-  ["밥", "집", "꽃", "책"],
-  ["개", "게", "내", "네"],
-  ["왜", "와", "꾀", "귀"],
+  ["나", "너"],
+  ["몸", "피", "눈", "코", "입", "손", "발"],
+  ["집", "일", "밥", "옷", "잠"],
+  ["땅", "물", "불", "비", "산", "강", "해", "달", "별"],
+  ["힘", "꾀", "꿈", "개", "소", "말", "닭", "술", "춤"],
 ] as const;
 const SYLLABLE_LEVELS: readonly AlphabetLevel[] = SYLLABLE_LEVEL_SEQUENCES.map((sequence, index) => {
   const tapGroups = syllableTaps(sequence);
-  return level(index + 9, ["Final Sounds", "More Final Sounds", "Compound Vowels", "Vowel Challenge"][index]!, [100_000, 110_000, 120_000, 130_000][index]!, [.06, .08, .10, .12][index]!, sequence, tapGroups, [...new Set(tapGroups.flat())]);
+  return level(index + 9, ["Me and You", "My Body", "Daily Life", "Nature", "Strong Finish"][index]!, [45_000, 120_000, 100_000, 170_000, 180_000][index]!, [.04, .06, .08, .10, .12][index]!, sequence, tapGroups, [...new Set(tapGroups.flat())]);
 });
 
 export const ALPHABET_COURSES: readonly AlphabetCourse[] = [
   { id: "consonants", name: "Consonants", description: "Lv.1–4 · order, added strokes, and memory", levels: CONSONANT_LEVELS },
   { id: "vowels", name: "Vowels", description: "Lv.5–8 · build vowels with ㆍ ㅡ ㅣ", levels: VOWEL_LEVELS },
-  { id: "syllables", name: "Syllables", description: "Lv.9–12 · final sounds and compound vowels", levels: SYLLABLE_LEVELS },
+  { id: "syllables", name: "Syllables", description: "Lv.9–13 · people, body, life, nature, and more", levels: SYLLABLE_LEVELS },
 ];
 
 export interface SentenceLevel {

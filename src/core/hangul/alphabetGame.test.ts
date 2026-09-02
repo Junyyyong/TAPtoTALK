@@ -3,11 +3,11 @@ import { ALPHABET_COURSES, alphabetTargetNote } from "../../content/prompts";
 import { checkSequenceTap, createAlphabetBoard, createRandomAlphabetTargets, decomposeAlphabetTarget } from "./alphabetGame";
 
 describe("Korean Alphabet courses", () => {
-  it("offers three courses with four mandatory levels", () => {
+  it("offers three sequential courses with five syllable levels", () => {
     expect(ALPHABET_COURSES.map((course) => course.id)).toEqual(["consonants", "vowels", "syllables"]);
-    expect(ALPHABET_COURSES.flatMap((course) => course.levels.map((level) => level.number))).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+    expect(ALPHABET_COURSES.map((course) => course.levels.length)).toEqual([4, 4, 5]);
+    expect(ALPHABET_COURSES.flatMap((course) => course.levels.map((level) => level.number))).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]);
     for (const course of ALPHABET_COURSES) {
-      expect(course.levels).toHaveLength(4);
       for (const level of course.levels) {
         expect(level.sequence.length).toBeGreaterThan(0);
         expect(level.tapGroups).toHaveLength(level.sequence.length);
@@ -20,7 +20,8 @@ describe("Korean Alphabet courses", () => {
     expect(alphabetTargetNote("consonants", "ㄱㄴ")).toBe("기역 · 니은");
     expect(alphabetTargetNote("vowels", "ㅏㅑ")).toBe("아 · 야");
     expect(alphabetTargetNote("syllables", "산")).toBe("mountain");
-    expect(alphabetTargetNote("syllables", "귀")).toBe("ear");
+    expect(alphabetTargetNote("syllables", "나")).toBe("I");
+    expect(alphabetTargetNote("syllables", "닭")).toBe("chicken");
   });
 
   it("splits the full consonant order into targets of at most five jamo", () => {
@@ -74,16 +75,19 @@ describe("Korean Alphabet courses", () => {
     expect(decomposeAlphabetTarget("가")).toEqual(["ㄱ", "ㅏ"]);
     expect(decomposeAlphabetTarget("쾅")).toEqual(["ㅋ", "ㅘ", "ㅇ"]);
     for (const level of ALPHABET_COURSES[2]!.levels) {
-      expect(level.sequence).toHaveLength(4);
       expect(level.tapGroups.flat().every((tap) => !["ㅏ", "ㅐ", "ㅑ", "ㅒ", "ㅓ", "ㅔ", "ㅕ", "ㅖ", "ㅗ", "ㅘ", "ㅙ", "ㅚ", "ㅛ", "ㅜ", "ㅝ", "ㅞ", "ㅟ", "ㅠ", "ㅢ"].includes(tap))).toBe(true);
       const board = createAlphabetBoard(level.tapGroups.flat(), level.pool, 81, () => 0.42, level.trapChance);
       expect(board.some((tile) => level.sequence.includes(tile.value))).toBe(false);
     }
-    expect(ALPHABET_COURSES[2]!.levels[0]!.tapGroups[0]).toEqual(["ㅅ", "ㅣ", "ㆍ", "ㄴ"]);
-    expect(ALPHABET_COURSES[2]!.levels[2]!.sequence).toEqual(["개", "게", "내", "네"]);
-    expect(ALPHABET_COURSES[2]!.levels[3]!.sequence).toEqual(["왜", "와", "꾀", "귀"]);
-    expect(ALPHABET_COURSES[2]!.levels[2]!.tapGroups[0]).toEqual(["ㄱ", "ㅣ", "ㆍ", "ㅣ"]);
-    expect(ALPHABET_COURSES[2]!.levels[3]!.tapGroups[0]).toEqual(["ㅇ", "ㆍ", "ㅡ", "ㅣ", "ㆍ", "ㅣ"]);
+    expect(ALPHABET_COURSES[2]!.levels.map((level) => level.sequence)).toEqual([
+      ["나", "너"],
+      ["몸", "피", "눈", "코", "입", "손", "발"],
+      ["집", "일", "밥", "옷", "잠"],
+      ["땅", "물", "불", "비", "산", "강", "해", "달", "별"],
+      ["힘", "꾀", "꿈", "개", "소", "말", "닭", "술", "춤"],
+    ]);
+    expect(ALPHABET_COURSES[2]!.levels[0]!.tapGroups[0]).toEqual(["ㄴ", "ㅣ", "ㆍ"]);
+    expect(ALPHABET_COURSES[2]!.levels[4]!.tapGroups[1]).toEqual(["ㄲ", "ㆍ", "ㅡ", "ㅣ"]);
   });
 
   it("advances only when the expected symbol is tapped", () => {
