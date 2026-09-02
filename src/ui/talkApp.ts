@@ -314,8 +314,9 @@ export class TalkApp {
     const parts = this.alphabetTapGroups[this.alphabetTargetIndex] ?? [];
     const progress = document.createElement("span"); progress.className = "alphabet-part-progress";
     parts.forEach((part, index) => {
-      const glyph = document.createElement("span"); glyph.textContent = part;
+      const glyph = document.createElement("span"); glyph.textContent = part === "ㆍ" ? "" : part;
       glyph.className = index < this.alphabetPartIndex ? "is-done" : index === this.alphabetPartIndex ? "is-current" : "is-pending";
+      if (part === "ㆍ") { glyph.classList.add("is-cheonjiin-dot"); glyph.setAttribute("aria-label", "모음천"); }
       if (this.alphabetWrong && index === this.alphabetPartIndex) glyph.classList.add("is-wrong");
       progress.append(glyph);
     });
