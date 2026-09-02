@@ -66,6 +66,7 @@
 | 2026-09-02 | `8badd80` | Vowels 자판의 모음천 블록에서 가로획 문자와 정사각형 표시가 겹치던 문제를 제거하고 8×8 정사각형 하나만 표시하도록 수정했다. ([스크린샷](screenshots/2026-09-02-clean-cheonjiin-dot.png)) |
 | 2026-09-02 | `43cd61a` | Consonants Lv.1의 분할·반복 문제를 없애 전체 자음 순서를 한 번만 60초 동안 입력하게 했다. 완료 즉시 Lv.2의 가획 묶음 `ㄱㅋ → ㄴㄷㄹ → ㅁㅂㅍ → ㅅㅈㅊ → ㅇㅎ`와 75초 타이머가 시작된다. ([Lv.1](screenshots/2026-09-02-lv1-full-order.png), [Lv.2](screenshots/2026-09-02-lv2-added-strokes.png)) |
 | 2026-09-02 | `47707b1` | Consonants 기억 단계를 고정 문자열에서 매 실행마다 달라지는 무작위 자음으로 변경했다. Lv.3은 3·4·5·6자, Lv.4는 7·8·9자이며 한 목표 안에서는 자음이 중복되지 않는다. ([Lv.3](screenshots/2026-09-02-random-consonant-lv3.png), [Lv.4](screenshots/2026-09-02-random-consonant-lv4.png)) |
+| 2026-09-02 | `d150139` | Vowels 자판에 모음천과 헷갈리는 작은 마침표 함정을 섞고 각 레벨의 마지막 종합 반복을 제거했다. Syllables도 마지막 반복을 제거하고 완성 모음 대신 `ㆍ·ㅡ·ㅣ`를 조합해 입력하도록 변경했다. ([모음](screenshots/2026-09-02-vowel-period-traps.png), [음절](screenshots/2026-09-02-syllable-cheonjiin-strokes.png)) |
 
 ## 현재 기준
 
