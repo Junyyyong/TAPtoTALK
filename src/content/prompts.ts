@@ -17,6 +17,7 @@ export interface AlphabetLevel {
   sequence: readonly string[];
   tapGroups: readonly (readonly string[])[];
   pool: readonly string[];
+  randomizeTargets?: boolean;
 }
 
 export interface AlphabetCourse {
@@ -42,8 +43,8 @@ const level = (number: number, name: string, durationMs: number, trapChance: num
 const CONSONANT_LEVELS: readonly AlphabetLevel[] = [
   level(1, "Basic Order", 60_000, .05, ["ㄱㄴㄷㄹㅁㅂㅅㅇㅈㅊㅋㅌㅍㅎ"], consonantTaps(["ㄱㄴㄷㄹㅁㅂㅅㅇㅈㅊㅋㅌㅍㅎ"]), BASIC_CONSONANTS),
   level(2, "Added Strokes", 75_000, .08, ["ㄱㅋ", "ㄴㄷㄹ", "ㅁㅂㅍ", "ㅅㅈㅊ", "ㅇㅎ"], consonantTaps(["ㄱㅋ", "ㄴㄷㄹ", "ㅁㅂㅍ", "ㅅㅈㅊ", "ㅇㅎ"]), BASIC_CONSONANTS),
-  level(3, "Short Memory", 70_000, .10, ["ㄷㅁ", "ㅋㅅ", "ㅎㄹㅊ", "ㅂㅇㄱㅈ", "ㅌㄴㅍㅅㅋ"], consonantTaps(["ㄷㅁ", "ㅋㅅ", "ㅎㄹㅊ", "ㅂㅇㄱㅈ", "ㅌㄴㅍㅅㅋ"]), BASIC_CONSONANTS),
-  level(4, "Long Memory", 90_000, .12, ["ㄱㅁㅅㅈㅋㅍ", "ㅎㄴㅂㅊㄹㅌㅇ", "ㄷㅍㄱㅅㅎㅁㅈㅋ", "ㅊㄴㅌㅂㅇㄹㅅㄱㅎ", "ㅁㅋㄷㅎㅅㅂㄴㅈㅍ"], consonantTaps(["ㄱㅁㅅㅈㅋㅍ", "ㅎㄴㅂㅊㄹㅌㅇ", "ㄷㅍㄱㅅㅎㅁㅈㅋ", "ㅊㄴㅌㅂㅇㄹㅅㄱㅎ", "ㅁㅋㄷㅎㅅㅂㄴㅈㅍ"]), BASIC_CONSONANTS),
+  { ...level(3, "Short Memory", 70_000, .10, ["ㄷㅁㅎ", "ㅋㅅㄹㅈ", "ㅎㄹㅊㅂㅇ", "ㅌㄴㅍㅅㅋㄱ"], consonantTaps(["ㄷㅁㅎ", "ㅋㅅㄹㅈ", "ㅎㄹㅊㅂㅇ", "ㅌㄴㅍㅅㅋㄱ"]), BASIC_CONSONANTS), randomizeTargets: true },
+  { ...level(4, "Long Memory", 90_000, .12, ["ㄱㅁㅅㅈㅋㅍㅎ", "ㅎㄴㅂㅊㄹㅌㅇㄷ", "ㄷㅍㄱㅅㅎㅁㅈㅋㄴ"], consonantTaps(["ㄱㅁㅅㅈㅋㅍㅎ", "ㅎㄴㅂㅊㄹㅌㅇㄷ", "ㄷㅍㄱㅅㅎㅁㅈㅋㄴ"]), BASIC_CONSONANTS), randomizeTargets: true },
 ];
 
 const VOWEL_LEVEL_SEQUENCES = [

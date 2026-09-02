@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { ALPHABET_COURSES } from "../../content/prompts";
-import { checkSequenceTap, createAlphabetBoard, decomposeAlphabetTarget } from "./alphabetGame";
+import { checkSequenceTap, createAlphabetBoard, createRandomAlphabetTargets, decomposeAlphabetTarget } from "./alphabetGame";
 
 describe("Korean Alphabet courses", () => {
   it("offers three courses with four mandatory levels", () => {
@@ -22,6 +22,17 @@ describe("Korean Alphabet courses", () => {
     expect(basic!.sequence).toEqual(["ㄱㄴㄷㄹㅁㅂㅅㅇㅈㅊㅋㅌㅍㅎ"]);
     expect(strokes!.durationMs).toBe(75_000);
     expect(strokes!.sequence).toEqual(["ㄱㅋ", "ㄴㄷㄹ", "ㅁㅂㅍ", "ㅅㅈㅊ", "ㅇㅎ"]);
+  });
+
+  it("randomizes consonant memory targets at lengths 3–6 and 7–9", () => {
+    const [, , short, long] = ALPHABET_COURSES[0]!.levels;
+    expect(short!.sequence.map((target) => target.length)).toEqual([3, 4, 5, 6]);
+    expect(long!.sequence.map((target) => target.length)).toEqual([7, 8, 9]);
+    expect(short!.randomizeTargets).toBe(true);
+    expect(long!.randomizeTargets).toBe(true);
+    const targets = createRandomAlphabetTargets([3, 4], ["ㄱ", "ㄴ", "ㄷ", "ㄹ"], () => 0);
+    expect(targets.map((target) => target.length)).toEqual([3, 4]);
+    expect(targets.every((target) => new Set(target).size === target.length)).toBe(true);
   });
 
   it("adds mirrored traps from the first consonant level", () => {

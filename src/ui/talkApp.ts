@@ -1,5 +1,5 @@
 import { createLetterBoard, inputValueForTile, MIRROR_TRAP_TOKEN, type LetterTile, type MirrorAxis } from "../core/hangul/board";
-import { checkSequenceTap, createAlphabetBoard, type AlphabetTile } from "../core/hangul/alphabetGame";
+import { checkSequenceTap, createAlphabetBoard, createRandomAlphabetTargets, type AlphabetTile } from "../core/hangul/alphabetGame";
 import { composeTokens } from "../core/hangul/compose";
 import { CHEONJIIN_STROKES, CONSONANTS, PUNCTUATION_SYMBOLS, type BoardSymbol } from "../core/hangul/keys";
 import { isWordMatch, wordCountLabel } from "../core/hangul/wordChallenge";
@@ -82,6 +82,8 @@ export class TalkApp {
   private alphabetTargetIndex = 0;
   private alphabetPartIndex = 0;
   private alphabetTiles: AlphabetTile[] = [];
+  private alphabetSequence: readonly string[] = [];
+  private alphabetTapGroups: readonly (readonly string[])[] = [];
   private alphabetTotalMs = 0;
   private alphabetCourseComplete = false;
   private inputLocked = true;
@@ -213,9 +215,15 @@ export class TalkApp {
     const level = this.currentAlphabetLevel();
     this.alphabetTargetIndex = 0; this.alphabetPartIndex = 0;
     this.used.clear();
-    this.alphabetTiles = createAlphabetBoard(level.tapGroups.flat(), level.pool, 81, Math.random, level.trapChance);
+    this.alphabetSequence = level.randomizeTargets
+      ? createRandomAlphabetTargets(level.sequence.map((target) => target.length), level.pool)
+      : level.sequence;
+    this.alphabetTapGroups = level.randomizeTargets
+      ? this.alphabetSequence.map((target) => [...target])
+      : level.tapGroups;
+    this.alphabetTiles = createAlphabetBoard(this.alphabetTapGroups.flat(), level.pool, 81, Math.random, level.trapChance);
     this.runMode.textContent = `${course.name} · Lv.${level.number}`;
-    this.targetLabel.textContent = `Lv.${level.number} · 1 / ${level.sequence.length}`;
+    this.targetLabel.textContent = `Lv.${level.number} · 1 / ${this.alphabetSequence.length}`;
     this.renderAlphabetBoard();
     this.renderAlphabetProgress();
   }
@@ -246,8 +254,7 @@ export class TalkApp {
       window.setTimeout(() => button.classList.remove("is-wrong-pick"), 360);
       return;
     }
-    const level = this.currentAlphabetLevel();
-    const tapGroup = level.tapGroups[this.alphabetTargetIndex]!;
+    const tapGroup = this.alphabetTapGroups[this.alphabetTargetIndex]!;
     const result = checkSequenceTap(tapGroup, this.alphabetPartIndex, tile.value);
     if (!result.correct) {
       feedback.reject();
@@ -265,23 +272,23 @@ export class TalkApp {
       this.alphabetPartIndex = 0;
     }
     this.renderAlphabetProgress();
-    if (this.alphabetTargetIndex === level.sequence.length) this.completeAlphabetLevel();
+    if (this.alphabetTargetIndex === this.alphabetSequence.length) this.completeAlphabetLevel();
   }
 
   private renderAlphabetProgress(): void {
     const level = this.currentAlphabetLevel();
-    this.targetLabel.textContent = `Lv.${level.number} · ${Math.min(this.alphabetTargetIndex + 1, level.sequence.length)} / ${level.sequence.length}`;
-    this.targetText.textContent = level.sequence[this.alphabetTargetIndex] ?? "✓";
+    this.targetLabel.textContent = `Lv.${level.number} · ${Math.min(this.alphabetTargetIndex + 1, this.alphabetSequence.length)} / ${this.alphabetSequence.length}`;
+    this.targetText.textContent = this.alphabetSequence[this.alphabetTargetIndex] ?? "✓";
     const targetLength = this.targetText.textContent.length;
     this.targetText.classList.toggle("is-medium-sequence", targetLength > 4 && targetLength <= 8);
     this.targetText.classList.toggle("is-long-sequence", targetLength > 8);
-    const preview = level.sequence.slice(this.alphabetTargetIndex, this.alphabetTargetIndex + 6).join(" → ");
-    const parts = level.tapGroups[this.alphabetTargetIndex] ?? [];
+    const preview = this.alphabetSequence.slice(this.alphabetTargetIndex, this.alphabetTargetIndex + 6).join(" → ");
+    const parts = this.alphabetTapGroups[this.alphabetTargetIndex] ?? [];
     const assembly = parts.length > 1 && parts[this.alphabetPartIndex] ? ` · NEXT [${parts[this.alphabetPartIndex]}]` : "";
-    this.typedText.textContent = `${this.alphabetTargetIndex} / ${level.sequence.length}${assembly}`;
+    this.typedText.textContent = `${this.alphabetTargetIndex} / ${this.alphabetSequence.length}${assembly}`;
     this.typedText.dataset.empty = "";
     this.typedText.classList.remove("is-empty", "is-wrong", "is-correct");
-    this.targetHint.textContent = `${preview}${this.alphabetTargetIndex + 6 < level.sequence.length ? " → …" : ""}`;
+    this.targetHint.textContent = `${preview}${this.alphabetTargetIndex + 6 < this.alphabetSequence.length ? " → …" : ""}`;
   }
 
   private completeAlphabetLevel(): void {
@@ -310,7 +317,7 @@ export class TalkApp {
     const level = this.currentAlphabetLevel();
     this.alphabetCourseComplete = false;
     el("btn-again").textContent = "Retry level";
-    this.showResult("Time is up!", `Lv.${level.number} · ${this.alphabetTargetIndex} / ${level.sequence.length}`);
+    this.showResult("Time is up!", `Lv.${level.number} · ${this.alphabetTargetIndex} / ${this.alphabetSequence.length}`);
   }
 
   private renderBoard(): void {

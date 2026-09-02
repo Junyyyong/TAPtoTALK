@@ -36,6 +36,19 @@ const shuffle = <T>(values: T[], rng: () => number): T[] => {
   return values;
 };
 
+/** Create memory targets of the requested lengths, without repeated jamo inside one target. */
+export function createRandomAlphabetTargets(
+  lengths: readonly number[],
+  pool: readonly string[],
+  rng: () => number = Math.random,
+): string[] {
+  if (pool.length === 0) throw new RangeError("Random alphabet targets need at least one jamo.");
+  return lengths.map((length) => {
+    if (length < 1 || length > pool.length) throw new RangeError(`Target length ${length} must be between 1 and ${pool.length}.`);
+    return shuffle([...pool], rng).slice(0, length).join("");
+  });
+}
+
 export function createAlphabetBoard(
   sequence: readonly string[],
   pool: readonly string[],
