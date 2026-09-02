@@ -62,6 +62,7 @@
 | 2026-09-02 | `8cb2db5` | 4초 시작 화면의 이미지를 새 `taptotalk-cover6.png`로 교체하고 HTML 초기 경로와 앱 미디어 설정을 함께 갱신했다. ([스크린샷](screenshots/2026-09-02-cover6-splash.png)) |
 | 2026-09-02 | `d127427` | Korean Alphabet의 음절·의성어 라운드에서 완성 글자는 목표로만 보여주고, 자판은 `가=ㄱ+ㅏ`, `쾅=ㅋ+ㅘ+ㅇ`처럼 분해된 자소 블록으로 구성하도록 변경했다. ([스크린샷](screenshots/2026-09-02-syllable-jamo-blocks.png)) |
 | 2026-09-02 | `70357c3` | Korean Alphabet의 전체 90초 타이머를 없애고 자음 40초·모음 40초·음절 120초·의성어 90초의 라운드별 초기화 타이머로 변경했다. ([스크린샷](screenshots/2026-09-02-round-timers.png)) |
+| 2026-09-02 | `7e1e1e9` | Korean Alphabet을 Consonants Lv.1~4, Vowels Lv.5~8, Syllables Lv.9~12의 세 코스로 재구성했다. 사용자는 과목만 선택하고 네 레벨은 5문제씩 순서대로 자동 진행하며, Lv.1부터 반전 함정이 등장하고 모음 자판은 `ㆍ ㅡ ㅣ`만 사용한다. ([과목 선택](screenshots/2026-09-02-alphabet-course-picker.png), [자동 진행](screenshots/2026-09-02-alphabet-auto-levels.png), [모음](screenshots/2026-09-02-vowel-cheonjiin-course.png)) |
 
 ## 현재 기준
 
