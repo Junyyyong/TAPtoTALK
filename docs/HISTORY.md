@@ -67,11 +67,12 @@
 | 2026-09-02 | `43cd61a` | Consonants Lv.1의 분할·반복 문제를 없애 전체 자음 순서를 한 번만 60초 동안 입력하게 했다. 완료 즉시 Lv.2의 가획 묶음 `ㄱㅋ → ㄴㄷㄹ → ㅁㅂㅍ → ㅅㅈㅊ → ㅇㅎ`와 75초 타이머가 시작된다. ([Lv.1](screenshots/2026-09-02-lv1-full-order.png), [Lv.2](screenshots/2026-09-02-lv2-added-strokes.png)) |
 | 2026-09-02 | `47707b1` | Consonants 기억 단계를 고정 문자열에서 매 실행마다 달라지는 무작위 자음으로 변경했다. Lv.3은 3·4·5·6자, Lv.4는 7·8·9자이며 한 목표 안에서는 자음이 중복되지 않는다. ([Lv.3](screenshots/2026-09-02-random-consonant-lv3.png), [Lv.4](screenshots/2026-09-02-random-consonant-lv4.png)) |
 | 2026-09-02 | `d150139` | Vowels 자판에 모음천과 헷갈리는 작은 마침표 함정을 섞고 각 레벨의 마지막 종합 반복을 제거했다. Syllables도 마지막 반복을 제거하고 완성 모음 대신 `ㆍ·ㅡ·ㅣ`를 조합해 입력하도록 변경했다. ([모음](screenshots/2026-09-02-vowel-period-traps.png), [음절](screenshots/2026-09-02-syllable-cheonjiin-strokes.png)) |
+| 2026-09-02 | `07ac6e1` | 자소별 완료·현재·오입력 색상, 현재 문제 Retry, 완료 목표 박스 반전을 추가했다. Word Challenge는 받침 없음·받침 있음·감탄사·의성의태어·복모음의 5단계에서 3단어씩 학습하도록 바꾸고, Sentence Copy의 기존 단어 2단계를 이동했다. Syllables는 받침 한 글자부터 `개·왜·꾀`의 복모음까지 `ㆍ·ㅡ·ㅣ`로 조합한다. ([진행 표시](screenshots/2026-09-02-alphabet-visible-progress-retry.png), [완료 반전](screenshots/2026-09-02-alphabet-target-negative-complete.png), [단어 단계](screenshots/2026-09-02-word-learning-levels.png), [받침](screenshots/2026-09-02-syllable-final-sounds.png), [복모음](screenshots/2026-09-02-syllable-compound-vowels.png)) |
 
 ## 현재 기준
 
-- Sentence Copy: Lv.1~Lv.8, 레벨당 5개 문장, 전체 시간으로 1,500점 산정
-- Word Challenge: 60초 동안 완성한 단어 수 측정
+- Sentence Copy: Lv.1~Lv.6, 레벨당 5개 문장, 전체 시간으로 1,500점 산정
+- Word Challenge: 5개 학습 단계 중 하나를 선택해 제한 시간 안에 3단어 완성
 - 자판: 9×9, 독립 자음·천지인·쉼표를 제외한 문장부호, 목표 자소의 약 1.5배 보장
 - 고정 버튼: 띄어쓰기와 길게 눌러 연속 삭제할 수 있는 Delete
 - 미디어: 로고·표지·점수 영상은 교체 가능한 파일과 설정으로 분리
