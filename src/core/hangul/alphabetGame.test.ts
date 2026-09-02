@@ -46,7 +46,8 @@ describe("Korean Alphabet courses", () => {
 
   it("builds every vowel level using only Cheonjiin strokes", () => {
     for (const level of ALPHABET_COURSES[1]!.levels) {
-      expect(level.pool).toEqual(["ㆍ", "ㅡ", "ㅣ"]);
+      expect(level.sequence).toHaveLength(4);
+      expect(level.pool).toEqual(["ㆍ", "ㅡ", "ㅣ", "."]);
       for (const tap of level.tapGroups.flat()) expect(["ㆍ", "ㅡ", "ㅣ"]).toContain(tap);
     }
     expect(ALPHABET_COURSES[1]!.levels[0]!.tapGroups[0]).toEqual(["ㅣ", "ㆍ"]);
@@ -57,9 +58,12 @@ describe("Korean Alphabet courses", () => {
     expect(decomposeAlphabetTarget("가")).toEqual(["ㄱ", "ㅏ"]);
     expect(decomposeAlphabetTarget("쾅")).toEqual(["ㅋ", "ㅘ", "ㅇ"]);
     for (const level of ALPHABET_COURSES[2]!.levels) {
+      expect(level.sequence).toHaveLength(4);
+      expect(level.tapGroups.flat().every((tap) => !["ㅏ", "ㅑ", "ㅓ", "ㅕ", "ㅗ", "ㅛ", "ㅜ", "ㅠ"].includes(tap))).toBe(true);
       const board = createAlphabetBoard(level.tapGroups.flat(), level.pool, 81, () => 0.42, level.trapChance);
       expect(board.some((tile) => level.sequence.includes(tile.value))).toBe(false);
     }
+    expect(ALPHABET_COURSES[2]!.levels[0]!.tapGroups[0]!.slice(0, 3)).toEqual(["ㄱ", "ㅣ", "ㆍ"]);
   });
 
   it("advances only when the expected symbol is tapped", () => {

@@ -35,7 +35,9 @@ const CHEONJIIN_TAPS: Readonly<Record<string, readonly string[]>> = {
 };
 const consonantTaps = (labels: readonly string[]): readonly (readonly string[])[] => labels.map((label) => [...label]);
 const vowelTaps = (labels: readonly string[]): readonly (readonly string[])[] => labels.map((label) => [...label].flatMap((vowel) => CHEONJIIN_TAPS[vowel] ?? [vowel]));
-const syllableTaps = (labels: readonly string[]): readonly (readonly string[])[] => labels.map((label) => [...label].flatMap(decomposeAlphabetTarget));
+const syllableTaps = (labels: readonly string[]): readonly (readonly string[])[] => labels.map((label) =>
+  [...label].flatMap(decomposeAlphabetTarget).flatMap((jamo) => CHEONJIIN_TAPS[jamo] ?? [jamo]),
+);
 const level = (number: number, name: string, durationMs: number, trapChance: number, sequence: readonly string[], tapGroups: readonly (readonly string[])[], pool: readonly string[]): AlphabetLevel => ({
   id: `alphabet-${number}`, number, name, durationMs, trapChance, sequence, tapGroups, pool,
 });
@@ -48,20 +50,20 @@ const CONSONANT_LEVELS: readonly AlphabetLevel[] = [
 ];
 
 const VOWEL_LEVEL_SEQUENCES = [
-  ["ㅏ", "ㅓ", "ㅗ", "ㅜ", "ㅏㅓㅗㅜ"],
-  ["ㅑ", "ㅕ", "ㅛ", "ㅠ", "ㅑㅕㅛㅠ"],
-  ["ㅏㅑ", "ㅓㅕ", "ㅗㅛ", "ㅜㅠ", "ㅏㅑㅓㅕㅗㅛㅜㅠ"],
-  ["ㅗㅏ", "ㅠㅓㅑ", "ㅕㅜㅏㅛ", "ㅑㅗㅠㅓㅡㅣ", "ㅏㅕㅗㅠㅓㅛㅜㅡㅣ"],
+  ["ㅏ", "ㅓ", "ㅗ", "ㅜ"],
+  ["ㅑ", "ㅕ", "ㅛ", "ㅠ"],
+  ["ㅏㅑ", "ㅓㅕ", "ㅗㅛ", "ㅜㅠ"],
+  ["ㅗㅏ", "ㅠㅓㅑ", "ㅕㅜㅏㅛ", "ㅑㅗㅠㅓㅡㅣ"],
 ] as const;
 const VOWEL_LEVELS: readonly AlphabetLevel[] = VOWEL_LEVEL_SEQUENCES.map((sequence, index) =>
-  level(index + 5, ["One Dot", "Two Dots", "Vowel Families", "Vowel Memory"][index]!, [50_000, 60_000, 75_000, 100_000][index]!, 0, sequence, vowelTaps(sequence), ["ㆍ", "ㅡ", "ㅣ"]),
+  level(index + 5, ["One Dot", "Two Dots", "Vowel Families", "Vowel Memory"][index]!, [50_000, 60_000, 75_000, 100_000][index]!, 0, sequence, vowelTaps(sequence), ["ㆍ", "ㅡ", "ㅣ", "."]),
 );
 
 const SYLLABLE_LEVEL_SEQUENCES = [
-  ["가나다라", "마바사아", "자차카타", "파하", "가나다라마바사"],
-  ["가갸거겨", "고교구규", "나냐너녀", "노뇨누뉴", "다댜더뎌"],
-  ["각난달밤공", "문법책상꽃", "산강길집문", "밥옷손발눈", "한글공부방"],
-  ["쾅쿵", "꽥쨍", "뿅뻥", "탁휙", "쾅쿵꽥쨍뿅"],
+  ["가나다라", "마바사아", "자차카타", "파하"],
+  ["가갸거겨", "고교구규", "나냐너녀", "노뇨누뉴"],
+  ["각난달밤공", "문법책상꽃", "산강길집문", "밥옷손발눈"],
+  ["쾅쿵", "꽥쨍", "뿅뻥", "탁휙"],
 ] as const;
 const SYLLABLE_LEVELS: readonly AlphabetLevel[] = SYLLABLE_LEVEL_SEQUENCES.map((sequence, index) => {
   const tapGroups = syllableTaps(sequence);
