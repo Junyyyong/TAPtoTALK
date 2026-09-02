@@ -5,6 +5,31 @@ export interface SentencePrompt {
   tags?: readonly string[];
 }
 
+export interface AlphabetRound {
+  id: string;
+  name: string;
+  instruction: string;
+  sequence: readonly string[];
+  pool: readonly string[];
+}
+
+const BASIC_CONSONANTS = [..."ㄱㄴㄷㄹㅁㅂㅅㅇㅈㅊㅋㅌㅍㅎ"];
+const BASIC_VOWELS = ["ㅏ", "ㅑ", "ㅓ", "ㅕ", "ㅗ", "ㅛ", "ㅜ", "ㅠ", "ㅡ", "ㅣ"];
+const SYLLABLE_ROWS = [
+  ..."가나다라마바사아자차카타파하",
+  ..."거너더러머버서어저처커터퍼허",
+];
+const SOUND_WORDS = ["쾅", "쿵", "꽥", "쨍", "뿅", "뻥", "탁", "휙"];
+
+export const ALPHABET_MODE_CONFIG = { durationMs: 90_000 } as const;
+
+export const ALPHABET_ROUNDS: readonly AlphabetRound[] = [
+  { id: "consonants", name: "Consonants", instruction: "Find the Korean consonants in order.", sequence: BASIC_CONSONANTS, pool: BASIC_CONSONANTS },
+  { id: "vowels", name: "Vowels", instruction: "Find the Korean vowels in order.", sequence: BASIC_VOWELS, pool: BASIC_VOWELS },
+  { id: "syllables", name: "Syllables", instruction: "Follow the 가 and 거 syllable rows.", sequence: SYLLABLE_ROWS, pool: SYLLABLE_ROWS },
+  { id: "sounds", name: "Sound Words", instruction: "Finish with short, complex Korean sounds.", sequence: SOUND_WORDS, pool: SOUND_WORDS },
+];
+
 export interface SentenceLevel {
   id: string;
   name: string;

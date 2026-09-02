@@ -9,6 +9,11 @@
 .talk-screen { gap: 12px; padding-inline: max(12px, env(safe-area-inset-left)); padding-bottom: max(10px, env(safe-area-inset-bottom)); }
 .talk-screen .hud { flex: 0 0 auto; padding-inline: 0; }
 .talk-screen.is-input-locked .letter-board,.talk-screen.is-input-locked .fixed-controls { pointer-events: none; }
+.talk-screen.is-alphabet-mode .fixed-controls { display: none; }
+.talk-screen.is-alphabet-mode .target-prompt { min-height: 122px; }
+.talk-screen.is-alphabet-mode .target-text { color: var(--hot-deep); font-size: clamp(42px,12vw,58px); line-height: 1; }
+.talk-screen.is-alphabet-mode .target-hint { max-width: 100%; overflow: hidden; font-weight: 650; text-overflow: ellipsis; white-space: nowrap; }
+.talk-screen.is-alphabet-mode .typed-text { min-height: 2.2em; align-items: center; justify-content: center; border-bottom: 0; color: var(--accent-deep); font-family: "TAP Sans KR",sans-serif; font-size: 18px; }
 .run-heading { display: grid; padding-top: 9px; text-align: center; }
 .run-heading span { display: none; }
 .run-heading strong { font-size: 21px; line-height: 1; font-variant-numeric: tabular-nums; }
@@ -38,6 +43,9 @@
 .letter-tile--cheonjiin-dot::after { border-radius: 1px; }
 .letter-tile--period::after { width: 4px; height: 4px; border-radius: 50%; }
 .letter-tile:active { transform: translateY(1px); }
+.letter-tile--alphabet { font-size: clamp(17px,4.9vw,22px); }
+.letter-tile.is-wrong-pick { animation: wrong-pick 340ms ease; }
+@keyframes wrong-pick { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-3px); filter: saturate(.5); } 75% { transform: translateX(3px); filter: saturate(.5); } }
 .letter-tile:disabled { color: rgba(58,15,10,.2); background: rgba(58,15,10,.06); box-shadow: inset 0 0 0 1px rgba(58,15,10,.07); text-shadow: none; }
 .letter-tile:disabled::before { display: none; }
 .fixed-controls { display: grid; flex: 0 0 auto; grid-template-columns: 1fr 1fr; gap: 5px; }
