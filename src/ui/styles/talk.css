@@ -8,14 +8,28 @@
 .wood-btn { position: relative; min-height: 48px; overflow: hidden; padding: 0 20px; border: 0; border-radius: 14px; color: white; background: linear-gradient(180deg,var(--go),var(--go-deep)); box-shadow: inset 0 1px 0 rgba(255,255,255,.42),0 4px 0 rgba(29,35,43,.26); font: 600 16px/1 inherit; }
 .talk-screen { gap: 12px; padding-inline: max(12px, env(safe-area-inset-left)); padding-bottom: max(10px, env(safe-area-inset-bottom)); }
 .talk-screen .hud { flex: 0 0 auto; padding-inline: 0; }
-.talk-screen.is-input-locked .letter-board,.talk-screen.is-input-locked .fixed-controls { pointer-events: none; }
+.talk-screen.is-input-locked .letter-board,.talk-screen.is-input-locked .fixed-controls,.talk-screen.is-input-locked .alphabet-controls { pointer-events: none; }
 .talk-screen.is-alphabet-mode .fixed-controls { display: none; }
+.alphabet-controls { display: none; }
+.talk-screen.is-alphabet-mode .alphabet-controls { display: grid; flex: 0 0 auto; }
+.alphabet-controls .control-btn { height: 42px; color: var(--accent-deep); background: var(--panel-lit); }
 .talk-screen.is-alphabet-mode .target-prompt { min-height: 122px; }
 .talk-screen.is-alphabet-mode .target-text { color: var(--ink); font-size: clamp(42px,12vw,58px); line-height: 1; }
 .talk-screen.is-alphabet-mode .target-text.is-medium-sequence { font-size: clamp(30px,8vw,40px); letter-spacing: .08em; }
 .talk-screen.is-alphabet-mode .target-text.is-long-sequence { font-size: clamp(21px,5.8vw,29px); letter-spacing: .035em; }
 .talk-screen.is-alphabet-mode .target-hint { max-width: 100%; overflow: hidden; font-weight: 650; text-overflow: ellipsis; white-space: nowrap; }
 .talk-screen.is-alphabet-mode .typed-text { min-height: 2.2em; align-items: center; justify-content: center; border-bottom: 0; color: var(--accent-deep); font-family: "TAP Sans KR",sans-serif; font-size: 18px; }
+.talk-screen.is-alphabet-mode .typed-text { flex-direction: column; gap: 5px; }
+.alphabet-part-progress { display: flex; min-height: 30px; flex-wrap: wrap; align-items: center; justify-content: center; gap: 4px; }
+.alphabet-part-progress span { display: grid; min-width: 27px; height: 29px; place-items: center; padding: 0 5px; border-radius: 6px; color: var(--ink-faint); background: rgba(29,32,136,.06); transition: color .15s ease,background .15s ease,transform .15s ease; }
+.alphabet-part-progress .is-done { color: white; background: var(--accent); }
+.alphabet-part-progress .is-current { color: white; background: var(--hot); box-shadow: 0 0 0 3px rgba(253,208,0,.55); transform: translateY(-1px); }
+.alphabet-part-progress .is-current.is-wrong { background: var(--ring-bad); animation: wrong-pick 340ms ease; }
+.typed-text small { color: var(--ink-soft); font-family: "TAP Sans KR",sans-serif; font-size: 11px; font-weight: 700; }
+.target-prompt { transition: color .18s ease,background .18s ease,border-color .18s ease; }
+.target-prompt.is-alphabet-complete { color: white; border-color: var(--accent-deep); background: var(--accent); }
+.target-prompt.is-alphabet-complete .target-label { color: var(--ink); background: var(--sun); }
+.target-prompt.is-alphabet-complete .target-text,.target-prompt.is-alphabet-complete .target-hint { color: white; }
 .run-heading { display: grid; padding-top: 9px; text-align: center; }
 .run-heading span { display: none; }
 .run-heading strong { font-size: 21px; line-height: 1; font-variant-numeric: tabular-nums; }

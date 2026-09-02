@@ -45,11 +45,11 @@ describe("Korean Alphabet courses", () => {
   });
 
   it("builds every vowel level using only Cheonjiin strokes", () => {
-    for (const level of ALPHABET_COURSES[1]!.levels) {
+    ALPHABET_COURSES[1]!.levels.forEach((level, index) => {
       expect(level.sequence).toHaveLength(4);
-      expect(level.pool).toEqual(["ㆍ", "ㅡ", "ㅣ", "."]);
+      expect(level.pool).toEqual(index < 2 ? ["ㆍ", "ㅡ", "ㅣ"] : ["ㆍ", "ㅡ", "ㅣ", "."]);
       for (const tap of level.tapGroups.flat()) expect(["ㆍ", "ㅡ", "ㅣ"]).toContain(tap);
-    }
+    });
     expect(ALPHABET_COURSES[1]!.levels[0]!.tapGroups[0]).toEqual(["ㅣ", "ㆍ"]);
     expect(ALPHABET_COURSES[1]!.levels[1]!.tapGroups[0]).toEqual(["ㅣ", "ㆍ", "ㆍ"]);
   });
@@ -59,11 +59,15 @@ describe("Korean Alphabet courses", () => {
     expect(decomposeAlphabetTarget("쾅")).toEqual(["ㅋ", "ㅘ", "ㅇ"]);
     for (const level of ALPHABET_COURSES[2]!.levels) {
       expect(level.sequence).toHaveLength(4);
-      expect(level.tapGroups.flat().every((tap) => !["ㅏ", "ㅑ", "ㅓ", "ㅕ", "ㅗ", "ㅛ", "ㅜ", "ㅠ"].includes(tap))).toBe(true);
+      expect(level.tapGroups.flat().every((tap) => !["ㅏ", "ㅐ", "ㅑ", "ㅒ", "ㅓ", "ㅔ", "ㅕ", "ㅖ", "ㅗ", "ㅘ", "ㅙ", "ㅚ", "ㅛ", "ㅜ", "ㅝ", "ㅞ", "ㅟ", "ㅠ", "ㅢ"].includes(tap))).toBe(true);
       const board = createAlphabetBoard(level.tapGroups.flat(), level.pool, 81, () => 0.42, level.trapChance);
       expect(board.some((tile) => level.sequence.includes(tile.value))).toBe(false);
     }
-    expect(ALPHABET_COURSES[2]!.levels[0]!.tapGroups[0]!.slice(0, 3)).toEqual(["ㄱ", "ㅣ", "ㆍ"]);
+    expect(ALPHABET_COURSES[2]!.levels[0]!.tapGroups[0]).toEqual(["ㅅ", "ㅣ", "ㆍ", "ㄴ"]);
+    expect(ALPHABET_COURSES[2]!.levels[2]!.sequence).toEqual(["개", "게", "내", "네"]);
+    expect(ALPHABET_COURSES[2]!.levels[3]!.sequence).toEqual(["왜", "와", "꾀", "외"]);
+    expect(ALPHABET_COURSES[2]!.levels[2]!.tapGroups[0]).toEqual(["ㄱ", "ㅣ", "ㆍ", "ㅣ"]);
+    expect(ALPHABET_COURSES[2]!.levels[3]!.tapGroups[0]).toEqual(["ㅇ", "ㆍ", "ㅡ", "ㅣ", "ㆍ", "ㅣ"]);
   });
 
   it("advances only when the expected symbol is tapped", () => {

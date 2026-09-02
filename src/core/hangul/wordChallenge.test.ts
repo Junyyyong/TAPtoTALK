@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { isWordMatch, wordCountLabel } from "./wordChallenge";
+import { isWordMatch, pickLessonTargets, wordCountLabel } from "./wordChallenge";
 
 describe("word challenge", () => {
   it("accepts the exact composed Korean word", () => {
@@ -15,5 +15,11 @@ describe("word challenge", () => {
   it("formats the completed word count", () => {
     expect(wordCountLabel(1)).toBe("1 word");
     expect(wordCountLabel(7)).toBe("7 words");
+  });
+
+  it("picks three different targets for one lesson", () => {
+    const result = pickLessonTargets(["가", "나", "다", "라"], 3, () => 0);
+    expect(result).toHaveLength(3);
+    expect(new Set(result).size).toBe(3);
   });
 });

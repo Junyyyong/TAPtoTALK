@@ -2,9 +2,9 @@ import { createLetterBoard, inputValueForTile, MIRROR_TRAP_TOKEN, type LetterTil
 import { checkSequenceTap, createAlphabetBoard, createRandomAlphabetTargets, type AlphabetTile } from "../core/hangul/alphabetGame";
 import { composeTokens } from "../core/hangul/compose";
 import { CHEONJIIN_STROKES, CONSONANTS, PUNCTUATION_SYMBOLS, type BoardSymbol } from "../core/hangul/keys";
-import { isWordMatch, wordCountLabel } from "../core/hangul/wordChallenge";
+import { isWordMatch, pickLessonTargets, wordCountLabel } from "../core/hangul/wordChallenge";
 import { lessonCheerFor, lessonScoreFromTime } from "../core/hangul/writing";
-import { ALPHABET_COURSES, SENTENCE_LEVELS, SENTENCE_PROMPTS, WORD_MODE_CONFIG, WORD_TARGETS, type AlphabetLevel, type SentencePrompt, type WordTarget } from "../content/prompts";
+import { ALPHABET_COURSES, SENTENCE_LEVELS, SENTENCE_PROMPTS, WORD_LEVELS, WORD_TARGETS, type AlphabetLevel, type SentencePrompt, type WordTarget } from "../content/prompts";
 import { el } from "./dom";
 import { feedback } from "./feedback";
 import { canAcceptInput } from "./inputCapacity";
@@ -34,10 +34,11 @@ interface TutorialStep {
 }
 
 const TUTORIAL_STEPS: readonly TutorialStep[] = [
-  { title: "Follow the course", body: "Choose Consonants, Vowels, or Syllables. Each course starts at its first level. Tap ㄱ, ㄴ, ㄷ, then ㄹ.", keys: ["ㄱ", "ㄴ", "ㄷ", "ㄹ"], result: "ㄱ → ㄴ → ㄷ → ㄹ" },
+  { title: "Follow visible progress", body: "Blue jamo are done and red is next. In the game, Retry restarts only the current item. Tap ㄱ, ㄴ, ㄷ, then ㄹ.", keys: ["ㄱ", "ㄴ", "ㄷ", "ㄹ"], result: "ㄱ → ㄴ → ㄷ → ㄹ" },
   { title: "Pick one consonant", body: "The nine colours are mixed. Tap ㅋ once; a used block turns grey.", keys: ["ㅋ"], result: "ㅋ" },
   { title: "Build a syllable", body: "Tap ㅊ, then ㅣ and ㄴ.", keys: ["ㅊ", "ㅣ", "ㄴ"], result: "친" },
   { title: "Make a vowel", body: "Use the square Cheonjiin dot with ㅣ and ㅡ. Tap ㅣ, then ㆍ.", keys: ["ㅣ", "ㆍ"], result: "ㅏ" },
+  { title: "Make a compound vowel", body: "Build 개 without a ready-made ㅐ block. Tap ㄱ, ㅣ, ㆍ, then ㅣ.", keys: ["ㄱ", "ㅣ", "ㆍ", "ㅣ"], result: "개" },
   { title: "Add punctuation", body: "Only a small period, !, and ? are used. Tap the period.", keys: ["."], result: "." },
   { title: "Avoid reversed traps", body: "Reversed consonants are traps. Try one, then tap the normal ㅇ.", keys: ["ㅇ"], result: "ㅇ · trap avoided", decoys: [{ key: "ㄱ", mirror: "horizontal" }, { key: "ㅂ", mirror: "vertical" }] },
   { title: "Finish a word", body: "A correct target word is counted automatically.", keys: ["ㅅ", "ㅣ", "ㆍ", "ㄹ", "ㅣ", "ㆍ", "ㅇ"], result: "사랑 · 1 word" },
@@ -51,6 +52,7 @@ export class TalkApp {
   private readonly game = el("screen-game");
   private readonly board = el("letter-board");
   private readonly targetLabel = el("target-label");
+  private readonly targetPrompt = document.querySelector<HTMLElement>(".target-prompt")!;
   private readonly targetText = el("target-text");
   private readonly targetHint = el("target-hint");
   private readonly typedText = el("typed-text");
@@ -75,6 +77,9 @@ export class TalkApp {
   private prompt: SentencePrompt = SENTENCE_PROMPTS[0]!;
   private wordTarget: WordTarget = WORD_TARGETS[0]!;
   private wordCount = 0;
+  private wordLevel = 0;
+  private wordTargetIndex = 0;
+  private wordLessonTargets: readonly WordTarget[] = [];
   private sentenceLevel = 0;
   private sentenceIndex = 0;
   private alphabetCourseIndex = 0;
@@ -84,6 +89,8 @@ export class TalkApp {
   private alphabetTiles: AlphabetTile[] = [];
   private alphabetSequence: readonly string[] = [];
   private alphabetTapGroups: readonly (readonly string[])[] = [];
+  private alphabetCurrentUsed: number[] = [];
+  private alphabetWrong = false;
   private alphabetTotalMs = 0;
   private alphabetCourseComplete = false;
   private inputLocked = true;
@@ -99,11 +106,12 @@ export class TalkApp {
   constructor() {
     el("mode-alphabet").addEventListener("click", () => this.showAlphabetCourses());
     el("mode-sentence").addEventListener("click", () => this.showLevelSelect());
-    el("mode-free").addEventListener("click", () => this.start("word"));
+    el("mode-free").addEventListener("click", () => this.showWordLevelSelect());
     el("btn-back").addEventListener("click", () => this.showTitle());
     el("btn-pause").addEventListener("click", () => this.pauseGame());
     this.setupBackspace();
     el("btn-space").addEventListener("click", () => this.typeFixed(" "));
+    el("btn-alphabet-retry").addEventListener("click", () => this.retryAlphabetTarget());
     el("btn-again").addEventListener("click", () => this.continueFromResult());
     el("btn-result-menu").addEventListener("click", () => this.showTitle());
     el("btn-title-tutorial").addEventListener("click", () => this.showTutorial());
@@ -133,15 +141,13 @@ export class TalkApp {
     this.inputLocked = false; this.paused = false;
     this.game.classList.remove("is-input-locked");
     this.mode = mode;
-    this.wordCount = 0;
     if (mode === "alphabet") { this.showAlphabetCourses(); return; }
-    if (mode === "word") el("btn-again").textContent = "Play again";
     if (mode === "sentence") this.prompt = SENTENCE_LEVELS[this.sentenceLevel]!.prompts[this.sentenceIndex]!;
-    else this.wordTarget = WORD_TARGETS[Math.floor(Math.random() * WORD_TARGETS.length)]!;
+    else this.wordTarget = this.wordLessonTargets[this.wordTargetIndex] ?? WORD_TARGETS[0]!;
     this.input = []; this.used.clear();
     const requiredText = mode === "sentence" ? this.prompt.text : this.wordTarget.word;
     this.tiles = createLetterBoard(requiredText);
-    this.targetLabel.textContent = mode === "sentence" ? `${SENTENCE_LEVELS[this.sentenceLevel]!.name} · ${this.sentenceIndex + 1}/5` : "TARGET";
+    this.targetLabel.textContent = mode === "sentence" ? `${SENTENCE_LEVELS[this.sentenceLevel]!.name} · ${this.sentenceIndex + 1}/5` : `${WORD_LEVELS[this.wordLevel]!.name} · ${this.wordTargetIndex + 1}/3`;
     this.renderTranslatedTarget();
     this.typedText.dataset.empty = mode === "sentence" ? "Your sentence appears here." : "Your word appears here.";
     this.runMode.textContent = mode === "sentence" ? "Sentence Copy" : "Word Challenge";
@@ -214,6 +220,8 @@ export class TalkApp {
     const course = ALPHABET_COURSES[this.alphabetCourseIndex]!;
     const level = this.currentAlphabetLevel();
     this.alphabetTargetIndex = 0; this.alphabetPartIndex = 0;
+    this.alphabetCurrentUsed = []; this.alphabetWrong = false;
+    this.targetPrompt.classList.remove("is-alphabet-complete");
     this.used.clear();
     this.alphabetSequence = level.randomizeTargets
       ? createRandomAlphabetTargets(level.sequence.map((target) => target.length), level.pool)
@@ -259,21 +267,30 @@ export class TalkApp {
     const result = checkSequenceTap(tapGroup, this.alphabetPartIndex, tile.value);
     if (!result.correct) {
       feedback.reject();
+      this.alphabetWrong = true; this.renderAlphabetProgress();
       button.classList.remove("is-wrong-pick");
       void button.offsetWidth;
       button.classList.add("is-wrong-pick");
-      window.setTimeout(() => button.classList.remove("is-wrong-pick"), 360);
+      window.setTimeout(() => { button.classList.remove("is-wrong-pick"); this.alphabetWrong = false; this.renderAlphabetProgress(); }, 360);
       return;
     }
     feedback.pick(this.alphabetTargetIndex + result.nextIndex);
     this.used.add(tile.id); button.disabled = true;
+    this.alphabetCurrentUsed.push(tile.id);
     this.alphabetPartIndex = result.nextIndex;
     if (result.complete) {
-      this.alphabetTargetIndex += 1;
-      this.alphabetPartIndex = 0;
+      this.inputLocked = true;
+      this.targetPrompt.classList.add("is-alphabet-complete");
+      this.renderAlphabetProgress();
+      window.setTimeout(() => {
+        this.targetPrompt.classList.remove("is-alphabet-complete");
+        this.alphabetTargetIndex += 1; this.alphabetPartIndex = 0; this.alphabetCurrentUsed = [];
+        if (this.alphabetTargetIndex === this.alphabetSequence.length) this.completeAlphabetLevel();
+        else { this.inputLocked = false; this.renderAlphabetProgress(); }
+      }, 340);
+      return;
     }
     this.renderAlphabetProgress();
-    if (this.alphabetTargetIndex === this.alphabetSequence.length) this.completeAlphabetLevel();
   }
 
   private renderAlphabetProgress(): void {
@@ -285,11 +302,29 @@ export class TalkApp {
     this.targetText.classList.toggle("is-long-sequence", targetLength > 8);
     const preview = this.alphabetSequence.slice(this.alphabetTargetIndex, this.alphabetTargetIndex + 6).join(" → ");
     const parts = this.alphabetTapGroups[this.alphabetTargetIndex] ?? [];
-    const assembly = parts.length > 1 && parts[this.alphabetPartIndex] ? ` · NEXT [${parts[this.alphabetPartIndex]}]` : "";
-    this.typedText.textContent = `${this.alphabetTargetIndex} / ${this.alphabetSequence.length}${assembly}`;
+    const progress = document.createElement("span"); progress.className = "alphabet-part-progress";
+    parts.forEach((part, index) => {
+      const glyph = document.createElement("span"); glyph.textContent = part;
+      glyph.className = index < this.alphabetPartIndex ? "is-done" : index === this.alphabetPartIndex ? "is-current" : "is-pending";
+      if (this.alphabetWrong && index === this.alphabetPartIndex) glyph.classList.add("is-wrong");
+      progress.append(glyph);
+    });
+    const count = document.createElement("small"); count.textContent = `${this.alphabetTargetIndex} / ${this.alphabetSequence.length}`;
+    this.typedText.replaceChildren(progress, count);
     this.typedText.dataset.empty = "";
     this.typedText.classList.remove("is-empty", "is-wrong", "is-correct");
     this.targetHint.textContent = `${preview}${this.alphabetTargetIndex + 6 < this.alphabetSequence.length ? " → …" : ""}`;
+  }
+
+  private retryAlphabetTarget(): void {
+    if (this.mode !== "alphabet" || this.paused || this.inputLocked) return;
+    this.alphabetCurrentUsed.forEach((tileId) => {
+      this.used.delete(tileId);
+      const button = this.board.querySelector<HTMLButtonElement>(`[data-tile-id="${tileId}"]`);
+      if (button) button.disabled = false;
+    });
+    this.alphabetCurrentUsed = []; this.alphabetPartIndex = 0; this.alphabetWrong = false;
+    feedback.tap(); this.renderAlphabetProgress();
   }
 
   private completeAlphabetLevel(): void {
@@ -425,7 +460,7 @@ export class TalkApp {
     const update = (): void => {
       this.elapsedMs = performance.now() - this.startedAt;
       if (this.mode === "word" || this.mode === "alphabet") {
-        const duration = this.mode === "word" ? WORD_MODE_CONFIG.durationMs : this.currentAlphabetLevel().durationMs;
+        const duration = this.mode === "word" ? WORD_LEVELS[this.wordLevel]!.durationMs : this.currentAlphabetLevel().durationMs;
         const remaining = Math.max(0, duration - this.elapsedMs); this.clock.textContent = formatTime(remaining);
         if (remaining === 0) {
           if (this.mode === "word") this.finishWordChallenge();
@@ -472,7 +507,7 @@ export class TalkApp {
       }
       this.startAlphabetLevel();
     }
-    else this.start("word");
+    else this.showWordLevelSelect();
   }
   private clearWordFeedback(): void {
     this.writingFeedback.textContent = "";
@@ -483,19 +518,29 @@ export class TalkApp {
     this.clearWordFeedback();
     this.wordCount += 1;
     feedback.clear(this.input.length);
+    if (this.wordCount === this.wordLessonTargets.length) {
+      this.stopClock(); this.inputLocked = true;
+      const level = WORD_LEVELS[this.wordLevel]!;
+      const score = lessonScoreFromTime(this.elapsedMs, level.durationMs);
+      el("btn-again").textContent = "Choose level";
+      this.showResult(`${level.name} complete!`, `3 / 3 words · ${formatTime(this.elapsedMs)}`, score);
+      return;
+    }
     this.startNextWord();
   }
   private startNextWord(): void {
-    const choices = WORD_TARGETS.filter((target) => target.id !== this.wordTarget.id);
-    this.wordTarget = choices[Math.floor(Math.random() * choices.length)] ?? WORD_TARGETS[0]!;
+    this.wordTargetIndex += 1;
+    this.wordTarget = this.wordLessonTargets[this.wordTargetIndex] ?? WORD_TARGETS[0]!;
     this.input = []; this.used.clear();
     this.tiles = createLetterBoard(this.wordTarget.word);
+    this.targetLabel.textContent = `${WORD_LEVELS[this.wordLevel]!.name} · ${this.wordTargetIndex + 1}/3`;
     this.renderTranslatedTarget();
-    this.targetHint.textContent = `${wordCountLabel(this.wordCount)} complete · make the next word.`;
+    this.targetHint.textContent = `${wordCountLabel(this.wordCount)} complete · ${3 - this.wordCount} left.`;
     this.renderBoard(); this.renderInput();
   }
   private finishWordChallenge(): void {
-    this.stopClock();
+    this.stopClock(); this.inputLocked = true;
+    el("btn-again").textContent = "Choose level";
     const label = wordCountLabel(this.wordCount);
     if (this.wordCount > 0) {
       feedback.complete();
@@ -505,6 +550,30 @@ export class TalkApp {
       feedback.fail();
       this.showResult("Time is up!", "0 words completed");
     }
+  }
+
+  private showWordLevelSelect(): void {
+    this.stopClock(); this.cheer.stop();
+    this.result.classList.add("hidden"); this.game.classList.add("hidden"); this.title.classList.remove("hidden");
+    this.tutorialNav.classList.add("hidden");
+    this.openHelp("Word Challenge");
+    this.helpBody.innerHTML = `<p class="level-intro">Choose a lesson and complete three Korean words.</p><div class="level-list" id="word-level-list"></div>`;
+    const list = el("word-level-list");
+    WORD_LEVELS.forEach((level, index) => {
+      const button = document.createElement("button");
+      button.type = "button"; button.className = "level-btn";
+      button.innerHTML = `<strong>${level.name}</strong><span>${level.description}</span><em>3 words · ${Math.round(level.durationMs / 1000)} seconds</em><small>START</small>`;
+      button.addEventListener("click", () => this.startWordLevel(index));
+      list.append(button);
+    });
+  }
+
+  private startWordLevel(index: number): void {
+    this.wordLevel = index; this.wordTargetIndex = 0; this.wordCount = 0; this.elapsedMs = 0;
+    this.wordLessonTargets = pickLessonTargets(WORD_LEVELS[index]!.targets, 3);
+    this.help.classList.add("hidden");
+    el("btn-again").textContent = "Choose level";
+    this.start("word");
   }
   private showResult(title: string, detail: string, score?: number, tierScore = score): void {
     const reveal = (): void => {
@@ -675,7 +744,7 @@ export class TalkApp {
   private showRules(): void {
     this.tutorialNav.classList.add("hidden");
     this.openHelp("Rules");
-    this.helpBody.innerHTML = `<div class="rules-list"><p><b>Korean Alphabet</b><span>Choose Consonants, Vowels, or Syllables. Each course starts at its first level and all four levels must be completed in order.</span></p><p><b>Alphabet tasks</b><span>Each level has a fresh timer. A timeout retries the current level instead of returning to the first.</span></p><p><b>Sentence Copy</b><span>Complete five phrases. The full run is worth up to 1,500 points and your best score is saved.</span></p><p><b>Lv.5 time bands</b><span>150s OH MY GOD · 180s UNBELIEVABLE · 200s AMAZING · 240s GREAT</span></p><p><b>Word Challenge</b><span>Make as many target words as you can in 60 seconds. A correct word is counted automatically.</span></p><p><b>Nine mixed colours</b><span>Colours do not belong to a particular letter. A used block turns grey.</span></p><p><b>Vowels</b><span>Use ㆍ, ㅡ, and ㅣ to build vowels in both Vowels and Syllables. The small period is a trap in Vowels.</span></p><p><b>Reversed traps</b><span>Mirrored consonants are traps from Lv.1. They never count as the original consonant.</span></p><p><b>One block, one use</b><span>A correct used block stays as a light mark.</span></p></div>`;
+    this.helpBody.innerHTML = `<div class="rules-list"><p><b>Korean Alphabet</b><span>Choose Consonants, Vowels, or Syllables. Each course starts at its first level and all four levels must be completed in order.</span></p><p><b>Visible progress</b><span>Blue jamo are complete, red is the next tap, and Retry restarts only the current item. A completed target turns blue.</span></p><p><b>Sentence Copy</b><span>Complete five phrases. The full run is worth up to 1,500 points and your best score is saved.</span></p><p><b>Word Challenge</b><span>Choose one of five lessons and complete three words before its timer ends.</span></p><p><b>Nine mixed colours</b><span>Colours do not belong to a particular letter. A used block turns grey.</span></p><p><b>Vowels</b><span>Use ㆍ, ㅡ, and ㅣ for simple and compound vowels. Period traps begin in the later Vowels levels.</span></p><p><b>Syllables</b><span>Practice final sounds, then build compound-vowel words such as 개, 왜, and 꾀.</span></p><p><b>Reversed traps</b><span>Mirrored consonants are traps from Lv.1. They never count as the original consonant.</span></p></div>`;
   }
 
   private showSettings(): void {

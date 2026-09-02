@@ -75,7 +75,7 @@ describe("TAPtoTALK Hangul domain", () => {
   });
 
   it("keeps every lesson phrase solvable on one 81-block board", () => {
-    expect(SENTENCE_LEVELS).toHaveLength(8);
+    expect(SENTENCE_LEVELS).toHaveLength(6);
     for (const level of SENTENCE_LEVELS) {
       expect(level.prompts).toHaveLength(5);
       for (const prompt of level.prompts) {
