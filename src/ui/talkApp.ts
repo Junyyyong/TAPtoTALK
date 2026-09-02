@@ -229,7 +229,7 @@ export class TalkApp {
       if (tile.mirror) button.classList.add(`letter-tile--flip-${tile.mirror === "horizontal" ? "x" : "y"}`);
       button.dataset.tileId = String(tile.id);
       button.setAttribute("aria-label", tile.value);
-      const glyph = document.createElement("span"); glyph.className = "letter-glyph"; glyph.textContent = tile.value === "ㆍ" ? "━" : tile.value;
+      const glyph = document.createElement("span"); glyph.className = "letter-glyph"; glyph.textContent = tile.value === "ㆍ" ? "" : tile.value;
       button.append(glyph);
       if (tile.value === "ㆍ") button.classList.add("letter-tile--cheonjiin-dot");
       button.addEventListener("click", () => this.tapAlphabetTile(tile, button));

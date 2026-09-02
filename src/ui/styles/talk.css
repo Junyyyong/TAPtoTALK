@@ -47,6 +47,7 @@
 .letter-tile--period::after { width: 4px; height: 4px; border-radius: 50%; }
 .letter-tile:active { transform: translateY(1px); }
 .letter-tile--alphabet { font-size: clamp(17px,4.9vw,22px); }
+.letter-tile--alphabet.letter-tile--cheonjiin-dot { font-size: 0; }
 .letter-tile.is-wrong-pick { animation: wrong-pick 340ms ease; }
 @keyframes wrong-pick { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-3px); filter: saturate(.5); } 75% { transform: translateX(3px); filter: saturate(.5); } }
 .letter-tile:disabled { color: rgba(58,15,10,.2); background: rgba(58,15,10,.06); box-shadow: inset 0 0 0 1px rgba(58,15,10,.07); text-shadow: none; }
