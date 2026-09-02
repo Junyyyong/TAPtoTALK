@@ -16,23 +16,32 @@ describe("Korean Alphabet courses", () => {
     }
   });
 
-  it("runs the full consonant order once before the added-stroke groups", () => {
+  it("splits the full consonant order into targets of at most five jamo", () => {
     const [basic, strokes] = ALPHABET_COURSES[0]!.levels;
     expect(basic!.durationMs).toBe(60_000);
-    expect(basic!.sequence).toEqual(["ㄱㄴㄷㄹㅁㅂㅅㅇㅈㅊㅋㅌㅍㅎ"]);
+    expect(basic!.sequence).toEqual(["ㄱㄴㄷㄹㅁ", "ㅂㅅㅇㅈㅊ", "ㅋㅌㅍㅎ"]);
+    expect(basic!.sequence.join("")).toBe("ㄱㄴㄷㄹㅁㅂㅅㅇㅈㅊㅋㅌㅍㅎ");
     expect(strokes!.durationMs).toBe(75_000);
     expect(strokes!.sequence).toEqual(["ㄱㅋ", "ㄴㄷㄹ", "ㅁㅂㅍ", "ㅅㅈㅊ", "ㅇㅎ"]);
   });
 
-  it("randomizes consonant memory targets at lengths 3–6 and 7–9", () => {
+  it("keeps randomized consonant memory targets at five jamo or fewer", () => {
     const [, , short, long] = ALPHABET_COURSES[0]!.levels;
-    expect(short!.sequence.map((target) => target.length)).toEqual([3, 4, 5, 6]);
-    expect(long!.sequence.map((target) => target.length)).toEqual([7, 8, 9]);
+    expect(short!.sequence.map((target) => target.length)).toEqual([3, 4, 5]);
+    expect(long!.sequence.map((target) => target.length)).toEqual([5, 5, 5, 5]);
     expect(short!.randomizeTargets).toBe(true);
     expect(long!.randomizeTargets).toBe(true);
     const targets = createRandomAlphabetTargets([3, 4], ["ㄱ", "ㄴ", "ㄷ", "ㄹ"], () => 0);
     expect(targets.map((target) => target.length)).toEqual([3, 4]);
     expect(targets.every((target) => new Set(target).size === target.length)).toBe(true);
+  });
+
+  it("never displays more than five jamo in one alphabet target", () => {
+    for (const course of ALPHABET_COURSES) {
+      for (const level of course.levels) {
+        for (const target of level.sequence) expect([...target].length).toBeLessThanOrEqual(5);
+      }
+    }
   });
 
   it("adds mirrored traps from the first consonant level", () => {

@@ -46,17 +46,17 @@ const level = (number: number, name: string, durationMs: number, trapChance: num
 });
 
 const CONSONANT_LEVELS: readonly AlphabetLevel[] = [
-  level(1, "Basic Order", 60_000, .05, ["ㄱㄴㄷㄹㅁㅂㅅㅇㅈㅊㅋㅌㅍㅎ"], consonantTaps(["ㄱㄴㄷㄹㅁㅂㅅㅇㅈㅊㅋㅌㅍㅎ"]), BASIC_CONSONANTS),
+  level(1, "Basic Order", 60_000, .05, ["ㄱㄴㄷㄹㅁ", "ㅂㅅㅇㅈㅊ", "ㅋㅌㅍㅎ"], consonantTaps(["ㄱㄴㄷㄹㅁ", "ㅂㅅㅇㅈㅊ", "ㅋㅌㅍㅎ"]), BASIC_CONSONANTS),
   level(2, "Added Strokes", 75_000, .08, ["ㄱㅋ", "ㄴㄷㄹ", "ㅁㅂㅍ", "ㅅㅈㅊ", "ㅇㅎ"], consonantTaps(["ㄱㅋ", "ㄴㄷㄹ", "ㅁㅂㅍ", "ㅅㅈㅊ", "ㅇㅎ"]), BASIC_CONSONANTS),
-  { ...level(3, "Short Memory", 70_000, .10, ["ㄷㅁㅎ", "ㅋㅅㄹㅈ", "ㅎㄹㅊㅂㅇ", "ㅌㄴㅍㅅㅋㄱ"], consonantTaps(["ㄷㅁㅎ", "ㅋㅅㄹㅈ", "ㅎㄹㅊㅂㅇ", "ㅌㄴㅍㅅㅋㄱ"]), BASIC_CONSONANTS), randomizeTargets: true },
-  { ...level(4, "Long Memory", 90_000, .12, ["ㄱㅁㅅㅈㅋㅍㅎ", "ㅎㄴㅂㅊㄹㅌㅇㄷ", "ㄷㅍㄱㅅㅎㅁㅈㅋㄴ"], consonantTaps(["ㄱㅁㅅㅈㅋㅍㅎ", "ㅎㄴㅂㅊㄹㅌㅇㄷ", "ㄷㅍㄱㅅㅎㅁㅈㅋㄴ"]), BASIC_CONSONANTS), randomizeTargets: true },
+  { ...level(3, "Short Memory", 70_000, .10, ["ㄷㅁㅎ", "ㅋㅅㄹㅈ", "ㅎㄹㅊㅂㅇ"], consonantTaps(["ㄷㅁㅎ", "ㅋㅅㄹㅈ", "ㅎㄹㅊㅂㅇ"]), BASIC_CONSONANTS), randomizeTargets: true },
+  { ...level(4, "Long Memory", 90_000, .12, ["ㄱㅁㅅㅈㅋ", "ㅎㄴㅂㅊㄹ", "ㄷㅍㄱㅅㅎ", "ㅁㅈㅋㄴㅇ"], consonantTaps(["ㄱㅁㅅㅈㅋ", "ㅎㄴㅂㅊㄹ", "ㄷㅍㄱㅅㅎ", "ㅁㅈㅋㄴㅇ"]), BASIC_CONSONANTS), randomizeTargets: true },
 ];
 
 const VOWEL_LEVEL_SEQUENCES = [
   ["ㅏ", "ㅓ", "ㅗ", "ㅜ"],
   ["ㅑ", "ㅕ", "ㅛ", "ㅠ"],
   ["ㅏㅑ", "ㅓㅕ", "ㅗㅛ", "ㅜㅠ"],
-  ["ㅗㅏ", "ㅠㅓㅑ", "ㅕㅜㅏㅛ", "ㅑㅗㅠㅓㅡㅣ"],
+  ["ㅗㅏ", "ㅠㅓㅑ", "ㅕㅜㅏㅛ", "ㅑㅗㅠㅓㅡ"],
 ] as const;
 const VOWEL_LEVELS: readonly AlphabetLevel[] = VOWEL_LEVEL_SEQUENCES.map((sequence, index) =>
   level(index + 5, ["One Dot", "Two Dots", "Vowel Families", "Vowel Memory"][index]!, [50_000, 60_000, 75_000, 100_000][index]!, 0, sequence, vowelTaps(sequence), index < 2 ? ["ㆍ", "ㅡ", "ㅣ"] : ["ㆍ", "ㅡ", "ㅣ", "."]),
