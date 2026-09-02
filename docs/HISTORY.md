@@ -60,6 +60,7 @@
 | 2026-09-02 | `a58304e` | 게임 선택을 Korean Alphabet → Word Challenge → Sentence Copy 순서의 3개 모드로 확장하고, 자음·모음·음절 행·복잡한 외마디 소리를 순서대로 찾는 90초 자소 학습을 추가했다. 스크린샷은 빈 여백 없는 430×932 PNG 방식으로 개선했다. ([메뉴](screenshots/2026-09-02-three-game-menu.png), [게임](screenshots/2026-09-02-korean-alphabet-game.png)) |
 | 2026-09-02 | `759c0ef` | 세 게임 제목을 같은 하늘색으로 통일하고, 자소 모드에서 영어 설명을 제거했다. Word Challenge는 한글 옆에 작은 영어 단어를, Sentence Copy는 한글 아래 한 줄 영어 번역을 표시한다. ([메뉴](screenshots/2026-09-02-blue-three-game-menu.png), [자소](screenshots/2026-09-02-alphabet-sequence-only.png), [단어](screenshots/2026-09-02-word-translation.png), [문장](screenshots/2026-09-02-sentence-translation.png)) |
 | 2026-09-02 | `8cb2db5` | 4초 시작 화면의 이미지를 새 `taptotalk-cover6.png`로 교체하고 HTML 초기 경로와 앱 미디어 설정을 함께 갱신했다. ([스크린샷](screenshots/2026-09-02-cover6-splash.png)) |
+| 2026-09-02 | `d127427` | Korean Alphabet의 음절·의성어 라운드에서 완성 글자는 목표로만 보여주고, 자판은 `가=ㄱ+ㅏ`, `쾅=ㅋ+ㅘ+ㅇ`처럼 분해된 자소 블록으로 구성하도록 변경했다. ([스크린샷](screenshots/2026-09-02-syllable-jamo-blocks.png)) |
 
 ## 현재 기준
 
