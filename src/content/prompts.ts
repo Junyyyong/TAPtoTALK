@@ -27,12 +27,12 @@ export interface AlphabetCourse {
   levels: readonly AlphabetLevel[];
 }
 
-const CONSONANT_NAMES: Readonly<Record<string, string>> = {
-  "ㄱ": "기역", "ㄴ": "니은", "ㄷ": "디귿", "ㄹ": "리을", "ㅁ": "미음", "ㅂ": "비읍", "ㅅ": "시옷",
-  "ㅇ": "이응", "ㅈ": "지읒", "ㅊ": "치읓", "ㅋ": "키읔", "ㅌ": "티읕", "ㅍ": "피읖", "ㅎ": "히읗",
+const CONSONANT_SOUNDS: Readonly<Record<string, string>> = {
+  "ㄱ": "[k~ɡ]", "ㄴ": "[n]", "ㄷ": "[t~d]", "ㄹ": "[ɾ~l]", "ㅁ": "[m]", "ㅂ": "[p~b]", "ㅅ": "[s~ɕ]",
+  "ㅇ": "∅ / [ŋ]", "ㅈ": "[tɕ~dʑ]", "ㅊ": "[tɕʰ]", "ㅋ": "[kʰ]", "ㅌ": "[tʰ]", "ㅍ": "[pʰ]", "ㅎ": "[h]",
 };
 const VOWEL_SOUNDS: Readonly<Record<string, string>> = {
-  "ㅏ": "아", "ㅑ": "야", "ㅓ": "어", "ㅕ": "여", "ㅗ": "오", "ㅛ": "요", "ㅜ": "우", "ㅠ": "유", "ㅡ": "으", "ㅣ": "이",
+  "ㅏ": "[a]", "ㅑ": "[ja]", "ㅓ": "[ʌ]", "ㅕ": "[jʌ]", "ㅗ": "[o]", "ㅛ": "[jo]", "ㅜ": "[u]", "ㅠ": "[ju]", "ㅡ": "[ɯ]", "ㅣ": "[i]",
 };
 const SYLLABLE_MEANINGS: Readonly<Record<string, string>> = {
   "나": "I", "너": "you", "몸": "body", "피": "blood", "눈": "eye", "코": "nose", "입": "mouth", "손": "hand", "발": "foot",
@@ -43,7 +43,7 @@ const SYLLABLE_MEANINGS: Readonly<Record<string, string>> = {
 
 export function alphabetTargetNote(courseId: AlphabetCourse["id"], target: string): string {
   const values = [...target].map((character) => courseId === "consonants"
-    ? CONSONANT_NAMES[character]
+    ? CONSONANT_SOUNDS[character]
     : courseId === "vowels"
       ? VOWEL_SOUNDS[character]
       : SYLLABLE_MEANINGS[character]);

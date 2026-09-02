@@ -16,9 +16,10 @@ describe("Korean Alphabet courses", () => {
     }
   });
 
-  it("uses standard Korean names for jamo and concise meanings only for syllables", () => {
-    expect(alphabetTargetNote("consonants", "ㄱㄴ")).toBe("기역 · 니은");
-    expect(alphabetTargetNote("vowels", "ㅏㅑ")).toBe("아 · 야");
+  it("uses concise IPA values for jamo and meanings only for syllables", () => {
+    expect(alphabetTargetNote("consonants", "ㄱㄴ")).toBe("[k~ɡ] · [n]");
+    expect(alphabetTargetNote("consonants", "ㅇ")).toBe("∅ / [ŋ]");
+    expect(alphabetTargetNote("vowels", "ㅏㅑ")).toBe("[a] · [ja]");
     expect(alphabetTargetNote("syllables", "산")).toBe("mountain");
     expect(alphabetTargetNote("syllables", "나")).toBe("I");
     expect(alphabetTargetNote("syllables", "닭")).toBe("chicken");
