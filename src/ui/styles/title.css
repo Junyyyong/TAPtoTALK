@@ -125,8 +125,6 @@
   transition: transform 120ms ease, background 160ms ease;
 }
 
-.mode-list .mode-btn:first-child .mode-name { color: var(--hot-deep); }
-
 .mode-btn:active {
   background: linear-gradient(180deg, var(--panel-lit), var(--panel-deep));
   transform: translateY(2px);

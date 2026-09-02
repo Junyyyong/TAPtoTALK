@@ -136,8 +136,7 @@ export class TalkApp {
     const requiredText = mode === "sentence" ? this.prompt.text : this.wordTarget.word;
     this.tiles = createLetterBoard(requiredText);
     this.targetLabel.textContent = mode === "sentence" ? `${SENTENCE_LEVELS[this.sentenceLevel]!.name} · ${this.sentenceIndex + 1}/5` : "TARGET";
-    this.targetText.textContent = requiredText;
-    this.targetHint.textContent = mode === "sentence" ? "Copy this sentence." : "Complete the target word.";
+    this.renderTranslatedTarget();
     this.typedText.dataset.empty = mode === "sentence" ? "Your sentence appears here." : "Your word appears here.";
     this.runMode.textContent = mode === "sentence" ? "Sentence Copy" : "Word Challenge";
     this.game.classList.toggle("is-word-mode", mode === "word");
@@ -145,6 +144,18 @@ export class TalkApp {
     this.submitRow.classList.add("hidden");
     this.result.classList.add("hidden"); this.title.classList.add("hidden"); this.splash.classList.add("hidden"); this.game.classList.remove("hidden");
     this.renderBoard(); this.renderInput(); this.startClock(mode === "sentence" && keepLessonTime);
+  }
+
+  private renderTranslatedTarget(): void {
+    if (this.mode === "word") {
+      const korean = document.createElement("span"); korean.textContent = this.wordTarget.word;
+      const english = document.createElement("span"); english.className = "target-translation-inline"; english.textContent = `/ ${this.wordTarget.translation}`;
+      this.targetText.replaceChildren(korean, english);
+      this.targetHint.textContent = "Complete the target word.";
+      return;
+    }
+    this.targetText.textContent = this.prompt.text;
+    this.targetHint.textContent = this.prompt.translation;
   }
 
   private startAlphabet(resume = false): void {
@@ -171,7 +182,6 @@ export class TalkApp {
     this.alphabetTiles = createAlphabetBoard(round.sequence, round.pool);
     this.runMode.textContent = "Korean Alphabet";
     this.targetLabel.textContent = `ROUND ${this.alphabetRound + 1} / ${ALPHABET_ROUNDS.length}`;
-    this.targetHint.textContent = round.instruction;
     this.renderAlphabetBoard();
     this.renderAlphabetProgress();
   }
@@ -218,7 +228,7 @@ export class TalkApp {
     this.typedText.textContent = `${this.alphabetIndex} / ${round.sequence.length}`;
     this.typedText.dataset.empty = "";
     this.typedText.classList.remove("is-empty", "is-wrong", "is-correct");
-    this.targetHint.textContent = `${round.instruction}  ${preview}`;
+    this.targetHint.textContent = `${preview}${this.alphabetIndex + 6 < round.sequence.length ? " → …" : ""}`;
   }
 
   private completeAlphabetRound(): void {
@@ -408,7 +418,7 @@ export class TalkApp {
     this.wordTarget = choices[Math.floor(Math.random() * choices.length)] ?? WORD_TARGETS[0]!;
     this.input = []; this.used.clear();
     this.tiles = createLetterBoard(this.wordTarget.word);
-    this.targetText.textContent = this.wordTarget.word;
+    this.renderTranslatedTarget();
     this.targetHint.textContent = `${wordCountLabel(this.wordCount)} complete · make the next word.`;
     this.renderBoard(); this.renderInput();
   }

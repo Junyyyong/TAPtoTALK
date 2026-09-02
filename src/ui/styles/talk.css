@@ -11,7 +11,7 @@
 .talk-screen.is-input-locked .letter-board,.talk-screen.is-input-locked .fixed-controls { pointer-events: none; }
 .talk-screen.is-alphabet-mode .fixed-controls { display: none; }
 .talk-screen.is-alphabet-mode .target-prompt { min-height: 122px; }
-.talk-screen.is-alphabet-mode .target-text { color: var(--hot-deep); font-size: clamp(42px,12vw,58px); line-height: 1; }
+.talk-screen.is-alphabet-mode .target-text { color: var(--ink); font-size: clamp(42px,12vw,58px); line-height: 1; }
 .talk-screen.is-alphabet-mode .target-hint { max-width: 100%; overflow: hidden; font-weight: 650; text-overflow: ellipsis; white-space: nowrap; }
 .talk-screen.is-alphabet-mode .typed-text { min-height: 2.2em; align-items: center; justify-content: center; border-bottom: 0; color: var(--accent-deep); font-family: "TAP Sans KR",sans-serif; font-size: 18px; }
 .run-heading { display: grid; padding-top: 9px; text-align: center; }
@@ -23,6 +23,7 @@
 .target-label { width: fit-content; padding: 3px 9px; border-radius: 4px; color: white; background: var(--accent); font-size: 11px; letter-spacing: .04em; text-align: center; }
 .target-text,.typed-text { min-height: 1.45em; margin: 0; color: var(--ink); font-size: clamp(24px,6.3vw,31px); font-weight: 700; line-height: 1.38; word-break: keep-all; }
 .target-text { grid-column: 1 / -1; align-self: center; padding-top: 7px; font-family: "TAP Serif KR", serif; text-align: center; }
+.target-translation-inline { margin-left: .32em; color: var(--ink-soft); font-family: "TAP Sans KR",sans-serif; font-size: .55em; font-weight: 650; vertical-align: .12em; }
 .target-hint { grid-column: 1 / -1; margin: 3px 0 2px; color: var(--ink-soft); font-size: 14px; line-height: 1.45; text-align: center; }
 .typed-text { display: flex; min-height: 3.15em; align-items: flex-end; padding: 8px 6px 5px; color: var(--accent-deep); font-family: "TAP Serif KR", serif; font-size: clamp(28px,7.2vw,36px); line-height: 1.25; border-bottom: 1px solid var(--slab); }
 .typed-text.is-empty::before { content: attr(data-empty); color: var(--ink-faint); font-family: "TAP Sans KR", sans-serif; font-size: 15px; font-weight: 500; }
