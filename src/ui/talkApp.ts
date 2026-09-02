@@ -4,6 +4,7 @@ import { composeTokens } from "../core/hangul/compose";
 import { CHEONJIIN_STROKES, CONSONANTS, PUNCTUATION_SYMBOLS, type BoardSymbol } from "../core/hangul/keys";
 import { isWordMatch, pickLessonTargets, wordCountLabel } from "../core/hangul/wordChallenge";
 import { lessonCheerFor, lessonScoreFromTime } from "../core/hangul/writing";
+import { materializeTargetTokens, targetToTokens } from "../core/hangul/target";
 import { ALPHABET_COURSES, SENTENCE_LEVELS, SENTENCE_PROMPTS, WORD_LEVELS, WORD_TARGETS, type AlphabetLevel, type SentencePrompt, type WordTarget } from "../content/prompts";
 import { el } from "./dom";
 import { feedback } from "./feedback";
@@ -140,6 +141,7 @@ export class TalkApp {
     this.cheer.stop();
     this.inputLocked = false; this.paused = false;
     this.game.classList.remove("is-input-locked");
+    this.targetPrompt.classList.remove("is-writing-complete");
     this.mode = mode;
     if (mode === "alphabet") { this.showAlphabetCourses(); return; }
     if (mode === "sentence") this.prompt = SENTENCE_LEVELS[this.sentenceLevel]!.prompts[this.sentenceIndex]!;
@@ -183,10 +185,9 @@ export class TalkApp {
     this.helpBody.innerHTML = `<p class="level-intro">Choose one course. Its four levels must be completed in order.</p><div class="level-list" id="alphabet-course-list"></div>`;
     const list = el("alphabet-course-list");
     ALPHABET_COURSES.forEach((course, index) => {
-      const first = course.levels[0]!.number; const last = course.levels.at(-1)!.number;
       const button = document.createElement("button");
       button.type = "button"; button.className = "level-btn alphabet-course-btn";
-      button.innerHTML = `<strong>${course.name}</strong><span>${course.description}</span><em>Lv.${first} → Lv.${last} · required order</em><small>START</small>`;
+      button.innerHTML = `<strong>${course.name}</strong><span>${course.description}</span><small>START</small>`;
       button.addEventListener("click", () => this.startAlphabetCourse(index));
       list.append(button);
     });
@@ -443,10 +444,26 @@ export class TalkApp {
 
   private renderInput(): void {
     const text = composeTokens(this.input.map((token) => token.value));
-    this.typedText.textContent = text; this.typedText.classList.toggle("is-empty", text.length === 0);
     const target = this.mode === "sentence" ? this.prompt.text : this.wordTarget.word;
-    this.typedText.classList.toggle("is-correct", target.startsWith(text) && text.length > 0);
-    this.typedText.classList.toggle("is-wrong", !target.startsWith(text));
+    const expected = materializeTargetTokens(targetToTokens(target));
+    const wrongIndex = this.input.findIndex((token, index) => token.value !== expected[index]);
+    const composed = document.createElement("span"); composed.className = "composed-input"; composed.textContent = text;
+    const progress = document.createElement("span"); progress.className = "writing-token-progress";
+    let active: HTMLElement | undefined;
+    expected.forEach((value, index) => {
+      const glyph = document.createElement("span"); glyph.textContent = value === " " ? "␠" : value === "ㆍ" ? "·" : value;
+      if (index < this.input.length) glyph.className = this.input[index]!.value === value ? "is-done" : "is-wrong";
+      else if (wrongIndex < 0 && index === this.input.length) glyph.className = "is-current";
+      else glyph.className = "is-pending";
+      if (glyph.className === "is-wrong" || glyph.className === "is-current") active ??= glyph;
+      progress.append(glyph);
+    });
+    const count = document.createElement("small"); count.className = "writing-token-count"; count.textContent = `${Math.min(this.input.length, expected.length)} / ${expected.length}`;
+    this.typedText.replaceChildren(composed, progress, count);
+    this.typedText.classList.toggle("is-empty", text.length === 0);
+    if (active) requestAnimationFrame(() => { progress.scrollLeft = Math.max(0, active!.offsetLeft - progress.clientWidth / 2); });
+    this.typedText.classList.toggle("is-correct", this.input.length > 0 && wrongIndex < 0);
+    this.typedText.classList.toggle("is-wrong", wrongIndex >= 0);
     if (this.mode === "sentence" && text === this.prompt.text) this.finishSentence();
     if (this.mode === "word") {
       this.clearWordFeedback();
@@ -477,6 +494,7 @@ export class TalkApp {
     if (this.frame === undefined || this.inputLocked) return;
     this.inputLocked = true;
     this.game.classList.add("is-input-locked");
+    this.targetPrompt.classList.add("is-writing-complete");
     this.stopClock();
     feedback.complete();
     const level = SENTENCE_LEVELS[this.sentenceLevel]!;
@@ -490,6 +508,7 @@ export class TalkApp {
       this.showResult("Level complete!", `${score.toLocaleString()} / 1,500 · ${formatTime(this.elapsedMs)} · Best ${this.sentenceProgress.bestScores[level.id]!.toLocaleString()}`, score);
     } else {
       this.sentenceTimer = window.setTimeout(() => {
+        this.targetPrompt.classList.remove("is-writing-complete");
         this.sentenceIndex += 1;
         this.start("sentence", true);
       }, 520);
@@ -516,17 +535,21 @@ export class TalkApp {
   }
   private completeWord(): void {
     this.clearWordFeedback();
-    this.wordCount += 1;
+    this.inputLocked = true; this.targetPrompt.classList.add("is-writing-complete");
     feedback.clear(this.input.length);
-    if (this.wordCount === this.wordLessonTargets.length) {
-      this.stopClock(); this.inputLocked = true;
-      const level = WORD_LEVELS[this.wordLevel]!;
-      const score = lessonScoreFromTime(this.elapsedMs, level.durationMs);
-      el("btn-again").textContent = "Choose level";
-      this.showResult(`${level.name} complete!`, `3 / 3 words · ${formatTime(this.elapsedMs)}`, score);
-      return;
-    }
-    this.startNextWord();
+    window.setTimeout(() => {
+      this.targetPrompt.classList.remove("is-writing-complete");
+      this.wordCount += 1;
+      if (this.wordCount === this.wordLessonTargets.length) {
+        this.stopClock();
+        const level = WORD_LEVELS[this.wordLevel]!;
+        const score = lessonScoreFromTime(this.elapsedMs, level.durationMs);
+        el("btn-again").textContent = "Choose level";
+        this.showResult(`${level.name} complete!`, `3 / 3 words · ${formatTime(this.elapsedMs)}`, score);
+        return;
+      }
+      this.inputLocked = false; this.startNextWord();
+    }, 340);
   }
   private startNextWord(): void {
     this.wordTargetIndex += 1;
