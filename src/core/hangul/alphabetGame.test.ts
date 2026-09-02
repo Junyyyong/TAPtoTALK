@@ -73,6 +73,8 @@ describe("Korean Alphabet courses", () => {
   it("decomposes displayed syllables into jamo-only boards", () => {
     expect(decomposeAlphabetTarget("가")).toEqual(["ㄱ", "ㅏ"]);
     expect(decomposeAlphabetTarget("쾅")).toEqual(["ㅋ", "ㅘ", "ㅇ"]);
+    expect(decomposeAlphabetTarget("꾀")).toEqual(["ㄱ", "ㄱ", "ㅚ"]);
+    expect(decomposeAlphabetTarget("읽")).toEqual(["ㅇ", "ㅣ", "ㄹ", "ㄱ"]);
     for (const level of ALPHABET_COURSES[2]!.levels) {
       expect(level.tapGroups.flat().every((tap) => !["ㅏ", "ㅐ", "ㅑ", "ㅒ", "ㅓ", "ㅔ", "ㅕ", "ㅖ", "ㅗ", "ㅘ", "ㅙ", "ㅚ", "ㅛ", "ㅜ", "ㅝ", "ㅞ", "ㅟ", "ㅠ", "ㅢ"].includes(tap))).toBe(true);
       const board = createAlphabetBoard(level.tapGroups.flat(), level.pool, 81, () => 0.42, level.trapChance);
@@ -86,7 +88,8 @@ describe("Korean Alphabet courses", () => {
       ["힘", "꾀", "꿈", "개", "소", "말", "닭", "술", "춤"],
     ]);
     expect(ALPHABET_COURSES[2]!.levels[0]!.tapGroups[0]).toEqual(["ㄴ", "ㅣ", "ㆍ"]);
-    expect(ALPHABET_COURSES[2]!.levels[4]!.tapGroups[1]).toEqual(["ㄲ", "ㆍ", "ㅡ", "ㅣ"]);
+    expect(ALPHABET_COURSES[2]!.levels[4]!.tapGroups[1]).toEqual(["ㄱ", "ㄱ", "ㆍ", "ㅡ", "ㅣ"]);
+    expect(ALPHABET_COURSES[2]!.levels[4]!.pool).not.toContain("ㄲ");
   });
 
   it("advances only when the expected symbol is tapped", () => {
