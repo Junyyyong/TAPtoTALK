@@ -83,6 +83,7 @@
 | 2026-09-02 | `c509b5c` | 외국인 학습자를 위해 Korean Alphabet의 자소 안내를 글자 이름에서 IPA 음가로 변경했다. 자음은 위치 변이를 `[k~ɡ]`처럼, 모음은 `[a]`처럼 표시하고 `ㅇ`은 `∅ / [ŋ]`로 안내한다. 음절의 영문 뜻은 유지하고 Rules에 IPA 범위 표기 설명을 추가했다. ([자음](screenshots/2026-09-02-alphabet-ipa-sound-guide.png), [모음](screenshots/2026-09-02-vowel-ipa-sound-guide.png)) |
 | 2026-09-02 | `3a5a07f` | 첫 스튜디오 화면 다음에 4초간 표시되는 TAPtoTALK 커버를 새 `taptotalk-cover7.png`로 교체했다. 4837px 원본을 모바일용 1290px 폭으로 최적화하고 초기 HTML과 앱 설정 경로를 함께 변경했다. ([스크린샷](screenshots/2026-09-02-cover7-splash.png)) |
 | 2026-09-03 | `9a5d6b4` | GitHub에 업로드된 새 `TAPtoTALK-logo2.svg`를 메인 로고로 연결했다. Consonants의 Long Memory Lv.4를 제거해 Lv.1–3만 순서대로 진행하며, 선택 화면 설명을 `order, added strokes`로 간소화했다. ([메인](screenshots/2026-09-03-main-logo2.png), [코스 선택](screenshots/2026-09-03-consonants-lv1-3.png)) |
+| 2026-09-03 | `e13b3fc` | Korean Alphabet은 오입력이 진행에 반영되지 않는 구조이므로 불필요한 `Retry this item` 버튼과 전용 초기화 상태·처리 코드를 제거했다. ([스크린샷](screenshots/2026-09-03-alphabet-no-retry.png)) |
 
 ## 현재 기준
 
