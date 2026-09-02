@@ -86,6 +86,7 @@
 | 2026-09-03 | `e13b3fc` | Korean Alphabet은 오입력이 진행에 반영되지 않는 구조이므로 불필요한 `Retry this item` 버튼과 전용 초기화 상태·처리 코드를 제거했다. ([스크린샷](screenshots/2026-09-03-alphabet-no-retry.png)) |
 | 2026-09-03 | `6751e42` | 게임 완료 시 `4`, 태피, 티피, 후피, 해피, 재피의 WebM·MP4·MP3 여섯 묶음 중 하나를 무작위로 선택하도록 확장했다. 점수별 영상 크기·위치는 유지하고, macOS·Linux 배포 호환성을 위해 한글 미디어 파일명을 안전한 영문 이름으로 정리했다. ([스크린샷](screenshots/2026-09-03-random-celebration-video.png)) |
 | 2026-09-03 | `74d7373` | Korean Alphabet의 모음 게임에서 제시어 아래 입력 순서에 표시되던 문자형 모음천 `ㆍ`를 자판과 동일한 8×8px 네모 기호로 통일했다. ([스크린샷](screenshots/2026-09-03-vowel-square-cheonjiin-progress.png)) |
+| 2026-09-03 | `57b2219` | Syllables의 쌍자음을 완성 블록 대신 기본 자음 반복으로 분해하고, 겹받침도 낱자 단위로 분해했다. `꾀`는 `ㄱ+ㄱ+ㆍ+ㅡ+ㅣ`, `읽`은 `ㅇ+ㅣ+ㄹ+ㄱ` 순서로 입력한다. ([스크린샷](screenshots/2026-09-03-lv13-double-consonant-parts.png)) |
 
 ## 현재 기준
 
