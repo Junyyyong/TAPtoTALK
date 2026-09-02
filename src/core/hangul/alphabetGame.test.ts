@@ -1,36 +1,46 @@
 import { describe, expect, it } from "vitest";
+import { ALPHABET_COURSES } from "../../content/prompts";
 import { checkSequenceTap, createAlphabetBoard, decomposeAlphabetTarget } from "./alphabetGame";
-import { ALPHABET_ROUNDS } from "../../content/prompts";
 
-describe("Korean Alphabet sequence game", () => {
-  it("teaches consonants, vowels, syllables, then complex sound words", () => {
-    expect(ALPHABET_ROUNDS.map((round) => round.id)).toEqual(["consonants", "vowels", "syllables", "sounds"]);
-    expect(ALPHABET_ROUNDS.map((round) => round.durationMs)).toEqual([40_000, 40_000, 120_000, 90_000]);
-    expect(ALPHABET_ROUNDS[0]!.sequence.slice(0, 4)).toEqual(["ㄱ", "ㄴ", "ㄷ", "ㄹ"]);
-    expect(ALPHABET_ROUNDS[1]!.sequence).toEqual(["ㅏ", "ㅑ", "ㅓ", "ㅕ", "ㅗ", "ㅛ", "ㅜ", "ㅠ", "ㅡ", "ㅣ"]);
-    expect(ALPHABET_ROUNDS[3]!.sequence.slice(0, 3)).toEqual(["쾅", "쿵", "꽥"]);
-    expect(ALPHABET_ROUNDS[2]!.tapGroups.slice(0, 2)).toEqual([["ㄱ", "ㅏ"], ["ㄴ", "ㅏ"]]);
-    expect(ALPHABET_ROUNDS[3]!.tapGroups.slice(0, 3)).toEqual([["ㅋ", "ㅘ", "ㅇ"], ["ㅋ", "ㅜ", "ㅇ"], ["ㄲ", "ㅙ", "ㄱ"]]);
+describe("Korean Alphabet courses", () => {
+  it("offers three courses with four mandatory levels and five tasks each", () => {
+    expect(ALPHABET_COURSES.map((course) => course.id)).toEqual(["consonants", "vowels", "syllables"]);
+    expect(ALPHABET_COURSES.flatMap((course) => course.levels.map((level) => level.number))).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+    for (const course of ALPHABET_COURSES) {
+      expect(course.levels).toHaveLength(4);
+      for (const level of course.levels) {
+        expect(level.sequence).toHaveLength(5);
+        expect(level.tapGroups).toHaveLength(5);
+        expect(level.tapGroups.flat().length).toBeLessThanOrEqual(81);
+      }
+    }
   });
 
-  it("decomposes complete syllables into jamo blocks", () => {
+  it("adds mirrored traps from the first consonant level", () => {
+    const consonants = ALPHABET_COURSES[0]!;
+    expect(consonants.levels[0]!.trapChance).toBeGreaterThan(0);
+    expect(consonants.levels[1]!.trapChance).toBeGreaterThan(consonants.levels[0]!.trapChance);
+    const board = createAlphabetBoard(["ㄱ"], ["ㄱ"], 81, () => 0.42, 1);
+    expect(board.filter((tile) => tile.required).every((tile) => !tile.mirror)).toBe(true);
+    expect(board.some((tile) => tile.mirror === "horizontal")).toBe(true);
+  });
+
+  it("builds every vowel level using only Cheonjiin strokes", () => {
+    for (const level of ALPHABET_COURSES[1]!.levels) {
+      expect(level.pool).toEqual(["ㆍ", "ㅡ", "ㅣ"]);
+      for (const tap of level.tapGroups.flat()) expect(["ㆍ", "ㅡ", "ㅣ"]).toContain(tap);
+    }
+    expect(ALPHABET_COURSES[1]!.levels[0]!.tapGroups[0]).toEqual(["ㅣ", "ㆍ"]);
+    expect(ALPHABET_COURSES[1]!.levels[1]!.tapGroups[0]).toEqual(["ㅣ", "ㆍ", "ㆍ"]);
+  });
+
+  it("decomposes displayed syllables into jamo-only boards", () => {
     expect(decomposeAlphabetTarget("가")).toEqual(["ㄱ", "ㅏ"]);
     expect(decomposeAlphabetTarget("쾅")).toEqual(["ㅋ", "ㅘ", "ㅇ"]);
-    expect(decomposeAlphabetTarget("ㄱ")).toEqual(["ㄱ"]);
-  });
-
-  it("never places complete syllable blocks in the syllable lesson", () => {
-    const round = ALPHABET_ROUNDS[2]!;
-    const board = createAlphabetBoard(round.tapGroups.flat(), round.pool, 81, () => 0.42);
-    expect(board.some((tile) => round.sequence.includes(tile.value))).toBe(false);
-    expect(round.tapGroups.flat().slice(0, 4)).toEqual(["ㄱ", "ㅏ", "ㄴ", "ㅏ"]);
-    expect(board.filter((tile) => tile.required)).toHaveLength(round.tapGroups.flat().length);
-  });
-  it("reserves every ordered target while filling an 81-tile board", () => {
-    const sequence = ["ㄱ", "ㄴ", "ㄷ", "ㄹ"];
-    const board = createAlphabetBoard(sequence, ["ㄱ", "ㄴ", "ㄷ", "ㄹ", "ㅁ"], 81, () => 0.42);
-    expect(board).toHaveLength(81);
-    expect(board.filter((tile) => tile.required).map((tile) => tile.value).sort()).toEqual([...sequence].sort());
+    for (const level of ALPHABET_COURSES[2]!.levels) {
+      const board = createAlphabetBoard(level.tapGroups.flat(), level.pool, 81, () => 0.42, level.trapChance);
+      expect(board.some((tile) => level.sequence.includes(tile.value))).toBe(false);
+    }
   });
 
   it("advances only when the expected symbol is tapped", () => {

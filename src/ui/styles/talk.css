@@ -12,6 +12,8 @@
 .talk-screen.is-alphabet-mode .fixed-controls { display: none; }
 .talk-screen.is-alphabet-mode .target-prompt { min-height: 122px; }
 .talk-screen.is-alphabet-mode .target-text { color: var(--ink); font-size: clamp(42px,12vw,58px); line-height: 1; }
+.talk-screen.is-alphabet-mode .target-text.is-medium-sequence { font-size: clamp(30px,8vw,40px); letter-spacing: .08em; }
+.talk-screen.is-alphabet-mode .target-text.is-long-sequence { font-size: clamp(21px,5.8vw,29px); letter-spacing: .035em; }
 .talk-screen.is-alphabet-mode .target-hint { max-width: 100%; overflow: hidden; font-weight: 650; text-overflow: ellipsis; white-space: nowrap; }
 .talk-screen.is-alphabet-mode .typed-text { min-height: 2.2em; align-items: center; justify-content: center; border-bottom: 0; color: var(--accent-deep); font-family: "TAP Sans KR",sans-serif; font-size: 18px; }
 .run-heading { display: grid; padding-top: 9px; text-align: center; }

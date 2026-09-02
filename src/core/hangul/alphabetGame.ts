@@ -1,7 +1,10 @@
+import { mirrorAxisFor, type MirrorAxis } from "./board";
+
 export interface AlphabetTile {
   id: number;
   value: string;
   required: boolean;
+  mirror?: MirrorAxis;
 }
 
 export interface SequenceTapResult {
@@ -38,12 +41,15 @@ export function createAlphabetBoard(
   pool: readonly string[],
   size = 81,
   rng: () => number = Math.random,
+  trapChance = 0,
 ): AlphabetTile[] {
   if (sequence.length > size) throw new RangeError(`Sequence needs ${sequence.length} tiles; maximum is ${size}.`);
   if (pool.length === 0) throw new RangeError("Alphabet board needs at least one filler value.");
   const tiles: AlphabetTile[] = sequence.map((value, id) => ({ id, value, required: true }));
   while (tiles.length < size) {
-    tiles.push({ id: tiles.length, value: pool[Math.floor(rng() * pool.length)]!, required: false });
+    const value = pool[Math.floor(rng() * pool.length)]!;
+    const mirror = rng() < trapChance ? mirrorAxisFor(value as never) : undefined;
+    tiles.push({ id: tiles.length, value, required: false, ...(mirror ? { mirror } : {}) });
   }
   return shuffle(tiles, rng);
 }

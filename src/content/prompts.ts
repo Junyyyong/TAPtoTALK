@@ -1,3 +1,5 @@
+import { decomposeAlphabetTarget } from "../core/hangul/alphabetGame";
+
 export interface SentencePrompt {
   id: string;
   text: string;
@@ -6,28 +8,69 @@ export interface SentencePrompt {
   tags?: readonly string[];
 }
 
-export interface AlphabetRound {
+export interface AlphabetLevel {
   id: string;
+  number: number;
   name: string;
   durationMs: number;
+  trapChance: number;
   sequence: readonly string[];
   tapGroups: readonly (readonly string[])[];
   pool: readonly string[];
 }
 
-const BASIC_CONSONANTS = [..."ㄱㄴㄷㄹㅁㅂㅅㅇㅈㅊㅋㅌㅍㅎ"];
-const BASIC_VOWELS = ["ㅏ", "ㅑ", "ㅓ", "ㅕ", "ㅗ", "ㅛ", "ㅜ", "ㅠ", "ㅡ", "ㅣ"];
-const SYLLABLE_ROWS = [
-  ..."가나다라마바사아자차카타파하",
-  ..."거너더러머버서어저처커터퍼허",
-];
-const SOUND_WORDS = ["쾅", "쿵", "꽥", "쨍", "뿅", "뻥", "탁", "휙"];
+export interface AlphabetCourse {
+  id: "consonants" | "vowels" | "syllables";
+  name: string;
+  description: string;
+  levels: readonly AlphabetLevel[];
+}
 
-export const ALPHABET_ROUNDS: readonly AlphabetRound[] = [
-  { id: "consonants", name: "Consonants", durationMs: 40_000, sequence: BASIC_CONSONANTS, tapGroups: BASIC_CONSONANTS.map(decomposeAlphabetTarget), pool: BASIC_CONSONANTS },
-  { id: "vowels", name: "Vowels", durationMs: 40_000, sequence: BASIC_VOWELS, tapGroups: BASIC_VOWELS.map(decomposeAlphabetTarget), pool: BASIC_VOWELS },
-  { id: "syllables", name: "Syllables", durationMs: 120_000, sequence: SYLLABLE_ROWS, tapGroups: SYLLABLE_ROWS.map(decomposeAlphabetTarget), pool: [...new Set(SYLLABLE_ROWS.flatMap(decomposeAlphabetTarget))] },
-  { id: "sounds", name: "Sound Words", durationMs: 90_000, sequence: SOUND_WORDS, tapGroups: SOUND_WORDS.map(decomposeAlphabetTarget), pool: [...new Set(SOUND_WORDS.flatMap(decomposeAlphabetTarget))] },
+const BASIC_CONSONANTS = [..."ㄱㄴㄷㄹㅁㅂㅅㅇㅈㅊㅋㅌㅍㅎ"];
+const CHEONJIIN_TAPS: Readonly<Record<string, readonly string[]>> = {
+  "ㅏ": ["ㅣ", "ㆍ"], "ㅑ": ["ㅣ", "ㆍ", "ㆍ"], "ㅓ": ["ㆍ", "ㅣ"], "ㅕ": ["ㆍ", "ㆍ", "ㅣ"],
+  "ㅗ": ["ㆍ", "ㅡ"], "ㅛ": ["ㆍ", "ㆍ", "ㅡ"], "ㅜ": ["ㅡ", "ㆍ"], "ㅠ": ["ㅡ", "ㆍ", "ㆍ"],
+  "ㅡ": ["ㅡ"], "ㅣ": ["ㅣ"], "ㆍ": ["ㆍ"],
+};
+const consonantTaps = (labels: readonly string[]): readonly (readonly string[])[] => labels.map((label) => [...label]);
+const vowelTaps = (labels: readonly string[]): readonly (readonly string[])[] => labels.map((label) => [...label].flatMap((vowel) => CHEONJIIN_TAPS[vowel] ?? [vowel]));
+const syllableTaps = (labels: readonly string[]): readonly (readonly string[])[] => labels.map((label) => [...label].flatMap(decomposeAlphabetTarget));
+const level = (number: number, name: string, durationMs: number, trapChance: number, sequence: readonly string[], tapGroups: readonly (readonly string[])[], pool: readonly string[]): AlphabetLevel => ({
+  id: `alphabet-${number}`, number, name, durationMs, trapChance, sequence, tapGroups, pool,
+});
+
+const CONSONANT_LEVELS: readonly AlphabetLevel[] = [
+  level(1, "Basic Order", 45_000, .05, ["ㄱㄴㄷㄹ", "ㅁㅂㅅㅇ", "ㅈㅊㅋㅌ", "ㅍㅎ", "ㄱㄴㄷㄹㅁㅂㅅㅇㅈㅊㅋㅌㅍㅎ"], consonantTaps(["ㄱㄴㄷㄹ", "ㅁㅂㅅㅇ", "ㅈㅊㅋㅌ", "ㅍㅎ", "ㄱㄴㄷㄹㅁㅂㅅㅇㅈㅊㅋㅌㅍㅎ"]), BASIC_CONSONANTS),
+  level(2, "Added Strokes", 55_000, .08, ["ㄱㅋ", "ㄴㄷㅌ", "ㅁㅂㅍ", "ㅅㅈㅊ", "ㅇㅎ"], consonantTaps(["ㄱㅋ", "ㄴㄷㅌ", "ㅁㅂㅍ", "ㅅㅈㅊ", "ㅇㅎ"]), BASIC_CONSONANTS),
+  level(3, "Short Memory", 70_000, .10, ["ㄷㅁ", "ㅋㅅ", "ㅎㄹㅊ", "ㅂㅇㄱㅈ", "ㅌㄴㅍㅅㅋ"], consonantTaps(["ㄷㅁ", "ㅋㅅ", "ㅎㄹㅊ", "ㅂㅇㄱㅈ", "ㅌㄴㅍㅅㅋ"]), BASIC_CONSONANTS),
+  level(4, "Long Memory", 90_000, .12, ["ㄱㅁㅅㅈㅋㅍ", "ㅎㄴㅂㅊㄹㅌㅇ", "ㄷㅍㄱㅅㅎㅁㅈㅋ", "ㅊㄴㅌㅂㅇㄹㅅㄱㅎ", "ㅁㅋㄷㅎㅅㅂㄴㅈㅍ"], consonantTaps(["ㄱㅁㅅㅈㅋㅍ", "ㅎㄴㅂㅊㄹㅌㅇ", "ㄷㅍㄱㅅㅎㅁㅈㅋ", "ㅊㄴㅌㅂㅇㄹㅅㄱㅎ", "ㅁㅋㄷㅎㅅㅂㄴㅈㅍ"]), BASIC_CONSONANTS),
+];
+
+const VOWEL_LEVEL_SEQUENCES = [
+  ["ㅏ", "ㅓ", "ㅗ", "ㅜ", "ㅏㅓㅗㅜ"],
+  ["ㅑ", "ㅕ", "ㅛ", "ㅠ", "ㅑㅕㅛㅠ"],
+  ["ㅏㅑ", "ㅓㅕ", "ㅗㅛ", "ㅜㅠ", "ㅏㅑㅓㅕㅗㅛㅜㅠ"],
+  ["ㅗㅏ", "ㅠㅓㅑ", "ㅕㅜㅏㅛ", "ㅑㅗㅠㅓㅡㅣ", "ㅏㅕㅗㅠㅓㅛㅜㅡㅣ"],
+] as const;
+const VOWEL_LEVELS: readonly AlphabetLevel[] = VOWEL_LEVEL_SEQUENCES.map((sequence, index) =>
+  level(index + 5, ["One Dot", "Two Dots", "Vowel Families", "Vowel Memory"][index]!, [50_000, 60_000, 75_000, 100_000][index]!, 0, sequence, vowelTaps(sequence), ["ㆍ", "ㅡ", "ㅣ"]),
+);
+
+const SYLLABLE_LEVEL_SEQUENCES = [
+  ["가나다라", "마바사아", "자차카타", "파하", "가나다라마바사"],
+  ["가갸거겨", "고교구규", "나냐너녀", "노뇨누뉴", "다댜더뎌"],
+  ["각난달밤공", "문법책상꽃", "산강길집문", "밥옷손발눈", "한글공부방"],
+  ["쾅쿵", "꽥쨍", "뿅뻥", "탁휙", "쾅쿵꽥쨍뿅"],
+] as const;
+const SYLLABLE_LEVELS: readonly AlphabetLevel[] = SYLLABLE_LEVEL_SEQUENCES.map((sequence, index) => {
+  const tapGroups = syllableTaps(sequence);
+  return level(index + 9, ["Basic Syllables", "Changing Vowels", "Final Consonants", "Sound Words"][index]!, [120_000, 140_000, 160_000, 180_000][index]!, [.06, .08, .10, .12][index]!, sequence, tapGroups, [...new Set(tapGroups.flat())]);
+});
+
+export const ALPHABET_COURSES: readonly AlphabetCourse[] = [
+  { id: "consonants", name: "Consonants", description: "Lv.1–4 · order, added strokes, and memory", levels: CONSONANT_LEVELS },
+  { id: "vowels", name: "Vowels", description: "Lv.5–8 · build vowels with ㆍ ㅡ ㅣ", levels: VOWEL_LEVELS },
+  { id: "syllables", name: "Syllables", description: "Lv.9–12 · build syllables from jamo", levels: SYLLABLE_LEVELS },
 ];
 
 export interface SentenceLevel {
@@ -100,4 +143,3 @@ export const WORD_TARGETS: readonly WordTarget[] = [
   { id: "music", word: "음악", translation: "music" },
   { id: "hope", word: "희망", translation: "hope" },
 ];
-import { decomposeAlphabetTarget } from "../core/hangul/alphabetGame";
