@@ -52,3 +52,27 @@ export function materializeTargetTokens(tokens: readonly TargetToken[]): string[
   }
   return values;
 }
+
+export type TargetCharacterState = "done" | "current" | "wrong" | "pending";
+export interface TargetCharacterProgress {
+  character: string;
+  state: TargetCharacterState;
+}
+
+/** Maps raw jamo input back onto the visible Korean characters in a target. */
+export function targetCharacterProgress(text: string, input: readonly string[]): TargetCharacterProgress[] {
+  let cursor = 0;
+  let firstWrong = -1;
+  const expected = materializeTargetTokens(targetToTokens(text));
+  for (let index = 0; index < input.length; index += 1) {
+    if (input[index] !== expected[index]) { firstWrong = index; break; }
+  }
+  return [...text.normalize("NFC")].map((character) => {
+    const length = materializeTargetTokens(targetToTokens(character)).length;
+    const start = cursor; const end = cursor + length; cursor = end;
+    if (firstWrong >= start && firstWrong < end) return { character, state: "wrong" };
+    if (length > 0 && end <= input.length && (firstWrong < 0 || end <= firstWrong)) return { character, state: "done" };
+    if (length > 0 && input.length >= start && input.length < end && firstWrong < 0) return { character, state: "current" };
+    return { character, state: "pending" };
+  });
+}

@@ -4,7 +4,7 @@ import { composeTokens } from "../core/hangul/compose";
 import { CHEONJIIN_STROKES, CONSONANTS, PUNCTUATION_SYMBOLS, type BoardSymbol } from "../core/hangul/keys";
 import { isWordMatch, pickLessonTargets, wordCountLabel } from "../core/hangul/wordChallenge";
 import { lessonCheerFor, lessonScoreFromTime } from "../core/hangul/writing";
-import { materializeTargetTokens, targetToTokens } from "../core/hangul/target";
+import { materializeTargetTokens, targetCharacterProgress, targetToTokens } from "../core/hangul/target";
 import { ALPHABET_COURSES, SENTENCE_LEVELS, SENTENCE_PROMPTS, WORD_LEVELS, WORD_TARGETS, type AlphabetLevel, type SentencePrompt, type WordTarget } from "../content/prompts";
 import { el } from "./dom";
 import { feedback } from "./feedback";
@@ -447,21 +447,17 @@ export class TalkApp {
     const target = this.mode === "sentence" ? this.prompt.text : this.wordTarget.word;
     const expected = materializeTargetTokens(targetToTokens(target));
     const wrongIndex = this.input.findIndex((token, index) => token.value !== expected[index]);
-    const composed = document.createElement("span"); composed.className = "composed-input"; composed.textContent = text;
-    const progress = document.createElement("span"); progress.className = "writing-token-progress";
-    let active: HTMLElement | undefined;
-    expected.forEach((value, index) => {
-      const glyph = document.createElement("span"); glyph.textContent = value === " " ? "␠" : value === "ㆍ" ? "·" : value;
-      if (index < this.input.length) glyph.className = this.input[index]!.value === value ? "is-done" : "is-wrong";
-      else if (wrongIndex < 0 && index === this.input.length) glyph.className = "is-current";
-      else glyph.className = "is-pending";
-      if (glyph.className === "is-wrong" || glyph.className === "is-current") active ??= glyph;
-      progress.append(glyph);
+    const targetNodes = targetCharacterProgress(target, this.input.map((token) => token.value)).map(({ character, state }) => {
+      const glyph = document.createElement("span"); glyph.className = `target-character is-${state}`; glyph.textContent = character; return glyph;
     });
+    if (this.mode === "word") {
+      const english = document.createElement("span"); english.className = "target-translation-inline"; english.textContent = `/ ${this.wordTarget.translation}`;
+      this.targetText.replaceChildren(...targetNodes, english);
+    } else this.targetText.replaceChildren(...targetNodes);
+    const composed = document.createElement("span"); composed.className = "composed-input"; composed.textContent = text;
     const count = document.createElement("small"); count.className = "writing-token-count"; count.textContent = `${Math.min(this.input.length, expected.length)} / ${expected.length}`;
-    this.typedText.replaceChildren(composed, progress, count);
+    this.typedText.replaceChildren(composed, count);
     this.typedText.classList.toggle("is-empty", text.length === 0);
-    if (active) requestAnimationFrame(() => { progress.scrollLeft = Math.max(0, active!.offsetLeft - progress.clientWidth / 2); });
     this.typedText.classList.toggle("is-correct", this.input.length > 0 && wrongIndex < 0);
     this.typedText.classList.toggle("is-wrong", wrongIndex >= 0);
     if (this.mode === "sentence" && text === this.prompt.text) this.finishSentence();

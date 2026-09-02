@@ -2,10 +2,15 @@ import { describe, expect, it } from "vitest";
 import { createLetterBoard, inputValueForTile, mirrorAxisFor, MIRROR_TRAP_CHANCE, MIRROR_TRAP_TOKEN, TARGET_SYMBOL_BUFFER } from "./board";
 import { composeTokens } from "./compose";
 import { BOARD_SYMBOLS, CHEONJIIN_STROKES, CONSONANTS, PUNCTUATION_SYMBOLS } from "./keys";
-import { materializeTargetTokens, requiredBoardSymbols, targetToTokens } from "./target";
+import { materializeTargetTokens, requiredBoardSymbols, targetCharacterProgress, targetToTokens } from "./target";
 import { SENTENCE_LEVELS } from "../../content/prompts";
 
 describe("TAPtoTALK Hangul domain", () => {
+  it("maps jamo progress onto the visible target character", () => {
+    expect(targetCharacterProgress("아뿔사", ["ㅇ"]).map(({ state }) => state)).toEqual(["current", "pending", "pending"]);
+    expect(targetCharacterProgress("아뿔사", ["ㅇ", "ㅣ", "ㆍ"]).map(({ state }) => state)).toEqual(["done", "current", "pending"]);
+    expect(targetCharacterProgress("아뿔사", ["ㅇ", "ㄱ"]).map(({ state }) => state)).toEqual(["wrong", "pending", "pending"]);
+  });
   it("deals consonants, Cheonjiin strokes, and punctuation without a comma", () => {
     expect(BOARD_SYMBOLS).toHaveLength(25);
     expect(new Set(BOARD_SYMBOLS).size).toBe(25);
