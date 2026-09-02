@@ -447,14 +447,21 @@ export class TalkApp {
     const target = this.mode === "sentence" ? this.prompt.text : this.wordTarget.word;
     const expected = materializeTargetTokens(targetToTokens(target));
     const wrongIndex = this.input.findIndex((token, index) => token.value !== expected[index]);
-    const targetNodes = targetCharacterProgress(target, this.input.map((token) => token.value)).map(({ character, state }) => {
-      const glyph = document.createElement("span"); glyph.className = `target-character is-${state}`; glyph.textContent = character; return glyph;
+    const targetNodes = targetCharacterProgress(target, this.input.map((token) => token.value)).map(({ character, state, layout, hasFinal, components }) => {
+      const glyph = document.createElement("span"); glyph.className = `target-character is-${state} layout-${layout}${hasFinal ? " has-final" : ""}`; glyph.setAttribute("aria-label", character);
+      const base = document.createElement("span"); base.className = "target-character-base"; base.textContent = character;
+      glyph.append(base);
+      components.filter((component) => component.state !== "pending").forEach((component) => {
+        const overlay = document.createElement("span"); overlay.className = `target-component-overlay component-${component.kind} is-${component.state}`;
+        overlay.textContent = character; overlay.setAttribute("aria-hidden", "true"); glyph.append(overlay);
+      });
+      return glyph;
     });
     if (this.mode === "word") {
       const english = document.createElement("span"); english.className = "target-translation-inline"; english.textContent = `/ ${this.wordTarget.translation}`;
       this.targetText.replaceChildren(...targetNodes, english);
     } else this.targetText.replaceChildren(...targetNodes);
-    const composed = document.createElement("span"); composed.className = "composed-input"; composed.textContent = text;
+    const composed = document.createElement("span"); composed.className = `composed-input${text ? "" : " is-empty"}`; composed.textContent = text; composed.dataset.empty = this.typedText.dataset.empty;
     const count = document.createElement("small"); count.className = "writing-token-count"; count.textContent = `${Math.min(this.input.length, expected.length)} / ${expected.length}`;
     this.typedText.replaceChildren(composed, count);
     this.typedText.classList.toggle("is-empty", text.length === 0);

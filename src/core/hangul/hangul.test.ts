@@ -7,9 +7,16 @@ import { SENTENCE_LEVELS } from "../../content/prompts";
 
 describe("TAPtoTALK Hangul domain", () => {
   it("maps jamo progress onto the visible target character", () => {
-    expect(targetCharacterProgress("아뿔사", ["ㅇ"]).map(({ state }) => state)).toEqual(["current", "pending", "pending"]);
-    expect(targetCharacterProgress("아뿔사", ["ㅇ", "ㅣ", "ㆍ"]).map(({ state }) => state)).toEqual(["done", "current", "pending"]);
-    expect(targetCharacterProgress("아뿔사", ["ㅇ", "ㄱ"]).map(({ state }) => state)).toEqual(["wrong", "pending", "pending"]);
+    const firstJamo = targetCharacterProgress("아뿔사", ["ㅇ"]);
+    expect(firstJamo.map(({ state }) => state)).toEqual(["current", "pending", "pending"]);
+    expect(firstJamo[0]!.completedRatio).toBeCloseTo(1 / 3);
+    expect(targetCharacterProgress("아뿔사", ["ㅇ", "ㅣ", "ㆍ"]).map(({ state }) => state)).toEqual(["done", "pending", "pending"]);
+    const wrongJamo = targetCharacterProgress("아뿔사", ["ㅇ", "ㄱ"]);
+    expect(wrongJamo.map(({ state }) => state)).toEqual(["wrong", "pending", "pending"]);
+    expect(wrongJamo[0]!.activeRatio).toBeCloseTo(2 / 3);
+    const horizontal = targetCharacterProgress("오", ["ㅇ"])[0]!;
+    expect(horizontal.layout).toBe("horizontal");
+    expect(horizontal.components.map(({ kind, state }) => [kind, state])).toEqual([["initial", "done"], ["vowel", "pending"]]);
   });
   it("deals consonants, Cheonjiin strokes, and punctuation without a comma", () => {
     expect(BOARD_SYMBOLS).toHaveLength(25);
