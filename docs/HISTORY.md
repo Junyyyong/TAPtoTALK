@@ -79,6 +79,7 @@
 | 2026-09-02 | `0cbe62e` | TapeeTepee 시작 화면을 전체 이미지 방식에서 분리형 심볼 방식으로 변경했다. 배경은 정확히 `#1d2087`로 칠하고 새 PNG의 투명 여백을 제거한 심볼을 화면 가로폭의 42%로, 가로·세로 중앙에 배치했다. ([스크린샷](screenshots/2026-09-02-centered-studio-mark-42-percent.png)) |
 | 2026-09-02 | `7601be2` | 새 PNG의 흰 글자가 투명 배경 미리보기에서 보이지 않았던 점을 바로잡아, 심볼뿐 아니라 `TapeeTepee · tap dance studio` 글자까지 포함한 원본 로고 전체를 가로 42% 중앙 배치로 복원했다. ([스크린샷](screenshots/2026-09-02-centered-studio-full-logo-42-percent.png)) |
 | 2026-09-02 | `6621b40` | `#1d2087` 테마색을 첫 3초 TapeeTepee 화면에만 제한했다. 기존 커버가 나타나는 순간 브라우저 테마색을 흰색으로 복원해 커버와 메인 화면은 원래 종이색 디자인을 유지한다. ([커버](screenshots/2026-09-02-product-cover-restored-theme.png), [메인](screenshots/2026-09-02-main-menu-restored-theme.png)) |
+| 2026-09-02 | `e052cfb` | iPhone Safari가 최초 테마색을 상·하단 브라우저 UI에 계속 유지하는 동작을 반영해 HTML 테마색을 처음부터 흰색으로 고정했다. 파란색은 첫 스튜디오 화면의 콘텐츠 배경에만 적용된다. ([메인](screenshots/2026-09-02-static-white-browser-theme-main.png)) |
 
 ## 현재 기준
 
