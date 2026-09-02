@@ -78,7 +78,8 @@ export class TalkApp {
   private sentenceLevel = 0;
   private sentenceIndex = 0;
   private alphabetRound = 0;
-  private alphabetIndex = 0;
+  private alphabetTargetIndex = 0;
+  private alphabetPartIndex = 0;
   private alphabetTiles: AlphabetTile[] = [];
   private inputLocked = true;
   private paused = false;
@@ -165,7 +166,7 @@ export class TalkApp {
     this.inputLocked = false; this.paused = false;
     this.game.classList.remove("is-input-locked");
     if (!resume) {
-      this.alphabetRound = 0; this.alphabetIndex = 0; this.elapsedMs = 0;
+      this.alphabetRound = 0; this.alphabetTargetIndex = 0; this.alphabetPartIndex = 0; this.elapsedMs = 0;
     }
     el("btn-again").textContent = "Play again";
     this.result.classList.add("hidden"); this.title.classList.add("hidden"); this.splash.classList.add("hidden"); this.game.classList.remove("hidden");
@@ -177,9 +178,9 @@ export class TalkApp {
 
   private loadAlphabetRound(): void {
     const round = ALPHABET_ROUNDS[this.alphabetRound]!;
-    this.alphabetIndex = 0;
+    this.alphabetTargetIndex = 0; this.alphabetPartIndex = 0;
     this.used.clear();
-    this.alphabetTiles = createAlphabetBoard(round.sequence, round.pool);
+    this.alphabetTiles = createAlphabetBoard(round.tapGroups.flat(), round.pool);
     this.runMode.textContent = "Korean Alphabet";
     this.targetLabel.textContent = `ROUND ${this.alphabetRound + 1} / ${ALPHABET_ROUNDS.length}`;
     this.renderAlphabetBoard();
@@ -205,7 +206,8 @@ export class TalkApp {
   private tapAlphabetTile(tile: AlphabetTile, button: HTMLButtonElement): void {
     if (this.inputLocked || this.paused || this.used.has(tile.id)) return;
     const round = ALPHABET_ROUNDS[this.alphabetRound]!;
-    const result = checkSequenceTap(round.sequence, this.alphabetIndex, tile.value);
+    const tapGroup = round.tapGroups[this.alphabetTargetIndex]!;
+    const result = checkSequenceTap(tapGroup, this.alphabetPartIndex, tile.value);
     if (!result.correct) {
       feedback.reject();
       button.classList.remove("is-wrong-pick");
@@ -214,21 +216,27 @@ export class TalkApp {
       window.setTimeout(() => button.classList.remove("is-wrong-pick"), 360);
       return;
     }
-    feedback.pick(result.nextIndex);
+    feedback.pick(this.alphabetTargetIndex + result.nextIndex);
     this.used.add(tile.id); button.disabled = true;
-    this.alphabetIndex = result.nextIndex;
+    this.alphabetPartIndex = result.nextIndex;
+    if (result.complete) {
+      this.alphabetTargetIndex += 1;
+      this.alphabetPartIndex = 0;
+    }
     this.renderAlphabetProgress();
-    if (result.complete) this.completeAlphabetRound();
+    if (this.alphabetTargetIndex === round.sequence.length) this.completeAlphabetRound();
   }
 
   private renderAlphabetProgress(): void {
     const round = ALPHABET_ROUNDS[this.alphabetRound]!;
-    this.targetText.textContent = round.sequence[this.alphabetIndex] ?? "✓";
-    const preview = round.sequence.slice(this.alphabetIndex, this.alphabetIndex + 6).join(" → ");
-    this.typedText.textContent = `${this.alphabetIndex} / ${round.sequence.length}`;
+    this.targetText.textContent = round.sequence[this.alphabetTargetIndex] ?? "✓";
+    const preview = round.sequence.slice(this.alphabetTargetIndex, this.alphabetTargetIndex + 6).join(" → ");
+    const parts = round.tapGroups[this.alphabetTargetIndex] ?? [];
+    const assembly = parts.length > 1 ? ` · ${parts.map((part, index) => index < this.alphabetPartIndex ? part : index === this.alphabetPartIndex ? `[${part}]` : part).join(" + ")}` : "";
+    this.typedText.textContent = `${this.alphabetTargetIndex} / ${round.sequence.length}${assembly}`;
     this.typedText.dataset.empty = "";
     this.typedText.classList.remove("is-empty", "is-wrong", "is-correct");
-    this.targetHint.textContent = `${preview}${this.alphabetIndex + 6 < round.sequence.length ? " → …" : ""}`;
+    this.targetHint.textContent = `${preview}${this.alphabetTargetIndex + 6 < round.sequence.length ? " → …" : ""}`;
   }
 
   private completeAlphabetRound(): void {
@@ -251,7 +259,7 @@ export class TalkApp {
   private finishAlphabetChallenge(): void {
     this.stopClock(); this.inputLocked = true; feedback.fail();
     const round = ALPHABET_ROUNDS[this.alphabetRound]!;
-    this.showResult("Time is up!", `${round.name} · ${this.alphabetIndex} / ${round.sequence.length}`);
+    this.showResult("Time is up!", `${round.name} · ${this.alphabetTargetIndex} / ${round.sequence.length}`);
   }
 
   private renderBoard(): void {

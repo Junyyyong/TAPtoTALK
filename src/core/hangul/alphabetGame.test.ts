@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { checkSequenceTap, createAlphabetBoard } from "./alphabetGame";
+import { checkSequenceTap, createAlphabetBoard, decomposeAlphabetTarget } from "./alphabetGame";
 import { ALPHABET_ROUNDS } from "../../content/prompts";
 
 describe("Korean Alphabet sequence game", () => {
@@ -8,6 +8,22 @@ describe("Korean Alphabet sequence game", () => {
     expect(ALPHABET_ROUNDS[0]!.sequence.slice(0, 4)).toEqual(["ㄱ", "ㄴ", "ㄷ", "ㄹ"]);
     expect(ALPHABET_ROUNDS[1]!.sequence).toEqual(["ㅏ", "ㅑ", "ㅓ", "ㅕ", "ㅗ", "ㅛ", "ㅜ", "ㅠ", "ㅡ", "ㅣ"]);
     expect(ALPHABET_ROUNDS[3]!.sequence.slice(0, 3)).toEqual(["쾅", "쿵", "꽥"]);
+    expect(ALPHABET_ROUNDS[2]!.tapGroups.slice(0, 2)).toEqual([["ㄱ", "ㅏ"], ["ㄴ", "ㅏ"]]);
+    expect(ALPHABET_ROUNDS[3]!.tapGroups.slice(0, 3)).toEqual([["ㅋ", "ㅘ", "ㅇ"], ["ㅋ", "ㅜ", "ㅇ"], ["ㄲ", "ㅙ", "ㄱ"]]);
+  });
+
+  it("decomposes complete syllables into jamo blocks", () => {
+    expect(decomposeAlphabetTarget("가")).toEqual(["ㄱ", "ㅏ"]);
+    expect(decomposeAlphabetTarget("쾅")).toEqual(["ㅋ", "ㅘ", "ㅇ"]);
+    expect(decomposeAlphabetTarget("ㄱ")).toEqual(["ㄱ"]);
+  });
+
+  it("never places complete syllable blocks in the syllable lesson", () => {
+    const round = ALPHABET_ROUNDS[2]!;
+    const board = createAlphabetBoard(round.tapGroups.flat(), round.pool, 81, () => 0.42);
+    expect(board.some((tile) => round.sequence.includes(tile.value))).toBe(false);
+    expect(round.tapGroups.flat().slice(0, 4)).toEqual(["ㄱ", "ㅏ", "ㄴ", "ㅏ"]);
+    expect(board.filter((tile) => tile.required)).toHaveLength(round.tapGroups.flat().length);
   });
   it("reserves every ordered target while filling an 81-tile board", () => {
     const sequence = ["ㄱ", "ㄴ", "ㄷ", "ㄹ"];
