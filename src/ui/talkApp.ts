@@ -5,7 +5,7 @@ import { CHEONJIIN_STROKES, CONSONANTS, PUNCTUATION_SYMBOLS, type BoardSymbol } 
 import { isWordMatch, pickLessonTargets, wordCountLabel } from "../core/hangul/wordChallenge";
 import { lessonCheerFor, lessonScoreFromTime } from "../core/hangul/writing";
 import { materializeTargetTokens, targetCharacterProgress, targetToTokens } from "../core/hangul/target";
-import { ALPHABET_COURSES, SENTENCE_LEVELS, SENTENCE_PROMPTS, WORD_LEVELS, WORD_TARGETS, type AlphabetLevel, type SentencePrompt, type WordTarget } from "../content/prompts";
+import { ALPHABET_COURSES, SENTENCE_LEVELS, SENTENCE_PROMPTS, WORD_LEVELS, WORD_TARGETS, alphabetTargetNote, type AlphabetLevel, type SentencePrompt, type WordTarget } from "../content/prompts";
 import { el } from "./dom";
 import { feedback } from "./feedback";
 import { canAcceptInput } from "./inputCapacity";
@@ -163,8 +163,8 @@ export class TalkApp {
   private renderTranslatedTarget(): void {
     this.targetText.classList.remove("is-medium-sequence", "is-long-sequence");
     if (this.mode === "word") {
-      const korean = document.createElement("span"); korean.textContent = this.wordTarget.word;
-      const english = document.createElement("span"); english.className = "target-translation-inline"; english.textContent = `/ ${this.wordTarget.translation}`;
+      const korean = document.createElement("span"); korean.className = "target-korean"; korean.textContent = this.wordTarget.word;
+      const english = document.createElement("span"); english.className = "target-translation-inline"; english.textContent = this.wordTarget.translation;
       this.targetText.replaceChildren(korean, english);
       this.targetHint.textContent = "Complete the target word.";
       return;
@@ -296,9 +296,13 @@ export class TalkApp {
 
   private renderAlphabetProgress(): void {
     const level = this.currentAlphabetLevel();
+    const course = ALPHABET_COURSES[this.alphabetCourseIndex]!;
     this.targetLabel.textContent = `Lv.${level.number} · ${Math.min(this.alphabetTargetIndex + 1, this.alphabetSequence.length)} / ${this.alphabetSequence.length}`;
-    this.targetText.textContent = this.alphabetSequence[this.alphabetTargetIndex] ?? "✓";
-    const targetLength = this.targetText.textContent.length;
+    const target = this.alphabetSequence[this.alphabetTargetIndex] ?? "✓";
+    const korean = document.createElement("span"); korean.className = "target-korean"; korean.textContent = target;
+    const note = document.createElement("span"); note.className = "alphabet-target-note"; note.textContent = alphabetTargetNote(course.id, target);
+    this.targetText.replaceChildren(korean, note);
+    const targetLength = target.length;
     this.targetText.classList.toggle("is-medium-sequence", targetLength > 4 && targetLength <= 8);
     this.targetText.classList.toggle("is-long-sequence", targetLength > 8);
     const preview = this.alphabetSequence.slice(this.alphabetTargetIndex, this.alphabetTargetIndex + 6).join(" → ");
@@ -452,8 +456,9 @@ export class TalkApp {
       return glyph;
     });
     if (this.mode === "word") {
-      const english = document.createElement("span"); english.className = "target-translation-inline"; english.textContent = `/ ${this.wordTarget.translation}`;
-      this.targetText.replaceChildren(...targetNodes, english);
+      const korean = document.createElement("span"); korean.className = "target-korean"; korean.append(...targetNodes);
+      const english = document.createElement("span"); english.className = "target-translation-inline"; english.textContent = this.wordTarget.translation;
+      this.targetText.replaceChildren(korean, english);
     } else this.targetText.replaceChildren(...targetNodes);
     const composed = document.createElement("span"); composed.className = `composed-input${text ? "" : " is-empty"}`; composed.textContent = text; composed.dataset.empty = this.typedText.dataset.empty;
     const count = document.createElement("small"); count.className = "writing-token-count"; count.textContent = `${Math.min(this.input.length, expected.length)} / ${expected.length}`;

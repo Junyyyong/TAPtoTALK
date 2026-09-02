@@ -14,9 +14,9 @@
 .talk-screen.is-alphabet-mode .alphabet-controls { display: grid; flex: 0 0 auto; }
 .alphabet-controls .control-btn { height: 42px; color: var(--accent-deep); background: var(--panel-lit); }
 .talk-screen.is-alphabet-mode .target-prompt { min-height: 122px; }
-.talk-screen.is-alphabet-mode .target-text { color: var(--ink); font-size: clamp(42px,12vw,58px); line-height: 1; }
-.talk-screen.is-alphabet-mode .target-text.is-medium-sequence { font-size: clamp(30px,8vw,40px); letter-spacing: .08em; }
-.talk-screen.is-alphabet-mode .target-text.is-long-sequence { font-size: clamp(21px,5.8vw,29px); letter-spacing: .035em; }
+.talk-screen.is-alphabet-mode .target-text { color: var(--ink); font-size: 28px; line-height: 1.15; }
+.talk-screen.is-alphabet-mode .target-text.is-medium-sequence { font-size: 28px; letter-spacing: .04em; }
+.talk-screen.is-alphabet-mode .target-text.is-long-sequence { font-size: 28px; letter-spacing: .02em; }
 .talk-screen.is-alphabet-mode .target-hint { max-width: 100%; overflow: hidden; font-weight: 650; text-overflow: ellipsis; white-space: nowrap; }
 .talk-screen.is-alphabet-mode .typed-text { min-height: 2.2em; align-items: center; justify-content: center; border-bottom: 0; color: var(--accent-deep); font-family: "TAP Sans KR",sans-serif; font-size: 18px; }
 .talk-screen.is-alphabet-mode .typed-text { flex-direction: column; gap: 5px; }
@@ -43,9 +43,10 @@
 .target-label { width: fit-content; padding: 3px 9px; border-radius: 4px; color: white; background: var(--accent); font-size: 11px; letter-spacing: .04em; text-align: center; }
 .target-text,.typed-text { min-height: 1.45em; margin: 0; color: var(--ink); font-size: clamp(24px,6.3vw,31px); font-weight: 700; line-height: 1.38; word-break: keep-all; }
 .target-text { grid-column: 1 / -1; align-self: center; padding-top: 7px; font-family: "TAP Serif KR", serif; text-align: center; }
-.target-translation-inline { margin-left: .32em; color: var(--ink-soft); font-family: "TAP Sans KR",sans-serif; font-size: .55em; font-weight: 650; vertical-align: .12em; }
+.target-korean,.target-translation-inline,.alphabet-target-note { display: block; }
+.target-translation-inline,.alphabet-target-note { margin-top: 5px; color: var(--ink-soft); font-family: "TAP Sans KR",sans-serif; font-size: 14px; font-weight: 650; line-height: 1.2; letter-spacing: 0; white-space: nowrap; }
 .target-hint { grid-column: 1 / -1; margin: 3px 0 2px; color: var(--ink-soft); font-size: 14px; line-height: 1.45; text-align: center; }
-.typed-text { display: flex; min-height: 3.15em; align-items: flex-end; padding: 8px 6px 5px; color: var(--accent-deep); font-family: "TAP Serif KR", serif; font-size: clamp(28px,7.2vw,36px); line-height: 1.25; border-bottom: 1px solid var(--slab); }
+.typed-text { position: relative; display: flex; min-height: 3.15em; align-items: flex-end; padding: 8px 6px 2px; color: var(--accent-deep); font-family: "TAP Serif KR", serif; font-size: clamp(28px,7.2vw,36px); line-height: 1.25; border-bottom: 1px solid var(--slab); }
 .talk-screen:not(.is-alphabet-mode) .typed-text { height: 64px; min-height: 64px; flex-direction: column; align-items: stretch; justify-content: flex-end; gap: 5px; overflow: hidden; }
 .talk-screen:not(.is-alphabet-mode) .typed-text.is-empty::before { display: none; }
 .talk-screen:not(.is-alphabet-mode) .target-text { font-size: 28px; }
@@ -55,7 +56,7 @@
 .target-character.is-wrong { padding-inline: .04em; border-radius: 4px; color: white; background: var(--ring-bad); }
 .composed-input { min-height: 1.25em; overflow: hidden; color: var(--accent-deep); text-overflow: ellipsis; white-space: nowrap; }
 .composed-input.is-empty::before { content: attr(data-empty); color: var(--ink-faint); font-family: "TAP Sans KR",sans-serif; font-size: 15px; font-weight: 500; }
-.writing-token-count { align-self: flex-end; color: var(--ink-soft); font-family: "TAP Sans KR",sans-serif; font-size: 10px; font-weight: 700; }
+.writing-token-count { position: absolute; right: 6px; bottom: 3px; color: var(--ink-soft); font-family: "TAP Sans KR",sans-serif; font-size: 10px; font-weight: 700; }
 .typed-text.is-empty::before { content: attr(data-empty); color: var(--ink-faint); font-family: "TAP Sans KR", sans-serif; font-size: 15px; font-weight: 500; }
 .typed-text.is-wrong { color: var(--ring-bad); } .typed-text.is-correct { color: var(--ring-ok); }
 .letter-board { display: grid; flex: 0 0 auto; width: min(100%,52vh); aspect-ratio: 1 / 1; align-self: center; grid-template-columns: repeat(9,minmax(0,1fr)); grid-template-rows: repeat(9,minmax(0,1fr)); gap: clamp(3px,1vw,5px); min-height: 0; margin-block: auto; padding: 0; background: transparent; }

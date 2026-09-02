@@ -27,6 +27,27 @@ export interface AlphabetCourse {
   levels: readonly AlphabetLevel[];
 }
 
+const CONSONANT_NAMES: Readonly<Record<string, string>> = {
+  "ㄱ": "기역", "ㄴ": "니은", "ㄷ": "디귿", "ㄹ": "리을", "ㅁ": "미음", "ㅂ": "비읍", "ㅅ": "시옷",
+  "ㅇ": "이응", "ㅈ": "지읒", "ㅊ": "치읓", "ㅋ": "키읔", "ㅌ": "티읕", "ㅍ": "피읖", "ㅎ": "히읗",
+};
+const VOWEL_SOUNDS: Readonly<Record<string, string>> = {
+  "ㅏ": "아", "ㅑ": "야", "ㅓ": "어", "ㅕ": "여", "ㅗ": "오", "ㅛ": "요", "ㅜ": "우", "ㅠ": "유", "ㅡ": "으", "ㅣ": "이",
+};
+const SYLLABLE_MEANINGS: Readonly<Record<string, string>> = {
+  "산": "mountain", "강": "river", "물": "water", "문": "door", "밥": "rice", "집": "home", "꽃": "flower", "책": "book",
+  "개": "dog", "게": "crab", "내": "my", "네": "yes", "왜": "why", "와": "come", "꾀": "wits", "귀": "ear",
+};
+
+export function alphabetTargetNote(courseId: AlphabetCourse["id"], target: string): string {
+  const values = [...target].map((character) => courseId === "consonants"
+    ? CONSONANT_NAMES[character]
+    : courseId === "vowels"
+      ? VOWEL_SOUNDS[character]
+      : SYLLABLE_MEANINGS[character]);
+  return values.filter(Boolean).join(" · ");
+}
+
 const BASIC_CONSONANTS = [..."ㄱㄴㄷㄹㅁㅂㅅㅇㅈㅊㅋㅌㅍㅎ"];
 const CHEONJIIN_TAPS: Readonly<Record<string, readonly string[]>> = {
   "ㅏ": ["ㅣ", "ㆍ"], "ㅑ": ["ㅣ", "ㆍ", "ㆍ"], "ㅓ": ["ㆍ", "ㅣ"], "ㅕ": ["ㆍ", "ㆍ", "ㅣ"],
@@ -66,7 +87,7 @@ const SYLLABLE_LEVEL_SEQUENCES = [
   ["산", "강", "물", "문"],
   ["밥", "집", "꽃", "책"],
   ["개", "게", "내", "네"],
-  ["왜", "와", "꾀", "외"],
+  ["왜", "와", "꾀", "귀"],
 ] as const;
 const SYLLABLE_LEVELS: readonly AlphabetLevel[] = SYLLABLE_LEVEL_SEQUENCES.map((sequence, index) => {
   const tapGroups = syllableTaps(sequence);

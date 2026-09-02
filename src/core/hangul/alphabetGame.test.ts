@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { ALPHABET_COURSES } from "../../content/prompts";
+import { ALPHABET_COURSES, alphabetTargetNote } from "../../content/prompts";
 import { checkSequenceTap, createAlphabetBoard, createRandomAlphabetTargets, decomposeAlphabetTarget } from "./alphabetGame";
 
 describe("Korean Alphabet courses", () => {
@@ -14,6 +14,13 @@ describe("Korean Alphabet courses", () => {
         expect(level.tapGroups.flat().length).toBeLessThanOrEqual(81);
       }
     }
+  });
+
+  it("uses standard Korean names for jamo and concise meanings only for syllables", () => {
+    expect(alphabetTargetNote("consonants", "ㄱㄴ")).toBe("기역 · 니은");
+    expect(alphabetTargetNote("vowels", "ㅏㅑ")).toBe("아 · 야");
+    expect(alphabetTargetNote("syllables", "산")).toBe("mountain");
+    expect(alphabetTargetNote("syllables", "귀")).toBe("ear");
   });
 
   it("splits the full consonant order into targets of at most five jamo", () => {
@@ -74,7 +81,7 @@ describe("Korean Alphabet courses", () => {
     }
     expect(ALPHABET_COURSES[2]!.levels[0]!.tapGroups[0]).toEqual(["ㅅ", "ㅣ", "ㆍ", "ㄴ"]);
     expect(ALPHABET_COURSES[2]!.levels[2]!.sequence).toEqual(["개", "게", "내", "네"]);
-    expect(ALPHABET_COURSES[2]!.levels[3]!.sequence).toEqual(["왜", "와", "꾀", "외"]);
+    expect(ALPHABET_COURSES[2]!.levels[3]!.sequence).toEqual(["왜", "와", "꾀", "귀"]);
     expect(ALPHABET_COURSES[2]!.levels[2]!.tapGroups[0]).toEqual(["ㄱ", "ㅣ", "ㆍ", "ㅣ"]);
     expect(ALPHABET_COURSES[2]!.levels[3]!.tapGroups[0]).toEqual(["ㅇ", "ㆍ", "ㅡ", "ㅣ", "ㆍ", "ㅣ"]);
   });
