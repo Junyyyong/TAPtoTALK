@@ -5,8 +5,8 @@ import { checkSequenceTap, createAlphabetBoard, createRandomAlphabetTargets, dec
 describe("Korean Alphabet courses", () => {
   it("offers three sequential courses with five syllable levels", () => {
     expect(ALPHABET_COURSES.map((course) => course.id)).toEqual(["consonants", "vowels", "syllables"]);
-    expect(ALPHABET_COURSES.map((course) => course.levels.length)).toEqual([4, 4, 5]);
-    expect(ALPHABET_COURSES.flatMap((course) => course.levels.map((level) => level.number))).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]);
+    expect(ALPHABET_COURSES.map((course) => course.levels.length)).toEqual([3, 4, 5]);
+    expect(ALPHABET_COURSES.flatMap((course) => course.levels.map((level) => level.number))).toEqual([1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13]);
     for (const course of ALPHABET_COURSES) {
       for (const level of course.levels) {
         expect(level.sequence.length).toBeGreaterThan(0);
@@ -34,12 +34,10 @@ describe("Korean Alphabet courses", () => {
     expect(strokes!.sequence).toEqual(["ㄱㅋ", "ㄴㄷㄹ", "ㅁㅂㅍ", "ㅅㅈㅊ", "ㅇㅎ"]);
   });
 
-  it("keeps randomized consonant memory targets at five jamo or fewer", () => {
-    const [, , short, long] = ALPHABET_COURSES[0]!.levels;
+  it("keeps the remaining randomized consonant review at five jamo or fewer", () => {
+    const [, , short] = ALPHABET_COURSES[0]!.levels;
     expect(short!.sequence.map((target) => target.length)).toEqual([3, 4, 5]);
-    expect(long!.sequence.map((target) => target.length)).toEqual([5, 5, 5, 5]);
     expect(short!.randomizeTargets).toBe(true);
-    expect(long!.randomizeTargets).toBe(true);
     const targets = createRandomAlphabetTargets([3, 4], ["ㄱ", "ㄴ", "ㄷ", "ㄹ"], () => 0);
     expect(targets.map((target) => target.length)).toEqual([3, 4]);
     expect(targets.every((target) => new Set(target).size === target.length)).toBe(true);

@@ -72,7 +72,6 @@ const CONSONANT_LEVELS: readonly AlphabetLevel[] = [
   level(1, "Basic Order", 60_000, .05, ["ㄱㄴㄷㄹㅁ", "ㅂㅅㅇㅈㅊ", "ㅋㅌㅍㅎ"], consonantTaps(["ㄱㄴㄷㄹㅁ", "ㅂㅅㅇㅈㅊ", "ㅋㅌㅍㅎ"]), BASIC_CONSONANTS),
   level(2, "Added Strokes", 75_000, .08, ["ㄱㅋ", "ㄴㄷㄹ", "ㅁㅂㅍ", "ㅅㅈㅊ", "ㅇㅎ"], consonantTaps(["ㄱㅋ", "ㄴㄷㄹ", "ㅁㅂㅍ", "ㅅㅈㅊ", "ㅇㅎ"]), BASIC_CONSONANTS),
   { ...level(3, "Short Memory", 70_000, .10, ["ㄷㅁㅎ", "ㅋㅅㄹㅈ", "ㅎㄹㅊㅂㅇ"], consonantTaps(["ㄷㅁㅎ", "ㅋㅅㄹㅈ", "ㅎㄹㅊㅂㅇ"]), BASIC_CONSONANTS), randomizeTargets: true },
-  { ...level(4, "Long Memory", 90_000, .12, ["ㄱㅁㅅㅈㅋ", "ㅎㄴㅂㅊㄹ", "ㄷㅍㄱㅅㅎ", "ㅁㅈㅋㄴㅇ"], consonantTaps(["ㄱㅁㅅㅈㅋ", "ㅎㄴㅂㅊㄹ", "ㄷㅍㄱㅅㅎ", "ㅁㅈㅋㄴㅇ"]), BASIC_CONSONANTS), randomizeTargets: true },
 ];
 
 const VOWEL_LEVEL_SEQUENCES = [
@@ -98,7 +97,7 @@ const SYLLABLE_LEVELS: readonly AlphabetLevel[] = SYLLABLE_LEVEL_SEQUENCES.map((
 });
 
 export const ALPHABET_COURSES: readonly AlphabetCourse[] = [
-  { id: "consonants", name: "Consonants", description: "Lv.1–4 · order, added strokes, and memory", levels: CONSONANT_LEVELS },
+  { id: "consonants", name: "Consonants", description: "Lv.1–3 · order, added strokes", levels: CONSONANT_LEVELS },
   { id: "vowels", name: "Vowels", description: "Lv.5–8 · build vowels with ㆍ ㅡ ㅣ", levels: VOWEL_LEVELS },
   { id: "syllables", name: "Syllables", description: "Lv.9–13 · people, body, life, nature, and more", levels: SYLLABLE_LEVELS },
 ];
