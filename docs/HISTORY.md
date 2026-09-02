@@ -74,6 +74,7 @@
 | 2026-09-02 | `af81b01` | 합성 글자 전체가 아니라 입력한 초성·모음·받침 영역만 색이 변하도록 세로모음형·가로모음형·복모음형 레이어를 분리했다. 입력 안내와 실제 입력은 동일한 92px 공간을 사용해 입력 전후 자판 위치가 움직이지 않는다. ([입력 전](screenshots/2026-09-02-fixed-input-space-before.png), [초성 색상](screenshots/2026-09-02-initial-component-color.png)) |
 | 2026-09-02 | `a5cd9ad` | 글꼴 위치에 의존하던 자소 영역 추정 표시를 되돌리고 목표 음절 전체의 현재·완료·오류 표시로 복원했다. 입력 영역은 64px로 줄이고 9×9 자판은 축소되지 않는 정사각형으로 고정했다. ([전체 화면](screenshots/2026-09-02-square-board-whole-syllable-progress.png), [입력 후](screenshots/2026-09-02-whole-syllable-progress-after-tap.png)) |
 | 2026-09-02 | `8026c89` | Korean Alphabet의 자음은 표준 명칭, 모음은 표준 소리로 안내하고 음절에는 짧은 영문 뜻을 표시했다. 애매한 `외`는 `귀 / ear`로 교체했다. 모든 게임의 한글 제시어를 28px로 통일하고 단어 번역을 독립된 한 줄로 분리했으며, 입력 글자를 밑줄 가까이 내렸다. ([자소](screenshots/2026-09-02-alphabet-standard-pronunciation.png), [단어](screenshots/2026-09-02-word-stacked-translation-input-line.png), [입력](screenshots/2026-09-02-lowered-typed-text.png)) |
+| 2026-09-02 | `0fbb8ec` | Syllables를 Lv.9–13의 생활 중심 5단계로 확장했다. `나·너`에서 시작해 신체, 일상, 자연을 거쳐 `힘·꾀·꿈·개·소·말·닭·술·춤`으로 마무리하며 각 음절에 짧은 영문 뜻을 제공한다. ([스크린샷](screenshots/2026-09-02-syllables-lv9-na-neo.png)) |
 
 ## 현재 기준
 
