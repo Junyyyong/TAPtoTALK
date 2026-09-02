@@ -13,7 +13,7 @@ export const APP_CONFIG = {
   board: { columns: 9, rows: 9 },
   assets: {
     logo: new URL("../../TAPtoTALK-logo-0901.svg", import.meta.url).href,
-    splash: new URL("../../taptotalk-cover5.png", import.meta.url).href,
+    splash: new URL("../../taptotalk-cover6.png", import.meta.url).href,
     celebrationVideo: MOVIE_1.video,
     celebrationAudio: MOVIE_1.sound,
     celebrations: [
