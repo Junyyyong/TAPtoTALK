@@ -26,4 +26,14 @@ describe("typing capacity", () => {
     }
     expect(canAcceptInput(input.length, target)).toBe(false);
   });
+
+  it("allows all five taps needed to build 꾀 from repeated ㄱ and Cheonjiin strokes", () => {
+    const target = "꾀";
+    const input = materializeTargetTokens(targetToTokens(target));
+    expect(input).toEqual(["ㄱ", "ㄱ", "ㆍ", "ㅡ", "ㅣ"]);
+    for (let index = 0; index < input.length; index += 1) {
+      expect(canAcceptInput(index, target)).toBe(true);
+    }
+    expect(canAcceptInput(input.length, target)).toBe(false);
+  });
 });

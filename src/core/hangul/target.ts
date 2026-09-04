@@ -1,5 +1,5 @@
 import { isBoardSymbol, type BoardSymbol } from "./keys";
-import { CHOSEONG, FINAL_PARTS, JONGSEONG, JUNGSEONG, VOWEL_STROKES } from "./layout";
+import { CHOSEONG, FINAL_PARTS, JONGSEONG, JUNGSEONG, TENSE_PARTS, VOWEL_STROKES } from "./layout";
 
 const HANGUL_BASE = 0xac00;
 const HANGUL_END = 0xd7a3;
@@ -9,7 +9,7 @@ const JONG_COUNT = 28;
 export type TargetToken = BoardSymbol | { control: "space" };
 
 function pushConsonant(tokens: TargetToken[], consonant: (typeof CHOSEONG)[number]): void {
-  tokens.push(consonant);
+  tokens.push(...(TENSE_PARTS[consonant] ?? [consonant]));
 }
 
 /** Converts display text into the exact board taps and fixed controls it needs. */

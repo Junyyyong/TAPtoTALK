@@ -1,5 +1,5 @@
 import { mirrorAxisFor, type MirrorAxis } from "./board";
-import { FINAL_PARTS } from "./layout";
+import { FINAL_PARTS, TENSE_PARTS } from "./layout";
 
 export interface AlphabetTile {
   id: number;
@@ -17,10 +17,6 @@ export interface SequenceTapResult {
 const INITIAL_JAMO = [..."ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ"];
 const VOWEL_JAMO = [..."ㅏㅐㅑㅒㅓㅔㅕㅖㅗㅘㅙㅚㅛㅜㅝㅞㅟㅠㅡㅢㅣ"];
 const FINAL_JAMO = ["", "ㄱ", "ㄲ", "ㄳ", "ㄴ", "ㄵ", "ㄶ", "ㄷ", "ㄹ", "ㄺ", "ㄻ", "ㄼ", "ㄽ", "ㄾ", "ㄿ", "ㅀ", "ㅁ", "ㅂ", "ㅄ", "ㅅ", "ㅆ", "ㅇ", "ㅈ", "ㅊ", "ㅋ", "ㅌ", "ㅍ", "ㅎ"];
-const TENSE_PARTS: Readonly<Record<string, readonly string[]>> = {
-  "ㄲ": ["ㄱ", "ㄱ"], "ㄸ": ["ㄷ", "ㄷ"], "ㅃ": ["ㅂ", "ㅂ"], "ㅆ": ["ㅅ", "ㅅ"], "ㅉ": ["ㅈ", "ㅈ"],
-};
-
 const splitTense = (jamo: string): readonly string[] => TENSE_PARTS[jamo] ?? [jamo];
 
 /** Break one complete Hangul syllable into visible compatibility-jamo blocks. */

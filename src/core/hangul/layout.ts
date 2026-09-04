@@ -20,6 +20,18 @@ export const JONGSEONG = [
 
 export type Jongseong = (typeof JONGSEONG)[number];
 
+export const TENSE_PARTS: Readonly<Record<string, readonly Consonant[]>> = {
+  "ㄲ": ["ㄱ", "ㄱ"],
+  "ㄸ": ["ㄷ", "ㄷ"],
+  "ㅃ": ["ㅂ", "ㅂ"],
+  "ㅆ": ["ㅅ", "ㅅ"],
+  "ㅉ": ["ㅈ", "ㅈ"],
+};
+
+export const TENSE_FROM_PARTS = new Map<string, Consonant>(
+  Object.entries(TENSE_PARTS).map(([tense, parts]) => [parts.join(""), tense as Consonant]),
+);
+
 /**
  * Canonical Cheonjiin stroke sequences used by the game.
  *
@@ -51,12 +63,12 @@ export const VOWEL_STROKES: Readonly<Record<Jungseong, readonly CheonjiinStroke[
 };
 
 export const FINAL_PARTS: Readonly<Record<Exclude<Jongseong, "">, readonly Consonant[]>> = {
-  "ㄱ": ["ㄱ"], "ㄲ": ["ㄲ"], "ㄳ": ["ㄱ", "ㅅ"], "ㄴ": ["ㄴ"],
+  "ㄱ": ["ㄱ"], "ㄲ": ["ㄱ", "ㄱ"], "ㄳ": ["ㄱ", "ㅅ"], "ㄴ": ["ㄴ"],
   "ㄵ": ["ㄴ", "ㅈ"], "ㄶ": ["ㄴ", "ㅎ"], "ㄷ": ["ㄷ"], "ㄹ": ["ㄹ"],
   "ㄺ": ["ㄹ", "ㄱ"], "ㄻ": ["ㄹ", "ㅁ"], "ㄼ": ["ㄹ", "ㅂ"],
   "ㄽ": ["ㄹ", "ㅅ"], "ㄾ": ["ㄹ", "ㅌ"], "ㄿ": ["ㄹ", "ㅍ"],
   "ㅀ": ["ㄹ", "ㅎ"], "ㅁ": ["ㅁ"], "ㅂ": ["ㅂ"], "ㅄ": ["ㅂ", "ㅅ"],
-  "ㅅ": ["ㅅ"], "ㅆ": ["ㅆ"], "ㅇ": ["ㅇ"], "ㅈ": ["ㅈ"], "ㅊ": ["ㅊ"],
+  "ㅅ": ["ㅅ"], "ㅆ": ["ㅅ", "ㅅ"], "ㅇ": ["ㅇ"], "ㅈ": ["ㅈ"], "ㅊ": ["ㅊ"],
   "ㅋ": ["ㅋ"], "ㅌ": ["ㅌ"], "ㅍ": ["ㅍ"], "ㅎ": ["ㅎ"],
 };
 

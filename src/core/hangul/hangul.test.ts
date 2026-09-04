@@ -26,16 +26,18 @@ describe("TAPtoTALK Hangul domain", () => {
     expect(composeTokens(input)).toBe(target);
   });
 
-  it("builds tense and aspirated consonants from independent tiles", () => {
+  it("builds tense consonants from repeated base taps", () => {
     const target = "까 타 빠 싸 짜 차";
     expect(composeTokens(materializeTargetTokens(targetToTokens(target)))).toBe(target);
   });
 
-  it("keeps ㄱ, ㅋ, and ㄲ as three independent board choices", () => {
+  it("keeps tense tiles as decoys but requires repeated base taps for targets", () => {
     expect(BOARD_SYMBOLS).toContain("ㄱ");
     expect(BOARD_SYMBOLS).toContain("ㅋ");
     expect(BOARD_SYMBOLS).toContain("ㄲ");
-    expect(targetToTokens("까")[0]).toBe("ㄲ");
+    expect(targetToTokens("까").slice(0, 2)).toEqual(["ㄱ", "ㄱ"]);
+    expect(requiredBoardSymbols("꾀")).toEqual(["ㄱ", "ㄱ", "ㆍ", "ㅡ", "ㅣ"]);
+    expect(composeTokens(materializeTargetTokens(targetToTokens("꾀")))).toBe("꾀");
   });
 
   it("composes combined final consonants in entered order", () => {

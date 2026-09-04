@@ -5,6 +5,7 @@ import {
   FINAL_FROM_PARTS,
   JONGSEONG,
   JUNGSEONG,
+  TENSE_FROM_PARTS,
   VOWEL_FROM_STROKES,
 } from "./layout";
 
@@ -74,6 +75,11 @@ export function composeTokens(tokens: readonly string[]): string {
     }
 
     if (current.strokes.length === 0) {
+      const tense = TENSE_FROM_PARTS.get(current.initial + token);
+      if (tense) {
+        current.initial = tense;
+        continue;
+      }
       flush();
       current.initial = token;
       continue;
