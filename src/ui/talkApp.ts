@@ -236,7 +236,7 @@ export class TalkApp {
     this.alphabetTapGroups = level.randomizeTargets
       ? this.alphabetSequence.map((target) => [...target])
       : level.tapGroups;
-    this.alphabetTiles = createAlphabetBoard(this.alphabetTapGroups.flat(), level.pool, 81, Math.random, level.trapChance);
+    this.alphabetTiles = createAlphabetBoard(this.alphabetTapGroups.flat(), level.pool, 81, Math.random, level.trapChance, level.trapPool);
     this.runMode.textContent = `${course.name} · Lv.${level.number}`;
     this.targetLabel.textContent = `Lv.${level.number} · 1 / ${this.alphabetSequence.length}`;
     this.renderAlphabetBoard();

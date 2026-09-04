@@ -17,6 +17,7 @@ export interface AlphabetLevel {
   sequence: readonly string[];
   tapGroups: readonly (readonly string[])[];
   pool: readonly string[];
+  trapPool?: readonly string[];
   randomizeTargets?: boolean;
 }
 
@@ -64,14 +65,14 @@ const vowelTaps = (labels: readonly string[]): readonly (readonly string[])[] =>
 const syllableTaps = (labels: readonly string[]): readonly (readonly string[])[] => labels.map((label) =>
   [...label].flatMap(decomposeAlphabetTarget).flatMap((jamo) => CHEONJIIN_TAPS[jamo] ?? [jamo]),
 );
-const level = (number: number, name: string, durationMs: number, trapChance: number, sequence: readonly string[], tapGroups: readonly (readonly string[])[], pool: readonly string[]): AlphabetLevel => ({
-  id: `alphabet-${number}`, number, name, durationMs, trapChance, sequence, tapGroups, pool,
+const level = (number: number, name: string, durationMs: number, trapChance: number, sequence: readonly string[], tapGroups: readonly (readonly string[])[], pool: readonly string[], trapPool?: readonly string[]): AlphabetLevel => ({
+  id: `alphabet-${number}`, number, name, durationMs, trapChance, sequence, tapGroups, pool, ...(trapPool ? { trapPool } : {}),
 });
 
 const CONSONANT_LEVELS: readonly AlphabetLevel[] = [
-  level(1, "Basic Order", 60_000, .05, ["ㄱㄴㄷㄹㅁ", "ㅂㅅㅇㅈㅊ", "ㅋㅌㅍㅎ"], consonantTaps(["ㄱㄴㄷㄹㅁ", "ㅂㅅㅇㅈㅊ", "ㅋㅌㅍㅎ"]), BASIC_CONSONANTS),
-  level(2, "Added Strokes", 75_000, .08, ["ㄱㅋ", "ㄴㄷㄹ", "ㅁㅂㅍ", "ㅅㅈㅊ", "ㅇㅎ"], consonantTaps(["ㄱㅋ", "ㄴㄷㄹ", "ㅁㅂㅍ", "ㅅㅈㅊ", "ㅇㅎ"]), BASIC_CONSONANTS),
-  { ...level(3, "Short Memory", 70_000, .10, ["ㄷㅁㅎ", "ㅋㅅㄹㅈ", "ㅎㄹㅊㅂㅇ"], consonantTaps(["ㄷㅁㅎ", "ㅋㅅㄹㅈ", "ㅎㄹㅊㅂㅇ"]), BASIC_CONSONANTS), randomizeTargets: true },
+  level(1, "Basic Order", 60_000, .15, ["ㄱㄴㄷㄹㅁ", "ㅂㅅㅇㅈㅊ", "ㅋㅌㅍㅎ"], consonantTaps(["ㄱㄴㄷㄹㅁ", "ㅂㅅㅇㅈㅊ", "ㅋㅌㅍㅎ"]), BASIC_CONSONANTS),
+  level(2, "Added Strokes", 75_000, .18, ["ㄱㅋ", "ㄴㄷㄹ", "ㅁㅂㅍ", "ㅅㅈㅊ", "ㅇㅎ"], consonantTaps(["ㄱㅋ", "ㄴㄷㄹ", "ㅁㅂㅍ", "ㅅㅈㅊ", "ㅇㅎ"]), BASIC_CONSONANTS),
+  { ...level(3, "Short Memory", 70_000, .20, ["ㄷㅁㅎ", "ㅋㅅㄹㅈ", "ㅎㄹㅊㅂㅇ"], consonantTaps(["ㄷㅁㅎ", "ㅋㅅㄹㅈ", "ㅎㄹㅊㅂㅇ"]), BASIC_CONSONANTS), randomizeTargets: true },
 ];
 
 const VOWEL_LEVEL_SEQUENCES = [
@@ -81,7 +82,7 @@ const VOWEL_LEVEL_SEQUENCES = [
   ["ㅗㅏ", "ㅠㅓㅑ", "ㅕㅜㅏㅛ", "ㅑㅗㅠㅓㅡ"],
 ] as const;
 const VOWEL_LEVELS: readonly AlphabetLevel[] = VOWEL_LEVEL_SEQUENCES.map((sequence, index) =>
-  level(index + 5, ["One Dot", "Two Dots", "Vowel Families", "Vowel Memory"][index]!, [50_000, 60_000, 75_000, 100_000][index]!, 0, sequence, vowelTaps(sequence), index < 2 ? ["ㆍ", "ㅡ", "ㅣ"] : ["ㆍ", "ㅡ", "ㅣ", "."]),
+  level(index + 5, ["One Dot", "Two Dots", "Vowel Families", "Vowel Memory"][index]!, [50_000, 60_000, 75_000, 100_000][index]!, .10, sequence, vowelTaps(sequence), ["ㆍ", "ㅡ", "ㅣ"], ["╱", "^", "!", "@"]),
 );
 
 const SYLLABLE_LEVEL_SEQUENCES = [
@@ -93,7 +94,7 @@ const SYLLABLE_LEVEL_SEQUENCES = [
 ] as const;
 const SYLLABLE_LEVELS: readonly AlphabetLevel[] = SYLLABLE_LEVEL_SEQUENCES.map((sequence, index) => {
   const tapGroups = syllableTaps(sequence);
-  return level(index + 9, ["Me and You", "My Body", "Daily Life", "Nature", "Strong Finish"][index]!, [45_000, 120_000, 100_000, 170_000, 180_000][index]!, [.04, .06, .08, .10, .12][index]!, sequence, tapGroups, [...new Set(tapGroups.flat())]);
+  return level(index + 9, ["Me and You", "My Body", "Daily Life", "Nature", "Strong Finish"][index]!, [45_000, 120_000, 100_000, 170_000, 180_000][index]!, [.14, .16, .18, .20, .22][index]!, sequence, tapGroups, [...new Set(tapGroups.flat())]);
 });
 
 export const ALPHABET_COURSES: readonly AlphabetCourse[] = [

@@ -67,13 +67,18 @@ export function createAlphabetBoard(
   size = 81,
   rng: () => number = Math.random,
   trapChance = 0,
+  trapPool: readonly string[] = [],
 ): AlphabetTile[] {
   if (sequence.length > size) throw new RangeError(`Sequence needs ${sequence.length} tiles; maximum is ${size}.`);
   if (pool.length === 0) throw new RangeError("Alphabet board needs at least one filler value.");
   const tiles: AlphabetTile[] = sequence.map((value, id) => ({ id, value, required: true }));
   while (tiles.length < size) {
-    const value = pool[Math.floor(rng() * pool.length)]!;
-    const mirror = rng() < trapChance ? mirrorAxisFor(value as never) : undefined;
+    let value = pool[Math.floor(rng() * pool.length)]!;
+    let mirror: MirrorAxis | undefined;
+    if (rng() < trapChance) {
+      if (trapPool.length) value = trapPool[Math.floor(rng() * trapPool.length)]!;
+      else mirror = mirrorAxisFor(value as never);
+    }
     tiles.push({ id: tiles.length, value, required: false, ...(mirror ? { mirror } : {}) });
   }
   return shuffle(tiles, rng);

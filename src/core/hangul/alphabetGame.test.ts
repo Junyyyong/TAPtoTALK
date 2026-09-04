@@ -53,7 +53,7 @@ describe("Korean Alphabet courses", () => {
 
   it("adds mirrored traps from the first consonant level", () => {
     const consonants = ALPHABET_COURSES[0]!;
-    expect(consonants.levels[0]!.trapChance).toBeGreaterThan(0);
+    expect(consonants.levels.map((level) => level.trapChance)).toEqual([.15, .18, .20]);
     expect(consonants.levels[1]!.trapChance).toBeGreaterThan(consonants.levels[0]!.trapChance);
     const board = createAlphabetBoard(["ㄱ"], ["ㄱ"], 81, () => 0.42, 1);
     expect(board.filter((tile) => tile.required).every((tile) => !tile.mirror)).toBe(true);
@@ -61,13 +61,24 @@ describe("Korean Alphabet courses", () => {
   });
 
   it("builds every vowel level using only Cheonjiin strokes", () => {
-    ALPHABET_COURSES[1]!.levels.forEach((level, index) => {
+    ALPHABET_COURSES[1]!.levels.forEach((level) => {
       expect(level.sequence).toHaveLength(4);
-      expect(level.pool).toEqual(index < 2 ? ["ㆍ", "ㅡ", "ㅣ"] : ["ㆍ", "ㅡ", "ㅣ", "."]);
+      expect(level.pool).toEqual(["ㆍ", "ㅡ", "ㅣ"]);
+      expect(level.trapChance).toBe(.10);
+      expect(level.trapPool).toEqual(["╱", "^", "!", "@"]);
       for (const tap of level.tapGroups.flat()) expect(["ㆍ", "ㅡ", "ㅣ"]).toContain(tap);
     });
     expect(ALPHABET_COURSES[1]!.levels[0]!.tapGroups[0]).toEqual(["ㅣ", "ㆍ"]);
     expect(ALPHABET_COURSES[1]!.levels[1]!.tapGroups[0]).toEqual(["ㅣ", "ㆍ", "ㆍ"]);
+  });
+
+  it("distributes the four vowel trap symbols evenly when selected", () => {
+    const values = [0, 0, 0, 0, 0, .25, 0, 0, .5, 0, 0, .75];
+    let index = 0;
+    const board = createAlphabetBoard(["ㅣ"], ["ㆍ", "ㅡ", "ㅣ"], 9, () => values[index++ % values.length]!, 1, ["╱", "^", "!", "@"]);
+    const traps = board.filter((tile) => ["╱", "^", "!", "@"].includes(tile.value));
+    expect(traps).toHaveLength(8);
+    expect(Object.fromEntries(["╱", "^", "!", "@"].map((symbol) => [symbol, traps.filter((tile) => tile.value === symbol).length]))).toEqual({ "╱": 2, "^": 2, "!": 2, "@": 2 });
   });
 
   it("decomposes displayed syllables into jamo-only boards", () => {
@@ -90,6 +101,7 @@ describe("Korean Alphabet courses", () => {
     expect(ALPHABET_COURSES[2]!.levels[0]!.tapGroups[0]).toEqual(["ㄴ", "ㅣ", "ㆍ"]);
     expect(ALPHABET_COURSES[2]!.levels[4]!.tapGroups[1]).toEqual(["ㄱ", "ㄱ", "ㆍ", "ㅡ", "ㅣ"]);
     expect(ALPHABET_COURSES[2]!.levels[4]!.pool).not.toContain("ㄲ");
+    expect(ALPHABET_COURSES[2]!.levels.map((level) => level.trapChance)).toEqual([.14, .16, .18, .20, .22]);
   });
 
   it("advances only when the expected symbol is tapped", () => {
