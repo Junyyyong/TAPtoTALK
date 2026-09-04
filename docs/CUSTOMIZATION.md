@@ -21,6 +21,7 @@ TAPtoTALK은 레이아웃을 다시 디자인해도 한글 규칙을 건드리�
 | 용도 | 파일 |
 | --- | --- |
 | 제목 로고 | `TAPtoTALK-logo.svg` |
+| 첫 스튜디오 심볼 | `public/assets/brand/tapeetepee-open-talk.png` |
 | 시작 화면 | `public/assets/brand/splash.webp` |
 | 성공 영상 | `public/assets/brand/celebration.webm` |
 | 성공 음원 | `public/assets/brand/celebration.mp3` |
