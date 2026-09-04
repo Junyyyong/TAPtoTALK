@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { poolFor, randomClipFor } from "./cheer";
+import { failureClip, poolFor, randomClipFor } from "./cheer";
 
 describe("score-based celebration clips", () => {
   it("offers all six celebration clips at every score band", () => {
@@ -22,5 +22,13 @@ describe("score-based celebration clips", () => {
     const pool = poolFor(1000);
     const picks = pool.map((_, index) => randomClipFor(1000, () => (index + 0.5) / pool.length)?.video);
     expect(new Set(picks)).toEqual(new Set(pool.map((clip) => clip.video)));
+  });
+
+  it("reserves Tipi for failed runs", () => {
+    expect(failureClip().video).toMatch(/movie\/tipi\.webm$/);
+    expect(failureClip().iosVideo).toMatch(/movie\/tipi\.mp4$/);
+    expect(failureClip().sound).toMatch(/movie\/tipi\.mp3$/);
+    expect(poolFor(1000).every((clip) => !clip.video.includes("tipi"))).toBe(true);
+    expect(poolFor(1000).some((clip) => /movie\/1\.webm$/.test(clip.video))).toBe(true);
   });
 });

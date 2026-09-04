@@ -1,5 +1,10 @@
 const CELEBRATION_MOVIES = [
   {
+    video: new URL("../../movie/1.webm", import.meta.url).href,
+    iosVideo: new URL("../../movie/1.mp4", import.meta.url).href,
+    sound: new URL("../../movie/1.mp3", import.meta.url).href,
+  },
+  {
     video: new URL("../../movie/4.webm", import.meta.url).href,
     iosVideo: new URL("../../movie/4.mp4", import.meta.url).href,
     sound: new URL("../../movie/4.mp3", import.meta.url).href,
@@ -8,11 +13,6 @@ const CELEBRATION_MOVIES = [
     video: new URL("../../movie/taepi.webm", import.meta.url).href,
     iosVideo: new URL("../../movie/taepi.mp4", import.meta.url).href,
     sound: new URL("../../movie/taepi.mp3", import.meta.url).href,
-  },
-  {
-    video: new URL("../../movie/tipi.webm", import.meta.url).href,
-    iosVideo: new URL("../../movie/tipi.mp4", import.meta.url).href,
-    sound: new URL("../../movie/tipi.mp3", import.meta.url).href,
   },
   {
     video: new URL("../../movie/hupi.webm", import.meta.url).href,
@@ -31,6 +31,13 @@ const CELEBRATION_MOVIES = [
   },
 ] as const;
 
+const FAILURE_MOVIE = {
+  video: new URL("../../movie/tipi.webm", import.meta.url).href,
+  iosVideo: new URL("../../movie/tipi.mp4", import.meta.url).href,
+  sound: new URL("../../movie/tipi.mp3", import.meta.url).href,
+  layout: "compact",
+} as const;
+
 /**
  * Product copy and replaceable media live here, away from game rules and UI.
  * Keep the public paths stable and a redesign only needs new asset files.
@@ -45,6 +52,7 @@ export const APP_CONFIG = {
     splash: new URL("../../public/assets/brand/taptotalk-cover7.png", import.meta.url).href,
     celebrationVideo: CELEBRATION_MOVIES[0]!.video,
     celebrationAudio: CELEBRATION_MOVIES[0]!.sound,
+    failureCelebration: FAILURE_MOVIE,
     celebrations: [
       { at: 1400, layout: "hero", clips: CELEBRATION_MOVIES },
       { at: 1000, layout: "hero", clips: CELEBRATION_MOVIES },

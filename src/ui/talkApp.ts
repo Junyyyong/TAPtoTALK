@@ -602,7 +602,7 @@ export class TalkApp {
       this.result.classList.remove("hidden");
     };
     if (score !== undefined) this.cheer.play(title, score, lessonCheerFor(tierScore ?? score), reveal, tierScore);
-    else reveal();
+    else this.cheer.playFailure(title, "TRY AGAIN!", reveal);
   }
 
   private openHelp(title: string): void {
@@ -764,7 +764,7 @@ export class TalkApp {
   private showRules(): void {
     this.tutorialNav.classList.add("hidden");
     this.openHelp("Rules");
-    this.helpBody.innerHTML = `<div class="rules-list"><p><b>Korean Alphabet</b><span>Choose Consonants, Vowels, or Syllables. Each course starts at its first level and every level must be completed in order.</span></p><p><b>Sound guide</b><span>Simple IPA shows how each jamo sounds. A range such as [k~ɡ] means the sound changes with its position.</span></p><p><b>Visible progress</b><span>Blue jamo are complete, red is the next tap, and Retry restarts only the current item. A completed target turns blue.</span></p><p><b>Sentence Copy</b><span>Complete five phrases. The full run is worth up to 1,500 points and your best score is saved.</span></p><p><b>Word Challenge</b><span>Choose one of five lessons and complete three words before its timer ends.</span></p><p><b>Nine mixed colours</b><span>Colours do not belong to a particular letter. A used block turns grey.</span></p><p><b>Vowels</b><span>Use ㆍ, ㅡ, and ㅣ for simple and compound vowels. Period traps begin in the later Vowels levels.</span></p><p><b>Syllables</b><span>Build useful one-syllable words about people, the body, daily life, nature, and more.</span></p><p><b>Reversed traps</b><span>Mirrored consonants are traps from Lv.1. They never count as the original consonant.</span></p></div>`;
+    this.helpBody.innerHTML = `<div class="rules-list"><p><b>Korean Alphabet</b><span>Choose Consonants, Vowels, or Syllables. Each course starts at its first level and every level must be completed in order.</span></p><p><b>Sound guide</b><span>Simple IPA shows how each jamo sounds. A slash such as [k] / [ɡ] separates sounds used in different positions.</span></p><p><b>Visible progress</b><span>Blue jamo are complete, red is the next tap, and a completed target turns blue.</span></p><p><b>Sentence Copy</b><span>Complete five phrases. The full run is worth up to 1,500 points and your best score is saved.</span></p><p><b>Word Challenge</b><span>Choose one of five lessons and complete three words before its timer ends.</span></p><p><b>Nine mixed colours</b><span>Colours do not belong to a particular letter. A used block turns grey.</span></p><p><b>Vowels</b><span>Use ㆍ, ㅡ, and ㅣ for simple and compound vowels. Symbol traps are mixed into the board.</span></p><p><b>Syllables</b><span>Build useful one-syllable words about people, the body, daily life, nature, and more.</span></p><p><b>Reversed traps</b><span>Mirrored consonants are traps from Lv.1. They never count as the original consonant.</span></p></div>`;
   }
 
   private showSettings(): void {

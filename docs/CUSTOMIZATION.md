@@ -26,8 +26,8 @@ TAPtoTALK은 레이아웃을 다시 디자인해도 한글 규칙을 건드리�
 | 성공 음원 | `public/assets/brand/celebration.mp3` |
 
 완료 영상은 `src/config/app.ts`의 `CELEBRATION_MOVIES`에 등록합니다. 현재 `4`,
-`taepi`, `tipi`, `hupi`, `haepi`, `jaepi` 여섯 묶음 중 하나가 매 결과마다 무작위로
-선택됩니다. 각 묶음은 일반·Android용 WebM, iPhone용 MP4, 동기화 음원 MP3로
+`1`, `4`, `taepi`, `hupi`, `haepi`, `jaepi` 여섯 묶음 중 하나가 성공할 때 무작위로
+선택되고, 실패할 때는 `tipi`만 재생됩니다. 각 묶음은 일반·Android용 WebM, iPhone용 MP4, 동기화 음원 MP3로
 구성합니다. 파일명에 한글을 사용하면 macOS와 Linux에서 유니코드 정규화 방식이
 달라질 수 있으므로 미디어 파일명은 영문으로 유지합니다.
 

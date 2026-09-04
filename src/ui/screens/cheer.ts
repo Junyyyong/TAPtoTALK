@@ -47,6 +47,10 @@ export function randomClipFor(score: number, random: () => number = Math.random)
   return pool.length ? pool[Math.floor(random() * pool.length)]! : null;
 }
 
+export function failureClip(): Clip {
+  return APP_CONFIG.assets.failureCelebration;
+}
+
 /**
  * Four milliseconds of nothing, as a file.
  *
@@ -153,6 +157,14 @@ export class Cheer {
    * the screen on their own before the dance begins.
    */
   play(headline: string, score: number, text: string, then: () => void, tierScore = score): void {
+    this.begin(headline, score, text, then, randomClipFor(tierScore));
+  }
+
+  playFailure(headline: string, text: string, then: () => void): void {
+    this.begin(headline, 0, text, then, failureClip());
+  }
+
+  private begin(headline: string, score: number, text: string, then: () => void, pick: Clip | null): void {
     this.word.textContent = text;
     this.headline.textContent = headline;
     this.scoreEl.textContent = score.toLocaleString();
@@ -161,7 +173,7 @@ export class Cheer {
     this.root.classList.remove("hidden", "cheer-hold", "cheer-run", "cheer-layout-compact", "cheer-layout-standard", "cheer-layout-large", "cheer-layout-hero");
     this.card.classList.remove("hidden");
 
-    this.pick = randomClipFor(tierScore);
+    this.pick = pick;
     if (this.pick) {
       this.root.classList.add(`cheer-layout-${this.pick.layout}`);
       load(this.clip, videoFor(this.pick));

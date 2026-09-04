@@ -17,7 +17,8 @@ describe("Korean Alphabet courses", () => {
   });
 
   it("uses concise IPA values for jamo and meanings only for syllables", () => {
-    expect(alphabetTargetNote("consonants", "ㄱㄴ")).toBe("[k~ɡ] · [n]");
+    expect(alphabetTargetNote("consonants", "ㄱㄴ")).toBe("[k] / [ɡ] · [n]");
+    expect(alphabetTargetNote("consonants", "ㄹ")).toBe("[ɾ] / [l]");
     expect(alphabetTargetNote("consonants", "ㅇ")).toBe("∅ / [ŋ]");
     expect(alphabetTargetNote("vowels", "ㅏㅑ")).toBe("[a] · [ja]");
     expect(alphabetTargetNote("syllables", "산")).toBe("mountain");
