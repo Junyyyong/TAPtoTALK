@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { SENTENCE_LEVELS, SENTENCE_PROMPTS, WORD_LEVELS, WORD_TARGETS } from "./prompts";
+import { SENTENCE_LEVELS, SENTENCE_PROMPTS, SENTENCE_ROUND_SIZE, WORD_LEVELS, WORD_TARGETS } from "./prompts";
 
 describe("Korean prompt translations", () => {
   it("gives every word and sentence one concise English translation", () => {
@@ -16,5 +16,10 @@ describe("Korean prompt translations", () => {
     expect(WORD_LEVELS.every((level) => level.targets.length >= 3)).toBe(true);
     expect(SENTENCE_LEVELS).toHaveLength(6);
     expect(SENTENCE_LEVELS[0]!.prompts[0]!.text).toBe("안녕!");
+  });
+
+  it("plays three sampled sentences while retaining a larger content pool", () => {
+    expect(SENTENCE_ROUND_SIZE).toBe(3);
+    for (const level of SENTENCE_LEVELS) expect(level.prompts.length).toBeGreaterThanOrEqual(SENTENCE_ROUND_SIZE);
   });
 });

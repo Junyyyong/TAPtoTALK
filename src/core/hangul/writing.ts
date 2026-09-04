@@ -44,7 +44,7 @@ const LESSON_TIME_SCORE_POINTS = [
 ] as const;
 
 /**
- * One score for a complete five-phrase lesson, based on its total time.
+ * One score for a complete lesson, based on its total time.
  * `targetMs` is the OH MY GOD cutoff; slower tier boundaries are derived from it.
  */
 export function lessonScoreFromTime(elapsedMs: number, targetMs: number): number {

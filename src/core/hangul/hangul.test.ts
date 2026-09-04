@@ -45,6 +45,17 @@ describe("TAPtoTALK Hangul domain", () => {
     expect(composeTokens(materializeTargetTokens(targetToTokens("뷁")))).toBe("뷁");
   });
 
+  it("decomposes tense initials, tense finals, and compound finals into base consonant taps", () => {
+    expect(materializeTargetTokens(targetToTokens("꾀 밖 읽 값 있어"))).toEqual([
+      "ㄱ", "ㄱ", "ㆍ", "ㅡ", "ㅣ", " ",
+      "ㅂ", "ㅣ", "ㆍ", "ㄱ", "ㄱ", " ",
+      "ㅇ", "ㅣ", "ㄹ", "ㄱ", " ",
+      "ㄱ", "ㅣ", "ㆍ", "ㅂ", "ㅅ", " ",
+      "ㅇ", "ㅣ", "ㅅ", "ㅅ", "ㅇ", "ㆍ", "ㅣ",
+    ]);
+    expect(composeTokens(materializeTargetTokens(targetToTokens("꾀 밖 읽 값 있어")))).toBe("꾀 밖 읽 값 있어");
+  });
+
   it("reserves every symbol needed by the target and fills 81 cells", () => {
     const target = "나는 너를 사랑해";
     const board = createLetterBoard(target, () => 0.42);

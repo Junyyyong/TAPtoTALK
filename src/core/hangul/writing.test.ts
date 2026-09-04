@@ -26,7 +26,7 @@ describe("topic writing evaluation", () => {
     expect(scoreFromTime(60_000, 60_000)).toBe(100);
   });
 
-  it("scores one complete five-phrase lesson from its total time", () => {
+  it("scores one complete lesson from its total time", () => {
     expect(lessonScoreFromTime(0, 150_000)).toBe(1500);
     expect(lessonScoreFromTime(150_000, 150_000)).toBe(1400);
     expect(lessonScoreFromTime(180_000, 150_000)).toBe(1000);

@@ -5,7 +5,7 @@ import { CHEONJIIN_STROKES, CONSONANTS, PUNCTUATION_SYMBOLS, type BoardSymbol } 
 import { isWordMatch, pickLessonTargets, wordCountLabel } from "../core/hangul/wordChallenge";
 import { lessonCheerFor, lessonScoreFromTime } from "../core/hangul/writing";
 import { materializeTargetTokens, targetCharacterProgress, targetToTokens } from "../core/hangul/target";
-import { ALPHABET_COURSES, SENTENCE_LEVELS, SENTENCE_PROMPTS, WORD_LEVELS, WORD_TARGETS, alphabetTargetNote, type AlphabetLevel, type SentencePrompt, type WordTarget } from "../content/prompts";
+import { ALPHABET_COURSES, SENTENCE_LEVELS, SENTENCE_PROMPTS, SENTENCE_ROUND_SIZE, WORD_LEVELS, WORD_TARGETS, alphabetTargetNote, type AlphabetLevel, type SentencePrompt, type WordTarget } from "../content/prompts";
 import { APP_CONFIG } from "../config/app";
 import { el } from "./dom";
 import { feedback } from "./feedback";
@@ -85,6 +85,7 @@ export class TalkApp {
   private wordLessonTargets: readonly WordTarget[] = [];
   private sentenceLevel = 0;
   private sentenceIndex = 0;
+  private sentenceLessonPrompts: readonly SentencePrompt[] = [];
   private alphabetCourseIndex = 0;
   private alphabetLevelIndex = 0;
   private alphabetTargetIndex = 0;
@@ -150,12 +151,12 @@ export class TalkApp {
     this.targetPrompt.classList.remove("is-writing-complete");
     this.mode = mode;
     if (mode === "alphabet") { this.showAlphabetCourses(); return; }
-    if (mode === "sentence") this.prompt = SENTENCE_LEVELS[this.sentenceLevel]!.prompts[this.sentenceIndex]!;
+    if (mode === "sentence") this.prompt = this.sentenceLessonPrompts[this.sentenceIndex] ?? SENTENCE_PROMPTS[0]!;
     else this.wordTarget = this.wordLessonTargets[this.wordTargetIndex] ?? WORD_TARGETS[0]!;
     this.input = []; this.used.clear();
     const requiredText = mode === "sentence" ? this.prompt.text : this.wordTarget.word;
     this.tiles = createLetterBoard(requiredText);
-    this.targetLabel.textContent = mode === "sentence" ? `${SENTENCE_LEVELS[this.sentenceLevel]!.name} · ${this.sentenceIndex + 1}/5` : `${WORD_LEVELS[this.wordLevel]!.name} · ${this.wordTargetIndex + 1}/3`;
+    this.targetLabel.textContent = mode === "sentence" ? `${SENTENCE_LEVELS[this.sentenceLevel]!.name} · ${this.sentenceIndex + 1}/${SENTENCE_ROUND_SIZE}` : `${WORD_LEVELS[this.wordLevel]!.name} · ${this.wordTargetIndex + 1}/3`;
     this.renderTranslatedTarget();
     this.typedText.dataset.empty = mode === "sentence" ? "Your sentence appears here." : "Your word appears here.";
     this.runMode.textContent = mode === "sentence" ? "Sentence Copy" : "Word Challenge";
@@ -495,7 +496,7 @@ export class TalkApp {
     this.stopClock();
     feedback.complete();
     const level = SENTENCE_LEVELS[this.sentenceLevel]!;
-    const finalSentence = this.sentenceIndex === level.prompts.length - 1;
+    const finalSentence = this.sentenceIndex === this.sentenceLessonPrompts.length - 1;
     if (finalSentence) {
       const score = lessonScoreFromTime(this.elapsedMs, level.targetMs);
       const previousBest = this.sentenceProgress.bestScores[level.id] ?? 0;
@@ -616,13 +617,13 @@ export class TalkApp {
     this.result.classList.add("hidden"); this.game.classList.add("hidden"); this.title.classList.remove("hidden");
     this.tutorialNav.classList.add("hidden");
     this.openHelp("Sentence Copy");
-    this.helpBody.innerHTML = `<p class="level-intro">Complete five phrases for up to 1,500 points. Your fastest run becomes the level high score.</p><div class="level-list" id="level-list"></div>`;
+    this.helpBody.innerHTML = `<p class="level-intro">Complete three phrases for up to 1,500 points. Your fastest run becomes the level high score.</p><div class="level-list" id="level-list"></div>`;
     const list = el("level-list");
     SENTENCE_LEVELS.forEach((level, index) => {
       const best = this.sentenceProgress.bestScores[level.id] ?? 0;
       const button = document.createElement("button");
       button.type = "button"; button.className = "level-btn";
-      button.innerHTML = `<strong>${level.name}</strong><span>${level.description}</span><em>5 phrases · Top tier ${Math.round(level.targetMs / 1000)}s</em><small>${best ? `BEST ${best.toLocaleString()}` : "NEW"}</small>`;
+      button.innerHTML = `<strong>${level.name}</strong><span>${level.description}</span><em>${SENTENCE_ROUND_SIZE} phrases · Top tier ${Math.round(level.targetMs / 1000)}s</em><small>${best ? `BEST ${best.toLocaleString()}` : "NEW"}</small>`;
       button.addEventListener("click", () => this.startSentenceLevel(index));
       list.append(button);
     });
@@ -630,6 +631,7 @@ export class TalkApp {
 
   private startSentenceLevel(index: number): void {
     this.sentenceLevel = index; this.sentenceIndex = 0; this.elapsedMs = 0;
+    this.sentenceLessonPrompts = pickLessonTargets(SENTENCE_LEVELS[index]!.prompts, SENTENCE_ROUND_SIZE);
     this.help.classList.add("hidden");
     this.start("sentence");
   }
@@ -764,7 +766,7 @@ export class TalkApp {
   private showRules(): void {
     this.tutorialNav.classList.add("hidden");
     this.openHelp("Rules");
-    this.helpBody.innerHTML = `<div class="rules-list"><p><b>Korean Alphabet</b><span>Choose Consonants, Vowels, or Syllables. Each course starts at its first level and every level must be completed in order.</span></p><p><b>Sound guide</b><span>Simple IPA shows how each jamo sounds. A slash such as [k] / [ɡ] separates sounds used in different positions.</span></p><p><b>Visible progress</b><span>Blue jamo are complete, red is the next tap, and a completed target turns blue.</span></p><p><b>Sentence Copy</b><span>Complete five phrases. The full run is worth up to 1,500 points and your best score is saved.</span></p><p><b>Word Challenge</b><span>Choose one of five lessons and complete three words before its timer ends.</span></p><p><b>Nine mixed colours</b><span>Colours do not belong to a particular letter. A used block turns grey.</span></p><p><b>Vowels</b><span>Use ㆍ, ㅡ, and ㅣ for simple and compound vowels. Symbol traps are mixed into the board.</span></p><p><b>Syllables</b><span>Build useful one-syllable words about people, the body, daily life, nature, and more.</span></p><p><b>Reversed traps</b><span>Mirrored consonants are traps from Lv.1. They never count as the original consonant.</span></p></div>`;
+    this.helpBody.innerHTML = `<div class="rules-list"><p><b>Korean Alphabet</b><span>Choose Consonants, Vowels, or Syllables. Each course starts at its first level and every level must be completed in order.</span></p><p><b>Sound guide</b><span>Simple IPA shows how each jamo sounds. A slash such as [k] / [ɡ] separates sounds used in different positions.</span></p><p><b>Visible progress</b><span>Blue jamo are complete, red is the next tap, and a completed target turns blue.</span></p><p><b>Sentence Copy</b><span>Complete three phrases. The full run is worth up to 1,500 points and your best score is saved.</span></p><p><b>Word Challenge</b><span>Choose one of five lessons and complete three words before its timer ends.</span></p><p><b>Nine mixed colours</b><span>Colours do not belong to a particular letter. A used block turns grey.</span></p><p><b>Vowels</b><span>Use ㆍ, ㅡ, and ㅣ for simple and compound vowels. Symbol traps are mixed into the board.</span></p><p><b>Syllables</b><span>Build useful one-syllable words about people, the body, daily life, nature, and more.</span></p><p><b>Reversed traps</b><span>Mirrored consonants are traps from Lv.1. They never count as the original consonant.</span></p></div>`;
   }
 
   private showSettings(): void {

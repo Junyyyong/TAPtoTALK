@@ -111,18 +111,20 @@ export interface SentenceLevel {
   prompts: readonly SentencePrompt[];
 }
 
+export const SENTENCE_ROUND_SIZE = 3;
+
 type TranslatedPrompt = readonly [text: string, translation: string];
 const prompts = (level: number, values: readonly TranslatedPrompt[]): readonly SentencePrompt[] =>
   values.map(([text, translation], index) => ({ id: `sentence-${level}-${index + 1}`, text, translation, difficulty: Math.max(1, level) as SentencePrompt["difficulty"] }));
 
-/** Eight sequential Sentence Copy lessons. targetMs is the five-phrase OH MY GOD cutoff. */
+/** Sentence Copy pools. Three prompts are sampled per run; targetMs is that run's OH MY GOD cutoff. */
 export const SENTENCE_LEVELS: readonly SentenceLevel[] = [
-  { id: "level-1", name: "Lv.1", description: "Short everyday phrases", targetMs: 90_000, prompts: prompts(1, [["안녕!", "Hello!"], ["잘 가!", "Goodbye!"], ["고마워!", "Thank you!"], ["미안해!", "I'm sorry!"], ["또 만나!", "See you again!"]]) },
-  { id: "level-2", name: "Lv.2", description: "Particles and polite endings", targetMs: 120_000, prompts: prompts(2, [["저는 학생이에요.", "I am a student."], ["학교에 가요.", "I go to school."], ["친구를 만나요.", "I meet a friend."], ["책을 읽어요.", "I read a book."], ["집에서 쉬어요.", "I rest at home."]]) },
-  { id: "level-3", name: "Lv.3", description: "Formal polite endings", targetMs: 150_000, prompts: prompts(3, [["반갑습니다.", "Nice to meet you."], ["감사합니다.", "Thank you."], ["저는 학생입니다.", "I am a student."], ["학교에 갑니다.", "I go to school."], ["책을 읽습니다.", "I read a book."]]) },
-  { id: "level-4", name: "Lv.4", description: "Tense, negatives, and honorifics", targetMs: 180_000, prompts: prompts(4, [["어제 공부했습니다.", "I studied yesterday."], ["오늘 학교에 가지 않아요.", "I am not going to school today."], ["선생님께서 오십니다.", "The teacher is coming."], ["내일 친구를 만날 거예요.", "I will meet a friend tomorrow."], ["저는 매운 음식을 못 먹어요.", "I cannot eat spicy food."]]) },
-  { id: "level-5", name: "Lv.5", description: "Adjectives, adverbs, and connectors", targetMs: 210_000, prompts: prompts(5, [["오늘 날씨가 아주 좋아요.", "The weather is very nice today."], ["이 가방은 정말 가벼워요.", "This bag is really light."], ["천천히 또박또박 말해요.", "Speak slowly and clearly."], ["피곤하지만 숙제를 했어요.", "I was tired, but I did my homework."], ["비가 와서 길이 미끄러워요.", "The road is slippery because it is raining."]]) },
-  { id: "level-6", name: "Lv.6", description: "Practical complex sentences", targetMs: 240_000, prompts: prompts(6, [["시간이 있으면 같이 만나요.", "If you have time, let's meet."], ["길을 모르면 물어보세요.", "If you do not know the way, please ask."], ["식사가 끝난 후에 연락해 주세요.", "Please contact me after the meal."], ["비가 와도 약속 장소에 갈 거예요.", "Even if it rains, I will go to the meeting place."], ["배울수록 자신감이 생겨요.", "The more I learn, the more confident I become."]]) },
+  { id: "level-1", name: "Lv.1", description: "Short everyday phrases", targetMs: 54_000, prompts: prompts(1, [["안녕!", "Hello!"], ["잘 가!", "Goodbye!"], ["고마워!", "Thank you!"], ["미안해!", "I'm sorry!"], ["또 만나!", "See you again!"]]) },
+  { id: "level-2", name: "Lv.2", description: "Particles and polite endings", targetMs: 72_000, prompts: prompts(2, [["저는 학생이에요.", "I am a student."], ["학교에 가요.", "I go to school."], ["친구를 만나요.", "I meet a friend."], ["책을 읽어요.", "I read a book."], ["집에서 쉬어요.", "I rest at home."]]) },
+  { id: "level-3", name: "Lv.3", description: "Formal polite endings", targetMs: 90_000, prompts: prompts(3, [["반갑습니다.", "Nice to meet you."], ["감사합니다.", "Thank you."], ["저는 학생입니다.", "I am a student."], ["학교에 갑니다.", "I go to school."], ["책을 읽습니다.", "I read a book."]]) },
+  { id: "level-4", name: "Lv.4", description: "Tense, negatives, and honorifics", targetMs: 108_000, prompts: prompts(4, [["어제 공부했습니다.", "I studied yesterday."], ["오늘 학교에 가지 않아요.", "I am not going to school today."], ["선생님께서 오십니다.", "The teacher is coming."], ["내일 친구를 만날 거예요.", "I will meet a friend tomorrow."], ["저는 매운 음식을 못 먹어요.", "I cannot eat spicy food."]]) },
+  { id: "level-5", name: "Lv.5", description: "Adjectives, adverbs, and connectors", targetMs: 126_000, prompts: prompts(5, [["오늘 날씨가 아주 좋아요.", "The weather is very nice today."], ["이 가방은 정말 가벼워요.", "This bag is really light."], ["천천히 또박또박 말해요.", "Speak slowly and clearly."], ["피곤하지만 숙제를 했어요.", "I was tired, but I did my homework."], ["비가 와서 길이 미끄러워요.", "The road is slippery because it is raining."]]) },
+  { id: "level-6", name: "Lv.6", description: "Practical complex sentences", targetMs: 144_000, prompts: prompts(6, [["시간이 있으면 같이 만나요.", "If you have time, let's meet."], ["길을 모르면 물어보세요.", "If you do not know the way, please ask."], ["식사가 끝난 후에 연락해 주세요.", "Please contact me after the meal."], ["비가 와도 약속 장소에 갈 거예요.", "Even if it rains, I will go to the meeting place."], ["배울수록 자신감이 생겨요.", "The more I learn, the more confident I become."]]) },
 ];
 
 export const SENTENCE_PROMPTS: readonly SentencePrompt[] = SENTENCE_LEVELS.flatMap((level) => level.prompts);
