@@ -91,6 +91,7 @@
 | 2026-09-04 | `0d195aa` | 자음의 위치별 IPA 음가를 `[k] / [ɡ]`, `[ɾ] / [l]`처럼 슬래시로 분리해 연속 발음 오해를 줄였다. 총 7개 캐릭터 영상 중 티피는 실패·시간 초과 전용으로 분리하고, 성공 시 기존 `1`, `4`, 태피, 후피, 해피, 재피 6개 중 하나를 무작위로 재생한다. ([스크린샷](screenshots/2026-09-04-ipa-slash-variants.png)) |
 | 2026-09-04 | `37d1376` | 커버 전 3초간 표시되는 TapeeTepee 시작 화면을 새 `tapeetepee-open-talk.png` 심볼로 교체했다. 바깥 투명 여백을 제거하고 내부 흰 도형은 보존해 `#1d2087` 배경 중앙에 화면 가로의 42%로 표시한다. ([스크린샷](screenshots/2026-09-04-new-opening-symbol.png)) |
 | 2026-09-04 | `62a923f` | 시작 화면 PNG를 흰색 `TapeeTepee · openstudio` 글자가 포함된 `tapeetepee-open-02.png` 원본 전체로 다시 교체했다. 글자까지 포함한 전체 이미지를 자르지 않고 파란 배경 중앙에 표시한다. ([스크린샷](screenshots/2026-09-04-opening-logo-with-white-text.png)) |
+| 2026-09-04 | `34ab64f` | Word Challenge와 Sentence Copy에서도 쌍자음을 기본 자음 두 번으로 입력하도록 공통 분해·조합 규칙을 통일했다. `꾀`는 `ㄱ+ㄱ+ㆍ+ㅡ+ㅣ`의 5입력으로 계산되어 마지막 `ㅣ`까지 막힘없이 입력할 수 있다. ([스크린샷](screenshots/2026-09-04-word-challenge-kkoe-input-limit.png)) |
 
 ## 현재 기준
 
