@@ -679,8 +679,12 @@ export class TalkApp {
       button.dataset.tutorialKey = key;
       const glyph = document.createElement("span");
       glyph.className = "tutorial-glyph";
-      glyph.textContent = key;
+      glyph.textContent = key === "ㆍ" ? "" : key;
       button.append(glyph);
+      if (key === "ㆍ") {
+        button.classList.add("tutorial-key--cheonjiin-dot");
+        button.setAttribute("aria-label", "Cheonjiin dot");
+      }
       if (key === ".") button.classList.add("tutorial-key--period");
       button.addEventListener("click", () => this.playTutorialKey(key));
       keys.append(button);
