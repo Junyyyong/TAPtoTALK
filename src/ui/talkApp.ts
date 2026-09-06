@@ -29,21 +29,20 @@ const boardColorAt = (index: number): number => ((index * 5 + Math.floor(index /
 
 interface TutorialStep {
   title: string;
-  body: string;
+  target: string;
   keys: readonly string[];
-  result: string;
   decoys?: readonly { key: string; mirror: MirrorAxis }[];
 }
 
-const TUTORIAL_STEPS: readonly TutorialStep[] = [
-  { title: "Follow visible progress", body: "Blue jamo are done and red is next. In the game, Retry restarts only the current item. Tap ㄱ, ㄴ, ㄷ, then ㄹ.", keys: ["ㄱ", "ㄴ", "ㄷ", "ㄹ"], result: "ㄱ → ㄴ → ㄷ → ㄹ" },
-  { title: "Pick one consonant", body: "The nine colours are mixed. Tap ㅋ once; a used block turns grey.", keys: ["ㅋ"], result: "ㅋ" },
-  { title: "Build a syllable", body: "Tap ㅊ, then ㅣ and ㄴ.", keys: ["ㅊ", "ㅣ", "ㄴ"], result: "친" },
-  { title: "Make a vowel", body: "Use the square Cheonjiin dot with ㅣ and ㅡ. Tap ㅣ, then ㆍ.", keys: ["ㅣ", "ㆍ"], result: "ㅏ" },
-  { title: "Make a compound vowel", body: "Build 개 without a ready-made ㅐ block. Tap ㄱ, ㅣ, ㆍ, then ㅣ.", keys: ["ㄱ", "ㅣ", "ㆍ", "ㅣ"], result: "개" },
-  { title: "Add punctuation", body: "Only a small period, !, and ? are used. Tap the period.", keys: ["."], result: "." },
-  { title: "Avoid reversed traps", body: "Reversed consonants are traps. Try one, then tap the normal ㅇ.", keys: ["ㅇ"], result: "ㅇ · trap avoided", decoys: [{ key: "ㄱ", mirror: "horizontal" }, { key: "ㅂ", mirror: "vertical" }] },
-  { title: "Finish a word", body: "A correct target word is counted automatically.", keys: ["ㅅ", "ㅣ", "ㆍ", "ㄹ", "ㅣ", "ㆍ", "ㅇ"], result: "사랑 · 1 word" },
+export const TUTORIAL_STEPS: readonly TutorialStep[] = [
+  { title: "Order", target: "ㄱㄴㄷㄹ", keys: ["ㄱ", "ㄴ", "ㄷ", "ㄹ"] },
+  { title: "One block", target: "ㅋ", keys: ["ㅋ"] },
+  { title: "Build a syllable", target: "가", keys: ["ㄱ", "ㅣ", "ㆍ"] },
+  { title: "Add a final", target: "친", keys: ["ㅊ", "ㅣ", "ㄴ"] },
+  { title: "Compound vowel", target: "개", keys: ["ㄱ", "ㅣ", "ㆍ", "ㅣ"] },
+  { title: "Punctuation", target: "!", keys: ["!"] },
+  { title: "Avoid traps", target: "ㅇ", keys: ["ㅇ"], decoys: [{ key: "ㄱ", mirror: "horizontal" }, { key: "ㅂ", mirror: "vertical" }] },
+  { title: "Complete a word", target: "사랑", keys: ["ㅅ", "ㅣ", "ㆍ", "ㄹ", "ㅣ", "ㆍ", "ㅇ"] },
 ];
 
 /** Thin UI coordinator. Hangul behavior stays in core/hangul. */
@@ -71,6 +70,7 @@ export class TalkApp {
   private readonly helpBody = el("help-body");
   private readonly tutorialNav = el("tutorial-nav");
   private readonly tutorialDots = el("tutorial-dots");
+  private readonly tutorialDotsTop = el("tutorial-dots-top");
   private preferences: TalkPreferences = loadTalkPreferences();
   private sentenceProgress = loadSentenceProgress();
   private tutorialStep = 0;
@@ -122,6 +122,7 @@ export class TalkApp {
     el("btn-help-close").addEventListener("click", () => this.paused ? this.resumeGame() : this.closeHelp());
     el("btn-tutorial-prev").addEventListener("click", () => this.moveTutorial(-1));
     el("btn-tutorial-next").addEventListener("click", () => this.moveTutorial(1));
+    el("btn-tutorial-skip").addEventListener("click", () => this.skipTutorial());
     document.addEventListener("pointerdown", () => { this.cheer.unlock(); feedback.unlock(); }, { capture: true });
     document.addEventListener("visibilitychange", () => {
       if (document.hidden && !this.game.classList.contains("hidden")) this.pauseGame();
@@ -609,6 +610,10 @@ export class TalkApp {
   private openHelp(title: string): void {
     feedback.tap();
     this.helpTitle.textContent = title;
+    const tutorial = title === "How to play";
+    this.help.classList.toggle("is-tutorial", tutorial);
+    el("btn-tutorial-skip").classList.toggle("hidden", !tutorial);
+    this.tutorialDotsTop.classList.toggle("hidden", !tutorial);
     this.help.classList.remove("hidden");
   }
 
@@ -669,7 +674,7 @@ export class TalkApp {
 
   private renderTutorial(): void {
     const step = TUTORIAL_STEPS[this.tutorialStep]!;
-    this.helpBody.innerHTML = `<article class="tutorial-card"><p class="help-kicker">STEP ${this.tutorialStep + 1} / ${TUTORIAL_STEPS.length}</p><h3>${step.title}</h3><p>${step.body}</p><div class="tutorial-practice"><p class="tutorial-output is-empty" id="tutorial-output" aria-live="polite"></p><div class="tutorial-keys" id="tutorial-keys"></div></div></article>`;
+    this.helpBody.innerHTML = `<article class="tutorial-card"><p class="help-kicker">${step.title}</p><div class="tutorial-practice"><p class="tutorial-output" id="tutorial-output" aria-live="polite">${step.target}</p><div class="tutorial-gesture" aria-hidden="true">↓</div><div class="tutorial-keys" id="tutorial-keys"></div></div></article>`;
     const keys = el("tutorial-keys");
     [...new Set(step.keys)].forEach((key) => {
       const button = document.createElement("button");
@@ -701,17 +706,19 @@ export class TalkApp {
         feedback.reject();
         button.disabled = true; button.classList.add("is-used");
         const output = el("tutorial-output");
-        output.textContent = "× Trap! Choose the normal block.";
-        output.classList.remove("is-empty");
+        output.classList.add("is-wrong");
+        window.setTimeout(() => output.classList.remove("is-wrong"), 360);
       });
       keys.prepend(button);
     });
     this.updateTutorialKeys();
-    this.tutorialDots.replaceChildren(...TUTORIAL_STEPS.map((_, index) => {
+    const dots = TUTORIAL_STEPS.map((_, index) => {
       const dot = document.createElement("span");
       dot.className = `dot${index === this.tutorialStep ? " now" : index < this.tutorialStep ? " done" : ""}`;
       return dot;
-    }));
+    });
+    this.tutorialDots.replaceChildren(...dots.map((dot) => dot.cloneNode()));
+    this.tutorialDotsTop.replaceChildren(...dots);
     el<HTMLButtonElement>("btn-tutorial-prev").disabled = this.tutorialStep === 0;
     el<HTMLButtonElement>("btn-tutorial-next").disabled = !this.tutorialSolved;
     el("btn-tutorial-next").textContent = this.tutorialStep === TUTORIAL_STEPS.length - 1 ? "Start" : "Next";
@@ -721,22 +728,20 @@ export class TalkApp {
     const step = TUTORIAL_STEPS[this.tutorialStep]!;
     if (key !== step.keys[this.tutorialProgress]) {
       feedback.reject();
-      el("tutorial-output").textContent = "Tap the glowing key.";
+      const output = el("tutorial-output");
+      output.classList.add("is-wrong");
+      window.setTimeout(() => output.classList.remove("is-wrong"), 360);
       return;
     }
     feedback.tap();
     this.tutorialProgress += 1;
-    const entered = step.keys.slice(0, this.tutorialProgress);
-    let output = entered.join(" → ");
     if (this.tutorialProgress === step.keys.length) {
       this.tutorialSolved = true;
-      output = step.result;
       feedback.complete();
       el<HTMLButtonElement>("btn-tutorial-next").disabled = false;
     }
     const outputEl = el("tutorial-output");
-    outputEl.textContent = output;
-    outputEl.classList.toggle("is-empty", !output);
+    outputEl.classList.toggle("is-complete", this.tutorialSolved);
     this.updateTutorialKeys();
   }
 
@@ -765,6 +770,12 @@ export class TalkApp {
     this.tutorialProgress = 0;
     this.tutorialSolved = false;
     this.renderTutorial();
+  }
+
+  private skipTutorial(): void {
+    this.preferences.tutorialDone = true;
+    saveTalkPreferences(this.preferences);
+    this.closeHelp();
   }
 
   private showRules(): void {
