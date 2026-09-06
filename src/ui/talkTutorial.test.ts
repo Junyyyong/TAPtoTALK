@@ -14,4 +14,12 @@ describe("How to play tutorial", () => {
       expect(step.keys, step.title).toEqual(materializeTargetTokens(targetToTokens(step.target)));
     }
   });
+
+  it("keeps repeated jamo as separate visible blocks", () => {
+    const compoundVowel = TUTORIAL_STEPS.find(({ target }) => target === "개")!;
+    const word = TUTORIAL_STEPS.find(({ target }) => target === "사랑")!;
+
+    expect(compoundVowel.keys).toEqual(["ㄱ", "ㅣ", "ㆍ", "ㅣ"]);
+    expect(word.keys).toEqual(["ㅅ", "ㅣ", "ㆍ", "ㄹ", "ㅣ", "ㆍ", "ㅇ"]);
+  });
 });

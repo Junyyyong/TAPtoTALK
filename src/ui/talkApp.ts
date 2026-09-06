@@ -676,12 +676,13 @@ export class TalkApp {
     const step = TUTORIAL_STEPS[this.tutorialStep]!;
     this.helpBody.innerHTML = `<article class="tutorial-card"><p class="help-kicker">${step.title}</p><div class="tutorial-practice"><p class="tutorial-output" id="tutorial-output" aria-live="polite">${step.target}</p><div class="tutorial-gesture" aria-hidden="true">↓</div><div class="tutorial-keys" id="tutorial-keys"></div></div></article>`;
     const keys = el("tutorial-keys");
-    [...new Set(step.keys)].forEach((key) => {
+    step.keys.forEach((key, keyIndex) => {
       const button = document.createElement("button");
       button.type = "button";
       const category = PUNCTUATION_SYMBOLS.includes(key as never) ? "feature" : ["ㅣ", "ㅡ", "ㆍ"].includes(key) ? "vowel" : "consonant";
       button.className = `tutorial-key tutorial-key--${category}`;
       button.dataset.tutorialKey = key;
+      button.dataset.tutorialIndex = String(keyIndex);
       const glyph = document.createElement("span");
       glyph.className = "tutorial-glyph";
       glyph.textContent = key === "ㆍ" ? "" : key;
@@ -691,7 +692,7 @@ export class TalkApp {
         button.setAttribute("aria-label", "Cheonjiin dot");
       }
       if (key === ".") button.classList.add("tutorial-key--period");
-      button.addEventListener("click", () => this.playTutorialKey(key));
+      button.addEventListener("click", () => this.playTutorialKey(key, keyIndex));
       keys.append(button);
     });
     step.decoys?.forEach(({ key, mirror }) => {
@@ -724,9 +725,9 @@ export class TalkApp {
     el("btn-tutorial-next").textContent = this.tutorialStep === TUTORIAL_STEPS.length - 1 ? "Start" : "Next";
   }
 
-  private playTutorialKey(key: string): void {
+  private playTutorialKey(key: string, keyIndex: number): void {
     const step = TUTORIAL_STEPS[this.tutorialStep]!;
-    if (key !== step.keys[this.tutorialProgress]) {
+    if (keyIndex !== this.tutorialProgress || key !== step.keys[this.tutorialProgress]) {
       feedback.reject();
       const output = el("tutorial-output");
       output.classList.add("is-wrong");
@@ -746,15 +747,12 @@ export class TalkApp {
   }
 
   private updateTutorialKeys(): void {
-    const step = TUTORIAL_STEPS[this.tutorialStep]!;
     this.helpBody.querySelectorAll<HTMLButtonElement>("[data-tutorial-key]").forEach((button) => {
-      const key = button.dataset.tutorialKey;
-      const usedBefore = step.keys.slice(0, this.tutorialProgress).includes(key as never);
-      const neededAgain = step.keys.slice(this.tutorialProgress).includes(key as never);
-      const used = usedBefore && !neededAgain;
+      const keyIndex = Number(button.dataset.tutorialIndex);
+      const used = keyIndex < this.tutorialProgress;
       button.disabled = used;
       button.classList.toggle("is-used", used);
-      button.classList.toggle("is-next", !this.tutorialSolved && key === step.keys[this.tutorialProgress]);
+      button.classList.toggle("is-next", !this.tutorialSolved && keyIndex === this.tutorialProgress);
     });
   }
 
