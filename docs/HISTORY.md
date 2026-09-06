@@ -94,6 +94,7 @@
 | 2026-09-04 | `34ab64f` | Word Challenge와 Sentence Copy에서도 쌍자음을 기본 자음 두 번으로 입력하도록 공통 분해·조합 규칙을 통일했다. `꾀`는 `ㄱ+ㄱ+ㆍ+ㅡ+ㅣ`의 5입력으로 계산되어 마지막 `ㅣ`까지 막힘없이 입력할 수 있다. ([스크린샷](screenshots/2026-09-04-word-challenge-kkoe-input-limit.png)) |
 | 2026-09-04 | `299d849` | 쌍자음·쌍받침·겹받침이 기본 자음 탭으로 왕복 조합되는 테스트를 보강했다. Sentence Copy는 각 레벨의 5문장 풀에서 무작위 3문장만 진행하고, 진행 표시·안내·점수 기준 시간도 3문장 분량으로 조정했다. ([스크린샷](screenshots/2026-09-04-sentence-copy-three-prompts.png)) |
 | 2026-09-06 | `c2477bc` | How to play의 모음천 버튼을 문자형 점에서 실제 게임 자판과 동일한 8×8px 정사각형 도형으로 통일했다. ([스크린샷](screenshots/2026-09-06-how-to-play-square-cheonjiin.png)) |
+| 2026-09-06 | `2a6a62e` | 커버 전 TapeeTepee 시작 화면의 PNG를 새 `tapeetepee-open2-05.png` 원본으로 교체했다. 기존 파란 배경·중앙 위치·가로 42% 크기는 유지하고 `TapeeTepee · openstudio` 흰 글씨까지 포함해 표시한다. ([스크린샷](screenshots/2026-09-06-tapeetepee-open2-logo.png)) |
 
 ## 현재 기준
 
