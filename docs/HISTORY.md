@@ -96,6 +96,7 @@
 | 2026-09-06 | `c2477bc` | How to play의 모음천 버튼을 문자형 점에서 실제 게임 자판과 동일한 8×8px 정사각형 도형으로 통일했다. ([스크린샷](screenshots/2026-09-06-how-to-play-square-cheonjiin.png)) |
 | 2026-09-06 | `2a6a62e` | 커버 전 TapeeTepee 시작 화면의 PNG를 새 `tapeetepee-open2-05.png` 원본으로 교체했다. 기존 파란 배경·중앙 위치·가로 42% 크기는 유지하고 `TapeeTepee · openstudio` 흰 글씨까지 포함해 표시한다. ([스크린샷](screenshots/2026-09-06-tapeetepee-open2-logo.png)) |
 | 2026-09-06 | `360cada` | How to play을 TAPtoTEN식 전체 화면 튜토리얼로 재구성했다. 진행점은 왼쪽 위, Skip은 오른쪽 위에 두고 설명 문장을 없앴으며, `가`를 제시한 뒤 `ㄱ·ㅣ·모음천` 블록을 직접 눌러 완성하는 등 모든 단계를 목표 중심 체험 방식으로 통일했다. ([스크린샷](screenshots/2026-09-06-taptoten-visual-how-to-play.png)) |
+| 2026-09-06 | `5c9d43f` | How to play에서 반복되는 자소를 하나의 재사용 버튼으로 합치지 않고 입력 횟수만큼 독립 블록으로 표시한다. `개`는 `ㄱ·ㅣ·모음천·ㅣ`, `사랑`은 `ㅅ·ㅣ·모음천·ㄹ·ㅣ·모음천·ㅇ` 순서가 그대로 보이며 각 블록이 차례로 소진된다. ([스크린샷](screenshots/2026-09-06-tutorial-repeated-jamo-blocks.png)) |
 
 ## 현재 기준
 
