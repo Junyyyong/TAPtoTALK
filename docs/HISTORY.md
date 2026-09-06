@@ -95,10 +95,11 @@
 | 2026-09-04 | `299d849` | 쌍자음·쌍받침·겹받침이 기본 자음 탭으로 왕복 조합되는 테스트를 보강했다. Sentence Copy는 각 레벨의 5문장 풀에서 무작위 3문장만 진행하고, 진행 표시·안내·점수 기준 시간도 3문장 분량으로 조정했다. ([스크린샷](screenshots/2026-09-04-sentence-copy-three-prompts.png)) |
 | 2026-09-06 | `c2477bc` | How to play의 모음천 버튼을 문자형 점에서 실제 게임 자판과 동일한 8×8px 정사각형 도형으로 통일했다. ([스크린샷](screenshots/2026-09-06-how-to-play-square-cheonjiin.png)) |
 | 2026-09-06 | `2a6a62e` | 커버 전 TapeeTepee 시작 화면의 PNG를 새 `tapeetepee-open2-05.png` 원본으로 교체했다. 기존 파란 배경·중앙 위치·가로 42% 크기는 유지하고 `TapeeTepee · openstudio` 흰 글씨까지 포함해 표시한다. ([스크린샷](screenshots/2026-09-06-tapeetepee-open2-logo.png)) |
+| 2026-09-06 | `360cada` | How to play을 TAPtoTEN식 전체 화면 튜토리얼로 재구성했다. 진행점은 왼쪽 위, Skip은 오른쪽 위에 두고 설명 문장을 없앴으며, `가`를 제시한 뒤 `ㄱ·ㅣ·모음천` 블록을 직접 눌러 완성하는 등 모든 단계를 목표 중심 체험 방식으로 통일했다. ([스크린샷](screenshots/2026-09-06-taptoten-visual-how-to-play.png)) |
 
 ## 현재 기준
 
-- Sentence Copy: Lv.1~Lv.6, 레벨당 5개 문장, 전체 시간으로 1,500점 산정
+- Sentence Copy: Lv.1~Lv.6, 레벨당 3개 문장, 전체 시간으로 1,500점 산정
 - Word Challenge: 5개 학습 단계 중 하나를 선택해 제한 시간 안에 3단어 완성
 - 자판: 9×9, 독립 자음·천지인·쉼표를 제외한 문장부호, 목표 자소의 약 1.5배 보장
 - 고정 버튼: 띄어쓰기와 길게 눌러 연속 삭제할 수 있는 Delete
