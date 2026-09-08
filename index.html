@@ -21,14 +21,28 @@
           <p class="brand-version">KOREAN</p>
         </header>
         <nav class="mode-list" aria-label="Game mode">
-          <button class="mode-btn" id="mode-alphabet"><span class="mode-name">Korean Alphabet</span><span class="mode-desc">Learn jamo in order.</span></button>
-          <button class="mode-btn" id="mode-free"><span class="mode-name">Word Challenge</span><span class="mode-desc">Complete three words.</span></button>
-          <button class="mode-btn" id="mode-sentence"><span class="mode-name">Sentence Copy</span><span class="mode-desc">Copy three Korean sentences.</span></button>
+          <button class="mode-btn" id="mode-alphabet"><span class="mode-name">Alphabet</span><span class="mode-desc">Learn Korean one tap at a time.</span></button>
+          <button class="mode-btn" id="mode-free"><span class="mode-name">Word</span><span class="mode-desc">Complete three words.</span></button>
+          <button class="mode-btn" id="mode-sentence"><span class="mode-name">Sentence</span><span class="mode-desc">Copy three Korean sentences.</span></button>
         </nav>
         <div class="title-links">
-          <button class="text-btn" id="btn-title-tutorial">How to play</button>
           <button class="text-btn" id="btn-title-settings">Settings</button>
           <button class="text-btn" id="btn-title-rules">Rules</button>
+        </div>
+      </section>
+      <section class="screen alphabet-intro-screen hidden" id="screen-alphabet-intro">
+        <header class="hud">
+          <button class="icon-btn" id="btn-alphabet-intro-back" aria-label="Back to menu">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg>
+          </button>
+          <span class="icon-spacer" aria-hidden="true"></span>
+          <span class="icon-spacer" aria-hidden="true"></span>
+        </header>
+        <div class="alphabet-intro-body">
+          <h2>ALPHABET</h2>
+          <div class="alphabet-intro-mark" aria-hidden="true">ㄱ</div>
+          <p>2×2 → 4×4 → 6×6</p>
+          <button class="wood-btn" id="btn-alphabet-start">START</button>
         </div>
       </section>
       <section class="screen talk-screen hidden" id="screen-game">
@@ -36,7 +50,7 @@
           <button class="icon-btn" id="btn-back" aria-label="Back to menu">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg>
           </button>
-          <div class="run-heading"><span id="run-mode">Sentence Copy</span><strong id="run-clock">00:00.0</strong></div>
+          <div class="run-heading"><span id="run-mode">Sentence</span><strong id="run-clock">00:00.0</strong></div>
           <button class="icon-btn pause-btn" id="btn-pause" aria-label="Pause"><span aria-hidden="true"></span></button>
         </header>
         <section class="writing-card" aria-live="polite">
@@ -78,15 +92,9 @@
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"></path></svg>
             </button>
             <h2 id="help-title">How to play</h2>
-            <div class="tutorial-dots tutorial-dots--top hidden" id="tutorial-dots-top" aria-label="Tutorial progress"></div>
-            <button class="text-btn hidden" id="btn-tutorial-skip">Skip</button>
+            <span class="icon-spacer" aria-hidden="true"></span>
           </header>
           <div class="help-body" id="help-body"></div>
-          <footer class="tutorial-nav hidden" id="tutorial-nav">
-            <button class="text-btn" id="btn-tutorial-prev">Back</button>
-            <div class="tutorial-dots" id="tutorial-dots" aria-label="Tutorial progress"></div>
-            <button class="wood-btn" id="btn-tutorial-next">Next</button>
-          </footer>
         </section>
       </div>
     </main>

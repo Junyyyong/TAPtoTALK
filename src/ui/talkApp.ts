@@ -1,11 +1,11 @@
-import { createLetterBoard, inputValueForTile, MIRROR_TRAP_TOKEN, type LetterTile, type MirrorAxis } from "../core/hangul/board";
-import { checkSequenceTap, createAlphabetBoard, createRandomAlphabetTargets, type AlphabetTile } from "../core/hangul/alphabetGame";
+import { createLetterBoard, inputValueForTile, MIRROR_TRAP_TOKEN, type LetterTile } from "../core/hangul/board";
+import { createAlphabetStageBoard, type AlphabetTile } from "../core/hangul/alphabetGame";
 import { composeTokens } from "../core/hangul/compose";
-import { CHEONJIIN_STROKES, CONSONANTS, PUNCTUATION_SYMBOLS, type BoardSymbol } from "../core/hangul/keys";
+import { CHEONJIIN_STROKES, CONSONANTS, type BoardSymbol } from "../core/hangul/keys";
 import { isWordMatch, pickLessonTargets, wordCountLabel } from "../core/hangul/wordChallenge";
 import { lessonCheerFor, lessonScoreFromTime } from "../core/hangul/writing";
 import { materializeTargetTokens, targetCharacterProgress, targetToTokens } from "../core/hangul/target";
-import { ALPHABET_COURSES, SENTENCE_LEVELS, SENTENCE_PROMPTS, SENTENCE_ROUND_SIZE, WORD_LEVELS, WORD_TARGETS, alphabetTargetNote, type AlphabetLevel, type SentencePrompt, type WordTarget } from "../content/prompts";
+import { ALPHABET_ORDER, ALPHABET_STAGES, SENTENCE_LEVELS, SENTENCE_PROMPTS, SENTENCE_ROUND_SIZE, WORD_LEVELS, WORD_TARGETS, type SentencePrompt, type WordTarget } from "../content/prompts";
 import { APP_CONFIG } from "../config/app";
 import { el } from "./dom";
 import { feedback } from "./feedback";
@@ -27,30 +27,13 @@ const formatTime = (ms: number): string => {
 /** Nine decorative colours repeat evenly across 81 positions, independently of jamo. */
 const boardColorAt = (index: number): number => ((index * 5 + Math.floor(index / 9) * 2) % 9) + 1;
 
-interface TutorialStep {
-  title: string;
-  target: string;
-  keys: readonly string[];
-  decoys?: readonly { key: string; mirror: MirrorAxis }[];
-}
-
-export const TUTORIAL_STEPS: readonly TutorialStep[] = [
-  { title: "Order", target: "ㄱㄴㄷㄹ", keys: ["ㄱ", "ㄴ", "ㄷ", "ㄹ"] },
-  { title: "One block", target: "ㅋ", keys: ["ㅋ"] },
-  { title: "Build a syllable", target: "가", keys: ["ㄱ", "ㅣ", "ㆍ"] },
-  { title: "Add a final", target: "친", keys: ["ㅊ", "ㅣ", "ㄴ"] },
-  { title: "Compound vowel", target: "개", keys: ["ㄱ", "ㅣ", "ㆍ", "ㅣ"] },
-  { title: "Punctuation", target: "!", keys: ["!"] },
-  { title: "Avoid traps", target: "ㅇ", keys: ["ㅇ"], decoys: [{ key: "ㄱ", mirror: "horizontal" }, { key: "ㅂ", mirror: "vertical" }] },
-  { title: "Complete a word", target: "사랑", keys: ["ㅅ", "ㅣ", "ㆍ", "ㄹ", "ㅣ", "ㆍ", "ㅇ"] },
-];
-
 /** Thin UI coordinator. Hangul behavior stays in core/hangul. */
 export class TalkApp {
   private readonly cheer = new Cheer();
   private readonly studioSplash = el("screen-studio-splash");
   private readonly splash = el("screen-splash");
   private readonly title = el("screen-title");
+  private readonly alphabetIntro = el("screen-alphabet-intro");
   private readonly game = el("screen-game");
   private readonly board = el("letter-board");
   private readonly targetLabel = el("target-label");
@@ -68,14 +51,8 @@ export class TalkApp {
   private readonly help = el("help-layer");
   private readonly helpTitle = el("help-title");
   private readonly helpBody = el("help-body");
-  private readonly tutorialNav = el("tutorial-nav");
-  private readonly tutorialDots = el("tutorial-dots");
-  private readonly tutorialDotsTop = el("tutorial-dots-top");
   private preferences: TalkPreferences = loadTalkPreferences();
   private sentenceProgress = loadSentenceProgress();
-  private tutorialStep = 0;
-  private tutorialProgress = 0;
-  private tutorialSolved = false;
   private mode: Mode = "sentence";
   private prompt: SentencePrompt = SENTENCE_PROMPTS[0]!;
   private wordTarget: WordTarget = WORD_TARGETS[0]!;
@@ -86,16 +63,8 @@ export class TalkApp {
   private sentenceLevel = 0;
   private sentenceIndex = 0;
   private sentenceLessonPrompts: readonly SentencePrompt[] = [];
-  private alphabetCourseIndex = 0;
-  private alphabetLevelIndex = 0;
-  private alphabetTargetIndex = 0;
-  private alphabetPartIndex = 0;
+  private alphabetStageIndex = 0;
   private alphabetTiles: AlphabetTile[] = [];
-  private alphabetSequence: readonly string[] = [];
-  private alphabetTapGroups: readonly (readonly string[])[] = [];
-  private alphabetWrong = false;
-  private alphabetTotalMs = 0;
-  private alphabetCourseComplete = false;
   private inputLocked = true;
   private paused = false;
   private sentenceTimer?: number;
@@ -107,7 +76,9 @@ export class TalkApp {
   private frame?: number;
 
   constructor() {
-    el("mode-alphabet").addEventListener("click", () => this.showAlphabetCourses());
+    el("mode-alphabet").addEventListener("click", () => this.showAlphabetIntro());
+    el("btn-alphabet-intro-back").addEventListener("click", () => this.showTitle());
+    el("btn-alphabet-start").addEventListener("click", () => this.startAlphabetJourney());
     el("mode-sentence").addEventListener("click", () => this.showLevelSelect());
     el("mode-free").addEventListener("click", () => this.showWordLevelSelect());
     el("btn-back").addEventListener("click", () => this.showTitle());
@@ -116,13 +87,9 @@ export class TalkApp {
     el("btn-space").addEventListener("click", () => this.typeFixed(" "));
     el("btn-again").addEventListener("click", () => this.continueFromResult());
     el("btn-result-menu").addEventListener("click", () => this.showTitle());
-    el("btn-title-tutorial").addEventListener("click", () => this.showTutorial());
     el("btn-title-settings").addEventListener("click", () => this.showSettings());
     el("btn-title-rules").addEventListener("click", () => this.showRules());
     el("btn-help-close").addEventListener("click", () => this.paused ? this.resumeGame() : this.closeHelp());
-    el("btn-tutorial-prev").addEventListener("click", () => this.moveTutorial(-1));
-    el("btn-tutorial-next").addEventListener("click", () => this.moveTutorial(1));
-    el("btn-tutorial-skip").addEventListener("click", () => this.skipTutorial());
     document.addEventListener("pointerdown", () => { this.cheer.unlock(); feedback.unlock(); }, { capture: true });
     document.addEventListener("visibilitychange", () => {
       if (document.hidden && !this.game.classList.contains("hidden")) this.pauseGame();
@@ -141,7 +108,7 @@ export class TalkApp {
     window.clearTimeout(this.sentenceTimer);
     this.inputLocked = true; this.paused = false;
     this.stopClock(); this.cheer.stop();
-    this.result.classList.add("hidden"); this.help.classList.add("hidden"); this.studioSplash.classList.add("hidden"); this.splash.classList.add("hidden"); this.game.classList.add("hidden"); this.title.classList.remove("hidden");
+    this.result.classList.add("hidden"); this.help.classList.add("hidden"); this.studioSplash.classList.add("hidden"); this.splash.classList.add("hidden"); this.alphabetIntro.classList.add("hidden"); this.game.classList.add("hidden"); this.title.classList.remove("hidden");
   }
 
   private start(mode: Mode, keepLessonTime = false): void {
@@ -151,7 +118,7 @@ export class TalkApp {
     this.game.classList.remove("is-input-locked");
     this.targetPrompt.classList.remove("is-writing-complete");
     this.mode = mode;
-    if (mode === "alphabet") { this.showAlphabetCourses(); return; }
+    if (mode === "alphabet") { this.showAlphabetIntro(); return; }
     if (mode === "sentence") this.prompt = this.sentenceLessonPrompts[this.sentenceIndex] ?? SENTENCE_PROMPTS[0]!;
     else this.wordTarget = this.wordLessonTargets[this.wordTargetIndex] ?? WORD_TARGETS[0]!;
     this.input = []; this.used.clear();
@@ -160,7 +127,7 @@ export class TalkApp {
     this.targetLabel.textContent = mode === "sentence" ? `${SENTENCE_LEVELS[this.sentenceLevel]!.name} · ${this.sentenceIndex + 1}/${SENTENCE_ROUND_SIZE}` : `${WORD_LEVELS[this.wordLevel]!.name} · ${this.wordTargetIndex + 1}/3`;
     this.renderTranslatedTarget();
     this.typedText.dataset.empty = mode === "sentence" ? "Your sentence appears here." : "Your word appears here.";
-    this.runMode.textContent = mode === "sentence" ? "Sentence Copy" : "Word Challenge";
+    this.runMode.textContent = mode === "sentence" ? "Sentence" : "Word";
     this.game.classList.toggle("is-word-mode", mode === "word");
     this.game.classList.remove("is-alphabet-mode");
     this.submitRow.classList.add("hidden");
@@ -181,71 +148,41 @@ export class TalkApp {
     this.targetHint.textContent = this.prompt.translation;
   }
 
-  private currentAlphabetLevel(): AlphabetLevel {
-    return ALPHABET_COURSES[this.alphabetCourseIndex]!.levels[this.alphabetLevelIndex]!;
-  }
-
-  private showAlphabetCourses(): void {
+  private showAlphabetIntro(): void {
     this.stopClock(); this.cheer.stop();
-    this.result.classList.add("hidden"); this.game.classList.add("hidden"); this.title.classList.remove("hidden");
-    this.tutorialNav.classList.add("hidden");
-    this.openHelp("Korean Alphabet");
-    this.helpBody.innerHTML = `<p class="level-intro">Choose one course. Its levels must be completed in order.</p><div class="level-list" id="alphabet-course-list"></div>`;
-    const list = el("alphabet-course-list");
-    ALPHABET_COURSES.forEach((course, index) => {
-      const button = document.createElement("button");
-      button.type = "button"; button.className = "level-btn alphabet-course-btn";
-      button.innerHTML = `<strong>${course.name}</strong><span>${course.description}</span><small>START</small>`;
-      button.addEventListener("click", () => this.startAlphabetCourse(index));
-      list.append(button);
-    });
+    this.result.classList.add("hidden"); this.help.classList.add("hidden"); this.game.classList.add("hidden"); this.title.classList.add("hidden");
+    this.alphabetIntro.classList.remove("hidden");
   }
 
-  private startAlphabetCourse(courseIndex: number): void {
-    this.alphabetCourseIndex = courseIndex;
-    this.alphabetLevelIndex = 0;
-    this.alphabetTotalMs = 0;
-    this.alphabetCourseComplete = false;
-    this.help.classList.add("hidden");
-    this.startAlphabetLevel();
-  }
-
-  private startAlphabetLevel(): void {
+  private startAlphabetJourney(): void {
     window.clearTimeout(this.sentenceTimer);
     this.cheer.stop();
     this.mode = "alphabet";
     this.inputLocked = false; this.paused = false;
     this.game.classList.remove("is-input-locked");
-    this.alphabetTargetIndex = 0; this.alphabetPartIndex = 0; this.elapsedMs = 0;
+    this.alphabetStageIndex = 0; this.elapsedMs = 0;
     el("btn-again").textContent = "Play again";
-    this.result.classList.add("hidden"); this.title.classList.add("hidden"); this.splash.classList.add("hidden"); this.game.classList.remove("hidden");
+    this.result.classList.add("hidden"); this.title.classList.add("hidden"); this.alphabetIntro.classList.add("hidden"); this.splash.classList.add("hidden"); this.game.classList.remove("hidden");
     this.game.classList.remove("is-word-mode"); this.game.classList.add("is-alphabet-mode");
     this.submitRow.classList.add("hidden");
-    this.loadAlphabetLevel();
+    this.loadAlphabetStage();
     this.startClock();
   }
 
-  private loadAlphabetLevel(): void {
-    const course = ALPHABET_COURSES[this.alphabetCourseIndex]!;
-    const level = this.currentAlphabetLevel();
-    this.alphabetTargetIndex = 0; this.alphabetPartIndex = 0;
-    this.alphabetWrong = false;
+  private loadAlphabetStage(): void {
+    const stage = ALPHABET_STAGES[this.alphabetStageIndex]!;
     this.targetPrompt.classList.remove("is-alphabet-complete");
     this.used.clear();
-    this.alphabetSequence = level.randomizeTargets
-      ? createRandomAlphabetTargets(level.sequence.map((target) => target.length), level.pool)
-      : level.sequence;
-    this.alphabetTapGroups = level.randomizeTargets
-      ? this.alphabetSequence.map((target) => [...target])
-      : level.tapGroups;
-    this.alphabetTiles = createAlphabetBoard(this.alphabetTapGroups.flat(), level.pool, 81, Math.random, level.trapChance, level.trapPool);
-    this.runMode.textContent = `${course.name} · Lv.${level.number}`;
-    this.targetLabel.textContent = `Lv.${level.number} · 1 / ${this.alphabetSequence.length}`;
+    this.alphabetTiles = createAlphabetStageBoard(stage.target, ALPHABET_ORDER, stage.boardSide);
+    this.runMode.textContent = "Alphabet";
+    this.targetLabel.textContent = `STAGE ${stage.number} / ${ALPHABET_STAGES.length}`;
     this.renderAlphabetBoard();
-    this.renderAlphabetProgress();
+    this.renderAlphabetTarget();
   }
 
   private renderAlphabetBoard(): void {
+    const stage = ALPHABET_STAGES[this.alphabetStageIndex]!;
+    this.board.dataset.gridSize = String(stage.boardSide);
     const fragment = document.createDocumentFragment();
     this.alphabetTiles.forEach((tile, index) => {
       const button = document.createElement("button");
@@ -253,7 +190,14 @@ export class TalkApp {
       button.className = `letter-tile letter-tile--alphabet letter-tile--color-${boardColorAt(index)}`;
       if (tile.mirror) button.classList.add(`letter-tile--flip-${tile.mirror === "horizontal" ? "x" : "y"}`);
       button.dataset.tileId = String(tile.id);
-      button.setAttribute("aria-label", tile.value);
+      button.setAttribute(
+        "aria-label",
+        tile.mirror
+          ? `Reversed ${tile.value} trap`
+          : tile.value === "ㆍ"
+            ? "Cheonjiin dot"
+            : tile.value,
+      );
       const glyph = document.createElement("span"); glyph.className = "letter-glyph"; glyph.textContent = tile.value === "ㆍ" || tile.value === "." ? "" : tile.value;
       button.append(glyph);
       if (tile.value === "ㆍ") button.classList.add("letter-tile--cheonjiin-dot");
@@ -266,99 +210,46 @@ export class TalkApp {
 
   private tapAlphabetTile(tile: AlphabetTile, button: HTMLButtonElement): void {
     if (this.inputLocked || this.paused || this.used.has(tile.id)) return;
-    if (tile.mirror) {
+    const stage = ALPHABET_STAGES[this.alphabetStageIndex]!;
+    if (tile.mirror || tile.value !== stage.target) {
       feedback.reject();
       button.classList.remove("is-wrong-pick"); void button.offsetWidth; button.classList.add("is-wrong-pick");
       window.setTimeout(() => button.classList.remove("is-wrong-pick"), 360);
       return;
     }
-    const tapGroup = this.alphabetTapGroups[this.alphabetTargetIndex]!;
-    const result = checkSequenceTap(tapGroup, this.alphabetPartIndex, tile.value);
-    if (!result.correct) {
-      feedback.reject();
-      this.alphabetWrong = true; this.renderAlphabetProgress();
-      button.classList.remove("is-wrong-pick");
-      void button.offsetWidth;
-      button.classList.add("is-wrong-pick");
-      window.setTimeout(() => { button.classList.remove("is-wrong-pick"); this.alphabetWrong = false; this.renderAlphabetProgress(); }, 360);
-      return;
-    }
-    feedback.pick(this.alphabetTargetIndex + result.nextIndex);
+    feedback.pick(this.alphabetStageIndex + 1);
     this.used.add(tile.id); button.disabled = true;
-    this.alphabetPartIndex = result.nextIndex;
-    if (result.complete) {
-      this.inputLocked = true;
-      this.targetPrompt.classList.add("is-alphabet-complete");
-      this.renderAlphabetProgress();
-      window.setTimeout(() => {
-        this.targetPrompt.classList.remove("is-alphabet-complete");
-        this.alphabetTargetIndex += 1; this.alphabetPartIndex = 0;
-        if (this.alphabetTargetIndex === this.alphabetSequence.length) this.completeAlphabetLevel();
-        else { this.inputLocked = false; this.renderAlphabetProgress(); }
-      }, 340);
-      return;
-    }
-    this.renderAlphabetProgress();
+    this.inputLocked = true;
+    this.targetPrompt.classList.add("is-alphabet-complete");
+    window.setTimeout(() => {
+      this.targetPrompt.classList.remove("is-alphabet-complete");
+      this.alphabetStageIndex += 1;
+      if (this.alphabetStageIndex === ALPHABET_STAGES.length) this.completeAlphabetJourney();
+      else { this.inputLocked = false; this.loadAlphabetStage(); }
+    }, 360);
   }
 
-  private renderAlphabetProgress(): void {
-    const level = this.currentAlphabetLevel();
-    const course = ALPHABET_COURSES[this.alphabetCourseIndex]!;
-    this.targetLabel.textContent = `Lv.${level.number} · ${Math.min(this.alphabetTargetIndex + 1, this.alphabetSequence.length)} / ${this.alphabetSequence.length}`;
-    const target = this.alphabetSequence[this.alphabetTargetIndex] ?? "✓";
-    const korean = document.createElement("span"); korean.className = "target-korean"; korean.textContent = target;
-    const note = document.createElement("span"); note.className = "alphabet-target-note"; note.textContent = alphabetTargetNote(course.id, target);
+  private renderAlphabetTarget(): void {
+    const stage = ALPHABET_STAGES[this.alphabetStageIndex]!;
+    const korean = document.createElement("span"); korean.className = "target-korean"; korean.textContent = stage.target;
+    const note = document.createElement("span"); note.className = "alphabet-target-note"; note.textContent = stage.note;
     this.targetText.replaceChildren(korean, note);
-    const targetLength = target.length;
-    this.targetText.classList.toggle("is-medium-sequence", targetLength > 4 && targetLength <= 8);
-    this.targetText.classList.toggle("is-long-sequence", targetLength > 8);
-    const preview = this.alphabetSequence.slice(this.alphabetTargetIndex, this.alphabetTargetIndex + 6).join(" → ");
-    const parts = this.alphabetTapGroups[this.alphabetTargetIndex] ?? [];
-    const progress = document.createElement("span"); progress.className = "alphabet-part-progress";
-    parts.forEach((part, index) => {
-      const glyph = document.createElement("span"); glyph.textContent = part === "ㆍ" ? "" : part;
-      glyph.className = index < this.alphabetPartIndex ? "is-done" : index === this.alphabetPartIndex ? "is-current" : "is-pending";
-      if (part === "ㆍ") { glyph.classList.add("is-cheonjiin-dot"); glyph.setAttribute("aria-label", "모음천"); }
-      if (this.alphabetWrong && index === this.alphabetPartIndex) glyph.classList.add("is-wrong");
-      progress.append(glyph);
-    });
-    const count = document.createElement("small"); count.textContent = `${this.alphabetTargetIndex} / ${this.alphabetSequence.length}`;
-    this.typedText.replaceChildren(progress, count);
-    this.typedText.dataset.empty = "";
-    this.typedText.classList.remove("is-empty", "is-wrong", "is-correct");
-    this.targetHint.textContent = `${preview}${this.alphabetTargetIndex + 6 < this.alphabetSequence.length ? " → …" : ""}`;
+    this.targetText.classList.remove("is-medium-sequence", "is-long-sequence");
+    this.targetHint.textContent = `${stage.boardSide} × ${stage.boardSide}`;
+    this.typedText.replaceChildren();
   }
 
-  private completeAlphabetLevel(): void {
+  private completeAlphabetJourney(): void {
     this.inputLocked = true;
     this.stopClock();
-    this.alphabetTotalMs += this.elapsedMs;
     feedback.complete();
-    const course = ALPHABET_COURSES[this.alphabetCourseIndex]!;
-    if (this.alphabetLevelIndex === course.levels.length - 1) {
-      const availableMs = course.levels.reduce((total, level) => total + level.durationMs, 0);
-      const remaining = Math.max(0, availableMs - this.alphabetTotalMs);
-      const score = Math.max(1, Math.round(1500 * remaining / availableMs));
-      this.alphabetCourseComplete = true;
-      el("btn-again").textContent = "Play course again";
-      this.showResult(`${course.name} complete!`, `Lv.${course.levels[0]!.number}–${course.levels.at(-1)!.number} · ${formatTime(this.alphabetTotalMs)}`, score);
-      return;
-    }
-    this.sentenceTimer = window.setTimeout(() => {
-      this.alphabetLevelIndex += 1;
-      this.startAlphabetLevel();
-    }, 520);
-  }
-
-  private finishAlphabetChallenge(): void {
-    this.stopClock(); this.inputLocked = true; feedback.fail();
-    const level = this.currentAlphabetLevel();
-    this.alphabetCourseComplete = false;
-    el("btn-again").textContent = "Retry level";
-    this.showResult("Time is up!", `Lv.${level.number} · ${this.alphabetTargetIndex} / ${this.alphabetSequence.length}`);
+    const targetMs = 180_000;
+    const score = lessonScoreFromTime(this.elapsedMs, targetMs);
+    this.showResult("Alphabet complete!", `${ALPHABET_STAGES.length} stages · ${formatTime(this.elapsedMs)}`, score);
   }
 
   private renderBoard(): void {
+    delete this.board.dataset.gridSize;
     const fragment = document.createDocumentFragment();
     this.tiles.forEach((tile, index) => {
       const button = document.createElement("button");
@@ -475,12 +366,11 @@ export class TalkApp {
     this.startedAt = resume ? performance.now() - this.elapsedMs : performance.now();
     const update = (): void => {
       this.elapsedMs = performance.now() - this.startedAt;
-      if (this.mode === "word" || this.mode === "alphabet") {
-        const duration = this.mode === "word" ? WORD_LEVELS[this.wordLevel]!.durationMs : this.currentAlphabetLevel().durationMs;
+      if (this.mode === "word") {
+        const duration = WORD_LEVELS[this.wordLevel]!.durationMs;
         const remaining = Math.max(0, duration - this.elapsedMs); this.clock.textContent = formatTime(remaining);
         if (remaining === 0) {
-          if (this.mode === "word") this.finishWordChallenge();
-          else this.finishAlphabetChallenge();
+          this.finishWordChallenge();
           return;
         }
       } else this.clock.textContent = formatTime(this.elapsedMs);
@@ -520,10 +410,7 @@ export class TalkApp {
       this.showLevelSelect(); return;
     }
     if (this.mode === "alphabet") {
-      if (this.alphabetCourseComplete) {
-        this.alphabetLevelIndex = 0; this.alphabetTotalMs = 0; this.alphabetCourseComplete = false;
-      }
-      this.startAlphabetLevel();
+      this.startAlphabetJourney();
     }
     else this.showWordLevelSelect();
   }
@@ -577,8 +464,7 @@ export class TalkApp {
   private showWordLevelSelect(): void {
     this.stopClock(); this.cheer.stop();
     this.result.classList.add("hidden"); this.game.classList.add("hidden"); this.title.classList.remove("hidden");
-    this.tutorialNav.classList.add("hidden");
-    this.openHelp("Word Challenge");
+    this.openHelp("Word");
     this.helpBody.innerHTML = `<p class="level-intro">Choose a lesson and complete three Korean words.</p><div class="level-list" id="word-level-list"></div>`;
     const list = el("word-level-list");
     WORD_LEVELS.forEach((level, index) => {
@@ -610,18 +496,13 @@ export class TalkApp {
   private openHelp(title: string): void {
     feedback.tap();
     this.helpTitle.textContent = title;
-    const tutorial = title === "How to play";
-    this.help.classList.toggle("is-tutorial", tutorial);
-    el("btn-tutorial-skip").classList.toggle("hidden", !tutorial);
-    this.tutorialDotsTop.classList.toggle("hidden", !tutorial);
     this.help.classList.remove("hidden");
   }
 
   private showLevelSelect(): void {
     this.stopClock(); this.cheer.stop();
     this.result.classList.add("hidden"); this.game.classList.add("hidden"); this.title.classList.remove("hidden");
-    this.tutorialNav.classList.add("hidden");
-    this.openHelp("Sentence Copy");
+    this.openHelp("Sentence");
     this.helpBody.innerHTML = `<p class="level-intro">Complete three phrases for up to 1,500 points. Your fastest run becomes the level high score.</p><div class="level-list" id="level-list"></div>`;
     const list = el("level-list");
     SENTENCE_LEVELS.forEach((level, index) => {
@@ -644,7 +525,6 @@ export class TalkApp {
   private pauseGame(): void {
     if (this.inputLocked || this.paused || this.game.classList.contains("hidden")) return;
     this.paused = true; this.stopClock();
-    this.tutorialNav.classList.add("hidden");
     this.openHelp("Paused");
     this.helpBody.innerHTML = `<div class="pause-card"><p>Take a break. The clock is stopped.</p><button class="wood-btn" id="btn-resume">Resume</button><button class="text-btn" id="btn-pause-menu">Main menu</button></div>`;
     el("btn-resume").addEventListener("click", () => this.resumeGame());
@@ -663,127 +543,12 @@ export class TalkApp {
     this.help.classList.add("hidden");
   }
 
-  private showTutorial(): void {
-    this.tutorialStep = 0;
-    this.tutorialProgress = 0;
-    this.tutorialSolved = false;
-    this.tutorialNav.classList.remove("hidden");
-    this.openHelp("How to play");
-    this.renderTutorial();
-  }
-
-  private renderTutorial(): void {
-    const step = TUTORIAL_STEPS[this.tutorialStep]!;
-    this.helpBody.innerHTML = `<article class="tutorial-card"><p class="help-kicker">${step.title}</p><div class="tutorial-practice"><p class="tutorial-output" id="tutorial-output" aria-live="polite">${step.target}</p><div class="tutorial-gesture" aria-hidden="true">↓</div><div class="tutorial-keys" id="tutorial-keys"></div></div></article>`;
-    const keys = el("tutorial-keys");
-    step.keys.forEach((key, keyIndex) => {
-      const button = document.createElement("button");
-      button.type = "button";
-      const category = PUNCTUATION_SYMBOLS.includes(key as never) ? "feature" : ["ㅣ", "ㅡ", "ㆍ"].includes(key) ? "vowel" : "consonant";
-      button.className = `tutorial-key tutorial-key--${category}`;
-      button.dataset.tutorialKey = key;
-      button.dataset.tutorialIndex = String(keyIndex);
-      const glyph = document.createElement("span");
-      glyph.className = "tutorial-glyph";
-      glyph.textContent = key === "ㆍ" ? "" : key;
-      button.append(glyph);
-      if (key === "ㆍ") {
-        button.classList.add("tutorial-key--cheonjiin-dot");
-        button.setAttribute("aria-label", "Cheonjiin dot");
-      }
-      if (key === ".") button.classList.add("tutorial-key--period");
-      button.addEventListener("click", () => this.playTutorialKey(key, keyIndex));
-      keys.append(button);
-    });
-    step.decoys?.forEach(({ key, mirror }) => {
-      const button = document.createElement("button");
-      button.type = "button";
-      button.className = `tutorial-key tutorial-key--consonant tutorial-key--flip-${mirror === "horizontal" ? "x" : "y"}`;
-      button.dataset.tutorialDecoy = key;
-      const glyph = document.createElement("span");
-      glyph.className = "tutorial-glyph"; glyph.textContent = key;
-      button.append(glyph);
-      button.addEventListener("click", () => {
-        feedback.reject();
-        button.disabled = true; button.classList.add("is-used");
-        const output = el("tutorial-output");
-        output.classList.add("is-wrong");
-        window.setTimeout(() => output.classList.remove("is-wrong"), 360);
-      });
-      keys.prepend(button);
-    });
-    this.updateTutorialKeys();
-    const dots = TUTORIAL_STEPS.map((_, index) => {
-      const dot = document.createElement("span");
-      dot.className = `dot${index === this.tutorialStep ? " now" : index < this.tutorialStep ? " done" : ""}`;
-      return dot;
-    });
-    this.tutorialDots.replaceChildren(...dots.map((dot) => dot.cloneNode()));
-    this.tutorialDotsTop.replaceChildren(...dots);
-    el<HTMLButtonElement>("btn-tutorial-prev").disabled = this.tutorialStep === 0;
-    el<HTMLButtonElement>("btn-tutorial-next").disabled = !this.tutorialSolved;
-    el("btn-tutorial-next").textContent = this.tutorialStep === TUTORIAL_STEPS.length - 1 ? "Start" : "Next";
-  }
-
-  private playTutorialKey(key: string, keyIndex: number): void {
-    const step = TUTORIAL_STEPS[this.tutorialStep]!;
-    if (keyIndex !== this.tutorialProgress || key !== step.keys[this.tutorialProgress]) {
-      feedback.reject();
-      const output = el("tutorial-output");
-      output.classList.add("is-wrong");
-      window.setTimeout(() => output.classList.remove("is-wrong"), 360);
-      return;
-    }
-    feedback.tap();
-    this.tutorialProgress += 1;
-    if (this.tutorialProgress === step.keys.length) {
-      this.tutorialSolved = true;
-      feedback.complete();
-      el<HTMLButtonElement>("btn-tutorial-next").disabled = false;
-    }
-    const outputEl = el("tutorial-output");
-    outputEl.classList.toggle("is-complete", this.tutorialSolved);
-    this.updateTutorialKeys();
-  }
-
-  private updateTutorialKeys(): void {
-    this.helpBody.querySelectorAll<HTMLButtonElement>("[data-tutorial-key]").forEach((button) => {
-      const keyIndex = Number(button.dataset.tutorialIndex);
-      const used = keyIndex < this.tutorialProgress;
-      button.disabled = used;
-      button.classList.toggle("is-used", used);
-      button.classList.toggle("is-next", !this.tutorialSolved && keyIndex === this.tutorialProgress);
-    });
-  }
-
-  private moveTutorial(direction: number): void {
-    feedback.tap();
-    if (direction > 0 && this.tutorialStep === TUTORIAL_STEPS.length - 1) {
-      this.preferences.tutorialDone = true;
-      saveTalkPreferences(this.preferences);
-      this.closeHelp();
-      return;
-    }
-    this.tutorialStep = Math.max(0, Math.min(TUTORIAL_STEPS.length - 1, this.tutorialStep + direction));
-    this.tutorialProgress = 0;
-    this.tutorialSolved = false;
-    this.renderTutorial();
-  }
-
-  private skipTutorial(): void {
-    this.preferences.tutorialDone = true;
-    saveTalkPreferences(this.preferences);
-    this.closeHelp();
-  }
-
   private showRules(): void {
-    this.tutorialNav.classList.add("hidden");
     this.openHelp("Rules");
-    this.helpBody.innerHTML = `<div class="rules-list"><p><b>Korean Alphabet</b><span>Choose Consonants, Vowels, or Syllables. Each course starts at its first level and every level must be completed in order.</span></p><p><b>Sound guide</b><span>Simple IPA shows how each jamo sounds. A slash such as [k] / [ɡ] separates sounds used in different positions.</span></p><p><b>Visible progress</b><span>Blue jamo are complete, red is the next tap, and a completed target turns blue.</span></p><p><b>Sentence Copy</b><span>Complete three phrases. The full run is worth up to 1,500 points and your best score is saved.</span></p><p><b>Word Challenge</b><span>Choose one of five lessons and complete three words before its timer ends.</span></p><p><b>Nine mixed colours</b><span>Colours do not belong to a particular letter. A used block turns grey.</span></p><p><b>Vowels</b><span>Use ㆍ, ㅡ, and ㅣ for simple and compound vowels. Symbol traps are mixed into the board.</span></p><p><b>Syllables</b><span>Build useful one-syllable words about people, the body, daily life, nature, and more.</span></p><p><b>Reversed traps</b><span>Mirrored consonants are traps from Lv.1. They never count as the original consonant.</span></p></div>`;
+    this.helpBody.innerHTML = `<div class="rules-list"><p><b>Alphabet</b><span>Find each Korean jamo. The board grows from 2×2 to 4×4 and 6×6 as you learn.</span></p><p><b>Sound guide</b><span>Sounds used in different positions share one bracket, such as [k/g].</span></p><p><b>Reversed traps</b><span>Mirrored consonants are traps. They never count as the original consonant.</span></p><p><b>Sentence</b><span>Complete three phrases. The full run is worth up to 1,500 points and your best score is saved.</span></p><p><b>Word</b><span>Choose one of five lessons and complete three words before its timer ends.</span></p><p><b>Nine mixed colours</b><span>Colours do not belong to a particular letter. A used block turns grey.</span></p></div>`;
   }
 
   private showSettings(): void {
-    this.tutorialNav.classList.add("hidden");
     this.openHelp("Settings");
     const canVibrate = typeof navigator.vibrate === "function";
     this.helpBody.innerHTML = `<div class="switch-list"><button class="switch-row" id="talk-sound"><span class="switch-text"><b>Sound</b><small>Button sounds and finish sounds</small></span><span class="switch" role="switch" aria-checked="${this.preferences.soundOn}"><span class="switch-knob"></span></span></button><button class="switch-row" id="talk-haptics"><span class="switch-text"><b>Vibration</b><small>Short feedback when you tap</small></span><span class="switch" role="switch" aria-checked="${this.preferences.hapticsOn}"><span class="switch-knob"></span></span></button>${canVibrate ? "" : '<p class="settings-note">Vibration may not work in this browser.</p>'}</div>`;

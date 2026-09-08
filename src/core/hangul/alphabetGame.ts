@@ -44,6 +44,38 @@ const shuffle = <T>(values: T[], rng: () => number): T[] => {
   return values;
 };
 
+const VISIBLE_MIRROR_TRAPS = ["ㄱ", "ㄴ", "ㄷ", "ㄹ", "ㅋ", "ㅌ", "ㅂ", "ㅅ", "ㅈ", "ㅎ"] as const;
+
+/**
+ * Build one find-the-jamo board for the continuous Alphabet journey.
+ * The 2×2 opening deliberately contains one answer, one ordinary distractor,
+ * and two visibly mirrored traps. Larger boards preserve the single answer
+ * while increasing both ordinary choices and mirrored traps.
+ */
+export function createAlphabetStageBoard(
+  target: string,
+  pool: readonly string[],
+  boardSide: 2 | 4 | 6,
+  rng: () => number = Math.random,
+): AlphabetTile[] {
+  const size = boardSide * boardSide;
+  const distractors = pool.filter((value) => value !== target);
+  if (distractors.length === 0) throw new RangeError("Alphabet stages need at least one distractor different from the target.");
+
+  const tiles: AlphabetTile[] = [{ id: 0, value: target, required: true }];
+  const trapCount = boardSide === 2 ? 2 : Math.max(2, Math.round(size * .22));
+  const normalCount = size - 1 - trapCount;
+  for (let index = 0; index < normalCount; index += 1) {
+    tiles.push({ id: tiles.length, value: distractors[index % distractors.length]!, required: false });
+  }
+  for (let index = 0; index < trapCount; index += 1) {
+    const preferredTarget = (VISIBLE_MIRROR_TRAPS as readonly string[]).includes(target) ? target : undefined;
+    const value = preferredTarget ?? VISIBLE_MIRROR_TRAPS[index % VISIBLE_MIRROR_TRAPS.length]!;
+    tiles.push({ id: tiles.length, value, required: false, mirror: index % 2 === 0 ? "horizontal" : "vertical" });
+  }
+  return shuffle(tiles, rng);
+}
+
 /** Create memory targets of the requested lengths, without repeated jamo inside one target. */
 export function createRandomAlphabetTargets(
   lengths: readonly number[],

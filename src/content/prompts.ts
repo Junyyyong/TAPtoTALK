@@ -1,5 +1,3 @@
-import { decomposeAlphabetTarget } from "../core/hangul/alphabetGame";
-
 export interface SentencePrompt {
   id: string;
   text: string;
@@ -8,100 +6,39 @@ export interface SentencePrompt {
   tags?: readonly string[];
 }
 
-export interface AlphabetLevel {
+export interface AlphabetStage {
   id: string;
   number: number;
-  name: string;
-  durationMs: number;
-  trapChance: number;
-  sequence: readonly string[];
-  tapGroups: readonly (readonly string[])[];
-  pool: readonly string[];
-  trapPool?: readonly string[];
-  randomizeTargets?: boolean;
-}
-
-export interface AlphabetCourse {
-  id: "consonants" | "vowels" | "syllables";
-  name: string;
-  description: string;
-  levels: readonly AlphabetLevel[];
+  boardSide: 2 | 4 | 6;
+  target: string;
+  note: string;
 }
 
 const CONSONANT_SOUNDS: Readonly<Record<string, string>> = {
-  "ㄱ": "[k] / [ɡ]", "ㄴ": "[n]", "ㄷ": "[t] / [d]", "ㄹ": "[ɾ] / [l]", "ㅁ": "[m]", "ㅂ": "[p] / [b]", "ㅅ": "[s] / [ɕ]",
-  "ㅇ": "∅ / [ŋ]", "ㅈ": "[tɕ] / [dʑ]", "ㅊ": "[tɕʰ]", "ㅋ": "[kʰ]", "ㅌ": "[tʰ]", "ㅍ": "[pʰ]", "ㅎ": "[h]",
+  "ㄱ": "[k/g]", "ㄴ": "[n]", "ㄷ": "[t/d]", "ㄹ": "[ɾ/l]", "ㅁ": "[m]", "ㅂ": "[p/b]", "ㅅ": "[s/ɕ]",
+  "ㅇ": "[∅/ŋ]", "ㅈ": "[tɕ/dʑ]", "ㅊ": "[tɕʰ]", "ㅋ": "[kʰ]", "ㅌ": "[tʰ]", "ㅍ": "[pʰ]", "ㅎ": "[h]",
 };
 const VOWEL_SOUNDS: Readonly<Record<string, string>> = {
-  "ㅏ": "[a]", "ㅑ": "[ja]", "ㅓ": "[ʌ]", "ㅕ": "[jʌ]", "ㅗ": "[o]", "ㅛ": "[jo]", "ㅜ": "[u]", "ㅠ": "[ju]", "ㅡ": "[ɯ]", "ㅣ": "[i]",
-};
-const SYLLABLE_MEANINGS: Readonly<Record<string, string>> = {
-  "나": "I", "너": "you", "몸": "body", "피": "blood", "눈": "eye", "코": "nose", "입": "mouth", "손": "hand", "발": "foot",
-  "집": "home", "일": "work", "밥": "meal", "옷": "clothes", "잠": "sleep", "땅": "earth", "물": "water", "불": "fire", "비": "rain",
-  "산": "mountain", "강": "river", "해": "sun", "달": "moon", "별": "star", "힘": "strength", "꾀": "wits", "꿈": "dream",
-  "개": "dog", "소": "cow", "말": "horse", "닭": "chicken", "술": "drink", "춤": "dance",
+  "ㅡ": "[ɯ]", "ㅣ": "[i]", "ㆍ": "CHEON · SKY",
 };
 
-export function alphabetTargetNote(courseId: AlphabetCourse["id"], target: string): string {
-  const values = [...target].map((character) => courseId === "consonants"
-    ? CONSONANT_SOUNDS[character]
-    : courseId === "vowels"
-      ? VOWEL_SOUNDS[character]
-      : SYLLABLE_MEANINGS[character]);
-  return values.filter(Boolean).join(" · ");
+export const ALPHABET_ORDER = [..."ㄱㄴㄷㄹㅁㅂㅅㅇㅈㅊㅋㅌㅍㅎ", "ㅣ", "ㅡ", "ㆍ"] as const;
+export const ALPHABET_BOARD_SIDES = [2, 4, 6] as const;
+
+export function alphabetTargetNote(target: string): string {
+  return CONSONANT_SOUNDS[target] ?? VOWEL_SOUNDS[target] ?? "";
 }
 
-const BASIC_CONSONANTS = [..."ㄱㄴㄷㄹㅁㅂㅅㅇㅈㅊㅋㅌㅍㅎ"];
-const CHEONJIIN_TAPS: Readonly<Record<string, readonly string[]>> = {
-  "ㅏ": ["ㅣ", "ㆍ"], "ㅑ": ["ㅣ", "ㆍ", "ㆍ"], "ㅓ": ["ㆍ", "ㅣ"], "ㅕ": ["ㆍ", "ㆍ", "ㅣ"],
-  "ㅗ": ["ㆍ", "ㅡ"], "ㅛ": ["ㆍ", "ㆍ", "ㅡ"], "ㅜ": ["ㅡ", "ㆍ"], "ㅠ": ["ㅡ", "ㆍ", "ㆍ"],
-  "ㅐ": ["ㅣ", "ㆍ", "ㅣ"], "ㅒ": ["ㅣ", "ㆍ", "ㆍ", "ㅣ"], "ㅔ": ["ㆍ", "ㅣ", "ㅣ"], "ㅖ": ["ㆍ", "ㆍ", "ㅣ", "ㅣ"],
-  "ㅘ": ["ㆍ", "ㅡ", "ㅣ", "ㆍ"], "ㅙ": ["ㆍ", "ㅡ", "ㅣ", "ㆍ", "ㅣ"], "ㅚ": ["ㆍ", "ㅡ", "ㅣ"],
-  "ㅝ": ["ㅡ", "ㆍ", "ㆍ", "ㅣ"], "ㅞ": ["ㅡ", "ㆍ", "ㆍ", "ㅣ", "ㅣ"], "ㅟ": ["ㅡ", "ㆍ", "ㅣ"], "ㅢ": ["ㅡ", "ㅣ"],
-  "ㅡ": ["ㅡ"], "ㅣ": ["ㅣ"], "ㆍ": ["ㆍ"],
-};
-const consonantTaps = (labels: readonly string[]): readonly (readonly string[])[] => labels.map((label) => [...label]);
-const vowelTaps = (labels: readonly string[]): readonly (readonly string[])[] => labels.map((label) => [...label].flatMap((vowel) => CHEONJIIN_TAPS[vowel] ?? [vowel]));
-const syllableTaps = (labels: readonly string[]): readonly (readonly string[])[] => labels.map((label) =>
-  [...label].flatMap(decomposeAlphabetTarget).flatMap((jamo) => CHEONJIIN_TAPS[jamo] ?? [jamo]),
+/** One uninterrupted journey: every basic jamo is revisited as the board grows. */
+export const ALPHABET_STAGES: readonly AlphabetStage[] = ALPHABET_BOARD_SIDES.flatMap((boardSide, phaseIndex) =>
+  ALPHABET_ORDER.map((target, targetIndex) => ({
+    id: `alphabet-${boardSide}x${boardSide}-${targetIndex + 1}`,
+    number: phaseIndex * ALPHABET_ORDER.length + targetIndex + 1,
+    boardSide,
+    target,
+    note: alphabetTargetNote(target),
+  })),
 );
-const level = (number: number, name: string, durationMs: number, trapChance: number, sequence: readonly string[], tapGroups: readonly (readonly string[])[], pool: readonly string[], trapPool?: readonly string[]): AlphabetLevel => ({
-  id: `alphabet-${number}`, number, name, durationMs, trapChance, sequence, tapGroups, pool, ...(trapPool ? { trapPool } : {}),
-});
-
-const CONSONANT_LEVELS: readonly AlphabetLevel[] = [
-  level(1, "Basic Order", 60_000, .15, ["ㄱㄴㄷㄹㅁ", "ㅂㅅㅇㅈㅊ", "ㅋㅌㅍㅎ"], consonantTaps(["ㄱㄴㄷㄹㅁ", "ㅂㅅㅇㅈㅊ", "ㅋㅌㅍㅎ"]), BASIC_CONSONANTS),
-  level(2, "Added Strokes", 75_000, .18, ["ㄱㅋ", "ㄴㄷㄹ", "ㅁㅂㅍ", "ㅅㅈㅊ", "ㅇㅎ"], consonantTaps(["ㄱㅋ", "ㄴㄷㄹ", "ㅁㅂㅍ", "ㅅㅈㅊ", "ㅇㅎ"]), BASIC_CONSONANTS),
-  { ...level(3, "Short Memory", 70_000, .20, ["ㄷㅁㅎ", "ㅋㅅㄹㅈ", "ㅎㄹㅊㅂㅇ"], consonantTaps(["ㄷㅁㅎ", "ㅋㅅㄹㅈ", "ㅎㄹㅊㅂㅇ"]), BASIC_CONSONANTS), randomizeTargets: true },
-];
-
-const VOWEL_LEVEL_SEQUENCES = [
-  ["ㅏ", "ㅓ", "ㅗ", "ㅜ"],
-  ["ㅑ", "ㅕ", "ㅛ", "ㅠ"],
-  ["ㅏㅑ", "ㅓㅕ", "ㅗㅛ", "ㅜㅠ"],
-  ["ㅗㅏ", "ㅠㅓㅑ", "ㅕㅜㅏㅛ", "ㅑㅗㅠㅓㅡ"],
-] as const;
-const VOWEL_LEVELS: readonly AlphabetLevel[] = VOWEL_LEVEL_SEQUENCES.map((sequence, index) =>
-  level(index + 5, ["One Dot", "Two Dots", "Vowel Families", "Vowel Memory"][index]!, [50_000, 60_000, 75_000, 100_000][index]!, .10, sequence, vowelTaps(sequence), ["ㆍ", "ㅡ", "ㅣ"], ["╱", "^", "!", "@"]),
-);
-
-const SYLLABLE_LEVEL_SEQUENCES = [
-  ["나", "너"],
-  ["몸", "피", "눈", "코", "입", "손", "발"],
-  ["집", "일", "밥", "옷", "잠"],
-  ["땅", "물", "불", "비", "산", "강", "해", "달", "별"],
-  ["힘", "꾀", "꿈", "개", "소", "말", "닭", "술", "춤"],
-] as const;
-const SYLLABLE_LEVELS: readonly AlphabetLevel[] = SYLLABLE_LEVEL_SEQUENCES.map((sequence, index) => {
-  const tapGroups = syllableTaps(sequence);
-  return level(index + 9, ["Me and You", "My Body", "Daily Life", "Nature", "Strong Finish"][index]!, [45_000, 120_000, 100_000, 170_000, 180_000][index]!, [.14, .16, .18, .20, .22][index]!, sequence, tapGroups, [...new Set(tapGroups.flat())]);
-});
-
-export const ALPHABET_COURSES: readonly AlphabetCourse[] = [
-  { id: "consonants", name: "Consonants", description: "Lv.1–3 · order, added strokes", levels: CONSONANT_LEVELS },
-  { id: "vowels", name: "Vowels", description: "Lv.5–8 · build vowels with ㆍ ㅡ ㅣ", levels: VOWEL_LEVELS },
-  { id: "syllables", name: "Syllables", description: "Lv.9–13 · people, body, life, nature, and more", levels: SYLLABLE_LEVELS },
-];
 
 export interface SentenceLevel {
   id: string;
