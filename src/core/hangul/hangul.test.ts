@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { createLetterBoard, inputValueForTile, mirrorAxisFor, MIRROR_TRAP_CHANCE, MIRROR_TRAP_TOKEN, TARGET_SYMBOL_BUFFER } from "./board";
+import { createLetterBoard, inputValueForTile, trapTransformFor, trapTransformsFor, MIRROR_TRAP_CHANCE, MIRROR_TRAP_TOKEN, TARGET_SYMBOL_BUFFER } from "./board";
 import { composeTokens } from "./compose";
 import { BOARD_SYMBOLS, CHEONJIIN_STROKES, CONSONANTS, PUNCTUATION_SYMBOLS } from "./keys";
 import { materializeTargetTokens, requiredBoardSymbols, targetCharacterProgress, targetToTokens } from "./target";
@@ -74,17 +74,18 @@ describe("TAPtoTALK Hangul domain", () => {
     for (const stroke of CHEONJIIN_STROKES) expect(BOARD_SYMBOLS).toContain(stroke);
   });
 
-  it("replaces punctuation with correctly oriented mirror blocks on word boards", () => {
+  it("replaces punctuation with visibly transformed trap blocks on word boards", () => {
     expect(MIRROR_TRAP_CHANCE).toBe(0.2);
     let rngCall = 0;
     const board = createLetterBoard("사랑", () => rngCall++ % 2 === 0 ? 0.42 : 0.1);
     expect(board.some((tile) => PUNCTUATION_SYMBOLS.includes(tile.symbol as never))).toBe(false);
-    const mirrored = board.filter((tile) => tile.mirror);
-    expect(mirrored.length).toBeGreaterThan(0);
-    for (const tile of mirrored) expect(tile.mirror).toBe(mirrorAxisFor(tile.symbol));
-    expect(mirrorAxisFor("ㄱ")).toBe("horizontal");
-    expect(mirrorAxisFor("ㅂ")).toBe("vertical");
-    expect(inputValueForTile({ symbol: "ㄱ", mirror: "horizontal" })).toBe(MIRROR_TRAP_TOKEN);
+    const transformed = board.filter((tile) => tile.transform);
+    expect(transformed.length).toBeGreaterThan(0);
+    for (const tile of transformed) expect(tile.transform).toBe(trapTransformFor(tile.symbol));
+    expect(trapTransformFor("ㄱ")).toBe("flip-x");
+    expect(trapTransformFor("ㅂ")).toBe("rotate-90");
+    expect(trapTransformsFor("ㅁ")).toEqual([]);
+    expect(inputValueForTile({ symbol: "ㄱ", transform: "flip-x" })).toBe(MIRROR_TRAP_TOKEN);
     expect(inputValueForTile({ symbol: "ㄱ" })).toBe("ㄱ");
   });
 

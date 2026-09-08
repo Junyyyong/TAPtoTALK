@@ -1,11 +1,11 @@
-import { mirrorAxisFor, type MirrorAxis } from "./board";
+import { trapTransformFor, trapTransformsFor, type GlyphTransform } from "./board";
 import { FINAL_PARTS, TENSE_PARTS } from "./layout";
 
 export interface AlphabetTile {
   id: number;
   value: string;
   required: boolean;
-  mirror?: MirrorAxis;
+  transform?: GlyphTransform;
 }
 
 export interface SequenceTapResult {
@@ -44,7 +44,15 @@ const shuffle = <T>(values: T[], rng: () => number): T[] => {
   return values;
 };
 
-const VISIBLE_MIRROR_TRAPS = ["ㄱ", "ㄴ", "ㄷ", "ㄹ", "ㅋ", "ㅌ", "ㅂ", "ㅅ", "ㅈ", "ㅎ"] as const;
+const TRAP_GLYPHS = ["ㄱ", "ㄴ", "ㄷ", "ㄹ", "ㅂ", "ㅅ", "ㅈ", "ㅊ", "ㅋ", "ㅌ", "ㅍ", "ㅎ"] as const;
+
+function trapCandidates(target: string): readonly { value: string; transform: GlyphTransform }[] {
+  const targetTransforms = trapTransformsFor(target as never).map((transform) => ({ value: target, transform }));
+  const otherTransforms = TRAP_GLYPHS
+    .filter((value) => value !== target)
+    .flatMap((value) => trapTransformsFor(value).map((transform) => ({ value, transform })));
+  return [...targetTransforms, ...otherTransforms];
+}
 
 /**
  * Build one find-the-jamo board for the continuous Alphabet journey.
@@ -65,13 +73,13 @@ export function createAlphabetStageBoard(
   const tiles: AlphabetTile[] = [{ id: 0, value: target, required: true }];
   const trapCount = boardSide === 2 ? 2 : Math.max(2, Math.round(size * .22));
   const normalCount = size - 1 - trapCount;
+  const traps = trapCandidates(target);
   for (let index = 0; index < normalCount; index += 1) {
     tiles.push({ id: tiles.length, value: distractors[index % distractors.length]!, required: false });
   }
   for (let index = 0; index < trapCount; index += 1) {
-    const preferredTarget = (VISIBLE_MIRROR_TRAPS as readonly string[]).includes(target) ? target : undefined;
-    const value = preferredTarget ?? VISIBLE_MIRROR_TRAPS[index % VISIBLE_MIRROR_TRAPS.length]!;
-    tiles.push({ id: tiles.length, value, required: false, mirror: index % 2 === 0 ? "horizontal" : "vertical" });
+    const trap = traps[index % traps.length]!;
+    tiles.push({ id: tiles.length, value: trap.value, required: false, transform: trap.transform });
   }
   return shuffle(tiles, rng);
 }
@@ -102,12 +110,12 @@ export function createAlphabetBoard(
   const tiles: AlphabetTile[] = sequence.map((value, id) => ({ id, value, required: true }));
   while (tiles.length < size) {
     let value = pool[Math.floor(rng() * pool.length)]!;
-    let mirror: MirrorAxis | undefined;
+    let transform: GlyphTransform | undefined;
     if (rng() < trapChance) {
       if (trapPool.length) value = trapPool[Math.floor(rng() * trapPool.length)]!;
-      else mirror = mirrorAxisFor(value as never);
+      else transform = trapTransformFor(value as never);
     }
-    tiles.push({ id: tiles.length, value, required: false, ...(mirror ? { mirror } : {}) });
+    tiles.push({ id: tiles.length, value, required: false, ...(transform ? { transform } : {}) });
   }
   return shuffle(tiles, rng);
 }

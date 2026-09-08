@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { ALPHABET_BOARD_SIDES, ALPHABET_ORDER, ALPHABET_STAGES, alphabetTargetNote } from "../../content/prompts";
+import { trapTransformsFor } from "./board";
 import { checkSequenceTap, createAlphabetStageBoard, decomposeAlphabetTarget } from "./alphabetGame";
 
 describe("Alphabet journey", () => {
@@ -22,24 +23,38 @@ describe("Alphabet journey", () => {
     expect(alphabetTargetNote("ㆍ")).toBe("CHEON · SKY");
   });
 
-  it("opens with one answer, one normal distractor, and two mirrored traps", () => {
+  it("opens with one answer, one normal distractor, and two visibly transformed traps", () => {
     const board = createAlphabetStageBoard("ㄱ", ALPHABET_ORDER, 2, () => .999);
 
     expect(board).toHaveLength(4);
     expect(board.filter(({ required }) => required)).toEqual([{ id: 0, value: "ㄱ", required: true }]);
-    expect(board.filter(({ mirror }) => mirror).map(({ value, mirror }) => ({ value, mirror }))).toEqual(expect.arrayContaining([
-      { value: "ㄱ", mirror: "horizontal" },
-      { value: "ㄱ", mirror: "vertical" },
+    expect(board.filter(({ transform }) => transform).map(({ value, transform }) => ({ value, transform }))).toEqual(expect.arrayContaining([
+      { value: "ㄱ", transform: "flip-x" },
+      { value: "ㄱ", transform: "flip-y" },
     ]));
-    expect(board.some(({ value, mirror }) => value === "ㄴ" && !mirror)).toBe(true);
+    expect(board.some(({ value, transform }) => value === "ㄴ" && !transform)).toBe(true);
+  });
+
+  it("never uses an unchanged symmetry and introduces quarter-turn traps", () => {
+    expect(trapTransformsFor("ㅁ")).toEqual([]);
+    expect(trapTransformsFor("ㅂ")).toEqual(["rotate-90"]);
+    expect(trapTransformsFor("ㅅ")).not.toContain("flip-x");
+    expect(trapTransformsFor("ㅈ")).not.toContain("flip-x");
+    expect(trapTransformsFor("ㅅ")).toEqual(expect.arrayContaining(["rotate-90", "rotate-270"]));
+
+    const bieupBoard = createAlphabetStageBoard("ㅂ", ALPHABET_ORDER, 2, () => .999);
+    expect(bieupBoard.some(({ value, transform }) => value === "ㅂ" && transform === "rotate-90")).toBe(true);
+    expect(bieupBoard.some(({ value, transform }) => value === "ㅂ" && transform === "flip-x")).toBe(false);
+    const mieumBoard = createAlphabetStageBoard("ㅁ", ALPHABET_ORDER, 2, () => .999);
+    expect(mieumBoard.some(({ value, transform }) => value === "ㅁ" && transform)).toBe(false);
   });
 
   it("grows the board without adding another valid copy of the answer", () => {
     for (const boardSide of ALPHABET_BOARD_SIDES) {
       const board = createAlphabetStageBoard("ㄱ", ALPHABET_ORDER, boardSide, () => .42);
       expect(board).toHaveLength(boardSide * boardSide);
-      expect(board.filter(({ value, mirror }) => value === "ㄱ" && !mirror)).toHaveLength(1);
-      expect(board.some(({ mirror }) => mirror !== undefined)).toBe(true);
+      expect(board.filter(({ value, transform }) => value === "ㄱ" && !transform)).toHaveLength(1);
+      expect(board.some(({ transform }) => transform !== undefined)).toBe(true);
     }
   });
 

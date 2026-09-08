@@ -188,12 +188,12 @@ export class TalkApp {
       const button = document.createElement("button");
       button.type = "button";
       button.className = `letter-tile letter-tile--alphabet letter-tile--color-${boardColorAt(index)}`;
-      if (tile.mirror) button.classList.add(`letter-tile--flip-${tile.mirror === "horizontal" ? "x" : "y"}`);
+      if (tile.transform) button.classList.add(`letter-tile--${tile.transform}`);
       button.dataset.tileId = String(tile.id);
       button.setAttribute(
         "aria-label",
-        tile.mirror
-          ? `Reversed ${tile.value} trap`
+        tile.transform
+          ? `${tile.transform.startsWith("rotate") ? "Rotated" : "Reversed"} ${tile.value} trap`
           : tile.value === "ㆍ"
             ? "Cheonjiin dot"
             : tile.value,
@@ -211,7 +211,7 @@ export class TalkApp {
   private tapAlphabetTile(tile: AlphabetTile, button: HTMLButtonElement): void {
     if (this.inputLocked || this.paused || this.used.has(tile.id)) return;
     const stage = ALPHABET_STAGES[this.alphabetStageIndex]!;
-    if (tile.mirror || tile.value !== stage.target) {
+    if (tile.transform || tile.value !== stage.target) {
       feedback.reject();
       button.classList.remove("is-wrong-pick"); void button.offsetWidth; button.classList.add("is-wrong-pick");
       window.setTimeout(() => button.classList.remove("is-wrong-pick"), 360);
@@ -264,7 +264,7 @@ export class TalkApp {
       else button.classList.add("letter-tile--punctuation");
       if (tile.symbol === "ㆍ") button.classList.add("letter-tile--cheonjiin-dot");
       if (tile.symbol === ".") button.classList.add("letter-tile--period");
-      if (tile.mirror) button.classList.add(`letter-tile--flip-${tile.mirror === "horizontal" ? "x" : "y"}`);
+      if (tile.transform) button.classList.add(`letter-tile--${tile.transform}`);
       button.dataset.tileId = String(tile.id); button.setAttribute("aria-label", tile.symbol === "ㆍ" ? "Cheonjiin dot" : tile.symbol);
       button.addEventListener("click", () => inputValueForTile(tile) === MIRROR_TRAP_TOKEN ? this.typeTrapTile(tile.id) : this.typeTile(tile.id, tile.symbol)); fragment.append(button);
     });

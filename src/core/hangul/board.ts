@@ -4,15 +4,26 @@ import { requiredBoardSymbols } from "./target";
 export const BOARD_SIZE = 81;
 export const TARGET_SYMBOL_BUFFER = 1.5;
 export const MIRROR_TRAP_CHANCE = 0.2;
-export type MirrorAxis = "horizontal" | "vertical";
+export type GlyphTransform = "flip-x" | "flip-y" | "rotate-90" | "rotate-270";
 
-const HORIZONTAL_MIRROR_SYMBOLS = ["ㄱ", "ㄴ", "ㄷ", "ㄹ", "ㅋ", "ㅌ"] as const;
-const VERTICAL_MIRROR_SYMBOLS = ["ㅂ", "ㅅ", "ㅈ", "ㅎ"] as const;
+/** Only transformations that visibly change the glyph are offered as traps. */
+const TRAP_TRANSFORMS: Readonly<Partial<Record<BoardSymbol, readonly GlyphTransform[]>>> = {
+  "ㄱ": ["flip-x", "flip-y"], "ㄲ": ["flip-x", "flip-y"], "ㄴ": ["flip-x", "flip-y"],
+  "ㄷ": ["flip-x", "rotate-90", "rotate-270"], "ㄸ": ["flip-x", "rotate-90", "rotate-270"],
+  "ㄹ": ["flip-x", "flip-y", "rotate-90", "rotate-270"],
+  "ㅂ": ["rotate-90"], "ㅃ": ["rotate-90"],
+  "ㅅ": ["flip-y", "rotate-90", "rotate-270"], "ㅆ": ["flip-y", "rotate-90", "rotate-270"],
+  "ㅈ": ["flip-y", "rotate-90", "rotate-270"], "ㅉ": ["flip-y", "rotate-90", "rotate-270"],
+  "ㅊ": ["flip-y", "rotate-90", "rotate-270"], "ㅋ": ["flip-x", "flip-y"],
+  "ㅌ": ["rotate-90"], "ㅍ": ["rotate-90"], "ㅎ": ["flip-y", "rotate-90", "rotate-270"],
+};
 
-export function mirrorAxisFor(symbol: BoardSymbol): MirrorAxis | undefined {
-  if ((HORIZONTAL_MIRROR_SYMBOLS as readonly string[]).includes(symbol)) return "horizontal";
-  if ((VERTICAL_MIRROR_SYMBOLS as readonly string[]).includes(symbol)) return "vertical";
-  return undefined;
+export function trapTransformsFor(symbol: BoardSymbol): readonly GlyphTransform[] {
+  return TRAP_TRANSFORMS[symbol] ?? [];
+}
+
+export function trapTransformFor(symbol: BoardSymbol): GlyphTransform | undefined {
+  return trapTransformsFor(symbol)[0];
 }
 
 export interface LetterTile {
@@ -20,14 +31,14 @@ export interface LetterTile {
   symbol: BoardSymbol;
   /** True when this copy was reserved to make the target solvable. */
   required: boolean;
-  /** Punctuation-free word boards may show spare consonants in reverse. */
-  mirror?: MirrorAxis;
+  /** Punctuation-free word boards may show a visibly transformed spare consonant. */
+  transform?: GlyphTransform;
 }
 
 export const MIRROR_TRAP_TOKEN = "×";
 
-export function inputValueForTile(tile: Pick<LetterTile, "symbol" | "mirror">): BoardSymbol | typeof MIRROR_TRAP_TOKEN {
-  return tile.mirror ? MIRROR_TRAP_TOKEN : tile.symbol;
+export function inputValueForTile(tile: Pick<LetterTile, "symbol" | "transform">): BoardSymbol | typeof MIRROR_TRAP_TOKEN {
+  return tile.transform ? MIRROR_TRAP_TOKEN : tile.symbol;
 }
 
 export type SymbolWeights = Readonly<Partial<Record<BoardSymbol, number>>>;
@@ -84,8 +95,8 @@ export function createLetterBoard(
   const tiles: LetterTile[] = required.map((symbol, id) => ({ id, symbol, required: true }));
   while (tiles.length < BOARD_SIZE) {
     const symbol = weightedPick(rng, weights, dealSymbols);
-    const axis = punctuationFree && rng() < MIRROR_TRAP_CHANCE ? mirrorAxisFor(symbol) : undefined;
-    tiles.push({ id: tiles.length, symbol, required: false, ...(axis ? { mirror: axis } : {}) });
+    const transform = punctuationFree && rng() < MIRROR_TRAP_CHANCE ? trapTransformFor(symbol) : undefined;
+    tiles.push({ id: tiles.length, symbol, required: false, ...(transform ? { transform } : {}) });
   }
   return shuffle(tiles, rng);
 }
