@@ -4,13 +4,18 @@ import { trapTransformsFor } from "./board";
 import { checkSequenceTap, createAlphabetStageBoard, decomposeAlphabetTarget } from "./alphabetGame";
 
 describe("Alphabet journey", () => {
-  it("repeats the full learning order on 2×2, 4×4, and 6×6 boards", () => {
-    expect(ALPHABET_STAGES).toHaveLength(ALPHABET_ORDER.length * 3);
+  it("moves from single jamo to ordered groups of three and five", () => {
+    expect(ALPHABET_STAGES).toHaveLength(27);
     expect([...new Set(ALPHABET_STAGES.map(({ boardSide }) => boardSide))]).toEqual(ALPHABET_BOARD_SIDES);
-    for (const boardSide of ALPHABET_BOARD_SIDES) {
-      expect(ALPHABET_STAGES.filter((stage) => stage.boardSide === boardSide).map(({ target }) => target)).toEqual(ALPHABET_ORDER);
-    }
     expect(ALPHABET_ORDER).toEqual([..."ㄱㄴㄷㄹㅁㅂㅅㅇㅈㅊㅋㅌㅍㅎ", "ㅣ", "ㅡ", "ㆍ"]);
+    expect(ALPHABET_STAGES.filter(({ boardSide }) => boardSide === 2).map(({ target }) => target)).toEqual(ALPHABET_ORDER);
+    expect(ALPHABET_STAGES.filter(({ boardSide }) => boardSide === 4).map(({ target }) => target)).toEqual([
+      "ㄱㄴㄷ", "ㄹㅁㅂ", "ㅅㅇㅈ", "ㅊㅋㅌ", "ㅍㅎㅣ", "ㅡㆍ",
+    ]);
+    expect(ALPHABET_STAGES.filter(({ boardSide }) => boardSide === 6).map(({ target }) => target)).toEqual([
+      "ㄱㄴㄷㄹㅁ", "ㅂㅅㅇㅈㅊ", "ㅋㅌㅍㅎㅣ", "ㅡㆍ",
+    ]);
+    expect(ALPHABET_STAGES.every(({ sequence, target }) => sequence.join("") === target)).toBe(true);
   });
 
   it("uses one compact bracket for positional sound variants", () => {
@@ -24,7 +29,7 @@ describe("Alphabet journey", () => {
   });
 
   it("opens with one answer, one normal distractor, and two visibly transformed traps", () => {
-    const board = createAlphabetStageBoard("ㄱ", ALPHABET_ORDER, 2, () => .999);
+    const board = createAlphabetStageBoard(["ㄱ"], ALPHABET_ORDER, 2, () => .999);
 
     expect(board).toHaveLength(4);
     expect(board.filter(({ required }) => required)).toEqual([{ id: 0, value: "ㄱ", required: true }]);
@@ -42,20 +47,27 @@ describe("Alphabet journey", () => {
     expect(trapTransformsFor("ㅈ")).not.toContain("flip-x");
     expect(trapTransformsFor("ㅅ")).toEqual(expect.arrayContaining(["rotate-90", "rotate-270"]));
 
-    const bieupBoard = createAlphabetStageBoard("ㅂ", ALPHABET_ORDER, 2, () => .999);
+    const bieupBoard = createAlphabetStageBoard(["ㅂ"], ALPHABET_ORDER, 2, () => .999);
     expect(bieupBoard.some(({ value, transform }) => value === "ㅂ" && transform === "rotate-90")).toBe(true);
     expect(bieupBoard.some(({ value, transform }) => value === "ㅂ" && transform === "flip-x")).toBe(false);
-    const mieumBoard = createAlphabetStageBoard("ㅁ", ALPHABET_ORDER, 2, () => .999);
+    const mieumBoard = createAlphabetStageBoard(["ㅁ"], ALPHABET_ORDER, 2, () => .999);
     expect(mieumBoard.some(({ value, transform }) => value === "ㅁ" && transform)).toBe(false);
   });
 
   it("grows the board without adding another valid copy of the answer", () => {
     for (const boardSide of ALPHABET_BOARD_SIDES) {
-      const board = createAlphabetStageBoard("ㄱ", ALPHABET_ORDER, boardSide, () => .42);
+      const sequence = boardSide === 2 ? ["ㄱ"] : boardSide === 4 ? ["ㄱ", "ㄴ", "ㄷ"] : ["ㄱ", "ㄴ", "ㄷ", "ㄹ", "ㅁ"];
+      const board = createAlphabetStageBoard(sequence, ALPHABET_ORDER, boardSide, () => .42);
       expect(board).toHaveLength(boardSide * boardSide);
-      expect(board.filter(({ value, transform }) => value === "ㄱ" && !transform)).toHaveLength(1);
+      for (const target of sequence) expect(board.filter(({ value, transform }) => value === target && !transform)).toHaveLength(1);
       expect(board.some(({ transform }) => transform !== undefined)).toBe(true);
     }
+  });
+
+  it("keeps one required tile for every part of a grouped stage", () => {
+    const board = createAlphabetStageBoard(["ㄱ", "ㄴ", "ㄷ"], ALPHABET_ORDER, 4, () => .31);
+    expect(board.filter(({ required }) => required).map(({ value }) => value)).toEqual(expect.arrayContaining(["ㄱ", "ㄴ", "ㄷ"]));
+    expect(board.filter(({ required }) => required)).toHaveLength(3);
   });
 
   it("keeps ordinary wrong choices from advancing the target", () => {

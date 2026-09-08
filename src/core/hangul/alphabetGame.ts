@@ -46,34 +46,37 @@ const shuffle = <T>(values: T[], rng: () => number): T[] => {
 
 const TRAP_GLYPHS = ["ㄱ", "ㄴ", "ㄷ", "ㄹ", "ㅂ", "ㅅ", "ㅈ", "ㅊ", "ㅋ", "ㅌ", "ㅍ", "ㅎ"] as const;
 
-function trapCandidates(target: string): readonly { value: string; transform: GlyphTransform }[] {
-  const targetTransforms = trapTransformsFor(target as never).map((transform) => ({ value: target, transform }));
+function trapCandidates(targets: readonly string[]): readonly { value: string; transform: GlyphTransform }[] {
+  const targetTransforms = targets.flatMap((target) =>
+    trapTransformsFor(target as never).map((transform) => ({ value: target, transform })),
+  );
   const otherTransforms = TRAP_GLYPHS
-    .filter((value) => value !== target)
+    .filter((value) => !targets.includes(value))
     .flatMap((value) => trapTransformsFor(value).map((transform) => ({ value, transform })));
   return [...targetTransforms, ...otherTransforms];
 }
 
 /**
- * Build one find-the-jamo board for the continuous Alphabet journey.
+ * Build one ordered find-the-jamo board for the continuous Alphabet journey.
  * The 2×2 opening deliberately contains one answer, one ordinary distractor,
  * and two visibly mirrored traps. Larger boards preserve the single answer
  * while increasing both ordinary choices and mirrored traps.
  */
 export function createAlphabetStageBoard(
-  target: string,
+  sequence: readonly string[],
   pool: readonly string[],
   boardSide: 2 | 4 | 6,
   rng: () => number = Math.random,
 ): AlphabetTile[] {
   const size = boardSide * boardSide;
-  const distractors = pool.filter((value) => value !== target);
+  if (sequence.length === 0 || sequence.length > size) throw new RangeError("Alphabet stage sequence must fit on its board.");
+  const distractors = pool.filter((value) => !sequence.includes(value));
   if (distractors.length === 0) throw new RangeError("Alphabet stages need at least one distractor different from the target.");
 
-  const tiles: AlphabetTile[] = [{ id: 0, value: target, required: true }];
+  const tiles: AlphabetTile[] = sequence.map((value, id) => ({ id, value, required: true }));
   const trapCount = boardSide === 2 ? 2 : Math.max(2, Math.round(size * .22));
-  const normalCount = size - 1 - trapCount;
-  const traps = trapCandidates(target);
+  const normalCount = size - sequence.length - trapCount;
+  const traps = trapCandidates(sequence);
   for (let index = 0; index < normalCount; index += 1) {
     tiles.push({ id: tiles.length, value: distractors[index % distractors.length]!, required: false });
   }

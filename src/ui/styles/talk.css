@@ -19,6 +19,8 @@
 .talk-screen.is-alphabet-mode .fixed-controls { display: none; }
 .talk-screen.is-alphabet-mode .target-prompt { min-height: 122px; }
 .talk-screen.is-alphabet-mode .target-text { color: var(--ink); font-size: 52px; line-height: 1.05; }
+.talk-screen.is-alphabet-mode .target-text.is-medium-sequence { font-size: 44px; }
+.talk-screen.is-alphabet-mode .target-text.is-long-sequence { font-size: 38px; }
 .talk-screen.is-alphabet-mode .target-hint { max-width: 100%; overflow: hidden; font-weight: 650; text-overflow: ellipsis; white-space: nowrap; }
 .talk-screen.is-alphabet-mode .typed-text { display: none; }
 .typed-text small { color: var(--ink-soft); font-family: "TAP Sans KR",sans-serif; font-size: 11px; font-weight: 700; }
@@ -40,8 +42,14 @@
 .target-text,.typed-text { min-height: 1.45em; margin: 0; color: var(--ink); font-size: clamp(24px,6.3vw,31px); font-weight: 700; line-height: 1.38; word-break: keep-all; }
 .target-text { grid-column: 1 / -1; align-self: center; padding-top: 7px; font-family: "TAP Serif KR", serif; text-align: center; }
 .target-korean,.target-translation-inline,.alphabet-target-note { display: block; }
+.talk-screen.is-alphabet-mode .target-korean { display: flex; align-items: center; justify-content: center; gap: .08em; }
+.alphabet-target-jamo { min-width: 1em; padding: .05em .08em; border-radius: .16em; transition: color .15s ease,background .15s ease; }
+.alphabet-target-jamo.is-current { color: var(--hot-deep); box-shadow: inset 0 -.09em 0 var(--warm); }
+.alphabet-target-jamo.is-done { color: white; background: var(--accent); }
 .target-translation-inline,.alphabet-target-note { margin-top: 5px; color: var(--ink-soft); font-family: "TAP Sans KR",sans-serif; font-size: 14px; font-weight: 650; line-height: 1.2; letter-spacing: 0; white-space: nowrap; }
 .talk-screen.is-alphabet-mode .alphabet-target-note { margin-top: 9px; font-size: 18px; }
+.talk-screen.is-alphabet-mode .is-medium-sequence .alphabet-target-note { font-size: 14px; }
+.talk-screen.is-alphabet-mode .is-long-sequence .alphabet-target-note { font-size: 12px; }
 .target-hint { grid-column: 1 / -1; margin: 3px 0 2px; color: var(--ink-soft); font-size: 14px; line-height: 1.45; text-align: center; }
 .typed-text { position: relative; display: flex; min-height: 3.15em; align-items: flex-end; padding: 8px 6px 2px; color: var(--accent-deep); font-family: "TAP Serif KR", serif; font-size: clamp(28px,7.2vw,36px); line-height: 1.25; border-bottom: 1px solid var(--slab); }
 .talk-screen:not(.is-alphabet-mode) .typed-text { height: 64px; min-height: 64px; flex-direction: column; align-items: stretch; justify-content: flex-end; gap: 5px; overflow: hidden; }

@@ -64,6 +64,7 @@ export class TalkApp {
   private sentenceIndex = 0;
   private sentenceLessonPrompts: readonly SentencePrompt[] = [];
   private alphabetStageIndex = 0;
+  private alphabetPartIndex = 0;
   private alphabetTiles: AlphabetTile[] = [];
   private inputLocked = true;
   private paused = false;
@@ -160,7 +161,7 @@ export class TalkApp {
     this.mode = "alphabet";
     this.inputLocked = false; this.paused = false;
     this.game.classList.remove("is-input-locked");
-    this.alphabetStageIndex = 0; this.elapsedMs = 0;
+    this.alphabetStageIndex = 0; this.alphabetPartIndex = 0; this.elapsedMs = 0;
     el("btn-again").textContent = "Play again";
     this.result.classList.add("hidden"); this.title.classList.add("hidden"); this.alphabetIntro.classList.add("hidden"); this.splash.classList.add("hidden"); this.game.classList.remove("hidden");
     this.game.classList.remove("is-word-mode"); this.game.classList.add("is-alphabet-mode");
@@ -173,9 +174,10 @@ export class TalkApp {
     const stage = ALPHABET_STAGES[this.alphabetStageIndex]!;
     this.targetPrompt.classList.remove("is-alphabet-complete");
     this.used.clear();
-    this.alphabetTiles = createAlphabetStageBoard(stage.target, ALPHABET_ORDER, stage.boardSide);
+    this.alphabetPartIndex = 0;
+    this.alphabetTiles = createAlphabetStageBoard(stage.sequence, ALPHABET_ORDER, stage.boardSide);
     this.runMode.textContent = "Alphabet";
-    this.targetLabel.textContent = `STAGE ${stage.number} / ${ALPHABET_STAGES.length}`;
+    this.targetLabel.textContent = `STAGE ${stage.number}`;
     this.renderAlphabetBoard();
     this.renderAlphabetTarget();
   }
@@ -211,14 +213,17 @@ export class TalkApp {
   private tapAlphabetTile(tile: AlphabetTile, button: HTMLButtonElement): void {
     if (this.inputLocked || this.paused || this.used.has(tile.id)) return;
     const stage = ALPHABET_STAGES[this.alphabetStageIndex]!;
-    if (tile.transform || tile.value !== stage.target) {
+    if (tile.transform || tile.value !== stage.sequence[this.alphabetPartIndex]) {
       feedback.reject();
       button.classList.remove("is-wrong-pick"); void button.offsetWidth; button.classList.add("is-wrong-pick");
       window.setTimeout(() => button.classList.remove("is-wrong-pick"), 360);
       return;
     }
-    feedback.pick(this.alphabetStageIndex + 1);
+    feedback.pick(this.alphabetStageIndex + this.alphabetPartIndex + 1);
     this.used.add(tile.id); button.disabled = true;
+    this.alphabetPartIndex += 1;
+    this.renderAlphabetTarget();
+    if (this.alphabetPartIndex < stage.sequence.length) return;
     this.inputLocked = true;
     this.targetPrompt.classList.add("is-alphabet-complete");
     window.setTimeout(() => {
@@ -231,10 +236,19 @@ export class TalkApp {
 
   private renderAlphabetTarget(): void {
     const stage = ALPHABET_STAGES[this.alphabetStageIndex]!;
-    const korean = document.createElement("span"); korean.className = "target-korean"; korean.textContent = stage.target;
+    const korean = document.createElement("span"); korean.className = "target-korean";
+    stage.sequence.forEach((value, index) => {
+      const jamo = document.createElement("span");
+      jamo.className = "alphabet-target-jamo";
+      if (index < this.alphabetPartIndex) jamo.classList.add("is-done");
+      else if (index === this.alphabetPartIndex) jamo.classList.add("is-current");
+      jamo.textContent = value;
+      korean.append(jamo);
+    });
     const note = document.createElement("span"); note.className = "alphabet-target-note"; note.textContent = stage.note;
     this.targetText.replaceChildren(korean, note);
-    this.targetText.classList.remove("is-medium-sequence", "is-long-sequence");
+    this.targetText.classList.toggle("is-medium-sequence", stage.sequence.length === 3);
+    this.targetText.classList.toggle("is-long-sequence", stage.sequence.length >= 5);
     this.targetHint.textContent = `${stage.boardSide} × ${stage.boardSide}`;
     this.typedText.replaceChildren();
   }
@@ -245,7 +259,7 @@ export class TalkApp {
     feedback.complete();
     const targetMs = 180_000;
     const score = lessonScoreFromTime(this.elapsedMs, targetMs);
-    this.showResult("Alphabet complete!", `${ALPHABET_STAGES.length} stages · ${formatTime(this.elapsedMs)}`, score);
+    this.showResult("Alphabet complete!", `2×2 → 4×4 → 6×6 · ${formatTime(this.elapsedMs)}`, score);
   }
 
   private renderBoard(): void {

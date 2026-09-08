@@ -11,6 +11,7 @@ export interface AlphabetStage {
   number: number;
   boardSide: 2 | 4 | 6;
   target: string;
+  sequence: readonly string[];
   note: string;
 }
 
@@ -29,16 +30,27 @@ export function alphabetTargetNote(target: string): string {
   return CONSONANT_SOUNDS[target] ?? VOWEL_SOUNDS[target] ?? "";
 }
 
-/** One uninterrupted journey: every basic jamo is revisited as the board grows. */
-export const ALPHABET_STAGES: readonly AlphabetStage[] = ALPHABET_BOARD_SIDES.flatMap((boardSide, phaseIndex) =>
-  ALPHABET_ORDER.map((target, targetIndex) => ({
-    id: `alphabet-${boardSide}x${boardSide}-${targetIndex + 1}`,
-    number: phaseIndex * ALPHABET_ORDER.length + targetIndex + 1,
-    boardSide,
-    target,
-    note: alphabetTargetNote(target),
-  })),
-);
+const chunkAlphabet = (size: number): readonly (readonly string[])[] => {
+  const groups: string[][] = [];
+  for (let index = 0; index < ALPHABET_ORDER.length; index += size) groups.push(ALPHABET_ORDER.slice(index, index + size));
+  return groups;
+};
+
+const ALPHABET_PHASES = [
+  { boardSide: 2 as const, groups: ALPHABET_ORDER.map((target) => [target]) },
+  { boardSide: 4 as const, groups: chunkAlphabet(3) },
+  { boardSide: 6 as const, groups: chunkAlphabet(5) },
+] as const;
+
+/** One uninterrupted journey: identify single jamo, then recall them in groups of three and five. */
+export const ALPHABET_STAGES: readonly AlphabetStage[] = ALPHABET_PHASES.flatMap(({ boardSide, groups }) =>
+  groups.map((sequence) => ({ boardSide, sequence, target: sequence.join("") })),
+).map((stage, index) => ({
+  ...stage,
+  id: `alphabet-${stage.boardSide}x${stage.boardSide}-${index + 1}`,
+  number: index + 1,
+  note: stage.sequence.map(alphabetTargetNote).join(" · "),
+}));
 
 export interface SentenceLevel {
   id: string;
