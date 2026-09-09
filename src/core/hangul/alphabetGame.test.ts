@@ -25,7 +25,7 @@ describe("Alphabet journey", () => {
     expect(alphabetTargetNote("ㅇ")).toBe("[∅/ŋ]");
     expect(alphabetTargetNote("ㅣ")).toBe("[i]");
     expect(alphabetTargetNote("ㅡ")).toBe("[ɯ]");
-    expect(alphabetTargetNote("ㆍ")).toBe("CHEON · SKY");
+    expect(alphabetTargetNote("ㆍ")).toBe("[ʌ]");
   });
 
   it("uses only visibly transformed copies of the target consonant", () => {
@@ -77,7 +77,7 @@ describe("Alphabet journey", () => {
   it("uses only line shapes for stroke vowels and simple symbols for the Cheonjiin dot", () => {
     for (const target of ["ㅣ", "ㅡ"]) {
       const choices = createAlphabetStageBoard([target], ALPHABET_ORDER, 2, () => .999).filter(({ required }) => !required);
-      expect(choices.map(({ value }) => value)).toEqual(expect.arrayContaining(["╱", "∿", "╲"]));
+      expect(choices.map(({ value }) => value)).toEqual(expect.arrayContaining(["╱", "╲", "⟋"]));
       expect(choices.every(({ shape }) => shape)).toBe(true);
     }
     const dotChoices = createAlphabetStageBoard(["ㆍ"], ALPHABET_ORDER, 2, () => .999).filter(({ required }) => !required);

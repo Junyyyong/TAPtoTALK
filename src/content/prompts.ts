@@ -20,7 +20,7 @@ const CONSONANT_SOUNDS: Readonly<Record<string, string>> = {
   "ㅇ": "[∅/ŋ]", "ㅈ": "[tɕ/dʑ]", "ㅊ": "[tɕʰ]", "ㅋ": "[kʰ]", "ㅌ": "[tʰ]", "ㅍ": "[pʰ]", "ㅎ": "[h]",
 };
 const VOWEL_SOUNDS: Readonly<Record<string, string>> = {
-  "ㅡ": "[ɯ]", "ㅣ": "[i]", "ㆍ": "CHEON · SKY",
+  "ㅡ": "[ɯ]", "ㅣ": "[i]", "ㆍ": "[ʌ]",
 };
 
 export const ALPHABET_ORDER = [..."ㄱㄴㄷㄹㅁㅂㅅㅇㅈㅊㅋㅌㅍㅎ", "ㅣ", "ㅡ", "ㆍ"] as const;

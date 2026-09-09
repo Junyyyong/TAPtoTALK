@@ -190,7 +190,13 @@ export class TalkApp {
       button.type = "button";
       button.className = `letter-tile letter-tile--alphabet letter-tile--color-${boardColorAt(index)}`;
       if (tile.transform) button.classList.add(`letter-tile--${tile.transform}`);
-      if (tile.shape) button.classList.add("letter-tile--shape");
+      if (tile.shape) {
+        button.classList.add("letter-tile--shape");
+        const shapeClass = ({ "╱": "line-up", "╲": "line-down", "⟋": "line-shallow", "★": "star", "♥": "heart", ",": "comma" } as const)[tile.value as "╱" | "╲" | "⟋" | "★" | "♥" | ","];
+        if (shapeClass) button.classList.add(`letter-tile--shape-${shapeClass}`);
+      }
+      if (!tile.shape && tile.value === "ㅣ") button.classList.add("letter-tile--stroke-vertical");
+      if (!tile.shape && tile.value === "ㅡ") button.classList.add("letter-tile--stroke-horizontal");
       button.dataset.tileId = String(tile.id);
       button.setAttribute(
         "aria-label",
@@ -202,7 +208,7 @@ export class TalkApp {
             ? "Cheonjiin dot"
             : tile.value,
       );
-      const glyph = document.createElement("span"); glyph.className = "letter-glyph"; glyph.textContent = tile.value === "ㆍ" || tile.value === "." ? "" : tile.value;
+      const glyph = document.createElement("span"); glyph.className = "letter-glyph"; glyph.textContent = tile.value === "ㆍ" || tile.value === "." || tile.value === "ㅣ" || tile.value === "ㅡ" ? "" : tile.value;
       button.append(glyph);
       if (tile.value === "ㆍ") button.classList.add("letter-tile--cheonjiin-dot");
       if (tile.value === ".") button.classList.add("letter-tile--period");
@@ -242,9 +248,10 @@ export class TalkApp {
     stage.sequence.forEach((value, index) => {
       const jamo = document.createElement("span");
       jamo.className = "alphabet-target-jamo";
+      if (value === "ㆍ") jamo.classList.add("is-cheonjiin");
       if (index < this.alphabetPartIndex) jamo.classList.add("is-done");
       else if (index === this.alphabetPartIndex) jamo.classList.add("is-current");
-      jamo.textContent = value;
+      jamo.textContent = value === "ㆍ" ? "" : value;
       korean.append(jamo);
     });
     const note = document.createElement("span"); note.className = "alphabet-target-note"; note.textContent = stage.note;

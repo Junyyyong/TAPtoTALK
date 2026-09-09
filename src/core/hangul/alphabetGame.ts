@@ -46,7 +46,7 @@ const shuffle = <T>(values: T[], rng: () => number): T[] => {
 };
 
 const VOWEL_GLYPHS = ["ㅣ", "ㅡ", "ㆍ"] as const;
-const LINE_SHAPES = ["╱", "∿", "╲"] as const;
+const LINE_SHAPES = ["╱", "╲", "⟋"] as const;
 const DOT_SHAPES = ["★", "♥", ","] as const;
 const IEUNG_SHAPES = ["ㆁ", "ㆆ", "ㆀ"] as const;
 const MIEUM_SHAPES = ["ㅱ", "△", "○"] as const;
