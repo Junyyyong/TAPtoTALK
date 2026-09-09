@@ -45,29 +45,23 @@ const shuffle = <T>(values: T[], rng: () => number): T[] => {
   return values;
 };
 
-const TRAP_GLYPHS = ["ㄱ", "ㄴ", "ㄷ", "ㄹ", "ㅂ", "ㅅ", "ㅈ", "ㅊ", "ㅋ", "ㅌ", "ㅍ", "ㅎ"] as const;
 const VOWEL_GLYPHS = ["ㅣ", "ㅡ", "ㆍ"] as const;
 const LINE_SHAPES = ["╱", "∿", "╲"] as const;
 const DOT_SHAPES = ["★", "♥", ","] as const;
 const IEUNG_SHAPES = ["ㆁ", "ㆆ", "ㆀ"] as const;
 const MIEUM_SHAPES = ["ㅱ", "△", "○"] as const;
-const CHOICE_TRANSFORMS: readonly GlyphTransform[] = ["flip-x", "flip-y", "rotate-90"];
-
 const shapeTiles = (values: readonly string[]): readonly Omit<AlphabetTile, "id" | "required">[] =>
   values.map((value) => ({ value, shape: true }));
 
-function transformedChoiceFor(target: string, transform: GlyphTransform): Omit<AlphabetTile, "id" | "required"> {
-  const value = [target, ...TRAP_GLYPHS].find((candidate) => trapTransformsFor(candidate as never).includes(transform));
-  if (!value) throw new Error(`No visible ${transform} Alphabet trap is available.`);
-  return { value, transform };
-}
+const transformedChoicesFor = (target: string): readonly Omit<AlphabetTile, "id" | "required">[] =>
+  trapTransformsFor(target as never).map((transform) => ({ value: target, transform }));
 
 function trapCandidates(targets: readonly string[]): readonly Omit<AlphabetTile, "id" | "required">[] {
   if (targets.length === 1 && targets[0] === "ㅇ") return shapeTiles(IEUNG_SHAPES);
   if (targets.length === 1 && targets[0] === "ㅁ") return shapeTiles(MIEUM_SHAPES);
   if (targets.length === 1 && (targets[0] === "ㅣ" || targets[0] === "ㅡ")) return shapeTiles(LINE_SHAPES);
   if (targets.length === 1 && targets[0] === "ㆍ") return shapeTiles(DOT_SHAPES);
-  if (targets.length === 1) return CHOICE_TRANSFORMS.map((transform) => transformedChoiceFor(targets[0]!, transform));
+  if (targets.length === 1) return transformedChoicesFor(targets[0]!);
 
   const shapes = targets.flatMap((target) =>
     target === "ㅇ" ? shapeTiles(IEUNG_SHAPES)
@@ -82,16 +76,14 @@ function trapCandidates(targets: readonly string[]): readonly Omit<AlphabetTile,
   const targetTransforms = targets.flatMap((target) =>
     trapTransformsFor(target as never).map((transform) => ({ value: target, transform })),
   );
-  const otherTransforms = TRAP_GLYPHS
-    .filter((value) => !targets.includes(value))
-    .flatMap((value) => trapTransformsFor(value).map((transform) => ({ value, transform })));
   if (consonantTargets.length === 0) return shapes.length ? shapes : shapeTiles([...LINE_SHAPES, ...DOT_SHAPES]);
-  return [...targetTransforms, ...shapes, ...otherTransforms];
+  return [...targetTransforms, ...shapes];
 }
 
 /**
  * Build one ordered find-the-jamo board for the continuous Alphabet journey.
  * A 2×2 stage contains one answer and three type-specific visual choices.
+ * Consonant traps are transformed copies of that stage's own target, never a substitute consonant.
  * Larger boards repeat the same visual language around the ordered answers.
  */
 export function createAlphabetStageBoard(

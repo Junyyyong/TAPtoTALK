@@ -28,15 +28,15 @@ describe("Alphabet journey", () => {
     expect(alphabetTargetNote("ㆍ")).toBe("CHEON · SKY");
   });
 
-  it("opens a consonant with horizontal, vertical, and 90-degree transformed choices", () => {
+  it("uses only visibly transformed copies of the target consonant", () => {
     const board = createAlphabetStageBoard(["ㄱ"], ALPHABET_ORDER, 2, () => .999);
 
     expect(board).toHaveLength(4);
     expect(board.filter(({ required }) => required)).toEqual([{ id: 0, value: "ㄱ", required: true }]);
-    expect(board.filter(({ transform }) => transform).map(({ transform }) => transform)).toEqual(expect.arrayContaining([
-      "flip-x", "flip-y", "rotate-90",
-    ]));
-    expect(board.filter(({ required }) => !required)).toHaveLength(3);
+    const choices = board.filter(({ required }) => !required);
+    expect(choices).toHaveLength(3);
+    expect(choices.every(({ value }) => value === "ㄱ")).toBe(true);
+    expect(choices.every(({ transform }) => transform === "flip-x" || transform === "flip-y")).toBe(true);
   });
 
   it("never uses an unchanged symmetry and keeps rotation to 90 degrees", () => {
@@ -50,9 +50,20 @@ describe("Alphabet journey", () => {
     const bieupBoard = createAlphabetStageBoard(["ㅂ"], ALPHABET_ORDER, 2, () => .999);
     expect(bieupBoard.some(({ value, transform }) => value === "ㅂ" && transform === "rotate-90")).toBe(true);
     expect(bieupBoard.some(({ value, transform }) => value === "ㅂ" && transform === "flip-x")).toBe(false);
+    expect(bieupBoard.filter(({ required }) => !required).every(({ value }) => value === "ㅂ")).toBe(true);
     const mieumBoard = createAlphabetStageBoard(["ㅁ"], ALPHABET_ORDER, 2, () => .999);
     expect(mieumBoard.filter(({ required }) => !required).map(({ value }) => value)).toEqual(expect.arrayContaining(["ㅱ", "△", "○"]));
     expect(mieumBoard.some(({ value, transform }) => value === "ㅁ" && transform)).toBe(false);
+  });
+
+  it("never borrows another consonant to fill any single-target board", () => {
+    for (const target of ALPHABET_ORDER.slice(0, 14).filter((value) => value !== "ㅁ" && value !== "ㅇ")) {
+      const choices = createAlphabetStageBoard([target], ALPHABET_ORDER, 2, () => .999).filter(({ required }) => !required);
+
+      expect(choices).toHaveLength(3);
+      expect(choices.every(({ value }) => value === target)).toBe(true);
+      expect(choices.every(({ transform }) => transform !== undefined)).toBe(true);
+    }
   });
 
   it("compares ieung with three historical Hangul letterforms", () => {
@@ -88,6 +99,7 @@ describe("Alphabet journey", () => {
     const board = createAlphabetStageBoard(["ㄱ", "ㄴ", "ㄷ"], ALPHABET_ORDER, 4, () => .31);
     expect(board.filter(({ required }) => required).map(({ value }) => value)).toEqual(expect.arrayContaining(["ㄱ", "ㄴ", "ㄷ"]));
     expect(board.filter(({ required }) => required)).toHaveLength(3);
+    expect(board.filter(({ required }) => !required).every(({ value }) => ["ㄱ", "ㄴ", "ㄷ"].includes(value))).toBe(true);
   });
 
   it("keeps consonants out of a vowel-only grouped board", () => {
