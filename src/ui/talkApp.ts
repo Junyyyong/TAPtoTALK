@@ -89,7 +89,6 @@ export class TalkApp {
     el("btn-again").addEventListener("click", () => this.continueFromResult());
     el("btn-result-menu").addEventListener("click", () => this.showTitle());
     el("btn-title-settings").addEventListener("click", () => this.showSettings());
-    el("btn-title-rules").addEventListener("click", () => this.showRules());
     el("btn-help-close").addEventListener("click", () => this.paused ? this.resumeGame() : this.closeHelp());
     document.addEventListener("pointerdown", () => { this.cheer.unlock(); feedback.unlock(); }, { capture: true });
     document.addEventListener("visibilitychange", () => {
@@ -558,11 +557,6 @@ export class TalkApp {
   private closeHelp(): void {
     feedback.tap();
     this.help.classList.add("hidden");
-  }
-
-  private showRules(): void {
-    this.openHelp("Rules");
-    this.helpBody.innerHTML = `<div class="rules-list"><p><b>Alphabet</b><span>Find each Korean jamo. The board grows from 2×2 to 4×4 and 6×6 as you learn.</span></p><p><b>Sound guide</b><span>Sounds used in different positions share one bracket, such as [k/g].</span></p><p><b>Reversed traps</b><span>Mirrored consonants are traps. They never count as the original consonant.</span></p><p><b>Sentence</b><span>Complete three phrases. The full run is worth up to 1,500 points and your best score is saved.</span></p><p><b>Word</b><span>Choose one of five lessons and complete three words before its timer ends.</span></p><p><b>Nine mixed colours</b><span>Colours do not belong to a particular letter. A used block turns grey.</span></p></div>`;
   }
 
   private showSettings(): void {

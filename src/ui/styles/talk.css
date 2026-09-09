@@ -128,10 +128,6 @@
 .level-btn span { color: var(--ink-soft); font-size: 12px; }
 .level-btn em { color: var(--ink-faint); font-size: 11px; font-style: normal; }
 .level-btn small { grid-column: 2; grid-row: 1 / span 3; color: var(--hot); font-size: 12px; font-weight: 800; }
-.rules-list { display: grid; gap: 10px; }
-.rules-list p { display: grid; gap: 4px; margin: 0; padding: 14px 0; border-bottom: 1px solid var(--paper-edge); }
-.rules-list b { color: var(--ink); font-size: 16px; }
-.rules-list span { color: var(--ink-soft); font-size: 13px; line-height: 1.5; }
 .switch-list { display: grid; gap: 10px; }
 .switch-row { display: flex; width: 100%; align-items: center; justify-content: space-between; gap: 12px; padding: 16px; border: 1px solid var(--paper-edge); border-radius: 16px; color: var(--ink); background: var(--panel-lit); text-align: left; }
 .switch-text { display: grid; gap: 4px; }
