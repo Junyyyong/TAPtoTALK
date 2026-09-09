@@ -28,30 +28,42 @@ describe("Alphabet journey", () => {
     expect(alphabetTargetNote("ㆍ")).toBe("CHEON · SKY");
   });
 
-  it("opens with one answer, one normal distractor, and two visibly transformed traps", () => {
+  it("opens a consonant with horizontal, vertical, and 90-degree transformed choices", () => {
     const board = createAlphabetStageBoard(["ㄱ"], ALPHABET_ORDER, 2, () => .999);
 
     expect(board).toHaveLength(4);
     expect(board.filter(({ required }) => required)).toEqual([{ id: 0, value: "ㄱ", required: true }]);
-    expect(board.filter(({ transform }) => transform).map(({ value, transform }) => ({ value, transform }))).toEqual(expect.arrayContaining([
-      { value: "ㄱ", transform: "flip-x" },
-      { value: "ㄱ", transform: "flip-y" },
+    expect(board.filter(({ transform }) => transform).map(({ transform }) => transform)).toEqual(expect.arrayContaining([
+      "flip-x", "flip-y", "rotate-90",
     ]));
-    expect(board.some(({ value, transform }) => value === "ㄴ" && !transform)).toBe(true);
+    expect(board.filter(({ required }) => !required)).toHaveLength(3);
   });
 
-  it("never uses an unchanged symmetry and introduces quarter-turn traps", () => {
+  it("never uses an unchanged symmetry and keeps rotation to 90 degrees", () => {
     expect(trapTransformsFor("ㅁ")).toEqual([]);
     expect(trapTransformsFor("ㅂ")).toEqual(["rotate-90"]);
     expect(trapTransformsFor("ㅅ")).not.toContain("flip-x");
     expect(trapTransformsFor("ㅈ")).not.toContain("flip-x");
-    expect(trapTransformsFor("ㅅ")).toEqual(expect.arrayContaining(["rotate-90", "rotate-270"]));
+    expect(trapTransformsFor("ㅅ")).toContain("rotate-90");
+    expect(trapTransformsFor("ㅅ")).not.toContain("rotate-270" as never);
 
     const bieupBoard = createAlphabetStageBoard(["ㅂ"], ALPHABET_ORDER, 2, () => .999);
     expect(bieupBoard.some(({ value, transform }) => value === "ㅂ" && transform === "rotate-90")).toBe(true);
     expect(bieupBoard.some(({ value, transform }) => value === "ㅂ" && transform === "flip-x")).toBe(false);
     const mieumBoard = createAlphabetStageBoard(["ㅁ"], ALPHABET_ORDER, 2, () => .999);
+    expect(mieumBoard.filter(({ required }) => !required).map(({ value }) => value)).toEqual(expect.arrayContaining(["○", "△", "ㅇ"]));
     expect(mieumBoard.some(({ value, transform }) => value === "ㅁ" && transform)).toBe(false);
+  });
+
+  it("uses only line shapes for stroke vowels and simple symbols for the Cheonjiin dot", () => {
+    for (const target of ["ㅣ", "ㅡ"]) {
+      const choices = createAlphabetStageBoard([target], ALPHABET_ORDER, 2, () => .999).filter(({ required }) => !required);
+      expect(choices.map(({ value }) => value)).toEqual(expect.arrayContaining(["╱", "∿", "╲"]));
+      expect(choices.every(({ shape }) => shape)).toBe(true);
+    }
+    const dotChoices = createAlphabetStageBoard(["ㆍ"], ALPHABET_ORDER, 2, () => .999).filter(({ required }) => !required);
+    expect(dotChoices.map(({ value }) => value)).toEqual(expect.arrayContaining(["★", "♥", ","]));
+    expect(dotChoices.every(({ shape }) => shape)).toBe(true);
   });
 
   it("grows the board without adding another valid copy of the answer", () => {
@@ -68,6 +80,13 @@ describe("Alphabet journey", () => {
     const board = createAlphabetStageBoard(["ㄱ", "ㄴ", "ㄷ"], ALPHABET_ORDER, 4, () => .31);
     expect(board.filter(({ required }) => required).map(({ value }) => value)).toEqual(expect.arrayContaining(["ㄱ", "ㄴ", "ㄷ"]));
     expect(board.filter(({ required }) => required)).toHaveLength(3);
+  });
+
+  it("keeps consonants out of a vowel-only grouped board", () => {
+    const board = createAlphabetStageBoard(["ㅡ", "ㆍ"], ALPHABET_ORDER, 4, () => .17);
+    const choices = board.filter(({ required }) => !required);
+    expect(choices.every(({ shape }) => shape)).toBe(true);
+    expect(choices.some(({ value }) => ALPHABET_ORDER.slice(0, 14).includes(value as never))).toBe(false);
   });
 
   it("keeps ordinary wrong choices from advancing the target", () => {

@@ -191,10 +191,13 @@ export class TalkApp {
       button.type = "button";
       button.className = `letter-tile letter-tile--alphabet letter-tile--color-${boardColorAt(index)}`;
       if (tile.transform) button.classList.add(`letter-tile--${tile.transform}`);
+      if (tile.shape) button.classList.add("letter-tile--shape");
       button.dataset.tileId = String(tile.id);
       button.setAttribute(
         "aria-label",
-        tile.transform
+        tile.shape
+          ? `${tile.value} shape trap`
+          : tile.transform
           ? `${tile.transform.startsWith("rotate") ? "Rotated" : "Reversed"} ${tile.value} trap`
           : tile.value === "ㆍ"
             ? "Cheonjiin dot"

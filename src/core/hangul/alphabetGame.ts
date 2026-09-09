@@ -6,6 +6,7 @@ export interface AlphabetTile {
   value: string;
   required: boolean;
   transform?: GlyphTransform;
+  shape?: true;
 }
 
 export interface SequenceTapResult {
@@ -45,22 +46,48 @@ const shuffle = <T>(values: T[], rng: () => number): T[] => {
 };
 
 const TRAP_GLYPHS = ["ㄱ", "ㄴ", "ㄷ", "ㄹ", "ㅂ", "ㅅ", "ㅈ", "ㅊ", "ㅋ", "ㅌ", "ㅍ", "ㅎ"] as const;
+const VOWEL_GLYPHS = ["ㅣ", "ㅡ", "ㆍ"] as const;
+const LINE_SHAPES = ["╱", "∿", "╲"] as const;
+const DOT_SHAPES = ["★", "♥", ","] as const;
+const MIEUM_SHAPES = ["○", "△", "ㅇ"] as const;
+const CHOICE_TRANSFORMS: readonly GlyphTransform[] = ["flip-x", "flip-y", "rotate-90"];
 
-function trapCandidates(targets: readonly string[]): readonly { value: string; transform: GlyphTransform }[] {
+const shapeTiles = (values: readonly string[]): readonly Omit<AlphabetTile, "id" | "required">[] =>
+  values.map((value) => ({ value, shape: true }));
+
+function transformedChoiceFor(target: string, transform: GlyphTransform): Omit<AlphabetTile, "id" | "required"> {
+  const value = [target, ...TRAP_GLYPHS].find((candidate) => trapTransformsFor(candidate as never).includes(transform));
+  if (!value) throw new Error(`No visible ${transform} Alphabet trap is available.`);
+  return { value, transform };
+}
+
+function trapCandidates(targets: readonly string[]): readonly Omit<AlphabetTile, "id" | "required">[] {
+  if (targets.length === 1 && targets[0] === "ㅁ") return shapeTiles(MIEUM_SHAPES);
+  if (targets.length === 1 && (targets[0] === "ㅣ" || targets[0] === "ㅡ")) return shapeTiles(LINE_SHAPES);
+  if (targets.length === 1 && targets[0] === "ㆍ") return shapeTiles(DOT_SHAPES);
+  if (targets.length === 1) return CHOICE_TRANSFORMS.map((transform) => transformedChoiceFor(targets[0]!, transform));
+
+  const shapes = targets.flatMap((target) =>
+    target === "ㅁ" ? shapeTiles(MIEUM_SHAPES)
+      : target === "ㆍ" ? shapeTiles(DOT_SHAPES)
+        : target === "ㅣ" || target === "ㅡ" ? shapeTiles(LINE_SHAPES)
+          : [],
+  ).filter(({ value }) => !targets.includes(value));
+  const consonantTargets = targets.filter((target) => !(VOWEL_GLYPHS as readonly string[]).includes(target) && target !== "ㅁ");
   const targetTransforms = targets.flatMap((target) =>
     trapTransformsFor(target as never).map((transform) => ({ value: target, transform })),
   );
   const otherTransforms = TRAP_GLYPHS
     .filter((value) => !targets.includes(value))
     .flatMap((value) => trapTransformsFor(value).map((transform) => ({ value, transform })));
-  return [...targetTransforms, ...otherTransforms];
+  if (consonantTargets.length === 0) return shapes.length ? shapes : shapeTiles([...LINE_SHAPES, ...DOT_SHAPES]);
+  return [...targetTransforms, ...shapes, ...otherTransforms];
 }
 
 /**
  * Build one ordered find-the-jamo board for the continuous Alphabet journey.
- * The 2×2 opening deliberately contains one answer, one ordinary distractor,
- * and two visibly mirrored traps. Larger boards preserve the single answer
- * while increasing both ordinary choices and mirrored traps.
+ * A 2×2 stage contains one answer and three type-specific visual choices.
+ * Larger boards repeat the same visual language around the ordered answers.
  */
 export function createAlphabetStageBoard(
   sequence: readonly string[],
@@ -70,19 +97,13 @@ export function createAlphabetStageBoard(
 ): AlphabetTile[] {
   const size = boardSide * boardSide;
   if (sequence.length === 0 || sequence.length > size) throw new RangeError("Alphabet stage sequence must fit on its board.");
-  const distractors = pool.filter((value) => !sequence.includes(value));
-  if (distractors.length === 0) throw new RangeError("Alphabet stages need at least one distractor different from the target.");
+  if (pool.length === 0) throw new RangeError("Alphabet stages need a non-empty learning pool.");
 
   const tiles: AlphabetTile[] = sequence.map((value, id) => ({ id, value, required: true }));
-  const trapCount = boardSide === 2 ? 2 : Math.max(2, Math.round(size * .22));
-  const normalCount = size - sequence.length - trapCount;
   const traps = trapCandidates(sequence);
-  for (let index = 0; index < normalCount; index += 1) {
-    tiles.push({ id: tiles.length, value: distractors[index % distractors.length]!, required: false });
-  }
-  for (let index = 0; index < trapCount; index += 1) {
+  for (let index = 0; tiles.length < size; index += 1) {
     const trap = traps[index % traps.length]!;
-    tiles.push({ id: tiles.length, value: trap.value, required: false, transform: trap.transform });
+    tiles.push({ id: tiles.length, required: false, ...trap });
   }
   return shuffle(tiles, rng);
 }

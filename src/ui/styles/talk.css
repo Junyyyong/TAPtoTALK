@@ -78,7 +78,7 @@
 .letter-tile--flip-x .letter-glyph { transform: scaleX(-1); }
 .letter-tile--flip-y .letter-glyph { transform: scaleY(-1); }
 .letter-tile--rotate-90 .letter-glyph { transform: rotate(90deg); }
-.letter-tile--rotate-270 .letter-glyph { transform: rotate(270deg); }
+.letter-tile--shape .letter-glyph { font-family: Arial,sans-serif; font-weight: 700; }
 .letter-tile--punctuation { font-size: clamp(25px,6.8vw,31px); font-weight: 900; }
 .letter-tile--cheonjiin-dot,.letter-tile--period { font-size: 0; }
 .letter-tile--cheonjiin-dot::after,.letter-tile--period::after { position: absolute; top: 50%; left: 50%; width: 8px; height: 8px; background: currentColor; content: ""; transform: translate(-50%,-50%); }

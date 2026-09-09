@@ -4,18 +4,18 @@ import { requiredBoardSymbols } from "./target";
 export const BOARD_SIZE = 81;
 export const TARGET_SYMBOL_BUFFER = 1.5;
 export const MIRROR_TRAP_CHANCE = 0.2;
-export type GlyphTransform = "flip-x" | "flip-y" | "rotate-90" | "rotate-270";
+export type GlyphTransform = "flip-x" | "flip-y" | "rotate-90";
 
 /** Only transformations that visibly change the glyph are offered as traps. */
 const TRAP_TRANSFORMS: Readonly<Partial<Record<BoardSymbol, readonly GlyphTransform[]>>> = {
   "ㄱ": ["flip-x", "flip-y"], "ㄲ": ["flip-x", "flip-y"], "ㄴ": ["flip-x", "flip-y"],
-  "ㄷ": ["flip-x", "rotate-90", "rotate-270"], "ㄸ": ["flip-x", "rotate-90", "rotate-270"],
-  "ㄹ": ["flip-x", "flip-y", "rotate-90", "rotate-270"],
+  "ㄷ": ["flip-x", "rotate-90"], "ㄸ": ["flip-x", "rotate-90"],
+  "ㄹ": ["flip-x", "flip-y", "rotate-90"],
   "ㅂ": ["rotate-90"], "ㅃ": ["rotate-90"],
-  "ㅅ": ["flip-y", "rotate-90", "rotate-270"], "ㅆ": ["flip-y", "rotate-90", "rotate-270"],
-  "ㅈ": ["flip-y", "rotate-90", "rotate-270"], "ㅉ": ["flip-y", "rotate-90", "rotate-270"],
-  "ㅊ": ["flip-y", "rotate-90", "rotate-270"], "ㅋ": ["flip-x", "flip-y"],
-  "ㅌ": ["rotate-90"], "ㅍ": ["rotate-90"], "ㅎ": ["flip-y", "rotate-90", "rotate-270"],
+  "ㅅ": ["flip-y", "rotate-90"], "ㅆ": ["flip-y", "rotate-90"],
+  "ㅈ": ["flip-y", "rotate-90"], "ㅉ": ["flip-y", "rotate-90"],
+  "ㅊ": ["flip-y", "rotate-90"], "ㅋ": ["flip-x", "flip-y"],
+  "ㅌ": ["rotate-90"], "ㅍ": ["rotate-90"], "ㅎ": ["flip-y", "rotate-90"],
 };
 
 export function trapTransformsFor(symbol: BoardSymbol): readonly GlyphTransform[] {
