@@ -52,7 +52,8 @@ try {
   await send("Page.navigate", { url });
   await delay(8500);
   if (expression) {
-    await send("Runtime.evaluate", { expression, awaitPromise: true });
+    const evaluated = await send("Runtime.evaluate", { expression, awaitPromise: true, returnByValue: true });
+    if (evaluated.exceptionDetails) throw new Error(JSON.stringify(evaluated.exceptionDetails));
     await delay(900);
   }
   const { data } = await send("Page.captureScreenshot", {

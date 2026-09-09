@@ -13,6 +13,7 @@ TAPtoTALK은 레이아웃을 다시 디자인해도 한글 규칙을 건드리�
 
 - `src/core/hangul/` — 천지인 키 정의, 한글 조합, 문장 분해, 보드 생성
 - `src/content/prompts.ts` — 문장 데이터와 자유 모드 설정
+- `src/content/learningJourney.ts` — Alphabet/Syllable 순서, 8×8 반복 구간과 함정 비율
 
 ## 교체형 미디어
 

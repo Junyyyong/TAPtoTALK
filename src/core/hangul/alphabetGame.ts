@@ -96,7 +96,7 @@ function trapCandidates(targets: readonly string[]): readonly Omit<AlphabetTile,
 export function createAlphabetStageBoard(
   sequence: readonly string[],
   pool: readonly string[],
-  boardSide: 2 | 4 | 6,
+  boardSide: 2 | 4 | 6 | 8,
   rng: () => number = Math.random,
 ): AlphabetTile[] {
   const size = boardSide * boardSide;
@@ -108,6 +108,33 @@ export function createAlphabetStageBoard(
   for (let index = 0; tiles.length < size; index += 1) {
     const trap = traps[index % traps.length]!;
     tiles.push({ id: tiles.length, required: false, ...trap });
+  }
+  return shuffle(tiles, rng);
+}
+
+/** Mixed practice boards reserve every tap, then add ordinary jamo and traps. */
+export function createMixedLearningBoard(
+  sequence: readonly string[],
+  pool: readonly string[],
+  boardSide: 4 | 6 | 8,
+  trapRatio: number,
+  rng: () => number = Math.random,
+): AlphabetTile[] {
+  const size = boardSide * boardSide;
+  if (!sequence.length || sequence.length >= size || !pool.length) throw new RangeError("Invalid learning board.");
+  if (trapRatio < 0 || trapRatio > 1) throw new RangeError("Invalid trap ratio.");
+  const tiles: AlphabetTile[] = sequence.map((value, id) => ({ id, value, required: true }));
+  const traps = shuffle([...trapCandidates(pool)], rng);
+  const trapCount = Math.min(Math.round(size * trapRatio), size - tiles.length);
+  if (!traps.length && trapCount) throw new RangeError("No available learning traps.");
+  for (let index = 0; index < trapCount; index += 1) {
+    tiles.push({ ...traps[index % traps.length]!, id: tiles.length, required: false });
+  }
+  // Include each ordinary jamo when there is room (all 17 fit in 8×8).
+  const missing = shuffle([...new Set(pool)].filter((value) => !sequence.includes(value)), rng);
+  while (tiles.length < size) {
+    const value = missing.shift() ?? pool[Math.floor(rng() * pool.length)]!;
+    tiles.push({ id: tiles.length, value, required: false });
   }
   return shuffle(tiles, rng);
 }

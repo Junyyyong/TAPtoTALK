@@ -23,6 +23,10 @@
 .talk-screen.is-alphabet-mode .target-text.is-long-sequence { font-size: 38px; }
 .talk-screen.is-alphabet-mode .target-hint { max-width: 100%; overflow: hidden; font-weight: 650; text-overflow: ellipsis; white-space: nowrap; }
 .talk-screen.is-alphabet-mode .typed-text { display: none; }
+.talk-screen.is-syllable-mode .typed-text { display: flex; height: 58px; min-height: 58px; justify-content: center; align-items: center; font-size: 34px; }
+.syllable-taps { display: inline-flex; gap: 6px; align-items: center; font-family: "TAP Sans KR",sans-serif; font-size: 18px; color: var(--ink-soft); }
+.syllable-taps .is-done { color: var(--accent); }
+.syllable-taps .is-current { color: var(--hot-deep); text-decoration: underline; text-underline-offset: 4px; }
 .typed-text small { color: var(--ink-soft); font-family: "TAP Sans KR",sans-serif; font-size: 11px; font-weight: 700; }
 .target-prompt { transition: color .18s ease,background .18s ease,border-color .18s ease; }
 .target-prompt.is-alphabet-complete { color: white; border-color: var(--accent-deep); background: var(--accent); }
@@ -69,6 +73,7 @@
 .letter-board[data-grid-size="2"] { grid-template-columns: repeat(2,minmax(0,1fr)); grid-template-rows: repeat(2,minmax(0,1fr)); gap: 10px; }
 .letter-board[data-grid-size="4"] { grid-template-columns: repeat(4,minmax(0,1fr)); grid-template-rows: repeat(4,minmax(0,1fr)); gap: 7px; }
 .letter-board[data-grid-size="6"] { grid-template-columns: repeat(6,minmax(0,1fr)); grid-template-rows: repeat(6,minmax(0,1fr)); gap: 5px; }
+.letter-board[data-grid-size="8"] { grid-template-columns: repeat(8,minmax(0,1fr)); grid-template-rows: repeat(8,minmax(0,1fr)); gap: 4px; }
 .letter-tile { position: relative; display: grid; min-width: 0; min-height: 0; place-items: center; overflow: hidden; padding: 0; border: 1px solid var(--slab); border-radius: 6px; color: #fff; background: linear-gradient(180deg,color-mix(in srgb,var(--face) 76%,white),var(--face)); box-shadow: inset 0 2px 0 rgba(255,255,255,.85),inset 0 -2px 3px var(--slab),0 2px 0 var(--slab); font-family: "TAP Sans KR",sans-serif; font-size: clamp(20.4px,5.88vw,25.2px); font-weight: 800; line-height: 1; text-align: center; text-shadow: 0 1px 0 var(--slab); touch-action: manipulation; }
 .letter-tile--color-1 { --face: var(--v1); } .letter-tile--color-2 { --face: var(--v2); }
 .letter-tile--color-3 { --face: var(--v3); } .letter-tile--color-4 { --face: var(--v4); }
@@ -107,6 +112,11 @@
 .letter-board[data-grid-size="4"] .letter-tile--cheonjiin-dot::after { width: 14px; height: 14px; border-radius: 2px; }
 .letter-board[data-grid-size="6"] .letter-tile--cheonjiin-dot::after { width: 10px; height: 10px; }
 .letter-board[data-grid-size="6"] .letter-tile--alphabet { border-radius: 8px; font-size: clamp(25px,7vw,32px); }
+.letter-board[data-grid-size="8"] .letter-tile--alphabet { border-radius: 6px; font-size: clamp(21px,6vw,26px); }
+.letter-board[data-grid-size="6"],.letter-board[data-grid-size="8"] { --learning-stroke: 3px; }
+.letter-board[data-grid-size="4"] { --learning-stroke: 5px; }
+.letter-tile--shape-line-up .letter-glyph,.letter-tile--shape-line-down .letter-glyph,.letter-tile--shape-line-shallow .letter-glyph,.letter-tile--stroke-horizontal .letter-glyph { height: var(--learning-stroke,7px); }
+.letter-tile--stroke-vertical .letter-glyph { width: var(--learning-stroke,7px); }
 .letter-tile--alphabet.letter-tile--cheonjiin-dot { font-size: 0; }
 .letter-tile.is-wrong-pick { animation: wrong-pick 340ms ease; }
 @keyframes wrong-pick { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-3px); filter: saturate(.5); } 75% { transform: translateX(3px); filter: saturate(.5); } }

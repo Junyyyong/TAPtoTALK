@@ -9,7 +9,7 @@ export interface SentencePrompt {
 export interface AlphabetStage {
   id: string;
   number: number;
-  boardSide: 2 | 4 | 6;
+  boardSide: 2 | 4 | 6 | 8;
   target: string;
   sequence: readonly string[];
   note: string;

@@ -1,21 +1,21 @@
 import { createLetterBoard, inputValueForTile, MIRROR_TRAP_TOKEN, type LetterTile } from "../core/hangul/board";
-import { createAlphabetStageBoard, type AlphabetTile } from "../core/hangul/alphabetGame";
+import { createAlphabetStageBoard, createMixedLearningBoard, type AlphabetTile } from "../core/hangul/alphabetGame";
 import { composeTokens } from "../core/hangul/compose";
 import { CHEONJIIN_STROKES, CONSONANTS, type BoardSymbol } from "../core/hangul/keys";
 import { isWordMatch, pickLessonTargets, wordCountLabel } from "../core/hangul/wordChallenge";
 import { lessonCheerFor, lessonScoreFromTime } from "../core/hangul/writing";
 import { materializeTargetTokens, targetCharacterProgress, targetToTokens } from "../core/hangul/target";
-import { ALPHABET_ORDER, ALPHABET_STAGES, SENTENCE_LEVELS, SENTENCE_PROMPTS, SENTENCE_ROUND_SIZE, WORD_LEVELS, WORD_TARGETS, type SentencePrompt, type WordTarget } from "../content/prompts";
+import { ALPHABET_ORDER, WORD_LEVELS, WORD_TARGETS, type AlphabetStage, type WordTarget } from "../content/prompts";
+import { learningStageAt, LEARNING_TRAP_RATIO, LEARNING_TRANSITION_MS, type LearningMode } from "../content/learningJourney";
 import { APP_CONFIG } from "../config/app";
 import { el } from "./dom";
 import { createAlphabetGlyph } from "./alphabetGlyph";
 import { feedback } from "./feedback";
 import { canAcceptInput } from "./inputCapacity";
 import { Cheer } from "./screens/cheer";
-import { loadSentenceProgress, saveSentenceProgress } from "./sentenceProgress";
 import { loadTalkPreferences, saveTalkPreferences, type TalkPreferences } from "./talkPreferences";
 
-type Mode = "alphabet" | "sentence" | "word";
+type Mode = LearningMode | "word";
 interface TypedToken { value: string; tileId?: number }
 
 const formatTime = (ms: number): string => {
@@ -53,23 +53,21 @@ export class TalkApp {
   private readonly helpTitle = el("help-title");
   private readonly helpBody = el("help-body");
   private preferences: TalkPreferences = loadTalkPreferences();
-  private sentenceProgress = loadSentenceProgress();
-  private mode: Mode = "sentence";
-  private prompt: SentencePrompt = SENTENCE_PROMPTS[0]!;
+  private mode: Mode = "alphabet";
+  private introMode: LearningMode = "alphabet";
   private wordTarget: WordTarget = WORD_TARGETS[0]!;
   private wordCount = 0;
   private wordLevel = 0;
   private wordTargetIndex = 0;
   private wordLessonTargets: readonly WordTarget[] = [];
-  private sentenceLevel = 0;
-  private sentenceIndex = 0;
-  private sentenceLessonPrompts: readonly SentencePrompt[] = [];
   private alphabetStageIndex = 0;
+  private learningStage: AlphabetStage = learningStageAt("alphabet", 0);
   private alphabetPartIndex = 0;
   private alphabetTiles: AlphabetTile[] = [];
   private inputLocked = true;
   private paused = false;
-  private sentenceTimer?: number;
+  private stageTimer?: number;
+  private stageTransitionPending = false;
   private tiles: LetterTile[] = [];
   private used = new Set<number>();
   private input: TypedToken[] = [];
@@ -78,11 +76,11 @@ export class TalkApp {
   private frame?: number;
 
   constructor() {
-    el("mode-alphabet").addEventListener("click", () => this.showAlphabetIntro());
+    el("mode-alphabet").addEventListener("click", () => this.showAlphabetIntro("alphabet"));
     el("btn-alphabet-intro-back").addEventListener("click", () => this.showTitle());
     el("btn-alphabet-start").addEventListener("click", () => this.startAlphabetJourney());
-    el("mode-sentence").addEventListener("click", () => this.showLevelSelect());
-    el("mode-free").addEventListener("click", () => this.showWordLevelSelect());
+    el("mode-syllable").addEventListener("click", () => this.showAlphabetIntro("syllable"));
+    el("mode-word").addEventListener("click", () => this.showWordLevelSelect());
     el("btn-back").addEventListener("click", () => this.showTitle());
     el("btn-pause").addEventListener("click", () => this.pauseGame());
     this.setupBackspace();
@@ -106,84 +104,93 @@ export class TalkApp {
   }
 
   private showTitle(): void {
-    window.clearTimeout(this.sentenceTimer);
+    window.clearTimeout(this.stageTimer);
+    this.stageTransitionPending = false;
     this.inputLocked = true; this.paused = false;
     this.stopClock(); this.cheer.stop();
     this.result.classList.add("hidden"); this.help.classList.add("hidden"); this.studioSplash.classList.add("hidden"); this.splash.classList.add("hidden"); this.alphabetIntro.classList.add("hidden"); this.game.classList.add("hidden"); this.title.classList.remove("hidden");
   }
 
-  private start(mode: Mode, keepLessonTime = false): void {
-    window.clearTimeout(this.sentenceTimer);
+  private startWord(): void {
+    window.clearTimeout(this.stageTimer);
+    this.stageTransitionPending = false;
     this.cheer.stop();
     this.inputLocked = false; this.paused = false;
     this.game.classList.remove("is-input-locked");
     this.targetPrompt.classList.remove("is-writing-complete");
-    this.mode = mode;
-    if (mode === "alphabet") { this.showAlphabetIntro(); return; }
-    if (mode === "sentence") this.prompt = this.sentenceLessonPrompts[this.sentenceIndex] ?? SENTENCE_PROMPTS[0]!;
-    else this.wordTarget = this.wordLessonTargets[this.wordTargetIndex] ?? WORD_TARGETS[0]!;
+    this.mode = "word";
+    this.wordTarget = this.wordLessonTargets[this.wordTargetIndex] ?? WORD_TARGETS[0]!;
     this.input = []; this.used.clear();
-    const requiredText = mode === "sentence" ? this.prompt.text : this.wordTarget.word;
+    const requiredText = this.wordTarget.word;
     this.tiles = createLetterBoard(requiredText);
-    this.targetLabel.textContent = mode === "sentence" ? `${SENTENCE_LEVELS[this.sentenceLevel]!.name} · ${this.sentenceIndex + 1}/${SENTENCE_ROUND_SIZE}` : `${WORD_LEVELS[this.wordLevel]!.name} · ${this.wordTargetIndex + 1}/3`;
+    this.targetLabel.textContent = `${WORD_LEVELS[this.wordLevel]!.name} · ${this.wordTargetIndex + 1}/3`;
     this.renderTranslatedTarget();
-    this.typedText.dataset.empty = mode === "sentence" ? "Your sentence appears here." : "Your word appears here.";
-    this.runMode.textContent = mode === "sentence" ? "Sentence" : "Word";
-    this.game.classList.toggle("is-word-mode", mode === "word");
-    this.game.classList.remove("is-alphabet-mode");
+    this.typedText.dataset.empty = "Your word appears here.";
+    this.runMode.textContent = "Word";
+    this.game.classList.add("is-word-mode");
+    this.game.classList.remove("is-alphabet-mode", "is-syllable-mode");
+    this.targetPrompt.classList.remove("is-alphabet-complete");
     this.submitRow.classList.add("hidden");
     this.result.classList.add("hidden"); this.title.classList.add("hidden"); this.splash.classList.add("hidden"); this.game.classList.remove("hidden");
-    this.renderBoard(); this.renderInput(); this.startClock(mode === "sentence" && keepLessonTime);
+    this.renderBoard(); this.renderInput(); this.startClock();
   }
 
   private renderTranslatedTarget(): void {
     this.targetText.classList.remove("is-medium-sequence", "is-long-sequence");
-    if (this.mode === "word") {
       const korean = document.createElement("span"); korean.className = "target-korean"; korean.textContent = this.wordTarget.word;
       const english = document.createElement("span"); english.className = "target-translation-inline"; english.textContent = this.wordTarget.translation;
       this.targetText.replaceChildren(korean, english);
       this.targetHint.textContent = "Complete the target word.";
-      return;
-    }
-    this.targetText.textContent = this.prompt.text;
-    this.targetHint.textContent = this.prompt.translation;
   }
 
-  private showAlphabetIntro(): void {
+  private showAlphabetIntro(mode: LearningMode): void {
+    window.clearTimeout(this.stageTimer);
+    this.stageTransitionPending = false;
+    this.inputLocked = true; this.paused = false;
+    this.introMode = mode;
+    el("learning-intro-title").textContent = mode === "alphabet" ? "ALPHABET" : "SYLLABLE";
+    el("learning-intro-mark").textContent = mode === "alphabet" ? "ㄱ" : "가";
     this.stopClock(); this.cheer.stop();
     this.result.classList.add("hidden"); this.help.classList.add("hidden"); this.game.classList.add("hidden"); this.title.classList.add("hidden");
     this.alphabetIntro.classList.remove("hidden");
   }
 
   private startAlphabetJourney(): void {
-    window.clearTimeout(this.sentenceTimer);
+    window.clearTimeout(this.stageTimer);
+    this.stageTransitionPending = false;
     this.cheer.stop();
-    this.mode = "alphabet";
+    this.mode = this.introMode;
     this.inputLocked = false; this.paused = false;
     this.game.classList.remove("is-input-locked");
     this.alphabetStageIndex = 0; this.alphabetPartIndex = 0; this.elapsedMs = 0;
     el("btn-again").textContent = "Play again";
     this.result.classList.add("hidden"); this.title.classList.add("hidden"); this.alphabetIntro.classList.add("hidden"); this.splash.classList.add("hidden"); this.game.classList.remove("hidden");
     this.game.classList.remove("is-word-mode"); this.game.classList.add("is-alphabet-mode");
+    this.game.classList.toggle("is-syllable-mode", this.mode === "syllable");
+    this.targetPrompt.classList.remove("is-writing-complete");
     this.submitRow.classList.add("hidden");
     this.loadAlphabetStage();
     this.startClock();
   }
 
   private loadAlphabetStage(): void {
-    const stage = ALPHABET_STAGES[this.alphabetStageIndex]!;
+    if (this.mode === "word") return;
+    const stage = learningStageAt(this.mode, this.alphabetStageIndex, this.learningStage.target);
+    this.learningStage = stage;
     this.targetPrompt.classList.remove("is-alphabet-complete");
     this.used.clear();
     this.alphabetPartIndex = 0;
-    this.alphabetTiles = createAlphabetStageBoard(stage.sequence, ALPHABET_ORDER, stage.boardSide);
-    this.runMode.textContent = "Alphabet";
+    this.alphabetTiles = stage.boardSide === 8 || (this.mode === "syllable" && stage.boardSide !== 2)
+      ? createMixedLearningBoard(stage.sequence, ALPHABET_ORDER, stage.boardSide as 4 | 6 | 8, LEARNING_TRAP_RATIO)
+      : createAlphabetStageBoard(stage.sequence, ALPHABET_ORDER, stage.boardSide);
+    this.runMode.textContent = this.mode === "syllable" ? "Syllable" : "Alphabet";
     this.targetLabel.textContent = `STAGE ${stage.number}`;
     this.renderAlphabetBoard();
     this.renderAlphabetTarget();
   }
 
   private renderAlphabetBoard(): void {
-    const stage = ALPHABET_STAGES[this.alphabetStageIndex]!;
+    const stage = this.learningStage;
     this.board.dataset.gridSize = String(stage.boardSide);
     const fragment = document.createDocumentFragment();
     this.alphabetTiles.forEach((tile, index) => {
@@ -223,7 +230,7 @@ export class TalkApp {
 
   private tapAlphabetTile(tile: AlphabetTile, button: HTMLButtonElement): void {
     if (this.inputLocked || this.paused || this.used.has(tile.id)) return;
-    const stage = ALPHABET_STAGES[this.alphabetStageIndex]!;
+    const stage = this.learningStage;
     if (tile.transform || tile.value !== stage.sequence[this.alphabetPartIndex]) {
       feedback.reject();
       button.classList.remove("is-wrong-pick"); void button.offsetWidth; button.classList.add("is-wrong-pick");
@@ -237,16 +244,21 @@ export class TalkApp {
     if (this.alphabetPartIndex < stage.sequence.length) return;
     this.inputLocked = true;
     this.targetPrompt.classList.add("is-alphabet-complete");
-    window.setTimeout(() => {
-      this.targetPrompt.classList.remove("is-alphabet-complete");
-      this.alphabetStageIndex += 1;
-      if (this.alphabetStageIndex === ALPHABET_STAGES.length) this.completeAlphabetJourney();
-      else { this.inputLocked = false; this.loadAlphabetStage(); }
-    }, 360);
+    this.stageTransitionPending = true;
+    this.stageTimer = window.setTimeout(() => this.advanceLearningStage(), LEARNING_TRANSITION_MS);
+  }
+
+  private advanceLearningStage(): void {
+    if (!this.stageTransitionPending || this.paused || this.mode === "word") return;
+    this.stageTransitionPending = false;
+    this.alphabetStageIndex += 1;
+    this.inputLocked = false;
+    this.loadAlphabetStage();
   }
 
   private renderAlphabetTarget(): void {
-    const stage = ALPHABET_STAGES[this.alphabetStageIndex]!;
+    const stage = this.learningStage;
+    if (this.mode === "syllable") { this.renderSyllableTarget(stage); return; }
     const korean = document.createElement("span"); korean.className = "target-korean";
     stage.sequence.forEach((value, index) => {
       const jamo = document.createElement("span");
@@ -270,13 +282,21 @@ export class TalkApp {
     this.typedText.replaceChildren();
   }
 
-  private completeAlphabetJourney(): void {
-    this.inputLocked = true;
-    this.stopClock();
-    feedback.complete();
-    const targetMs = 180_000;
-    const score = lessonScoreFromTime(this.elapsedMs, targetMs);
-    this.showResult("Alphabet complete!", `2×2 → 4×4 → 6×6 · ${formatTime(this.elapsedMs)}`, score);
+  private renderSyllableTarget(stage: AlphabetStage): void {
+    this.targetText.classList.remove("is-medium-sequence", "is-long-sequence");
+    this.targetText.textContent = stage.target;
+    const progress = document.createElement("span"); progress.className = "syllable-taps";
+    stage.sequence.forEach((value, index) => {
+      if (index) progress.append(" → ");
+      const token = document.createElement("span");
+      token.className = index < this.alphabetPartIndex ? "is-done" : index === this.alphabetPartIndex ? "is-current" : "";
+      token.textContent = value === "ㆍ" ? "■" : value;
+      progress.append(token);
+    });
+    this.targetHint.replaceChildren(progress);
+    const composed = composeTokens(stage.sequence.slice(0, this.alphabetPartIndex));
+    this.typedText.textContent = composed || "\u00a0";
+    this.typedText.classList.remove("is-empty", "is-wrong", "is-correct");
   }
 
   private renderBoard(): void {
@@ -304,7 +324,7 @@ export class TalkApp {
 
   private typeTile(tileId: number, value: BoardSymbol): void {
     if (this.inputLocked || this.paused) return;
-    const target = this.mode === "sentence" ? this.prompt.text : this.wordTarget.word;
+    const target = this.wordTarget.word;
     if (!canAcceptInput(this.input.length, target)) return;
     if (this.used.has(tileId)) return;
     feedback.pick(this.input.length + 1);
@@ -314,7 +334,7 @@ export class TalkApp {
   }
   private typeTrapTile(tileId: number): void {
     if (this.inputLocked || this.paused || this.used.has(tileId)) return;
-    const target = this.mode === "sentence" ? this.prompt.text : this.wordTarget.word;
+    const target = this.wordTarget.word;
     if (!canAcceptInput(this.input.length, target)) return;
     feedback.reject();
     this.used.add(tileId); this.input.push({ value: MIRROR_TRAP_TOKEN, tileId });
@@ -322,13 +342,13 @@ export class TalkApp {
     this.renderInput();
   }
   private typeFixed(value: string): void {
-    if (this.inputLocked || this.paused) return;
-    const target = this.mode === "sentence" ? this.prompt.text : this.wordTarget.word;
+    if (this.inputLocked || this.paused || this.mode !== "word") return;
+    const target = this.wordTarget.word;
     if (!canAcceptInput(this.input.length, target)) return;
     feedback.tap(); this.input.push({ value }); this.renderInput();
   }
   private backspace(): void {
-    if (this.inputLocked || this.paused) return;
+    if (this.inputLocked || this.paused || this.mode !== "word") return;
     const removed = this.input.pop();
     if (removed?.tileId !== undefined) {
       this.used.delete(removed.tileId);
@@ -367,7 +387,7 @@ export class TalkApp {
 
   private renderInput(): void {
     const text = composeTokens(this.input.map((token) => token.value));
-    const target = this.mode === "sentence" ? this.prompt.text : this.wordTarget.word;
+    const target = this.wordTarget.word;
     const expected = materializeTargetTokens(targetToTokens(target));
     const wrongIndex = this.input.findIndex((token, index) => token.value !== expected[index]);
     const targetNodes = targetCharacterProgress(target, this.input.map((token) => token.value)).map(({ character, state }) => {
@@ -378,14 +398,13 @@ export class TalkApp {
       const korean = document.createElement("span"); korean.className = "target-korean"; korean.append(...targetNodes);
       const english = document.createElement("span"); english.className = "target-translation-inline"; english.textContent = this.wordTarget.translation;
       this.targetText.replaceChildren(korean, english);
-    } else this.targetText.replaceChildren(...targetNodes);
+    }
     const composed = document.createElement("span"); composed.className = `composed-input${text ? "" : " is-empty"}`; composed.textContent = text; composed.dataset.empty = this.typedText.dataset.empty;
     const count = document.createElement("small"); count.className = "writing-token-count"; count.textContent = `${Math.min(this.input.length, expected.length)} / ${expected.length}`;
     this.typedText.replaceChildren(composed, count);
     this.typedText.classList.toggle("is-empty", text.length === 0);
     this.typedText.classList.toggle("is-correct", this.input.length > 0 && wrongIndex < 0);
     this.typedText.classList.toggle("is-wrong", wrongIndex >= 0);
-    if (this.mode === "sentence" && text === this.prompt.text) this.finishSentence();
     if (this.mode === "word") {
       this.clearWordFeedback();
       if (isWordMatch(text, this.wordTarget.word)) this.completeWord();
@@ -410,37 +429,9 @@ export class TalkApp {
     update();
   }
   private stopClock(): void { if (this.frame !== undefined) cancelAnimationFrame(this.frame); this.frame = undefined; }
-  private finishSentence(): void {
-    if (this.frame === undefined || this.inputLocked) return;
-    this.inputLocked = true;
-    this.game.classList.add("is-input-locked");
-    this.targetPrompt.classList.add("is-writing-complete");
-    this.stopClock();
-    feedback.complete();
-    const level = SENTENCE_LEVELS[this.sentenceLevel]!;
-    const finalSentence = this.sentenceIndex === this.sentenceLessonPrompts.length - 1;
-    if (finalSentence) {
-      const score = lessonScoreFromTime(this.elapsedMs, level.targetMs);
-      const previousBest = this.sentenceProgress.bestScores[level.id] ?? 0;
-      this.sentenceProgress.bestScores[level.id] = Math.max(previousBest, score);
-      saveSentenceProgress(this.sentenceProgress);
-      el("btn-again").textContent = "Choose level";
-      this.showResult("Level complete!", `${score.toLocaleString()} / 1,500 · ${formatTime(this.elapsedMs)} · Best ${this.sentenceProgress.bestScores[level.id]!.toLocaleString()}`, score);
-    } else {
-      this.sentenceTimer = window.setTimeout(() => {
-        this.targetPrompt.classList.remove("is-writing-complete");
-        this.sentenceIndex += 1;
-        this.start("sentence", true);
-      }, 520);
-    }
-  }
-
   private continueFromResult(): void {
     this.result.classList.add("hidden");
-    if (this.mode === "sentence") {
-      this.showLevelSelect(); return;
-    }
-    if (this.mode === "alphabet") {
+    if (this.mode !== "word") {
       this.startAlphabetJourney();
     }
     else this.showWordLevelSelect();
@@ -454,7 +445,7 @@ export class TalkApp {
     this.clearWordFeedback();
     this.inputLocked = true; this.targetPrompt.classList.add("is-writing-complete");
     feedback.clear(this.input.length);
-    window.setTimeout(() => {
+    this.stageTimer = window.setTimeout(() => {
       this.targetPrompt.classList.remove("is-writing-complete");
       this.wordCount += 1;
       if (this.wordCount === this.wordLessonTargets.length) {
@@ -479,6 +470,7 @@ export class TalkApp {
     this.renderBoard(); this.renderInput();
   }
   private finishWordChallenge(): void {
+    window.clearTimeout(this.stageTimer);
     this.stopClock(); this.inputLocked = true;
     el("btn-again").textContent = "Choose level";
     const label = wordCountLabel(this.wordCount);
@@ -493,6 +485,10 @@ export class TalkApp {
   }
 
   private showWordLevelSelect(): void {
+    window.clearTimeout(this.stageTimer);
+    this.stageTransitionPending = false;
+    this.inputLocked = true; this.paused = false;
+    this.alphabetIntro.classList.add("hidden");
     this.stopClock(); this.cheer.stop();
     this.result.classList.add("hidden"); this.game.classList.add("hidden"); this.title.classList.remove("hidden");
     this.openHelp("Word");
@@ -512,7 +508,7 @@ export class TalkApp {
     this.wordLessonTargets = pickLessonTargets(WORD_LEVELS[index]!.targets, 3);
     this.help.classList.add("hidden");
     el("btn-again").textContent = "Choose level";
-    this.start("word");
+    this.startWord();
   }
   private showResult(title: string, detail: string, score?: number, tierScore = score): void {
     const reveal = (): void => {
@@ -530,31 +526,9 @@ export class TalkApp {
     this.help.classList.remove("hidden");
   }
 
-  private showLevelSelect(): void {
-    this.stopClock(); this.cheer.stop();
-    this.result.classList.add("hidden"); this.game.classList.add("hidden"); this.title.classList.remove("hidden");
-    this.openHelp("Sentence");
-    this.helpBody.innerHTML = `<p class="level-intro">Complete three phrases for up to 1,500 points. Your fastest run becomes the level high score.</p><div class="level-list" id="level-list"></div>`;
-    const list = el("level-list");
-    SENTENCE_LEVELS.forEach((level, index) => {
-      const best = this.sentenceProgress.bestScores[level.id] ?? 0;
-      const button = document.createElement("button");
-      button.type = "button"; button.className = "level-btn";
-      button.innerHTML = `<strong>${level.name}</strong><span>${level.description}</span><em>${SENTENCE_ROUND_SIZE} phrases · Top tier ${Math.round(level.targetMs / 1000)}s</em><small>${best ? `BEST ${best.toLocaleString()}` : "NEW"}</small>`;
-      button.addEventListener("click", () => this.startSentenceLevel(index));
-      list.append(button);
-    });
-  }
-
-  private startSentenceLevel(index: number): void {
-    this.sentenceLevel = index; this.sentenceIndex = 0; this.elapsedMs = 0;
-    this.sentenceLessonPrompts = pickLessonTargets(SENTENCE_LEVELS[index]!.prompts, SENTENCE_ROUND_SIZE);
-    this.help.classList.add("hidden");
-    this.start("sentence");
-  }
-
   private pauseGame(): void {
-    if (this.inputLocked || this.paused || this.game.classList.contains("hidden")) return;
+    if ((this.inputLocked && !this.stageTransitionPending) || this.paused || this.game.classList.contains("hidden")) return;
+    if (this.stageTransitionPending) window.clearTimeout(this.stageTimer);
     this.paused = true; this.stopClock();
     this.openHelp("Paused");
     this.helpBody.innerHTML = `<div class="pause-card"><p>Take a break. The clock is stopped.</p><button class="wood-btn" id="btn-resume">Resume</button><button class="text-btn" id="btn-pause-menu">Main menu</button></div>`;
@@ -566,6 +540,7 @@ export class TalkApp {
     if (!this.paused) return;
     this.paused = false; this.help.classList.add("hidden");
     this.startClock(true);
+    if (this.stageTransitionPending) this.stageTimer = window.setTimeout(() => this.advanceLearningStage(), LEARNING_TRANSITION_MS);
     feedback.tap();
   }
 

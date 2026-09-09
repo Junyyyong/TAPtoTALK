@@ -22,8 +22,8 @@
         </header>
         <nav class="mode-list" aria-label="Game mode">
           <button class="mode-btn" id="mode-alphabet"><span class="mode-name">Alphabet</span><span class="mode-desc">Learn Korean one tap at a time.</span></button>
-          <button class="mode-btn" id="mode-free"><span class="mode-name">Word</span><span class="mode-desc">Complete three words.</span></button>
-          <button class="mode-btn" id="mode-sentence"><span class="mode-name">Sentence</span><span class="mode-desc">Copy three Korean sentences.</span></button>
+          <button class="mode-btn" id="mode-syllable"><span class="mode-name">Syllable</span><span class="mode-desc">Build 가, 나, 다 one tap at a time.</span></button>
+          <button class="mode-btn" id="mode-word"><span class="mode-name">Word</span><span class="mode-desc">Complete three words.</span></button>
         </nav>
         <div class="title-links">
           <button class="text-btn" id="btn-title-settings">Settings</button>
@@ -38,9 +38,9 @@
           <span class="icon-spacer" aria-hidden="true"></span>
         </header>
         <div class="alphabet-intro-body">
-          <h2>ALPHABET</h2>
-          <div class="alphabet-intro-mark" aria-hidden="true">ㄱ</div>
-          <p>2×2 → 4×4 → 6×6</p>
+          <h2 id="learning-intro-title">ALPHABET</h2>
+          <div class="alphabet-intro-mark" id="learning-intro-mark" aria-hidden="true">ㄱ</div>
+          <p>2×2 → 4×4 → 6×6 → 8×8</p>
           <button class="wood-btn" id="btn-alphabet-start">START</button>
         </div>
       </section>
@@ -49,13 +49,13 @@
           <button class="icon-btn" id="btn-back" aria-label="Back to menu">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg>
           </button>
-          <div class="run-heading"><span id="run-mode">Sentence</span><strong id="run-clock">00:00.0</strong></div>
+          <div class="run-heading"><span id="run-mode">Alphabet</span><strong id="run-clock">00:00.0</strong></div>
           <button class="icon-btn pause-btn" id="btn-pause" aria-label="Pause"><span aria-hidden="true"></span></button>
         </header>
         <section class="writing-card" aria-live="polite">
           <div class="target-prompt">
             <p class="target-label" id="target-label">TARGET</p><p class="target-text" id="target-text"></p>
-            <p class="target-hint" id="target-hint">Copy the sentence below.</p>
+            <p class="target-hint" id="target-hint"></p>
           </div>
           <p class="typed-text" id="typed-text" data-empty="Start typing below."></p>
           <div class="writing-submit-row hidden" id="writing-submit-row">
