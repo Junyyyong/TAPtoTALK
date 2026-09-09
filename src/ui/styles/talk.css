@@ -76,6 +76,8 @@
 .letter-tile--color-7 { --face: var(--v7); } .letter-tile--color-8 { --face: var(--v8); }
 .letter-tile--color-9 { --face: var(--v9); }
 .letter-glyph { display: block; }
+.alphabet-outline { display: block; width: 1em; height: 1em; overflow: visible; }
+.alphabet-target-jamo .alphabet-outline { margin: .19em auto; }
 .letter-tile--flip-x .letter-glyph { transform: scaleX(-1); }
 .letter-tile--flip-y .letter-glyph { transform: scaleY(-1); }
 .letter-tile--rotate-90 .letter-glyph { transform: rotate(90deg); }

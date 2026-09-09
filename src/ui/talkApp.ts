@@ -8,6 +8,7 @@ import { materializeTargetTokens, targetCharacterProgress, targetToTokens } from
 import { ALPHABET_ORDER, ALPHABET_STAGES, SENTENCE_LEVELS, SENTENCE_PROMPTS, SENTENCE_ROUND_SIZE, WORD_LEVELS, WORD_TARGETS, type SentencePrompt, type WordTarget } from "../content/prompts";
 import { APP_CONFIG } from "../config/app";
 import { el } from "./dom";
+import { createAlphabetGlyph } from "./alphabetGlyph";
 import { feedback } from "./feedback";
 import { canAcceptInput } from "./inputCapacity";
 import { Cheer } from "./screens/cheer";
@@ -209,6 +210,8 @@ export class TalkApp {
             : tile.value,
       );
       const glyph = document.createElement("span"); glyph.className = "letter-glyph"; glyph.textContent = tile.value === "ㆍ" || tile.value === "." || tile.value === "ㅣ" || tile.value === "ㅡ" ? "" : tile.value;
+      const outline = createAlphabetGlyph(tile.value);
+      if (outline) glyph.replaceChildren(outline);
       button.append(glyph);
       if (tile.value === "ㆍ") button.classList.add("letter-tile--cheonjiin-dot");
       if (tile.value === ".") button.classList.add("letter-tile--period");
@@ -252,6 +255,11 @@ export class TalkApp {
       if (index < this.alphabetPartIndex) jamo.classList.add("is-done");
       else if (index === this.alphabetPartIndex) jamo.classList.add("is-current");
       jamo.textContent = value === "ㆍ" ? "" : value;
+      const outline = createAlphabetGlyph(value);
+      if (outline) {
+        jamo.replaceChildren(outline);
+        jamo.setAttribute("aria-label", value);
+      }
       korean.append(jamo);
     });
     const note = document.createElement("span"); note.className = "alphabet-target-note"; note.textContent = stage.note;
