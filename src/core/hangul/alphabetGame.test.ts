@@ -36,10 +36,10 @@ describe("Alphabet journey", () => {
     const choices = board.filter(({ required }) => !required);
     expect(choices).toHaveLength(3);
     expect(choices.every(({ value }) => value === "ㄱ")).toBe(true);
-    expect(choices.every(({ transform }) => transform === "flip-x" || transform === "flip-y")).toBe(true);
+    expect(choices.map(({ transform }) => transform)).toEqual(["rotate-90", "rotate-180", "rotate-270"]);
   });
 
-  it("never uses an unchanged symmetry and keeps rotation to 90 degrees", () => {
+  it("keeps writing-game transforms separate from Alphabet rotations", () => {
     expect(trapTransformsFor("ㅁ")).toEqual([]);
     expect(trapTransformsFor("ㅂ")).toEqual(["rotate-90"]);
     expect(trapTransformsFor("ㅅ")).not.toContain("flip-x");
@@ -63,6 +63,19 @@ describe("Alphabet journey", () => {
       expect(choices).toHaveLength(3);
       expect(choices.every(({ value }) => value === target)).toBe(true);
       expect(choices.every(({ transform }) => transform !== undefined)).toBe(true);
+      expect(new Set(choices.map(({ transform }) => transform)).size).toBe(3);
+    }
+  });
+
+  it("gives ㄱ and ㄴ all four corner orientations, including the previously missing half turn", () => {
+    const rotate = (x: number, y: number, degrees: number) => {
+      const angle = degrees * Math.PI / 180;
+      return `${Math.round(x * Math.cos(angle) - y * Math.sin(angle))},${Math.round(x * Math.sin(angle) + y * Math.cos(angle))}`;
+    };
+    for (const target of ["ㄱ", "ㄴ"]) {
+      const board = createAlphabetStageBoard([target], ALPHABET_ORDER, 2, () => .999);
+      const corners = board.map(({ transform }) => rotate(1, -1, transform ? Number(transform.split("-")[1]) : 0));
+      expect(new Set(corners).size).toBe(4);
     }
   });
 

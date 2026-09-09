@@ -79,6 +79,10 @@
 .letter-tile--flip-x .letter-glyph { transform: scaleX(-1); }
 .letter-tile--flip-y .letter-glyph { transform: scaleY(-1); }
 .letter-tile--rotate-90 .letter-glyph { transform: rotate(90deg); }
+.letter-tile--rotate-45 .letter-glyph { transform: rotate(45deg); }
+.letter-tile--rotate-135 .letter-glyph { transform: rotate(135deg); }
+.letter-tile--rotate-180 .letter-glyph { transform: rotate(180deg); }
+.letter-tile--rotate-270 .letter-glyph { transform: rotate(270deg); }
 .letter-tile--shape .letter-glyph { display: grid; place-items: center; font-family: "TAP Serif KR","Apple SD Gothic Neo","Noto Sans KR",sans-serif; font-weight: 700; line-height: 1; }
 .letter-tile--shape-line-up .letter-glyph,.letter-tile--shape-line-down .letter-glyph,.letter-tile--shape-line-shallow .letter-glyph,.letter-tile--stroke-horizontal .letter-glyph { width: 62%; height: 7px; border-radius: 999px; background: currentColor; font-size: 0; }
 .letter-tile--stroke-vertical .letter-glyph { width: 7px; height: 62%; border-radius: 999px; background: currentColor; font-size: 0; }

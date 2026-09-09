@@ -1,11 +1,13 @@
 import { trapTransformFor, trapTransformsFor, type GlyphTransform } from "./board";
 import { FINAL_PARTS, TENSE_PARTS } from "./layout";
 
+type AlphabetTransform = GlyphTransform | "rotate-45" | "rotate-135" | "rotate-180" | "rotate-270";
+
 export interface AlphabetTile {
   id: number;
   value: string;
   required: boolean;
-  transform?: GlyphTransform;
+  transform?: AlphabetTransform;
   shape?: true;
 }
 
@@ -53,8 +55,15 @@ const MIEUM_SHAPES = ["ㅱ", "△", "○"] as const;
 const shapeTiles = (values: readonly string[]): readonly Omit<AlphabetTile, "id" | "required">[] =>
   values.map((value) => ({ value, shape: true }));
 
-const transformedChoicesFor = (target: string): readonly Omit<AlphabetTile, "id" | "required">[] =>
-  trapTransformsFor(target as never).map((transform) => ({ value: target, transform }));
+const transformedChoicesFor = (target: string): readonly Omit<AlphabetTile, "id" | "required">[] => {
+  if (!trapTransformsFor(target as never).length) return [];
+  // ㄹ and ㅍ repeat their outline after a half turn; diagonal orientations
+  // give them three distinct alternatives without substituting another jamo.
+  const transforms: readonly AlphabetTransform[] = target === "ㄹ" || target === "ㅍ"
+    ? ["rotate-45", "rotate-90", "rotate-135"]
+    : ["rotate-90", "rotate-180", "rotate-270"];
+  return transforms.map((transform) => ({ value: target, transform }));
+};
 
 function trapCandidates(targets: readonly string[]): readonly Omit<AlphabetTile, "id" | "required">[] {
   if (targets.length === 1 && targets[0] === "ㅇ") return shapeTiles(IEUNG_SHAPES);
@@ -73,9 +82,7 @@ function trapCandidates(targets: readonly string[]): readonly Omit<AlphabetTile,
   const consonantTargets = targets.filter((target) =>
     !(VOWEL_GLYPHS as readonly string[]).includes(target) && target !== "ㅁ" && target !== "ㅇ",
   );
-  const targetTransforms = targets.flatMap((target) =>
-    trapTransformsFor(target as never).map((transform) => ({ value: target, transform })),
-  );
+  const targetTransforms = targets.flatMap(transformedChoicesFor);
   if (consonantTargets.length === 0) return shapes.length ? shapes : shapeTiles([...LINE_SHAPES, ...DOT_SHAPES]);
   return [...targetTransforms, ...shapes];
 }
