@@ -85,7 +85,9 @@
 .alphabet-outline--stem::before,.alphabet-outline--bar::before { content: ""; position: absolute; background: currentColor; }
 .alphabet-outline--stem::before { width: .1em; height: .18em; top: .11em; left: .45em; }
 .alphabet-outline--bar::before { width: .54em; height: .1em; top: .08em; left: .23em; }
-.alphabet-outline--double > span { flex: 0 0 .55em; width: .55em; font-size: .8em; }
+.alphabet-outline--double > span { position: absolute; top: 50%; width: 1em; font-size: .8em; line-height: 1; text-align: center; transform: translate(-50%,-50%) scale(.85,1.35); transform-origin: center; }
+.alphabet-outline--double > span:first-child { left: 28%; }
+.alphabet-outline--double > span:last-child { left: 72%; }
 .alphabet-target-jamo .alphabet-outline { margin: .19em auto; }
 .letter-tile--flip-x .letter-glyph { transform: scaleX(-1); }
 .letter-tile--flip-y .letter-glyph { transform: scaleY(-1); }
