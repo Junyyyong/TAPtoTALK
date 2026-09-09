@@ -1,6 +1,5 @@
-/** Consistent sans-serif outlines, independent of old-Hangul font fallback. */
+/** Old-Hangul outlines only; modern ㅇ uses the surrounding text font. */
 const IEUNG_OUTLINES: Readonly<Record<string, string>> = {
-  "ㅇ": '<circle cx="32" cy="32" r="20"/>',
   "ㆁ": '<circle cx="32" cy="38" r="20"/><path d="M32 6V18"/>',
   "ㆆ": '<circle cx="32" cy="38" r="20"/><path d="M12 10H52"/>',
   "ㆀ": '<ellipse cx="18" cy="32" rx="10" ry="20"/><ellipse cx="46" cy="32" rx="10" ry="20"/>',
