@@ -51,8 +51,16 @@ describe("Alphabet journey", () => {
     expect(bieupBoard.some(({ value, transform }) => value === "ㅂ" && transform === "rotate-90")).toBe(true);
     expect(bieupBoard.some(({ value, transform }) => value === "ㅂ" && transform === "flip-x")).toBe(false);
     const mieumBoard = createAlphabetStageBoard(["ㅁ"], ALPHABET_ORDER, 2, () => .999);
-    expect(mieumBoard.filter(({ required }) => !required).map(({ value }) => value)).toEqual(expect.arrayContaining(["○", "△", "ㅇ"]));
+    expect(mieumBoard.filter(({ required }) => !required).map(({ value }) => value)).toEqual(expect.arrayContaining(["ㅱ", "△", "○"]));
     expect(mieumBoard.some(({ value, transform }) => value === "ㅁ" && transform)).toBe(false);
+  });
+
+  it("compares ieung with three historical Hangul letterforms", () => {
+    const choices = createAlphabetStageBoard(["ㅇ"], ALPHABET_ORDER, 2, () => .999).filter(({ required }) => !required);
+
+    expect(choices.map(({ value }) => value)).toEqual(expect.arrayContaining(["ㆁ", "ㆆ", "ㆀ"]));
+    expect(choices.every(({ shape }) => shape)).toBe(true);
+    expect(choices.some(({ transform }) => transform)).toBe(false);
   });
 
   it("uses only line shapes for stroke vowels and simple symbols for the Cheonjiin dot", () => {

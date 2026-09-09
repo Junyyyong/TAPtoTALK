@@ -49,7 +49,8 @@ const TRAP_GLYPHS = ["ㄱ", "ㄴ", "ㄷ", "ㄹ", "ㅂ", "ㅅ", "ㅈ", "ㅊ", "�
 const VOWEL_GLYPHS = ["ㅣ", "ㅡ", "ㆍ"] as const;
 const LINE_SHAPES = ["╱", "∿", "╲"] as const;
 const DOT_SHAPES = ["★", "♥", ","] as const;
-const MIEUM_SHAPES = ["○", "△", "ㅇ"] as const;
+const IEUNG_SHAPES = ["ㆁ", "ㆆ", "ㆀ"] as const;
+const MIEUM_SHAPES = ["ㅱ", "△", "○"] as const;
 const CHOICE_TRANSFORMS: readonly GlyphTransform[] = ["flip-x", "flip-y", "rotate-90"];
 
 const shapeTiles = (values: readonly string[]): readonly Omit<AlphabetTile, "id" | "required">[] =>
@@ -62,18 +63,22 @@ function transformedChoiceFor(target: string, transform: GlyphTransform): Omit<A
 }
 
 function trapCandidates(targets: readonly string[]): readonly Omit<AlphabetTile, "id" | "required">[] {
+  if (targets.length === 1 && targets[0] === "ㅇ") return shapeTiles(IEUNG_SHAPES);
   if (targets.length === 1 && targets[0] === "ㅁ") return shapeTiles(MIEUM_SHAPES);
   if (targets.length === 1 && (targets[0] === "ㅣ" || targets[0] === "ㅡ")) return shapeTiles(LINE_SHAPES);
   if (targets.length === 1 && targets[0] === "ㆍ") return shapeTiles(DOT_SHAPES);
   if (targets.length === 1) return CHOICE_TRANSFORMS.map((transform) => transformedChoiceFor(targets[0]!, transform));
 
   const shapes = targets.flatMap((target) =>
-    target === "ㅁ" ? shapeTiles(MIEUM_SHAPES)
+    target === "ㅇ" ? shapeTiles(IEUNG_SHAPES)
+      : target === "ㅁ" ? shapeTiles(MIEUM_SHAPES)
       : target === "ㆍ" ? shapeTiles(DOT_SHAPES)
         : target === "ㅣ" || target === "ㅡ" ? shapeTiles(LINE_SHAPES)
           : [],
   ).filter(({ value }) => !targets.includes(value));
-  const consonantTargets = targets.filter((target) => !(VOWEL_GLYPHS as readonly string[]).includes(target) && target !== "ㅁ");
+  const consonantTargets = targets.filter((target) =>
+    !(VOWEL_GLYPHS as readonly string[]).includes(target) && target !== "ㅁ" && target !== "ㅇ",
+  );
   const targetTransforms = targets.flatMap((target) =>
     trapTransformsFor(target as never).map((transform) => ({ value: target, transform })),
   );
