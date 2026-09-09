@@ -1,21 +1,20 @@
-/** Old-Hangul outlines only; modern ㅇ uses the surrounding text font. */
-const IEUNG_OUTLINES: Readonly<Record<string, string>> = {
-  "ㆁ": '<circle cx="32" cy="38" r="20"/><path d="M32 6V18"/>',
-  "ㆆ": '<circle cx="32" cy="38" r="20"/><path d="M12 10H52"/>',
-  "ㆀ": '<ellipse cx="18" cy="32" rx="10" ry="20"/><ellipse cx="46" cy="32" rx="10" ry="20"/>',
+/** Build old-Hangul choices from the same font glyph as the modern answer. */
+const IEUNG_VARIANTS: Readonly<Record<string, string>> = {
+  "ㆁ": "stem",
+  "ㆆ": "bar",
+  "ㆀ": "double",
 };
 
-export function createAlphabetGlyph(value: string): SVGSVGElement | undefined {
-  const outline = IEUNG_OUTLINES[value];
-  if (!outline) return undefined;
-  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-  svg.setAttribute("viewBox", "0 0 64 64");
-  svg.setAttribute("class", "alphabet-outline");
-  svg.setAttribute("aria-hidden", "true");
-  svg.setAttribute("fill", "none");
-  svg.setAttribute("stroke", "currentColor");
-  svg.setAttribute("stroke-width", "7");
-  svg.setAttribute("stroke-linecap", "butt");
-  svg.innerHTML = outline;
-  return svg;
+export function createAlphabetGlyph(value: string): HTMLSpanElement | undefined {
+  const variant = IEUNG_VARIANTS[value];
+  if (!variant) return undefined;
+  const glyph = document.createElement("span");
+  glyph.className = `alphabet-outline alphabet-outline--${variant}`;
+  glyph.setAttribute("aria-hidden", "true");
+  for (let index = 0; index < (variant === "double" ? 2 : 1); index += 1) {
+    const ring = document.createElement("span");
+    ring.textContent = "ㅇ";
+    glyph.append(ring);
+  }
+  return glyph;
 }

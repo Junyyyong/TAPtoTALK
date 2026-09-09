@@ -81,7 +81,11 @@
 .letter-tile--color-7 { --face: var(--v7); } .letter-tile--color-8 { --face: var(--v8); }
 .letter-tile--color-9 { --face: var(--v9); }
 .letter-glyph { display: block; }
-.alphabet-outline { display: block; width: 1em; height: 1em; overflow: visible; }
+.alphabet-outline { position: relative; display: flex; align-items: center; justify-content: center; width: 1em; height: 1em; font-family: "TAP Sans KR",sans-serif; font-weight: 800; line-height: 1; }
+.alphabet-outline--stem::before,.alphabet-outline--bar::before { content: ""; position: absolute; background: currentColor; }
+.alphabet-outline--stem::before { width: .1em; height: .18em; top: .11em; left: .45em; }
+.alphabet-outline--bar::before { width: .54em; height: .1em; top: .08em; left: .23em; }
+.alphabet-outline--double > span { flex: 0 0 .55em; width: .55em; font-size: .8em; }
 .alphabet-target-jamo .alphabet-outline { margin: .19em auto; }
 .letter-tile--flip-x .letter-glyph { transform: scaleX(-1); }
 .letter-tile--flip-y .letter-glyph { transform: scaleY(-1); }
