@@ -6,10 +6,10 @@ const IEUNG_VARIANTS: Readonly<Record<string, string>> = {
 };
 
 export function createAlphabetGlyph(value: string, transform?: string): HTMLSpanElement | SVGSVGElement | undefined {
-  const paths = value === "○" ? '<ellipse cx="32" cy="34" rx="17" ry="16"/>'
-    : value === "△" ? '<path d="M32 18L49 50H15Z"/>'
-    : value === "ㅍ" && transform === "stem-one" ? '<path d="M10 17H54M10 49H54M32 17V49"/>'
-    : value === "ㅍ" && transform === "stem-three" ? '<path d="M10 17H54M10 49H54M20 17V49M32 17V49M44 17V49"/>' : undefined;
+  const paths = value === "○" ? '<ellipse cx="32" cy="34" rx="14.7" ry="11.5"/>'
+    : value === "△" ? '<path d="M32 22.5L47 45.5H17Z"/>'
+    : value === "ㅍ" && transform === "stem-one" ? '<path d="M12 20H52M12 46H52M32 20V46"/>'
+    : value === "ㅍ" && transform === "stem-three" ? '<path d="M12 20H52M12 46H52M20 20V46M32 20V46M44 20V46"/>' : undefined;
   if (paths) {
     const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     svg.setAttribute("viewBox", "0 0 64 64");
@@ -17,7 +17,7 @@ export function createAlphabetGlyph(value: string, transform?: string): HTMLSpan
     svg.setAttribute("aria-hidden", "true");
     svg.setAttribute("fill", "none");
     svg.setAttribute("stroke", "currentColor");
-    svg.setAttribute("stroke-width", "7");
+    svg.setAttribute("stroke-width", "9");
     svg.setAttribute("stroke-linejoin", "round");
     svg.innerHTML = paths;
     return svg;
