@@ -201,21 +201,21 @@ export class TalkApp {
         const shapeClass = ({ "╱": "line-up", "╲": "line-down", "⟋": "line-shallow", "★": "star", "♥": "heart", ",": "comma" } as const)[tile.value as "╱" | "╲" | "⟋" | "★" | "♥" | ","];
         if (shapeClass) button.classList.add(`letter-tile--shape-${shapeClass}`);
       }
-      if (!tile.shape && tile.value === "ㅣ") button.classList.add("letter-tile--stroke-vertical");
-      if (!tile.shape && tile.value === "ㅡ") button.classList.add("letter-tile--stroke-horizontal");
+      if (tile.value === "ㅣ") button.classList.add("letter-tile--stroke-vertical");
+      if (tile.value === "ㅡ") button.classList.add("letter-tile--stroke-horizontal");
       button.dataset.tileId = String(tile.id);
       button.setAttribute(
         "aria-label",
         tile.shape
           ? `${tile.value} shape trap`
           : tile.transform
-          ? `${tile.transform.startsWith("rotate") ? "Rotated" : "Reversed"} ${tile.value} trap`
+          ? `${tile.transform.startsWith("stem") ? tile.transform : tile.transform.startsWith("rotate") ? "Rotated" : "Reversed"} ${tile.value} trap`
           : tile.value === "ㆍ"
             ? "Cheonjiin dot"
             : tile.value,
       );
       const glyph = document.createElement("span"); glyph.className = "letter-glyph"; glyph.textContent = tile.value === "ㆍ" || tile.value === "." || tile.value === "ㅣ" || tile.value === "ㅡ" ? "" : tile.value;
-      const outline = createAlphabetGlyph(tile.value);
+      const outline = createAlphabetGlyph(tile.value, tile.transform);
       if (outline) glyph.replaceChildren(outline);
       button.append(glyph);
       if (tile.value === "ㆍ") button.classList.add("letter-tile--cheonjiin-dot");
@@ -229,7 +229,7 @@ export class TalkApp {
   private tapAlphabetTile(tile: AlphabetTile, button: HTMLButtonElement): void {
     if (this.inputLocked || this.paused || this.used.has(tile.id)) return;
     const stage = this.learningStage;
-    if (tile.transform || tile.value !== stage.sequence[this.alphabetPartIndex]) {
+    if (tile.transform || tile.shape || tile.value !== stage.sequence[this.alphabetPartIndex]) {
       feedback.reject();
       button.classList.remove("is-wrong-pick"); void button.offsetWidth; button.classList.add("is-wrong-pick");
       window.setTimeout(() => button.classList.remove("is-wrong-pick"), 360);

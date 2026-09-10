@@ -1,7 +1,7 @@
 import { trapTransformFor, trapTransformsFor, type GlyphTransform } from "./board";
 import { FINAL_PARTS, TENSE_PARTS } from "./layout";
 
-type AlphabetTransform = GlyphTransform | "rotate-45" | "rotate-135" | "rotate-180" | "rotate-270";
+type AlphabetTransform = GlyphTransform | "rotate-45" | "rotate-135" | "rotate-180" | "rotate-270" | "stem-one" | "stem-three";
 
 export interface AlphabetTile {
   id: number;
@@ -48,7 +48,7 @@ const shuffle = <T>(values: T[], rng: () => number): T[] => {
 };
 
 const VOWEL_GLYPHS = ["ㅣ", "ㅡ", "ㆍ"] as const;
-const LINE_SHAPES = ["╱", "╲", "⟋"] as const;
+const LINE_SHAPES = ["╱", "╲"] as const;
 const DOT_SHAPES = ["★", "♥", ","] as const;
 const IEUNG_SHAPES = ["ㆁ", "ㆆ", "ㆀ"] as const;
 const MIEUM_SHAPES = ["ㅱ", "△", "○"] as const;
@@ -57,10 +57,9 @@ const shapeTiles = (values: readonly string[]): readonly Omit<AlphabetTile, "id"
 
 const transformedChoicesFor = (target: string): readonly Omit<AlphabetTile, "id" | "required">[] => {
   if (!trapTransformsFor(target as never).length) return [];
-  // ㄹ and ㅍ repeat their outline after a half turn; diagonal orientations
-  // give them three distinct alternatives without substituting another jamo.
-  const transforms: readonly AlphabetTransform[] = target === "ㄹ" || target === "ㅍ"
-    ? ["rotate-45", "rotate-90", "rotate-135"]
+  const transforms: readonly AlphabetTransform[] = target === "ㄹ"
+    ? ["flip-x", "rotate-90", "flip-y"]
+    : target === "ㅍ" ? ["stem-one", "stem-three", "rotate-90"]
     : ["rotate-90", "rotate-180", "rotate-270"];
   return transforms.map((transform) => ({ value: target, transform }));
 };
@@ -68,7 +67,7 @@ const transformedChoicesFor = (target: string): readonly Omit<AlphabetTile, "id"
 function trapCandidates(targets: readonly string[]): readonly Omit<AlphabetTile, "id" | "required">[] {
   if (targets.length === 1 && targets[0] === "ㅇ") return shapeTiles(IEUNG_SHAPES);
   if (targets.length === 1 && targets[0] === "ㅁ") return shapeTiles(MIEUM_SHAPES);
-  if (targets.length === 1 && (targets[0] === "ㅣ" || targets[0] === "ㅡ")) return shapeTiles(LINE_SHAPES);
+  if (targets.length === 1 && (targets[0] === "ㅣ" || targets[0] === "ㅡ")) return shapeTiles([targets[0] === "ㅣ" ? "ㅡ" : "ㅣ", ...LINE_SHAPES]);
   if (targets.length === 1 && targets[0] === "ㆍ") return shapeTiles(DOT_SHAPES);
   if (targets.length === 1) return transformedChoicesFor(targets[0]!);
 

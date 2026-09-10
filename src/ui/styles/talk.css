@@ -83,6 +83,7 @@
 .letter-tile--color-7 { --face: var(--v7); } .letter-tile--color-8 { --face: var(--v8); }
 .letter-tile--color-9 { --face: var(--v9); }
 .letter-glyph { display: block; }
+.alphabet-shape-outline { display: block; width: 1em; height: 1em; }
 .alphabet-outline { position: relative; display: flex; align-items: center; justify-content: center; width: 1em; height: 1em; font-family: "TAP Sans KR",sans-serif; font-weight: 800; line-height: 1; }
 .alphabet-outline--stem::before,.alphabet-outline--bar::before { content: ""; position: absolute; background: currentColor; }
 .alphabet-outline--stem::before { width: .1em; height: .18em; top: .11em; left: .45em; }
@@ -106,7 +107,12 @@
 .letter-tile--shape-line-shallow .letter-glyph { transform: rotate(-22.5deg); }
 .letter-tile--shape-star .letter-glyph { transform: translateY(1px); }
 .letter-tile--shape-heart .letter-glyph { transform: translateY(2px); }
-.letter-tile--shape-comma .letter-glyph { transform: translateY(-.22em); }
+.letter-tile--shape-comma .letter-glyph { position: relative; width: var(--cheonjiin-size,8px); height: calc(var(--cheonjiin-size,8px) * 1.7); font-size: 0; }
+.letter-tile--shape-comma .letter-glyph::before { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: var(--cheonjiin-size,8px); border-radius: 50%; background: currentColor; }
+.letter-tile--shape-comma .letter-glyph::after { content: ""; position: absolute; top: 45%; left: 55%; width: 25%; height: 55%; transform: rotate(28deg); transform-origin: top; border-radius: 0 0 50% 50%; background: currentColor; }
+.letter-board[data-grid-size="2"] { --cheonjiin-size: 22px; }
+.letter-board[data-grid-size="4"] { --cheonjiin-size: 14px; }
+.letter-board[data-grid-size="6"] { --cheonjiin-size: 10px; }
 .letter-tile--punctuation { font-size: clamp(25px,6.8vw,31px); font-weight: 900; }
 .letter-tile--cheonjiin-dot,.letter-tile--period { font-size: 0; }
 .letter-tile--cheonjiin-dot::after,.letter-tile--period::after { position: absolute; top: 50%; left: 50%; width: 8px; height: 8px; background: currentColor; content: ""; transform: translate(-50%,-50%); }

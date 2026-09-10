@@ -90,7 +90,7 @@ describe("Alphabet journey", () => {
   it("uses only line shapes for stroke vowels and simple symbols for the Cheonjiin dot", () => {
     for (const target of ["ㅣ", "ㅡ"]) {
       const choices = createAlphabetStageBoard([target], ALPHABET_ORDER, 2, () => .999).filter(({ required }) => !required);
-      expect(choices.map(({ value }) => value)).toEqual(expect.arrayContaining(["╱", "╲", "⟋"]));
+      expect(choices.map(({ value }) => value)).toEqual(expect.arrayContaining(["╱", "╲", target === "ㅣ" ? "ㅡ" : "ㅣ"]));
       expect(choices.every(({ shape }) => shape)).toBe(true);
     }
     const dotChoices = createAlphabetStageBoard(["ㆍ"], ALPHABET_ORDER, 2, () => .999).filter(({ required }) => !required);
@@ -125,6 +125,11 @@ describe("Alphabet journey", () => {
   it("keeps ordinary wrong choices from advancing the target", () => {
     expect(checkSequenceTap(["ㄱ"], 0, "ㄴ")).toEqual({ correct: false, nextIndex: 0, complete: false });
     expect(checkSequenceTap(["ㄱ"], 0, "ㄱ")).toEqual({ correct: true, nextIndex: 1, complete: true });
+  });
+
+  it("uses reflections for rieul and stem counts for pieup", () => {
+    expect(createAlphabetStageBoard(["ㄹ"], ALPHABET_ORDER, 2, () => .999).filter(t => !t.required).map(t => t.transform)).toEqual(["flip-x", "rotate-90", "flip-y"]);
+    expect(createAlphabetStageBoard(["ㅍ"], ALPHABET_ORDER, 2, () => .999).filter(t => !t.required).map(t => t.transform)).toEqual(["stem-one", "stem-three", "rotate-90"]);
   });
 
   it("still decomposes tense initials and compound finals into basic jamo", () => {
