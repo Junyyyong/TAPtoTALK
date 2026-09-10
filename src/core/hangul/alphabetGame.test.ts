@@ -128,8 +128,24 @@ describe("Alphabet journey", () => {
   });
 
   it("uses reflections for rieul and stem counts for pieup", () => {
-    expect(createAlphabetStageBoard(["ㄹ"], ALPHABET_ORDER, 2, () => .999).filter(t => !t.required).map(t => t.transform)).toEqual(["flip-x", "rotate-90", "flip-y"]);
+    expect(createAlphabetStageBoard(["ㄹ"], ALPHABET_ORDER, 2, () => .999).filter(t => !t.required).map(t => t.transform)).toEqual(["flip-x", "rotate-90", "flip-x-rotate-90"]);
     expect(createAlphabetStageBoard(["ㅍ"], ALPHABET_ORDER, 2, () => .999).filter(t => !t.required).map(t => t.transform)).toEqual(["stem-one", "stem-three", "rotate-90"]);
+  });
+
+  it("gives rieul four distinct outlines, not just differently named transforms", () => {
+    const path = [[-1, -1], [1, -1], [1, 0], [-1, 0], [-1, 1], [1, 1]];
+    const outline = (transform = "") => {
+      const points = path.map(([x = 0, y = 0]) => {
+        if (transform.includes("flip-x")) x = -x;
+        if (transform === "flip-y") y = -y;
+        if (transform.includes("rotate-90")) [x, y] = [-y, x];
+        return `${x},${y}`;
+      });
+      return points.slice(1).map((point, index) => [points[index], point].sort().join(":")).sort().join(";");
+    };
+    expect(outline("flip-x")).toBe(outline("flip-y"));
+    const board = createAlphabetStageBoard(["ㄹ"], ALPHABET_ORDER, 2);
+    expect(new Set(board.map(tile => outline(tile.transform))).size).toBe(4);
   });
 
   it("still decomposes tense initials and compound finals into basic jamo", () => {

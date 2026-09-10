@@ -95,6 +95,7 @@
 .letter-tile--flip-x .letter-glyph { transform: scaleX(-1); }
 .letter-tile--flip-y .letter-glyph { transform: scaleY(-1); }
 .letter-tile--rotate-90 .letter-glyph { transform: rotate(90deg); }
+.letter-tile--flip-x-rotate-90 .letter-glyph { transform: rotate(90deg) scaleX(-1); }
 .letter-tile--rotate-45 .letter-glyph { transform: rotate(45deg); }
 .letter-tile--rotate-135 .letter-glyph { transform: rotate(135deg); }
 .letter-tile--rotate-180 .letter-glyph { transform: rotate(180deg); }

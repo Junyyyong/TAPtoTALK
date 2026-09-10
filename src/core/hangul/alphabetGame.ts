@@ -1,7 +1,7 @@
 import { trapTransformFor, trapTransformsFor, type GlyphTransform } from "./board";
 import { FINAL_PARTS, TENSE_PARTS } from "./layout";
 
-type AlphabetTransform = GlyphTransform | "rotate-45" | "rotate-135" | "rotate-180" | "rotate-270" | "stem-one" | "stem-three";
+type AlphabetTransform = GlyphTransform | "flip-x-rotate-90" | "rotate-45" | "rotate-135" | "rotate-180" | "rotate-270" | "stem-one" | "stem-three";
 
 export interface AlphabetTile {
   id: number;
@@ -58,7 +58,7 @@ const shapeTiles = (values: readonly string[]): readonly Omit<AlphabetTile, "id"
 const transformedChoicesFor = (target: string): readonly Omit<AlphabetTile, "id" | "required">[] => {
   if (!trapTransformsFor(target as never).length) return [];
   const transforms: readonly AlphabetTransform[] = target === "ㄹ"
-    ? ["flip-x", "rotate-90", "flip-y"]
+    ? ["flip-x", "rotate-90", "flip-x-rotate-90"]
     : target === "ㅍ" ? ["stem-one", "stem-three", "rotate-90"]
     : ["rotate-90", "rotate-180", "rotate-270"];
   return transforms.map((transform) => ({ value: target, transform }));
