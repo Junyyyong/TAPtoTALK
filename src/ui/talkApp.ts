@@ -8,6 +8,7 @@ import { ALPHABET_ORDER, WORD_TARGETS, type AlphabetStage, type WordTarget } fro
 import { learningStageAt, LEARNING_TRAP_RATIO, LEARNING_TRANSITION_MS, type LearningMode } from "../content/learningJourney";
 import { createWordJourney, isWordBonusStage } from "../content/wordJourney";
 import { APP_CONFIG } from "../config/app";
+import { INTRO_MARKS } from "../config/introMarks";
 import { el } from "./dom";
 import { createAlphabetGlyph } from "./alphabetGlyph";
 import { createUploadedGlyph } from "./uploadedGlyph";
@@ -146,7 +147,10 @@ export class TalkApp {
     this.inputLocked = true; this.paused = false;
     this.introMode = mode;
     el("learning-intro-title").textContent = mode.toUpperCase();
-    el("learning-intro-mark").textContent = mode === "alphabet" ? "ㄱ" : mode === "syllable" ? "가" : "안녕";
+    // Locally generated outlines, not user-provided markup or webfont text.
+    el("learning-intro-mark").innerHTML = INTRO_MARKS[mode];
+    el("learning-intro-mark").setAttribute("aria-label", mode === "alphabet" ? "ㄱ" : mode === "syllable" ? "가" : "안녕");
+    el("learning-intro-mark").setAttribute("role", "img");
     el("learning-intro-mark").classList.toggle("is-word", mode === "word");
     el("learning-intro-description").textContent = mode === "word" ? "Build one word at a time." : "2×2 → 4×4 → 6×6 → 8×8";
     this.stopClock(); this.cheer.stop();
