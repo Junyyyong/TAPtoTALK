@@ -287,12 +287,7 @@ export class TalkApp {
       if (index < this.alphabetPartIndex) jamo.classList.add("is-done");
       else if (index === this.alphabetPartIndex) jamo.classList.add("is-current");
       jamo.textContent = value === "ㆍ" ? "" : value;
-      const outline = createAlphabetGlyph(value);
-      if (outline) {
-        jamo.replaceChildren(outline);
-        if (outline.classList.contains("uploaded-glyph")) jamo.classList.add("has-uploaded-glyph");
-        jamo.setAttribute("aria-label", value);
-      }
+      jamo.setAttribute("aria-label", value);
       korean.append(jamo);
     });
     const note = document.createElement("span"); note.className = "alphabet-target-note"; note.textContent = stage.note;

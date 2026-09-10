@@ -5,6 +5,13 @@ import { ALPHABET_ORDER } from "../content/prompts";
 import { readFileSync } from "node:fs";
 
 describe("uploaded glyph mapping", () => {
+  it("uses the longer uploaded strokes for both vowels and diagonals", () => {
+    for (const value of ["ㅣ", "ㅡ", "╱", "╲"]) {
+      const svg = decodeURIComponent(GLYPH_ASSETS[value].url.split(",").slice(1).join(","));
+      expect(svg).toContain("81.6377953");
+      expect(svg).toContain("10.6647949");
+    }
+  });
   it("maps the 31 sheet outlines and shares the new ieung for the circle trap", () => {
     expect(Object.keys(GLYPH_ASSETS)).toHaveLength(32);
     expect(GLYPH_ASSETS["○"]).toEqual(GLYPH_ASSETS["ㅇ"]);

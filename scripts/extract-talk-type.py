@@ -52,6 +52,25 @@ for node in sheet.iter():
     assert abs(cols[col]-cx)<60 and abs(ys[row]-cy)<70, (tag,b)
     label=labels[row][col];groups[label].append(node);boxes[label].append(b)
 
+# Later individual uploads override only the four learning lines.
+for label, suffix in [('ㅣ','02'), ('ㅡ','03'), ('╱','04'), ('╲','05')]:
+    upload = next(p for p in root.glob('*.svg') if unicodedata.normalize('NFC', p.name) == f'탭투톡체3-{suffix}.svg')
+    nodes = [n for n in ET.parse(upload).getroot().iter()
+             if n.tag.split('}')[-1] == 'rect' and '#040000' in n.get('style', '')]
+    assert len(nodes) == 1, upload
+    node = nodes[0]
+    x,y,w,h = [float(node.get(k,'0')) for k in ('x','y','width','height')]
+    matrix = Transform()
+    for op,args in re.findall(r'(\w+)\(([^)]+)\)',node.get('transform','')):
+        a = [float(n) for n in re.findall(r'-?\d+(?:\.\d+)?', args)]
+        if op == 'translate': matrix = matrix.translate(*a)
+        elif op == 'rotate': matrix = matrix.rotate(math.radians(a[0]))
+        else: raise ValueError(op)
+    pen = BoundsPen(None)
+    parse_path(f'M{x} {y}h{w}v{h}h{-w}Z', TransformPen(pen, matrix))
+    groups[label] = nodes
+    boxes[label] = [pen.bounds]
+
 entries=[]
 for label,nodes in groups.items():
     assert nodes,label
