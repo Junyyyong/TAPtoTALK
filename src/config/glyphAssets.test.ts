@@ -10,7 +10,7 @@ describe("uploaded glyph mapping", () => {
     expect(GLYPH_ASSETS["○"]).toEqual(GLYPH_ASSETS["ㅇ"]);
     expect(new Set(Object.values(GLYPH_ASSETS).map(asset => asset.url)).size).toBe(31);
     for (const asset of Object.values(GLYPH_ASSETS)) {
-      expect(asset.url).toMatch(/^\/assets\/glyphs\/talk-type\//);
+      expect(asset.url).toMatch(/^data:image\/svg\+xml,/);
     }
     for (const value of ALPHABET_ORDER) expect(GLYPH_ASSETS[value]).toBeDefined();
     expect(GLYPH_ASSETS["ㅍ-stem-one"]).toBeDefined();
@@ -25,8 +25,9 @@ describe("uploaded glyph mapping", () => {
     }
   });
   it("ships valid centered SVG assets rather than font-dependent labels", () => {
-    for (const { url } of Object.values(GLYPH_ASSETS)) {
-      const svg = readFileSync(`public${url}`, "utf8");
+    for (const { url, file } of Object.values(GLYPH_ASSETS)) {
+      const svg = readFileSync(`public${file}`, "utf8");
+      expect(decodeURIComponent(url.slice("data:image/svg+xml,".length))).toBe(svg);
       expect(svg).toContain('viewBox="0 0 100 100"');
       expect(svg.match(/xmlns=/g)).toHaveLength(1);
       expect(svg).not.toContain("<text");

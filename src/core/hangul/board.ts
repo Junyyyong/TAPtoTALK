@@ -6,7 +6,7 @@ export const WORD_BOARD_SIDE = 8;
 const TENSE_SYMBOLS = new Set<string>(["ㄲ", "ㄸ", "ㅃ", "ㅆ", "ㅉ"]);
 export const TARGET_SYMBOL_BUFFER = 1.5;
 export const MIRROR_TRAP_CHANCE = 0.2;
-export type GlyphTransform = "flip-x" | "flip-y" | "rotate-90" | "rotate-45" | "rotate--45" | "rotate--90";
+export type GlyphTransform = "flip-x" | "flip-y" | "rotate-90" | "rotate-180" | "rotate-270";
 
 /** Only transformations that visibly change the glyph are offered as traps. */
 const TRAP_TRANSFORMS: Readonly<Partial<Record<BoardSymbol, readonly GlyphTransform[]>>> = {
@@ -21,7 +21,10 @@ const TRAP_TRANSFORMS: Readonly<Partial<Record<BoardSymbol, readonly GlyphTransf
 };
 
 export function trapTransformsFor(symbol: BoardSymbol): readonly GlyphTransform[] {
-  return TRAP_TRANSFORMS[symbol] ? ["rotate-45", "rotate-90", "rotate--45", "rotate--90"] : [];
+  if (!TRAP_TRANSFORMS[symbol]) return [];
+  if (symbol === "ㄹ") return ["flip-x", "rotate-90"];
+  if (symbol === "ㅍ") return ["rotate-90"];
+  return ["rotate-90", "rotate-180", "rotate-270"];
 }
 
 export function trapTransformFor(symbol: BoardSymbol, rng: () => number = Math.random): GlyphTransform | undefined {

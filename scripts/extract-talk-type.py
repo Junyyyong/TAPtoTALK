@@ -3,6 +3,8 @@ Run with Python + fontTools. The original SVG remains untouched.
 """
 from pathlib import Path
 import math
+import json
+import sys
 import re
 import unicodedata
 import xml.etree.ElementTree as ET
@@ -59,13 +61,16 @@ for label,nodes in groups.items():
     svg=ET.Element('{http://www.w3.org/2000/svg}svg',{'viewBox':'0 0 100 100'})
     g=ET.SubElement(svg,'g',{'transform':f'translate({50-cx:.8f} {50-cy:.8f})'})
     for node in nodes:g.append(node)
-    (out/name).write_text(ET.tostring(svg,encoding='unicode')+'\n')
+    if '--pack-only' not in sys.argv:
+        (out/name).write_text(ET.tostring(svg,encoding='unicode')+'\n')
     ET.parse(out/name)  # Fail immediately on malformed SVG namespaces.
     entries.append((label,name))
 entries.append(('○','u3147.svg'))
 text='/** Extracted from the user’s 탭투톡체.svg; square viewBoxes rotate around the artwork center. */\n'
-text+='export const GLYPH_ASSETS: Readonly<Record<string, { url: string }>> = {\n'
-for label,name in entries:text+=f'  "{label}": {{ url: "/assets/glyphs/talk-type/{name}" }},\n'
+text+='const inline = (file: string, svg: string) => ({ file, url: `data:image/svg+xml,${encodeURIComponent(svg)}` });\n'
+text+='export const GLYPH_ASSETS: Readonly<Record<string, { url: string; file: string }>> = {\n'
+for label,name in entries:
+    text+=f'  "{label}": inline("/assets/glyphs/talk-type/{name}", {json.dumps((out/name).read_text(),ensure_ascii=False)}),\n'
 text+='};\n'
 (root/'src/config/glyphAssets.ts').write_text(text)
 print(f'Extracted {len(groups)} original shapes; ○ aliases ㅇ.')

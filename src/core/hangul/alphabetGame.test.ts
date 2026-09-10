@@ -36,16 +36,16 @@ describe("Alphabet journey", () => {
     const choices = board.filter(({ required }) => !required);
     expect(choices).toHaveLength(3);
     expect(choices.every(({ value }) => value === "ㄱ")).toBe(true);
-    expect(choices.map(({ transform }) => transform)).toEqual(["rotate-45", "rotate-90", "rotate--45"]);
+    expect(choices.map(({ transform }) => transform)).toEqual(["rotate-90", "rotate-180", "rotate-270"]);
   });
 
   it("keeps writing-game transforms separate from Alphabet rotations", () => {
     expect(trapTransformsFor("ㅁ")).toEqual([]);
-    expect(trapTransformsFor("ㅂ")).toEqual(["rotate-45", "rotate-90", "rotate--45", "rotate--90"]);
+    expect(trapTransformsFor("ㅂ")).toEqual(["rotate-90", "rotate-180", "rotate-270"]);
     expect(trapTransformsFor("ㅅ")).not.toContain("flip-x");
     expect(trapTransformsFor("ㅈ")).not.toContain("flip-x");
     expect(trapTransformsFor("ㅅ")).toContain("rotate-90");
-    expect(trapTransformsFor("ㅅ")).not.toContain("rotate-270" as never);
+    expect(trapTransformsFor("ㅅ")).toContain("rotate-270");
 
     const bieupBoard = createAlphabetStageBoard(["ㅂ"], ALPHABET_ORDER, 2, () => .999);
     expect(bieupBoard.some(({ value, transform }) => value === "ㅂ" && transform === "rotate-90")).toBe(true);
@@ -128,7 +128,7 @@ describe("Alphabet journey", () => {
   });
 
   it("uses centered rotations for rieul and uploaded stem counts for pieup", () => {
-    expect(createAlphabetStageBoard(["ㄹ"], ALPHABET_ORDER, 2, () => .999).filter(t => !t.required).map(t => t.transform)).toEqual(["rotate-45", "rotate-90", "rotate--45"]);
+    expect(createAlphabetStageBoard(["ㄹ"], ALPHABET_ORDER, 2, () => .999).filter(t => !t.required).map(t => t.transform)).toEqual(["flip-x", "rotate-90", "flip-x-rotate-90"]);
     expect(createAlphabetStageBoard(["ㅍ"], ALPHABET_ORDER, 2, () => .999).filter(t => !t.required).map(t => t.transform)).toEqual(["stem-one", "stem-three", "rotate-90"]);
   });
 
@@ -138,6 +138,7 @@ describe("Alphabet journey", () => {
       const points = path.map(([x = 0, y = 0]) => {
         if (transform.includes("flip-x")) x = -x;
         if (transform === "flip-y") y = -y;
+        if (transform === "flip-x-rotate-90") [x, y] = [-y, x];
         if (transform.startsWith("rotate-")) {
           const a = Number(transform.slice(7)) * Math.PI / 180;
           [x, y] = [x * Math.cos(a) - y * Math.sin(a), x * Math.sin(a) + y * Math.cos(a)];
