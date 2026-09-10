@@ -14,7 +14,7 @@ from fontTools.pens.transformPen import TransformPen
 from fontTools.misc.transform import Transform
 
 root = Path(__file__).resolve().parents[1]
-source = next(p for p in root.glob('*.svg') if unicodedata.normalize('NFC', p.name) == '탭투톡체.svg')
+source = next(p for p in root.glob('*.svg') if unicodedata.normalize('NFC', p.name) == '탭투톡체2.svg')
 sheet = ET.parse(source).getroot()
 out = root / 'public/assets/glyphs/talk-type'
 out.mkdir(parents=True, exist_ok=True)
@@ -66,7 +66,7 @@ for label,nodes in groups.items():
     ET.parse(out/name)  # Fail immediately on malformed SVG namespaces.
     entries.append((label,name))
 entries.append(('○','u3147.svg'))
-text='/** Extracted from the user’s 탭투톡체.svg; square viewBoxes rotate around the artwork center. */\n'
+text='/** Extracted from the user’s 탭투톡체2.svg; square viewBoxes rotate around the artwork center. */\n'
 text+='const inline = (file: string, svg: string) => ({ file, url: `data:image/svg+xml,${encodeURIComponent(svg)}` });\n'
 text+='export const GLYPH_ASSETS: Readonly<Record<string, { url: string; file: string }>> = {\n'
 for label,name in entries:
