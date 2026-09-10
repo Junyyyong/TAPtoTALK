@@ -5,6 +5,7 @@ export function createUploadedGlyph(value: string, transform?: string): HTMLSpan
   if (!asset) return undefined;
   const glyph = document.createElement("span");
   glyph.className = "uploaded-glyph";
+  if (["♥", ",", "★"].includes(value)) glyph.classList.add("uploaded-glyph--dot-trap");
   glyph.setAttribute("aria-hidden", "true");
   glyph.style.setProperty("--glyph-mask", `url("${asset.url}")`);
   if (transform?.startsWith("rotate-")) glyph.style.transform = `rotate(${Number(transform.slice(7))}deg)`;
