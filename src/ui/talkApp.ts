@@ -4,7 +4,7 @@ import { composeTokens } from "../core/hangul/compose";
 import { CHEONJIIN_STROKES, CONSONANTS, type BoardSymbol } from "../core/hangul/keys";
 import { isWordMatch, wordCountLabel } from "../core/hangul/wordChallenge";
 import { lessonCheerFor, lessonScoreFromTime } from "../core/hangul/writing";
-import { materializeTargetTokens, targetCharacterProgress, targetToTokens } from "../core/hangul/target";
+import { composeTargetInput, materializeTargetTokens, targetCharacterProgress, targetToTokens } from "../core/hangul/target";
 import { ALPHABET_ORDER, WORD_TARGETS, type AlphabetStage, type WordTarget } from "../content/prompts";
 import { learningStageAt, LEARNING_TRAP_RATIO, LEARNING_TRANSITION_MS, WORD_STAGES, WORD_JOURNEY_SCORE_TIME_MS, type LearningMode } from "../content/learningJourney";
 import { APP_CONFIG } from "../config/app";
@@ -387,7 +387,7 @@ export class TalkApp {
   }
 
   private renderInput(): void {
-    const text = composeTokens(this.input.map((token) => token.value));
+    const text = composeTargetInput(this.wordTarget.word, this.input.map((token) => token.value));
     const target = this.wordTarget.word;
     const expected = materializeTargetTokens(targetToTokens(target));
     const wrongIndex = this.input.findIndex((token, index) => token.value !== expected[index]);

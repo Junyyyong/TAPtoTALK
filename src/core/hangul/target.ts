@@ -1,4 +1,5 @@
 import { isBoardSymbol, type BoardSymbol } from "./keys";
+import { composeTokens } from "./compose";
 import { CHOSEONG, FINAL_PARTS, JONGSEONG, JUNGSEONG, TENSE_PARTS, VOWEL_STROKES } from "./layout";
 
 const HANGUL_BASE = 0xac00;
@@ -41,6 +42,14 @@ export function targetToTokens(text: string): TargetToken[] {
 
 export function requiredBoardSymbols(text: string): BoardSymbol[] {
   return targetToTokens(text).filter((token): token is BoardSymbol => typeof token === "string");
+}
+
+/** The prompted word disambiguates syllable boundaries in a complete tap stream. */
+export function composeTargetInput(target: string, input: readonly string[]): string {
+  const expected = materializeTargetTokens(targetToTokens(target));
+  return input.length === expected.length && input.every((value, index) => value === expected[index])
+    ? target.normalize("NFC")
+    : composeTokens(input);
 }
 
 /** Resolves fixed-key actions to the stream consumed by the Hangul composer. */

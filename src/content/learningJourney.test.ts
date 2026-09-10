@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { composeTokens } from "../core/hangul/compose";
+import { composeTargetInput, requiredBoardSymbols } from "../core/hangul/target";
 import { createAlphabetStageBoard, createMixedLearningBoard } from "../core/hangul/alphabetGame";
 import { ALPHABET_ORDER, ALPHABET_STAGES } from "./prompts";
 import { learningStageAt, LEARNING_TRAP_RATIO, SYLLABLE_STAGES, WORD_STAGES, WORD_JOURNEY_SCORE_TIME_MS } from "./learningJourney";
@@ -14,6 +15,10 @@ describe("continuous learning journeys", () => {
     expect(WORD_STAGES[6]!.word).toBe("사랑");
     expect(WORD_STAGES[32]!.word).toBe("외");
     expect(WORD_JOURNEY_SCORE_TIME_MS).toBeGreaterThan(0);
+    for (const stage of WORD_STAGES) expect(composeTargetInput(stage.word, requiredBoardSymbols(stage.word))).toBe(stage.word);
+    expect(composeTargetInput("오빠", ["ㅇ", "ㆍ", "ㅡ", "ㅂ", "ㅂ", "ㅣ", "ㆍ"])).toBe("오빠");
+    expect(composeTargetInput("오빠", ["ㅇ"])).toBe("ㅇ");
+    expect(composeTargetInput("오빠", [...requiredBoardSymbols("오빠"), "ㄱ"])).not.toBe("오빠");
   });
   it("continues after fixed Alphabet lessons with three random targets on 8×8", () => {
     expect(learningStageAt("alphabet", 0).target).toBe("ㄱ");
