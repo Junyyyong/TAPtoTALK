@@ -10,6 +10,7 @@ import { createWordJourney } from "../content/wordJourney";
 import { APP_CONFIG } from "../config/app";
 import { el } from "./dom";
 import { createAlphabetGlyph } from "./alphabetGlyph";
+import { createUploadedGlyph } from "./uploadedGlyph";
 import { feedback } from "./feedback";
 import { canAcceptInput } from "./inputCapacity";
 import { Cheer } from "./screens/cheer";
@@ -216,7 +217,10 @@ export class TalkApp {
       );
       const glyph = document.createElement("span"); glyph.className = "letter-glyph"; glyph.textContent = tile.value === "ㆍ" || tile.value === "." || tile.value === "ㅣ" || tile.value === "ㅡ" ? "" : tile.value;
       const outline = createAlphabetGlyph(tile.value, tile.transform);
-      if (outline) glyph.replaceChildren(outline);
+      if (outline) {
+        glyph.replaceChildren(outline);
+        if (outline.classList.contains("uploaded-glyph")) button.classList.add("has-uploaded-glyph");
+      }
       button.append(glyph);
       if (tile.value === "ㆍ") button.classList.add("letter-tile--cheonjiin-dot");
       if (tile.value === ".") button.classList.add("letter-tile--period");
@@ -274,6 +278,7 @@ export class TalkApp {
       const outline = createAlphabetGlyph(value);
       if (outline) {
         jamo.replaceChildren(outline);
+        if (outline.classList.contains("uploaded-glyph")) jamo.classList.add("has-uploaded-glyph");
         jamo.setAttribute("aria-label", value);
       }
       korean.append(jamo);
@@ -313,6 +318,8 @@ export class TalkApp {
       const glyph = document.createElement("span");
       glyph.className = "letter-glyph";
       glyph.textContent = tile.symbol === "ㆍ" ? "━" : tile.symbol;
+      const uploaded = createUploadedGlyph(tile.symbol);
+      if (uploaded) { glyph.replaceChildren(uploaded); button.classList.add("has-uploaded-glyph"); }
       button.append(glyph);
       if (CONSONANTS.includes(tile.symbol as never)) button.classList.add("letter-tile--consonant");
       else if (CHEONJIIN_STROKES.includes(tile.symbol as never)) button.classList.add("letter-tile--vowel");

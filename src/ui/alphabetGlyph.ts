@@ -1,3 +1,5 @@
+import { createUploadedGlyph } from "./uploadedGlyph";
+
 /** Build old-Hangul choices from the same font glyph as the modern answer. */
 const IEUNG_VARIANTS: Readonly<Record<string, string>> = {
   "ㆁ": "stem",
@@ -6,6 +8,8 @@ const IEUNG_VARIANTS: Readonly<Record<string, string>> = {
 };
 
 export function createAlphabetGlyph(value: string, transform?: string): HTMLSpanElement | SVGSVGElement | undefined {
+  const uploaded = createUploadedGlyph(value);
+  if (uploaded) return uploaded;
   const paths = value === "○" ? '<ellipse cx="32" cy="34" rx="14.7" ry="11.5"/>'
     : value === "△" ? '<path d="M32 22.5L47 45.5H17Z"/>'
     : value === "ㅍ" && transform === "stem-one" ? '<path d="M12 20H52M12 46H52M32 20V46"/>'
