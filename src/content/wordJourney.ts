@@ -3,6 +3,9 @@ import { WORD_STAGES } from "./learningJourney";
 import type { WordTarget } from "./prompts";
 
 export const WORD_LENGTH_PRACTICE_STAGES = 10;
+export const WORD_BONUS_INTERVAL = 10;
+export const isWordBonusStage = (completed: number): boolean =>
+  Number.isSafeInteger(completed) && completed > 0 && completed % WORD_BONUS_INTERVAL === 0;
 type WordLength = 3 | 4 | 5;
 const words = (length: WordLength, values: readonly (readonly [string, string])[]): readonly WordTarget[] =>
   values.map(([word, translation], index) => ({ id: `word-extra-${length}-${index + 1}`, word, translation }));

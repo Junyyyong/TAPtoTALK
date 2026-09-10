@@ -2,6 +2,8 @@ import { BOARD_SYMBOLS, PUNCTUATION_SYMBOLS, type BoardSymbol } from "./keys";
 import { requiredBoardSymbols } from "./target";
 
 export const BOARD_SIZE = 81;
+export const WORD_BOARD_SIDE = 8;
+const TENSE_SYMBOLS = new Set<string>(["ㄲ", "ㄸ", "ㅃ", "ㅆ", "ㅉ"]);
 export const TARGET_SYMBOL_BUFFER = 1.5;
 export const MIRROR_TRAP_CHANCE = 0.2;
 export type GlyphTransform = "flip-x" | "flip-y" | "rotate-90";
@@ -75,28 +77,36 @@ export function createLetterBoard(
   target: string,
   rng: () => number = Math.random,
   weights: SymbolWeights = DEFAULT_SYMBOL_WEIGHTS,
+  size = BOARD_SIZE,
+  symbols: readonly BoardSymbol[] = BOARD_SYMBOLS,
 ): LetterTile[] {
   const targetSymbols = requiredBoardSymbols(target);
   const punctuationFree = !targetSymbols.some((symbol) =>
     (PUNCTUATION_SYMBOLS as readonly string[]).includes(symbol),
   );
   const dealSymbols = punctuationFree
-    ? BOARD_SYMBOLS.filter((symbol) => !(PUNCTUATION_SYMBOLS as readonly string[]).includes(symbol))
-    : BOARD_SYMBOLS;
+    ? symbols.filter((symbol) => !(PUNCTUATION_SYMBOLS as readonly string[]).includes(symbol))
+    : symbols;
   const bufferedCount = Math.ceil(targetSymbols.length * TARGET_SYMBOL_BUFFER);
   const required = [...targetSymbols];
   for (let index = required.length; index < bufferedCount; index += 1) {
     required.push(targetSymbols[index % targetSymbols.length]!);
   }
-  if (required.length > BOARD_SIZE) {
-    throw new RangeError(`Target needs ${required.length} buffered board symbols; maximum is ${BOARD_SIZE}.`);
+  if (required.length > size) {
+    throw new RangeError(`Target needs ${required.length} buffered board symbols; maximum is ${size}.`);
   }
 
   const tiles: LetterTile[] = required.map((symbol, id) => ({ id, symbol, required: true }));
-  while (tiles.length < BOARD_SIZE) {
+  while (tiles.length < size) {
     const symbol = weightedPick(rng, weights, dealSymbols);
     const transform = punctuationFree && rng() < MIRROR_TRAP_CHANCE ? trapTransformFor(symbol) : undefined;
     tiles.push({ id: tiles.length, symbol, required: false, ...(transform ? { transform } : {}) });
   }
   return shuffle(tiles, rng);
+}
+
+/** Word uses basic consonant taps, including repeated taps for tense consonants. */
+export function createWordBoard(target: string, rng: () => number = Math.random): LetterTile[] {
+  return createLetterBoard(target, rng, DEFAULT_SYMBOL_WEIGHTS, WORD_BOARD_SIDE ** 2,
+    BOARD_SYMBOLS.filter((symbol) => !TENSE_SYMBOLS.has(symbol)));
 }

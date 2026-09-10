@@ -1,4 +1,4 @@
-import { createLetterBoard, inputValueForTile, MIRROR_TRAP_TOKEN, type LetterTile } from "../core/hangul/board";
+import { createWordBoard, WORD_BOARD_SIDE, inputValueForTile, MIRROR_TRAP_TOKEN, type LetterTile } from "../core/hangul/board";
 import { createAlphabetStageBoard, createMixedLearningBoard, type AlphabetTile } from "../core/hangul/alphabetGame";
 import { composeTokens } from "../core/hangul/compose";
 import { CHEONJIIN_STROKES, CONSONANTS, type BoardSymbol } from "../core/hangul/keys";
@@ -6,7 +6,7 @@ import { isWordMatch } from "../core/hangul/wordChallenge";
 import { composeTargetInput, materializeTargetTokens, targetCharacterProgress, targetToTokens } from "../core/hangul/target";
 import { ALPHABET_ORDER, WORD_TARGETS, type AlphabetStage, type WordTarget } from "../content/prompts";
 import { learningStageAt, LEARNING_TRAP_RATIO, LEARNING_TRANSITION_MS, type LearningMode } from "../content/learningJourney";
-import { createWordJourney } from "../content/wordJourney";
+import { createWordJourney, isWordBonusStage } from "../content/wordJourney";
 import { APP_CONFIG } from "../config/app";
 import { el } from "./dom";
 import { createAlphabetGlyph } from "./alphabetGlyph";
@@ -119,7 +119,7 @@ export class TalkApp {
     this.wordTarget = this.nextWordTarget();
     this.input = []; this.used.clear();
     const requiredText = this.wordTarget.word;
-    this.tiles = createLetterBoard(requiredText);
+    this.tiles = createWordBoard(requiredText);
     this.targetLabel.textContent = `STAGE ${this.wordTargetIndex + 1}`;
     this.renderTranslatedTarget();
     this.typedText.dataset.empty = "Your word appears here.";
@@ -254,6 +254,18 @@ export class TalkApp {
     if (!this.stageTransitionPending || this.paused) return;
     this.stageTransitionPending = false;
     if (this.mode === "word") {
+      if (isWordBonusStage(this.wordTargetIndex + 1)) {
+        this.stopClock();
+        this.game.classList.add("is-input-locked");
+        this.cheer.playBonus(() => {
+          this.targetPrompt.classList.remove("is-writing-complete");
+          this.game.classList.remove("is-input-locked");
+          this.inputLocked = false;
+          this.startNextWord();
+          this.startClock(true);
+        });
+        return;
+      }
       this.targetPrompt.classList.remove("is-writing-complete");
       this.inputLocked = false;
       this.startNextWord();
@@ -309,7 +321,7 @@ export class TalkApp {
   }
 
   private renderBoard(): void {
-    delete this.board.dataset.gridSize;
+    this.board.dataset.gridSize = String(WORD_BOARD_SIDE);
     const fragment = document.createDocumentFragment();
     this.tiles.forEach((tile, index) => {
       const button = document.createElement("button");
@@ -456,7 +468,7 @@ export class TalkApp {
     this.wordTargetIndex += 1;
     this.wordTarget = this.nextWordTarget();
     this.input = []; this.used.clear();
-    this.tiles = createLetterBoard(this.wordTarget.word);
+    this.tiles = createWordBoard(this.wordTarget.word);
     this.targetLabel.textContent = `STAGE ${this.wordTargetIndex + 1}`;
     this.renderTranslatedTarget();
     this.renderBoard(); this.renderInput();

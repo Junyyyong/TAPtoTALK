@@ -116,6 +116,7 @@ export class Cheer {
   /** Guards against the clip ending and the cap firing for the same play. */
   private done: (() => void) | undefined;
   private pick: Clip | null = null;
+  private automatic = false;
 
   constructor() {
     // The clip stops on its own last frame; the player decides when to leave it.
@@ -164,7 +165,15 @@ export class Cheer {
     this.begin(headline, 0, text, then, failureClip());
   }
 
+  /** A short intermission, not a scored result; continue automatically after the dance. */
+  playBonus(then: () => void): void {
+    this.begin("", 0, "BONUS!", then, randomClipFor(1500));
+    this.automatic = true;
+    this.dance();
+  }
+
   private begin(headline: string, score: number, text: string, then: () => void, pick: Clip | null): void {
+    this.automatic = false;
     this.word.textContent = text;
     this.headline.textContent = headline;
     this.scoreEl.textContent = score.toLocaleString();
@@ -224,6 +233,7 @@ export class Cheer {
    */
   private hold(): void {
     if (!this.done) return;
+    if (this.automatic) { this.finish(); return; }
     window.clearTimeout(this.timer);
     this.sound.pause();
     this.root.classList.add("cheer-hold");
