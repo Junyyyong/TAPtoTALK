@@ -133,14 +133,12 @@
 .letter-tile--shape-line-up .letter-glyph,.letter-tile--shape-line-down .letter-glyph,.letter-tile--shape-line-shallow .letter-glyph,.letter-tile--stroke-horizontal .letter-glyph { height: var(--learning-stroke,7px); }
 .letter-tile--stroke-vertical .letter-glyph { width: var(--learning-stroke,7px); }
 .letter-tile--alphabet.letter-tile--cheonjiin-dot { font-size: 0; }
-.uploaded-glyph { display: block; background: currentColor; -webkit-mask: var(--glyph-mask) center / 100% 100% no-repeat; mask: var(--glyph-mask) center / 100% 100% no-repeat; }
-.uploaded-glyph--mieum { --uploaded-size: .6em; }
-.uploaded-glyph--cheonjiin { --uploaded-size: var(--cheonjiin-size,8px); }
+.uploaded-glyph { display: block; width: 1em; height: 1em; transform-origin: 50% 50%; background: currentColor; -webkit-mask: var(--glyph-mask) center / 100% 100% no-repeat; mask: var(--glyph-mask) center / 100% 100% no-repeat; }
+.letter-tile.has-uploaded-glyph { font-size: clamp(20.4px,5.88vw,25.2px); }
 .letter-tile.has-uploaded-glyph .letter-glyph { display: grid; place-items: center; width: auto; height: auto; font-size: inherit; background: none; transform: none; }
 .letter-tile.has-uploaded-glyph .letter-glyph::before,.letter-tile.has-uploaded-glyph .letter-glyph::after,.letter-tile.has-uploaded-glyph::after { display: none; }
 .alphabet-target-jamo.has-uploaded-glyph { display: inline-grid; place-items: center; vertical-align: middle; min-height: 1.05em; }
 .alphabet-target-jamo.has-uploaded-glyph::before { display: none; }
-.alphabet-target-jamo .uploaded-glyph--cheonjiin { --uploaded-size: .34em; }
 .letter-tile.is-wrong-pick { animation: wrong-pick 340ms ease; }
 @keyframes wrong-pick { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-3px); filter: saturate(.5); } 75% { transform: translateX(3px); filter: saturate(.5); } }
 .letter-tile:disabled { color: rgba(58,15,10,.2); background: rgba(58,15,10,.06); box-shadow: inset 0 0 0 1px rgba(58,15,10,.07); text-shadow: none; }

@@ -18,7 +18,11 @@ TAPtoTALK은 레이아웃을 다시 디자인해도 한글 규칙을 건드리�
 
 ## 교체형 미디어
 
-ㅁ·모음 천의 업로드 SVG 8개는 저장소 루트의 원본 파일을 그대로 사용하며 `src/config/glyphAssets.ts`에서 정답·함정과 파일을 연결한다. `ㅁ-02.svg`와 `모음천소스-03.svg`가 정답이다. 모양과 그룹 내 상대 비율은 SVG viewBox를 따르고, 화면 색은 CSS mask의 currentColor로 적용하여 사용 후 흐린 색도 유지한다. SVG 크기를 변경해 다시 내보내면 이 설정의 width/height도 새 viewBox에 맞춰 갱신한다.
+블록 자소·기호는 사용자가 올린 `탭투톡체.svg`에서 추출한 31개 도형을 사용한다. 원본은 보존하고 게임용 파일은 `public/assets/glyphs/talk-type/`, 연결표는 `src/config/glyphAssets.ts`에 둔다. ㅁ의 원형 함정 `○`는 사용자가 지정한 대로 `ㅇ`과 같은 파일을 공유한다. `ㅍ-stem-one`과 `ㅍ-stem-three`는 전용 함정이다.
+
+각 SVG는 원본 획·비율을 보존하면서 도형의 bounding box 중심을 100×100 viewBox 중앙에 맞췄다. 회전은 이 중심 기준이며 CSS mask로 블록 색과 사용 후 회색을 따른다. 기기별 설치 폰트에 의존하지 않는다. Word/Syllable의 완성된 제시어·입력 문자는 기존 명조체를 유지한다.
+
+원본 시트를 다시 추출하려면 Python + fontTools로 `python3 scripts/extract-talk-type.py`를 실행한다. 이 스크립트는 현재 시트의 행·열 배치를 사용하므로 시트 배치를 바꾸면 추출 매핑도 수정해야 한다. 개별 SVG는 파일명·viewBox·중심을 유지한 채 교체할 수 있다. 예전 루트의 ㅁ/모음천 SVG는 이력용으로 보존한다.
 
 파일명과 경로를 유지하면 코드 변경 없이 자산만 바꿀 수 있습니다.
 

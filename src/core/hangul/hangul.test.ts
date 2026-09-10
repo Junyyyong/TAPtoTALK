@@ -81,9 +81,9 @@ describe("TAPtoTALK Hangul domain", () => {
     expect(board.some((tile) => PUNCTUATION_SYMBOLS.includes(tile.symbol as never))).toBe(false);
     const transformed = board.filter((tile) => tile.transform);
     expect(transformed.length).toBeGreaterThan(0);
-    for (const tile of transformed) expect(tile.transform).toBe(trapTransformFor(tile.symbol));
-    expect(trapTransformFor("ㄱ")).toBe("flip-x");
-    expect(trapTransformFor("ㅂ")).toBe("rotate-90");
+    for (const tile of transformed) expect(trapTransformsFor(tile.symbol)).toContain(tile.transform);
+    expect(trapTransformFor("ㄱ", () => 0)).toBe("rotate-45");
+    expect(trapTransformFor("ㅂ", () => .99)).toBe("rotate--90");
     expect(trapTransformsFor("ㅁ")).toEqual([]);
     expect(inputValueForTile({ symbol: "ㄱ", transform: "flip-x" })).toBe(MIRROR_TRAP_TOKEN);
     expect(inputValueForTile({ symbol: "ㄱ" })).toBe("ㄱ");

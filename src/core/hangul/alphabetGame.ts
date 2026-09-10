@@ -57,10 +57,9 @@ const shapeTiles = (values: readonly string[]): readonly Omit<AlphabetTile, "id"
 
 const transformedChoicesFor = (target: string): readonly Omit<AlphabetTile, "id" | "required">[] => {
   if (!trapTransformsFor(target as never).length) return [];
-  const transforms: readonly AlphabetTransform[] = target === "ㄹ"
-    ? ["flip-x", "rotate-90", "flip-x-rotate-90"]
-    : target === "ㅍ" ? ["stem-one", "stem-three", "rotate-90"]
-    : ["rotate-90", "rotate-180", "rotate-270"];
+  const transforms: readonly AlphabetTransform[] = target === "ㅍ"
+    ? ["stem-one", "stem-three", "rotate-90"]
+    : ["rotate-45", "rotate-90", "rotate--45"];
   return transforms.map((transform) => ({ value: target, transform }));
 };
 

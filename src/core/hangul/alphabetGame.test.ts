@@ -36,12 +36,12 @@ describe("Alphabet journey", () => {
     const choices = board.filter(({ required }) => !required);
     expect(choices).toHaveLength(3);
     expect(choices.every(({ value }) => value === "ㄱ")).toBe(true);
-    expect(choices.map(({ transform }) => transform)).toEqual(["rotate-90", "rotate-180", "rotate-270"]);
+    expect(choices.map(({ transform }) => transform)).toEqual(["rotate-45", "rotate-90", "rotate--45"]);
   });
 
   it("keeps writing-game transforms separate from Alphabet rotations", () => {
     expect(trapTransformsFor("ㅁ")).toEqual([]);
-    expect(trapTransformsFor("ㅂ")).toEqual(["rotate-90"]);
+    expect(trapTransformsFor("ㅂ")).toEqual(["rotate-45", "rotate-90", "rotate--45", "rotate--90"]);
     expect(trapTransformsFor("ㅅ")).not.toContain("flip-x");
     expect(trapTransformsFor("ㅈ")).not.toContain("flip-x");
     expect(trapTransformsFor("ㅅ")).toContain("rotate-90");
@@ -67,14 +67,14 @@ describe("Alphabet journey", () => {
     }
   });
 
-  it("gives ㄱ and ㄴ all four corner orientations, including the previously missing half turn", () => {
+  it("gives ㄱ and ㄴ distinct center-based angles", () => {
     const rotate = (x: number, y: number, degrees: number) => {
       const angle = degrees * Math.PI / 180;
       return `${Math.round(x * Math.cos(angle) - y * Math.sin(angle))},${Math.round(x * Math.sin(angle) + y * Math.cos(angle))}`;
     };
     for (const target of ["ㄱ", "ㄴ"]) {
       const board = createAlphabetStageBoard([target], ALPHABET_ORDER, 2, () => .999);
-      const corners = board.map(({ transform }) => rotate(1, -1, transform ? Number(transform.split("-")[1]) : 0));
+      const corners = board.map(({ transform }) => rotate(1, -1, transform ? Number(transform.slice(7)) : 0));
       expect(new Set(corners).size).toBe(4);
     }
   });
@@ -127,8 +127,8 @@ describe("Alphabet journey", () => {
     expect(checkSequenceTap(["ㄱ"], 0, "ㄱ")).toEqual({ correct: true, nextIndex: 1, complete: true });
   });
 
-  it("uses reflections for rieul and stem counts for pieup", () => {
-    expect(createAlphabetStageBoard(["ㄹ"], ALPHABET_ORDER, 2, () => .999).filter(t => !t.required).map(t => t.transform)).toEqual(["flip-x", "rotate-90", "flip-x-rotate-90"]);
+  it("uses centered rotations for rieul and uploaded stem counts for pieup", () => {
+    expect(createAlphabetStageBoard(["ㄹ"], ALPHABET_ORDER, 2, () => .999).filter(t => !t.required).map(t => t.transform)).toEqual(["rotate-45", "rotate-90", "rotate--45"]);
     expect(createAlphabetStageBoard(["ㅍ"], ALPHABET_ORDER, 2, () => .999).filter(t => !t.required).map(t => t.transform)).toEqual(["stem-one", "stem-three", "rotate-90"]);
   });
 
@@ -138,8 +138,11 @@ describe("Alphabet journey", () => {
       const points = path.map(([x = 0, y = 0]) => {
         if (transform.includes("flip-x")) x = -x;
         if (transform === "flip-y") y = -y;
-        if (transform.includes("rotate-90")) [x, y] = [-y, x];
-        return `${x},${y}`;
+        if (transform.startsWith("rotate-")) {
+          const a = Number(transform.slice(7)) * Math.PI / 180;
+          [x, y] = [x * Math.cos(a) - y * Math.sin(a), x * Math.sin(a) + y * Math.cos(a)];
+        }
+        return `${x.toFixed(4)},${y.toFixed(4)}`;
       });
       return points.slice(1).map((point, index) => [points[index], point].sort().join(":")).sort().join(";");
     };

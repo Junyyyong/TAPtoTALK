@@ -8,7 +8,7 @@ const IEUNG_VARIANTS: Readonly<Record<string, string>> = {
 };
 
 export function createAlphabetGlyph(value: string, transform?: string): HTMLSpanElement | SVGSVGElement | undefined {
-  const uploaded = createUploadedGlyph(value);
+  const uploaded = createUploadedGlyph(value, transform);
   if (uploaded) return uploaded;
   const paths = value === "○" ? '<ellipse cx="32" cy="34" rx="14.7" ry="11.5"/>'
     : value === "△" ? '<path d="M32 22.5L47 45.5H17Z"/>'

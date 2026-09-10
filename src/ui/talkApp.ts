@@ -330,7 +330,7 @@ export class TalkApp {
       const glyph = document.createElement("span");
       glyph.className = "letter-glyph";
       glyph.textContent = tile.symbol === "ㆍ" ? "━" : tile.symbol;
-      const uploaded = createUploadedGlyph(tile.symbol);
+      const uploaded = createUploadedGlyph(tile.symbol, tile.transform);
       if (uploaded) { glyph.replaceChildren(uploaded); button.classList.add("has-uploaded-glyph"); }
       button.append(glyph);
       if (CONSONANTS.includes(tile.symbol as never)) button.classList.add("letter-tile--consonant");

@@ -6,7 +6,7 @@ export const WORD_BOARD_SIDE = 8;
 const TENSE_SYMBOLS = new Set<string>(["ㄲ", "ㄸ", "ㅃ", "ㅆ", "ㅉ"]);
 export const TARGET_SYMBOL_BUFFER = 1.5;
 export const MIRROR_TRAP_CHANCE = 0.2;
-export type GlyphTransform = "flip-x" | "flip-y" | "rotate-90";
+export type GlyphTransform = "flip-x" | "flip-y" | "rotate-90" | "rotate-45" | "rotate--45" | "rotate--90";
 
 /** Only transformations that visibly change the glyph are offered as traps. */
 const TRAP_TRANSFORMS: Readonly<Partial<Record<BoardSymbol, readonly GlyphTransform[]>>> = {
@@ -21,11 +21,12 @@ const TRAP_TRANSFORMS: Readonly<Partial<Record<BoardSymbol, readonly GlyphTransf
 };
 
 export function trapTransformsFor(symbol: BoardSymbol): readonly GlyphTransform[] {
-  return TRAP_TRANSFORMS[symbol] ?? [];
+  return TRAP_TRANSFORMS[symbol] ? ["rotate-45", "rotate-90", "rotate--45", "rotate--90"] : [];
 }
 
-export function trapTransformFor(symbol: BoardSymbol): GlyphTransform | undefined {
-  return trapTransformsFor(symbol)[0];
+export function trapTransformFor(symbol: BoardSymbol, rng: () => number = Math.random): GlyphTransform | undefined {
+  const transforms = trapTransformsFor(symbol);
+  return transforms[Math.floor(rng() * transforms.length)];
 }
 
 export interface LetterTile {
@@ -99,7 +100,7 @@ export function createLetterBoard(
   const tiles: LetterTile[] = required.map((symbol, id) => ({ id, symbol, required: true }));
   while (tiles.length < size) {
     const symbol = weightedPick(rng, weights, dealSymbols);
-    const transform = punctuationFree && rng() < MIRROR_TRAP_CHANCE ? trapTransformFor(symbol) : undefined;
+    const transform = punctuationFree && rng() < MIRROR_TRAP_CHANCE ? trapTransformFor(symbol, rng) : undefined;
     tiles.push({ id: tiles.length, symbol, required: false, ...(transform ? { transform } : {}) });
   }
   return shuffle(tiles, rng);
