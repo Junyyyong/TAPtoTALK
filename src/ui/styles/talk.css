@@ -19,7 +19,7 @@
 .talk-screen .hud { flex: 0 0 auto; padding-inline: 0; }
 .talk-screen.is-input-locked .letter-board,.talk-screen.is-input-locked .fixed-controls { pointer-events: none; }
 .talk-screen.is-alphabet-mode .fixed-controls { display: none; }
-.talk-screen.is-alphabet-mode .target-prompt { min-height: 122px; }
+.talk-screen.is-alphabet-mode .target-prompt { height: 178px; min-height: 178px; max-height: 178px; width: 100%; }
 .talk-screen.is-alphabet-mode .target-text { color: var(--ink); font-size: 52px; line-height: 1.05; }
 .talk-screen.is-alphabet-mode .target-text.is-medium-sequence { font-size: 44px; }
 .talk-screen.is-alphabet-mode .target-text.is-long-sequence { font-size: 38px; }

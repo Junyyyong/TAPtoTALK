@@ -1,5 +1,6 @@
 import { BOARD_SYMBOLS, PUNCTUATION_SYMBOLS, type BoardSymbol } from "./keys";
 import { requiredBoardSymbols } from "./target";
+import { trapLooksLikeTarget } from "./visualTraps";
 
 export const BOARD_SIZE = 81;
 export const WORD_BOARD_SIDE = 8;
@@ -103,7 +104,8 @@ export function createLetterBoard(
   const tiles: LetterTile[] = required.map((symbol, id) => ({ id, symbol, required: true }));
   while (tiles.length < size) {
     const symbol = weightedPick(rng, weights, dealSymbols);
-    const transform = punctuationFree && rng() < MIRROR_TRAP_CHANCE ? trapTransformFor(symbol, rng) : undefined;
+    let transform = punctuationFree && rng() < MIRROR_TRAP_CHANCE ? trapTransformFor(symbol, rng) : undefined;
+    if (transform && trapLooksLikeTarget(symbol, transform, targetSymbols)) transform = undefined;
     tiles.push({ id: tiles.length, symbol, required: false, ...(transform ? { transform } : {}) });
   }
   return shuffle(tiles, rng);

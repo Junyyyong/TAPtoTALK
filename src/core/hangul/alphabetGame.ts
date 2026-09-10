@@ -1,5 +1,6 @@
 import { trapTransformFor, trapTransformsFor, type GlyphTransform } from "./board";
 import { FINAL_PARTS, TENSE_PARTS } from "./layout";
+import { trapLooksLikeTarget } from "./visualTraps";
 
 type AlphabetTransform = GlyphTransform | "flip-x-rotate-90" | "rotate-45" | "rotate-135" | "rotate-180" | "rotate-270" | "stem-one" | "stem-three";
 
@@ -103,9 +104,9 @@ export function createAlphabetStageBoard(
   if (pool.length === 0) throw new RangeError("Alphabet stages need a non-empty learning pool.");
 
   const tiles: AlphabetTile[] = sequence.map((value, id) => ({ id, value, required: true }));
-  const traps = trapCandidates(sequence);
+  const traps = trapCandidates(sequence).filter(t => !trapLooksLikeTarget(t.value, t.transform, sequence));
   for (let index = 0; tiles.length < size; index += 1) {
-    const trap = traps[index % traps.length]!;
+    const trap = traps.length ? traps[index % traps.length]! : { value: sequence[index % sequence.length]! };
     tiles.push({ id: tiles.length, required: false, ...trap });
   }
   return shuffle(tiles, rng);
@@ -123,7 +124,7 @@ export function createMixedLearningBoard(
   if (!sequence.length || sequence.length >= size || !pool.length) throw new RangeError("Invalid learning board.");
   if (trapRatio < 0 || trapRatio > 1) throw new RangeError("Invalid trap ratio.");
   const tiles: AlphabetTile[] = sequence.map((value, id) => ({ id, value, required: true }));
-  const traps = shuffle([...trapCandidates(pool)], rng);
+  const traps = shuffle(trapCandidates(pool).filter(t => !trapLooksLikeTarget(t.value, t.transform, sequence)), rng);
   const trapCount = Math.min(Math.round(size * trapRatio), size - tiles.length);
   if (!traps.length && trapCount) throw new RangeError("No available learning traps.");
   for (let index = 0; index < trapCount; index += 1) {
