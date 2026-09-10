@@ -12,5 +12,13 @@ export function createUploadedGlyph(value: string, transform?: string): HTMLSpan
   else if (transform === "flip-x") glyph.style.transform = "scaleX(-1)";
   else if (transform === "flip-y") glyph.style.transform = "scaleY(-1)";
   else if (transform === "flip-x-rotate-90") glyph.style.transform = "rotate(90deg) scaleX(-1)";
+  // Stretch along the stroke only: keep the uploaded thickness and center.
+  const lineStretch: Record<string, string> = {
+    "ㅣ": "scaleY(1.4)",
+    "ㅡ": "scaleX(1.4)",
+    "╱": "rotate(-45deg) scaleX(1.4) rotate(45deg)",
+    "╲": "rotate(45deg) scaleX(1.4) rotate(-45deg)",
+  };
+  if (lineStretch[value]) glyph.style.transform = `${glyph.style.transform} ${lineStretch[value]}`.trim();
   return glyph;
 }

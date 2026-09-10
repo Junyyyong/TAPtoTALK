@@ -7,7 +7,7 @@ import { readFileSync } from "node:fs";
 describe("uploaded glyph mapping", () => {
   it("uses the longer uploaded strokes for both vowels and diagonals", () => {
     for (const value of ["ㅣ", "ㅡ", "╱", "╲"]) {
-      const svg = decodeURIComponent(GLYPH_ASSETS[value].url.split(",").slice(1).join(","));
+      const svg = decodeURIComponent(GLYPH_ASSETS[value]!.url.split(",").slice(1).join(","));
       expect(svg).toContain("81.6377953");
       expect(svg).toContain("10.6647949");
     }
