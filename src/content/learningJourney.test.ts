@@ -2,9 +2,19 @@ import { describe, expect, it } from "vitest";
 import { composeTokens } from "../core/hangul/compose";
 import { createAlphabetStageBoard, createMixedLearningBoard } from "../core/hangul/alphabetGame";
 import { ALPHABET_ORDER, ALPHABET_STAGES } from "./prompts";
-import { learningStageAt, LEARNING_TRAP_RATIO, SYLLABLE_STAGES } from "./learningJourney";
+import { learningStageAt, LEARNING_TRAP_RATIO, SYLLABLE_STAGES, WORD_STAGES, WORD_JOURNEY_SCORE_TIME_MS } from "./learningJourney";
 
 describe("continuous learning journeys", () => {
+  it("merges all word lessons into one ordered 33-stage course", () => {
+    expect(ALPHABET_STAGES).toHaveLength(27);
+    expect(SYLLABLE_STAGES).toHaveLength(82);
+    expect(WORD_STAGES).toHaveLength(33);
+    expect(new Set(WORD_STAGES.map((stage) => stage.word)).size).toBe(33);
+    expect(WORD_STAGES[0]!.word).toBe("아기");
+    expect(WORD_STAGES[6]!.word).toBe("사랑");
+    expect(WORD_STAGES[32]!.word).toBe("외");
+    expect(WORD_JOURNEY_SCORE_TIME_MS).toBeGreaterThan(0);
+  });
   it("continues after fixed Alphabet lessons with three random targets on 8×8", () => {
     expect(learningStageAt("alphabet", 0).target).toBe("ㄱ");
     expect(learningStageAt("alphabet", ALPHABET_STAGES.length - 1).boardSide).toBe(6);

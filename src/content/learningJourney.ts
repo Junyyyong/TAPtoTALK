@@ -1,6 +1,10 @@
 import { createRandomAlphabetTargets } from "../core/hangul/alphabetGame";
 import { requiredBoardSymbols } from "../core/hangul/target";
-import { ALPHABET_ORDER, ALPHABET_STAGES, alphabetTargetNote, type AlphabetStage } from "./prompts";
+import { ALPHABET_ORDER, ALPHABET_STAGES, WORD_LEVELS, alphabetTargetNote, type AlphabetStage } from "./prompts";
+
+// Preserve the existing easy-to-hard lesson order, now one word per stage.
+export const WORD_STAGES = WORD_LEVELS.flatMap((level) => level.targets);
+export const WORD_JOURNEY_SCORE_TIME_MS = WORD_LEVELS.reduce((total, level) => total + level.durationMs * level.targets.length / 3, 0);
 
 export type LearningMode = "alphabet" | "syllable";
 export const LEARNING_TRAP_RATIO = .2;

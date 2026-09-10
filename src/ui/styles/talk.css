@@ -12,6 +12,8 @@
 .alphabet-intro-body h2 { margin: 0; color: var(--hot-deep); font-size: 26px; font-weight: 900; letter-spacing: .12em; }
 .alphabet-intro-mark { display: grid; width: 140px; height: 140px; place-items: center; border-radius: 28px; color: white; background: linear-gradient(180deg,var(--cool),var(--cool-deep)); box-shadow: inset 0 2px 0 rgba(255,255,255,.45),0 8px 0 var(--slab-hard); font-family: "TAP Serif KR",serif; font-size: 72px; font-weight: 700; }
 .alphabet-intro-body p { margin: 0; color: var(--ink-soft); font-size: 14px; font-weight: 700; letter-spacing: .08em; }
+.alphabet-intro-mark { transform: translateY(-6px); }
+.alphabet-intro-mark.is-word { font-size: 48px; white-space: nowrap; }
 .alphabet-intro-body .wood-btn { width: min(260px,100%); margin-top: 8px; }
 .talk-screen { gap: 12px; padding-inline: max(12px, env(safe-area-inset-left)); padding-bottom: max(10px, env(safe-area-inset-bottom)); }
 .talk-screen .hud { flex: 0 0 auto; padding-inline: 0; }

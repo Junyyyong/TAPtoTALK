@@ -2,11 +2,11 @@ import { createLetterBoard, inputValueForTile, MIRROR_TRAP_TOKEN, type LetterTil
 import { createAlphabetStageBoard, createMixedLearningBoard, type AlphabetTile } from "../core/hangul/alphabetGame";
 import { composeTokens } from "../core/hangul/compose";
 import { CHEONJIIN_STROKES, CONSONANTS, type BoardSymbol } from "../core/hangul/keys";
-import { isWordMatch, pickLessonTargets, wordCountLabel } from "../core/hangul/wordChallenge";
+import { isWordMatch, wordCountLabel } from "../core/hangul/wordChallenge";
 import { lessonCheerFor, lessonScoreFromTime } from "../core/hangul/writing";
 import { materializeTargetTokens, targetCharacterProgress, targetToTokens } from "../core/hangul/target";
-import { ALPHABET_ORDER, WORD_LEVELS, WORD_TARGETS, type AlphabetStage, type WordTarget } from "../content/prompts";
-import { learningStageAt, LEARNING_TRAP_RATIO, LEARNING_TRANSITION_MS, type LearningMode } from "../content/learningJourney";
+import { ALPHABET_ORDER, WORD_TARGETS, type AlphabetStage, type WordTarget } from "../content/prompts";
+import { learningStageAt, LEARNING_TRAP_RATIO, LEARNING_TRANSITION_MS, WORD_STAGES, WORD_JOURNEY_SCORE_TIME_MS, type LearningMode } from "../content/learningJourney";
 import { APP_CONFIG } from "../config/app";
 import { el } from "./dom";
 import { createAlphabetGlyph } from "./alphabetGlyph";
@@ -54,10 +54,9 @@ export class TalkApp {
   private readonly helpBody = el("help-body");
   private preferences: TalkPreferences = loadTalkPreferences();
   private mode: Mode = "alphabet";
-  private introMode: LearningMode = "alphabet";
+  private introMode: Mode = "alphabet";
   private wordTarget: WordTarget = WORD_TARGETS[0]!;
   private wordCount = 0;
-  private wordLevel = 0;
   private wordTargetIndex = 0;
   private wordLessonTargets: readonly WordTarget[] = [];
   private alphabetStageIndex = 0;
@@ -78,9 +77,9 @@ export class TalkApp {
   constructor() {
     el("mode-alphabet").addEventListener("click", () => this.showAlphabetIntro("alphabet"));
     el("btn-alphabet-intro-back").addEventListener("click", () => this.showTitle());
-    el("btn-alphabet-start").addEventListener("click", () => this.startAlphabetJourney());
+    el("btn-alphabet-start").addEventListener("click", () => this.introMode === "word" ? this.startWordJourney() : this.startAlphabetJourney());
     el("mode-syllable").addEventListener("click", () => this.showAlphabetIntro("syllable"));
-    el("mode-word").addEventListener("click", () => this.showWordLevelSelect());
+    el("mode-word").addEventListener("click", () => this.showAlphabetIntro("word"));
     el("btn-back").addEventListener("click", () => this.showTitle());
     el("btn-pause").addEventListener("click", () => this.pauseGame());
     this.setupBackspace();
@@ -123,7 +122,7 @@ export class TalkApp {
     this.input = []; this.used.clear();
     const requiredText = this.wordTarget.word;
     this.tiles = createLetterBoard(requiredText);
-    this.targetLabel.textContent = `${WORD_LEVELS[this.wordLevel]!.name} · ${this.wordTargetIndex + 1}/3`;
+    this.targetLabel.textContent = `STAGE ${this.wordTargetIndex + 1}`;
     this.renderTranslatedTarget();
     this.typedText.dataset.empty = "Your word appears here.";
     this.runMode.textContent = "Word";
@@ -143,13 +142,15 @@ export class TalkApp {
       this.targetHint.textContent = "Complete the target word.";
   }
 
-  private showAlphabetIntro(mode: LearningMode): void {
+  private showAlphabetIntro(mode: Mode): void {
     window.clearTimeout(this.stageTimer);
     this.stageTransitionPending = false;
     this.inputLocked = true; this.paused = false;
     this.introMode = mode;
-    el("learning-intro-title").textContent = mode === "alphabet" ? "ALPHABET" : "SYLLABLE";
-    el("learning-intro-mark").textContent = mode === "alphabet" ? "ㄱ" : "가";
+    el("learning-intro-title").textContent = mode.toUpperCase();
+    el("learning-intro-mark").textContent = mode === "alphabet" ? "ㄱ" : mode === "syllable" ? "가" : "안녕";
+    el("learning-intro-mark").classList.toggle("is-word", mode === "word");
+    el("learning-intro-description").textContent = mode === "word" ? "Build one word at a time." : "2×2 → 4×4 → 6×6 → 8×8";
     this.stopClock(); this.cheer.stop();
     this.result.classList.add("hidden"); this.help.classList.add("hidden"); this.game.classList.add("hidden"); this.title.classList.add("hidden");
     this.alphabetIntro.classList.remove("hidden");
@@ -416,14 +417,7 @@ export class TalkApp {
     this.startedAt = resume ? performance.now() - this.elapsedMs : performance.now();
     const update = (): void => {
       this.elapsedMs = performance.now() - this.startedAt;
-      if (this.mode === "word") {
-        const duration = WORD_LEVELS[this.wordLevel]!.durationMs;
-        const remaining = Math.max(0, duration - this.elapsedMs); this.clock.textContent = formatTime(remaining);
-        if (remaining === 0) {
-          this.finishWordChallenge();
-          return;
-        }
-      } else this.clock.textContent = formatTime(this.elapsedMs);
+      this.clock.textContent = formatTime(this.elapsedMs);
       this.frame = requestAnimationFrame(update);
     };
     update();
@@ -434,7 +428,7 @@ export class TalkApp {
     if (this.mode !== "word") {
       this.startAlphabetJourney();
     }
-    else this.showWordLevelSelect();
+    else this.showAlphabetIntro("word");
   }
   private clearWordFeedback(): void {
     this.writingFeedback.textContent = "";
@@ -450,10 +444,9 @@ export class TalkApp {
       this.wordCount += 1;
       if (this.wordCount === this.wordLessonTargets.length) {
         this.stopClock();
-        const level = WORD_LEVELS[this.wordLevel]!;
-        const score = lessonScoreFromTime(this.elapsedMs, level.durationMs);
-        el("btn-again").textContent = "Choose level";
-        this.showResult(`${level.name} complete!`, `3 / 3 words · ${formatTime(this.elapsedMs)}`, score);
+        const score = lessonScoreFromTime(this.elapsedMs, WORD_JOURNEY_SCORE_TIME_MS);
+        el("btn-again").textContent = "Play again";
+        this.showResult("Word complete!", `${wordCountLabel(this.wordCount)} · ${formatTime(this.elapsedMs)}`, score);
         return;
       }
       this.inputLocked = false; this.startNextWord();
@@ -464,50 +457,16 @@ export class TalkApp {
     this.wordTarget = this.wordLessonTargets[this.wordTargetIndex] ?? WORD_TARGETS[0]!;
     this.input = []; this.used.clear();
     this.tiles = createLetterBoard(this.wordTarget.word);
-    this.targetLabel.textContent = `${WORD_LEVELS[this.wordLevel]!.name} · ${this.wordTargetIndex + 1}/3`;
+    this.targetLabel.textContent = `STAGE ${this.wordTargetIndex + 1}`;
     this.renderTranslatedTarget();
-    this.targetHint.textContent = `${wordCountLabel(this.wordCount)} complete · ${3 - this.wordCount} left.`;
     this.renderBoard(); this.renderInput();
   }
-  private finishWordChallenge(): void {
-    window.clearTimeout(this.stageTimer);
-    this.stopClock(); this.inputLocked = true;
-    el("btn-again").textContent = "Choose level";
-    const label = wordCountLabel(this.wordCount);
-    if (this.wordCount > 0) {
-      feedback.complete();
-      const tierScore = this.wordCount >= 10 ? 900 : this.wordCount >= 7 ? 650 : this.wordCount >= 4 ? 350 : 0;
-      this.showResult("Time is up!", `${label} completed`, this.wordCount, tierScore);
-    } else {
-      feedback.fail();
-      this.showResult("Time is up!", "0 words completed");
-    }
-  }
-
-  private showWordLevelSelect(): void {
-    window.clearTimeout(this.stageTimer);
-    this.stageTransitionPending = false;
-    this.inputLocked = true; this.paused = false;
-    this.alphabetIntro.classList.add("hidden");
-    this.stopClock(); this.cheer.stop();
-    this.result.classList.add("hidden"); this.game.classList.add("hidden"); this.title.classList.remove("hidden");
-    this.openHelp("Word");
-    this.helpBody.innerHTML = `<p class="level-intro">Choose a lesson and complete three Korean words.</p><div class="level-list" id="word-level-list"></div>`;
-    const list = el("word-level-list");
-    WORD_LEVELS.forEach((level, index) => {
-      const button = document.createElement("button");
-      button.type = "button"; button.className = "level-btn";
-      button.innerHTML = `<strong>${level.name}</strong><span>${level.description}</span><em>3 words · ${Math.round(level.durationMs / 1000)} seconds</em><small>START</small>`;
-      button.addEventListener("click", () => this.startWordLevel(index));
-      list.append(button);
-    });
-  }
-
-  private startWordLevel(index: number): void {
-    this.wordLevel = index; this.wordTargetIndex = 0; this.wordCount = 0; this.elapsedMs = 0;
-    this.wordLessonTargets = pickLessonTargets(WORD_LEVELS[index]!.targets, 3);
+  private startWordJourney(): void {
+    this.wordTargetIndex = 0; this.wordCount = 0; this.elapsedMs = 0;
+    this.wordLessonTargets = WORD_STAGES;
     this.help.classList.add("hidden");
-    el("btn-again").textContent = "Choose level";
+    this.alphabetIntro.classList.add("hidden");
+    el("btn-again").textContent = "Play again";
     this.startWord();
   }
   private showResult(title: string, detail: string, score?: number, tierScore = score): void {
