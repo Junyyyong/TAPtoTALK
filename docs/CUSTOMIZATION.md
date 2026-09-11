@@ -46,7 +46,7 @@ START 화면의 ㄱ·가·안녕은 `src/config/introMarks.ts`에 명조 SVG 윤
 | --- | --- |
 | 제목 로고 | `TAPtoTALK-logo.svg` |
 | 첫 스튜디오 심볼 | `public/assets/brand/tapeetepee-open-talk.png` |
-| 시작 화면 | `public/assets/brand/splash.webp` |
+| 시작 화면 | `public/assets/brand/taptotalk-cover-0911-01.png` |
 | 성공 영상 | `public/assets/brand/celebration.webm` |
 | 성공 음원 | `public/assets/brand/celebration.mp3` |
 

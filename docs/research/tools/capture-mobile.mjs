@@ -50,7 +50,7 @@ try {
     screenWidth: 390, screenHeight: 844,
   });
   await send("Page.navigate", { url });
-  await delay(8500);
+  await delay(Number(process.env.CAPTURE_DELAY_MS ?? 8500));
   if (expression) {
     const evaluated = await send("Runtime.evaluate", { expression, awaitPromise: true, returnByValue: true });
     if (evaluated.exceptionDetails) throw new Error(JSON.stringify(evaluated.exceptionDetails));
