@@ -7,13 +7,13 @@ describe("Alphabet journey", () => {
   it("moves from single jamo to ordered groups of three and five", () => {
     expect(ALPHABET_STAGES).toHaveLength(27);
     expect([...new Set(ALPHABET_STAGES.map(({ boardSide }) => boardSide))]).toEqual(ALPHABET_BOARD_SIDES);
-    expect(ALPHABET_ORDER).toEqual([..."ㄱㄴㄷㄹㅁㅂㅅㅇㅈㅊㅋㅌㅍㅎ", "ㅣ", "ㅡ", "ㆍ"]);
+    expect(ALPHABET_ORDER).toEqual([..."ㄱㄴㄷㄹㅁㅂㅅㅇㅈㅊㅋㅌㅍㅎ", "ㆍ", "ㅡ", "ㅣ"]);
     expect(ALPHABET_STAGES.filter(({ boardSide }) => boardSide === 2).map(({ target }) => target)).toEqual(ALPHABET_ORDER);
     expect(ALPHABET_STAGES.filter(({ boardSide }) => boardSide === 4).map(({ target }) => target)).toEqual([
-      "ㄱㄴㄷ", "ㄹㅁㅂ", "ㅅㅇㅈ", "ㅊㅋㅌ", "ㅍㅎㅣ", "ㅡㆍ",
+      "ㄱㄴㄷ", "ㄹㅁㅂ", "ㅅㅇㅈ", "ㅊㅋㅌ", "ㅍㅎ", "ㆍㅡㅣ",
     ]);
     expect(ALPHABET_STAGES.filter(({ boardSide }) => boardSide === 6).map(({ target }) => target)).toEqual([
-      "ㄱㄴㄷㄹㅁ", "ㅂㅅㅇㅈㅊ", "ㅋㅌㅍㅎㅣ", "ㅡㆍ",
+      "ㄱㄴㄷㄹㅁ", "ㅂㅅㅇㅈㅊ", "ㅋㅌㅍㅎ", "ㆍㅡㅣ",
     ]);
     expect(ALPHABET_STAGES.every(({ sequence, target }) => sequence.join("") === target)).toBe(true);
   });

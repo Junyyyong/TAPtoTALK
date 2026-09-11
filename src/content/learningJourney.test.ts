@@ -6,6 +6,11 @@ import { ALPHABET_ORDER, ALPHABET_STAGES } from "./prompts";
 import { learningStageAt, LEARNING_TRAP_RATIO, SYLLABLE_STAGES, WORD_STAGES, WORD_JOURNEY_SCORE_TIME_MS } from "./learningJourney";
 
 describe("continuous learning journeys", () => {
+  it("keeps grouped consonants separate from cheonjiin in sky-earth-person order", () => {
+    expect(ALPHABET_STAGES.filter(stage => stage.boardSide === 2).slice(-3).map(stage => stage.target)).toEqual(["ㆍ", "ㅡ", "ㅣ"]);
+    expect(ALPHABET_STAGES.filter(stage => stage.boardSide === 4).map(stage => stage.target)).toEqual(["ㄱㄴㄷ", "ㄹㅁㅂ", "ㅅㅇㅈ", "ㅊㅋㅌ", "ㅍㅎ", "ㆍㅡㅣ"]);
+    expect(ALPHABET_STAGES.filter(stage => stage.boardSide === 6).map(stage => stage.target)).toEqual(["ㄱㄴㄷㄹㅁ", "ㅂㅅㅇㅈㅊ", "ㅋㅌㅍㅎ", "ㆍㅡㅣ"]);
+  });
   it("merges all word lessons into one ordered 33-stage course", () => {
     expect(ALPHABET_STAGES).toHaveLength(27);
     expect(SYLLABLE_STAGES).toHaveLength(82);

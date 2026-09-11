@@ -23,7 +23,9 @@ const VOWEL_SOUNDS: Readonly<Record<string, string>> = {
   "ㅡ": "[ɯ]", "ㅣ": "[i]", "ㆍ": "[ʌ]",
 };
 
-export const ALPHABET_ORDER = [..."ㄱㄴㄷㄹㅁㅂㅅㅇㅈㅊㅋㅌㅍㅎ", "ㅣ", "ㅡ", "ㆍ"] as const;
+const ALPHABET_CONSONANTS = [..."ㄱㄴㄷㄹㅁㅂㅅㅇㅈㅊㅋㅌㅍㅎ"];
+const ALPHABET_VOWELS = ["ㆍ", "ㅡ", "ㅣ"];
+export const ALPHABET_ORDER = [...ALPHABET_CONSONANTS, ...ALPHABET_VOWELS];
 export const ALPHABET_BOARD_SIDES = [2, 4, 6] as const;
 
 export function alphabetTargetNote(target: string): string {
@@ -32,7 +34,8 @@ export function alphabetTargetNote(target: string): string {
 
 const chunkAlphabet = (size: number): readonly (readonly string[])[] => {
   const groups: string[][] = [];
-  for (let index = 0; index < ALPHABET_ORDER.length; index += size) groups.push(ALPHABET_ORDER.slice(index, index + size));
+  for (let index = 0; index < ALPHABET_CONSONANTS.length; index += size) groups.push(ALPHABET_CONSONANTS.slice(index, index + size));
+  groups.push([...ALPHABET_VOWELS]);
   return groups;
 };
 
