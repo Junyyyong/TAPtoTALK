@@ -14,11 +14,8 @@ export const RANDOM_ALPHABET_LENGTH = 3;
 // One syllable per stage; introduce more vowels as the board grows.
 const SYLLABLE_ROWS = [
   { text: "가나다라마바사아자차카타파하", side: 2 },
-  { text: "거너더러머버서어저처커터퍼허", side: 4 },
-  { text: "고노도로모보소오조초코토포호", side: 4 },
-  { text: "구누두루무부수우주추쿠투푸후", side: 6 },
-  { text: "기니디리미비시이지치키티피히", side: 6 },
-  { text: "개게내네왜와위꾀귀돼뭐예", side: 6 },
+  { text: "아야어여오요우유으이", side: 4 },
+  { text: "애에얘예와왜외워웨위의", side: 6 },
 ] as const;
 
 export const SYLLABLE_STAGES: readonly AlphabetStage[] = SYLLABLE_ROWS.flatMap(({ text, side }) =>

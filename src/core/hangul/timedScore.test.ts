@@ -4,7 +4,7 @@ import { stageSection, FULL_SCORE_TARGETS, SCORE_GRADES } from "../../content/ti
 it("scores completed targets only and caps at 1500", () => {
   for (const target of Object.values(FULL_SCORE_TARGETS)) {
     expect(timedScore(0, target)).toBe(0);
-    expect(timedScore(target / 2, target)).toBe(750);
+    expect(timedScore(Math.floor(target / 2), target)).toBe(Math.floor(target / 2) / target * 1500);
     expect(timedScore(target, target)).toBe(1500);
     expect(timedScore(target * 2, target)).toBe(1500);
     expect(timedScore(.9, target)).toBe(0);
@@ -19,9 +19,9 @@ it("keeps all fixed board sizes unscored and starts timed play at 8x8", () => {
   expect(stageSection("alphabet", 23)).toMatchObject({ end: 27, side: 6, tutorial: true });
   expect(stageSection("alphabet", 27)).toMatchObject({ side: 8, tutorial: false });
   expect(stageSection("syllable", 0)).toMatchObject({ end: 14, tutorial: true });
-  expect(stageSection("syllable", 14)).toMatchObject({ end: 42, tutorial: true });
-  expect(stageSection("syllable", 42)).toMatchObject({ end: 82, tutorial: true });
-  expect(stageSection("syllable", 82)).toMatchObject({ side: 8, tutorial: false });
+  expect(stageSection("syllable", 14)).toMatchObject({ end: 24, tutorial: true });
+  expect(stageSection("syllable", 24)).toMatchObject({ end: 35, tutorial: true });
+  expect(stageSection("syllable", 35)).toMatchObject({ side: 8, tutorial: false });
   expect(stageSection("word", 0).tutorial).toBe(false);
 });
 it("uses all six grade boundaries", () => {

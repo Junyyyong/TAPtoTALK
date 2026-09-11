@@ -1,11 +1,22 @@
 import { describe, expect, it } from "vitest";
 import { composeTokens } from "../core/hangul/compose";
+import { JUNGSEONG } from "../core/hangul/layout";
 import { composeTargetInput, requiredBoardSymbols } from "../core/hangul/target";
 import { createAlphabetStageBoard, createMixedLearningBoard } from "../core/hangul/alphabetGame";
 import { ALPHABET_ORDER, ALPHABET_STAGES } from "./prompts";
 import { learningStageAt, LEARNING_TRAP_RATIO, SYLLABLE_STAGES, WORD_STAGES, WORD_JOURNEY_SCORE_TIME_MS } from "./learningJourney";
 
 describe("continuous learning journeys", () => {
+  it("teaches all 21 vowels and randomizes only practiced syllables", () => {
+    const vowels = SYLLABLE_STAGES.map(s => JUNGSEONG[Math.floor((s.target.charCodeAt(0) - 0xac00) % 588 / 28)]);
+    expect(new Set(vowels)).toEqual(new Set(JUNGSEONG));
+    expect(SYLLABLE_STAGES.filter(s => s.boardSide === 4).map(s => s.target).join("")).toBe("아야어여오요우유으이");
+    expect(SYLLABLE_STAGES.filter(s => s.boardSide === 6).map(s => s.target).join("")).toBe("애에얘예와왜외워웨위의");
+    for (let i = 0; i < 100; i++) {
+      const target = learningStageAt("syllable", 35 + i).target;
+      expect(SYLLABLE_STAGES.some(s => s.target === target)).toBe(true);
+    }
+  });
   it("keeps grouped consonants separate from cheonjiin in sky-earth-person order", () => {
     expect(ALPHABET_STAGES.filter(stage => stage.boardSide === 2).slice(-3).map(stage => stage.target)).toEqual(["ㆍ", "ㅡ", "ㅣ"]);
     expect(ALPHABET_STAGES.filter(stage => stage.boardSide === 4).map(stage => stage.target)).toEqual(["ㄱㄴㄷ", "ㄹㅁㅂ", "ㅅㅇㅈ", "ㅊㅋㅌ", "ㅍㅎ", "ㆍㅡㅣ"]);
@@ -13,7 +24,7 @@ describe("continuous learning journeys", () => {
   });
   it("merges all word lessons into one ordered 33-stage course", () => {
     expect(ALPHABET_STAGES).toHaveLength(27);
-    expect(SYLLABLE_STAGES).toHaveLength(82);
+    expect(SYLLABLE_STAGES).toHaveLength(35);
     expect(WORD_STAGES).toHaveLength(33);
     expect(new Set(WORD_STAGES.map((stage) => stage.word)).size).toBe(33);
     expect(WORD_STAGES[0]!.word).toBe("아기");

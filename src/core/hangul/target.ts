@@ -44,12 +44,23 @@ export function requiredBoardSymbols(text: string): BoardSymbol[] {
   return targetToTokens(text).filter((token): token is BoardSymbol => typeof token === "string");
 }
 
-/** The prompted word disambiguates syllable boundaries in a complete tap stream. */
+/** Use the prompt's syllable boundaries while typing, without correcting wrong taps. */
 export function composeTargetInput(target: string, input: readonly string[]): string {
   const expected = materializeTargetTokens(targetToTokens(target));
-  return input.length === expected.length && input.every((value, index) => value === expected[index])
-    ? target.normalize("NFC")
-    : composeTokens(input);
+  if (input.length > expected.length || input.some((value, index) => value !== expected[index])) {
+    return composeTokens(input);
+  }
+  let cursor = 0;
+  let result = "";
+  for (const character of target.normalize("NFC")) {
+    const length = materializeTargetTokens(targetToTokens(character)).length;
+    if (cursor >= input.length) break;
+    if (length === 0) continue;
+    if (cursor + length <= input.length) result += character;
+    else result += composeTokens(input.slice(cursor));
+    cursor += length;
+  }
+  return result;
 }
 
 /** Resolves fixed-key actions to the stream consumed by the Hangul composer. */

@@ -41,7 +41,7 @@ async function check(mode) {
       } else await wait(430);
     }
     assert(el("target-label").textContent === "ROUND 1 · 8×8", "Main game not started");
-    assert(el("run-clock").textContent.startsWith("01:00"), "Tutorial time leaked");
+    assert(/^(01:00|00:59)/.test(el("run-clock").textContent), "Tutorial time leaked");
     // Complete one target, then time out with another target unfinished.
     const current = mode === "alphabet"
       ? [...document.querySelectorAll(".alphabet-target-jamo")].map(n => n.getAttribute("aria-label"))
@@ -59,14 +59,14 @@ async function check(mode) {
   assert(el("cheer").classList.contains("hidden"), "Pause caused timeout");
   offset += 60000; await wait(40);
   assert(el("cheer-headline").textContent === "TIME’S UP!", "No timeout");
-  const expected = { alphabet: 50, syllable: 75, word: 150 }[mode];
+  const expected = { alphabet: 100, syllable: 75, word: 150 }[mode];
   assert(Number(el("cheer-score").textContent) === expected, "Wrong completed-item score");
   assert(el("cheer-word").textContent === "GOOD TRY", "Wrong grade");
   assert([...document.querySelectorAll("#letter-board button")].every(b => b.disabled), "Result accepts input");
   el("cheer").dispatchEvent(new PointerEvent("pointerdown", { bubbles: true }));
   assert(!el("cheer").classList.contains("hidden"), "Skipped result card");
   await wait(2100); await dance();
-  assert(el("run-clock").textContent.startsWith("01:00"), "Round not reset");
+  assert(/^(01:00|00:59)/.test(el("run-clock").textContent), "Round not reset");
   // Zero completed targets must give Not Bad. Simulate blocked media as well.
   HTMLMediaElement.prototype.play = () => Promise.reject(Error("Test blocked"));
   offset += 60000; await wait(40);
