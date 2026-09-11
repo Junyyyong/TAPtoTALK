@@ -7,6 +7,7 @@
 
 | 날짜 | 범위 | 주요 내용 |
 | --- | --- | --- |
+| [2026-09-11 Syllable 확장](2026-09-11/syllable-expanded-practice.md) | `005e6ba`–`490812e` | 쌍자음·받침 추가,4판 학습→6판 본게임→8판 |
 | [2026-09-11 커버 교체](2026-09-11/cover-0911.md) | `984c4c6` | 새 PNG 원본 교체, 시작 흐름 유지 |
 | [2026-09-11 확정 경계 유지](2026-09-11/persistent-composition.md) | `756d88c`–`e04578a` | Space→Delete 후 음절 유지, 제시어 자동 보정 제거 |
 | [2026-09-11 Space·점수 상한](2026-09-11/space-alphabet-score.md) | `dd14eea`–`eb14195` | Word 띄어쓰기 복원, Alphabet 문제당150점·상한 없음 |
