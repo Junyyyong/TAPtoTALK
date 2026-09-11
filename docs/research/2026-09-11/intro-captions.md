@@ -25,3 +25,11 @@
 ![글자 위치 복원](screenshots/intro-original-position.png)
 
 같이 문의한 CI 실패는 실행 `34547031199`에서 확인했다. 테스트·웹 빌드·APK 빌드는 성공했고, 마지막 APK 업로드만 `Artifact storage quota has been hit`로 실패했다. CI 설정 및 저장파일 삭제는 이 요청에서 수행하지 않았다.
+
+## 후속: 미세 위치·크기와 APK 수동 저장
+
+ㄱ·가·강만 중앙에서 5px 위로 조정하고, 흰색 설명은 하단 위치를 유지하면서 16px에서 14px로 축소했다.
+
+CI는 push/PR에서 테스트·웹 및 Android 빌드를 유지하되 APK 저장은 생략한다. GitHub Actions → CI → Run workflow에서 `Save the debug APK for download`를 선택해 수동 실행할 때만 저장하며 보관기간은 7일이다. 기존 artifact는 삭제하지 않았으므로 저장공간이 여전히 부족하면 수동 저장은 실패할 수 있다.
+
+![아이콘 미세 조정](screenshots/intro-caption-14.png)

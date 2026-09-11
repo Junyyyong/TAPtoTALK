@@ -54,7 +54,11 @@ npm run build
 
 Claude로 디자인을 수정할 때는 [`docs/CUSTOMIZATION.md`](docs/CUSTOMIZATION.md)를 먼저 참고하세요.
 
-## Git 원격
+## CI와 APK 다운로드
+
+push/PR에는 테스트·웹 빌드·Android 빌드만 실행하고 APK 파일은 저장하지 않는다. 설치파일이 필요할 때 GitHub **Actions → CI → Run workflow**에서 **Save the debug APK for download**를 켜고 실행한다. 생성된 APK는 7일간 보관한다. 기존 artifact 저장공간이 가득 찬 상태라면 수동 저장 전에 공간 확보가 필요하다.
+
+## Git 원격 설정
 
 - `origin`: `Junyyyong/TAPtoTALK` — 이 프로젝트의 fetch/push 원격
 - `source`: `Junyyyong/TENtoTAP` — 원본 참조용 fetch 원격, push는 `DISABLED`
