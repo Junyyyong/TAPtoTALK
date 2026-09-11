@@ -167,6 +167,12 @@ export class Cheer {
     this.begin(headline, 0, text, then, failureClip());
   }
 
+  /** Unscored tutorial milestone; wait for a tap after the dance. */
+  playTutorial(then: () => void): void {
+    this.begin("", 0, "GREAT!", then, randomClipFor(300));
+    this.dance();
+  }
+
   /** A short intermission, not a scored result; continue automatically after the dance. */
   playBonus(then: () => void): void {
     this.begin("", 0, "BONUS!", then, randomClipFor(1500));

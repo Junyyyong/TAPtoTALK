@@ -18,13 +18,13 @@ TAPtoTALK은 레이아웃을 다시 디자인해도 한글 규칙을 건드리�
 
 ## 교체형 미디어
 
-### 1분 스테이지 설정
+### 튜토리얼 / 본게임 설정
 
-`src/content/timedStages.ts`: 제한시간 60초, 점수 카드 2초, 완성 가산 3단위, 무작위 목표 단위(Alphabet 45 / Syllable 54 / Word 60), 등급 기준을 설정한다. 고정 구간은 해당 판 크기의 전체 자소 수+문제당 완성 3단위를 목표로 사용한다.
+`src/content/timedStages.ts`: Alphabet/Syllable의 고정 2·4·6판은 무제한 튜토리얼, 8판과 Word는 60초 본게임이다. 크기 구간 종료마다 점수 없는 GREAT! 영상과 탭 대기를 제공한다.
 
-고정 구간은 진행률×600점이며, 완료 시에만 `900 × (60초−완료 시간) / (60초−최고점 기준 시간)`을 추가한다(보너스 0–900점, 총점 최대 1500점). 최고점 기준 시간은 Alphabet 2/4/6판 20/24/28초, Syllable 25/35/45초다. 이 시간 이내 완료하면 1500점, 60초 완료하면 600점, 절반 진행 후 시간 초과는 300점이다. 8×8·Word는 기존 획득 단위/목표×1000점(상한 1500)을 유지한다. `SCORE_POINTS`와 `FULL_SCORE_MS`에서 조정하며, 기준 시간은 아직 실측하지 않은 초기 밸런스다.
+`FULL_SCORE_TARGETS`는 1500점에 필요한 완성 문제 수다: Alphabet 30, Syllable 20, Word 10. 아직 실측하지 않은 초기 밸런스이며 추후 조정한다. 순수 계산은 `core/hangul/timedScore.ts`: 완성 수/목표×1500, 최대1500점. 부분 입력·오입력·별도 속도 보너스는 없다. 본게임 시작/다음 라운드에 완성 수를 초기화한다. 튜토리얼 진행은 점수에 포함하지 않는다. 기록 저장은 추후 작업이다.
 
-결과 영상 배정은 `src/config/app.ts`의 `celebrations`에 모여 있다. NOT BAD는 티피, GREAT는 1번, AMAZING은 4번, UNBELIEVABLE은 태피/후피, OH MY GOD은 해피/재피를 사용한다. 이전의 모든 등급 공통 랜덤 배정과 Word 10문제 보너스는 활성 흐름에서 사용하지 않는다.
+등급은 0 NOT BAD / 1–299 GOOD TRY / 300–599 GREAT / 600–999 AMAZING / 1000–1399 UNBELIEVABLE / 1400 이상 OH MY GOD. 영상 배정은 `config/app.ts`의 celebrations에 둔다. GOOD TRY는 GREAT와 1번 영상을 공유하고, 0점만 티피를 사용한다. 튜토리얼도 GREAT 영상을 사용한다.
 
 START 화면의 ㄱ·가·안녕은 `src/config/introMarks.ts`에 명조 SVG 윤곽으로 내장되어 폰트 로딩 전후 모양이 바뀌지 않는다. 원본 Noto Serif KR 700에서 다시 생성하려면 `python3 scripts/build-intro-marks.py`를 실행한다. 아이콘 위치는 `.alphabet-intro-mark`에서 조정한다.
 

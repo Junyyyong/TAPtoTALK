@@ -2,8 +2,9 @@ import { describe, expect, it } from "vitest";
 import { failureClip, poolFor, randomClipFor } from "./cheer";
 
 describe("score-based celebration clips", () => {
-  it("assigns distinct clips to the five score bands", () => {
-    expect(poolFor(100).at(0)?.layout).toBe("compact");
+  it("assigns clips to all six score bands (Good Try shares the Great clip)", () => {
+    expect(poolFor(0).at(0)?.layout).toBe("compact");
+    expect(poolFor(100).at(0)?.layout).toBe("standard");
     expect(poolFor(300).at(0)?.layout).toBe("standard");
     expect(poolFor(600).at(0)?.layout).toBe("large");
     expect(poolFor(1000).at(0)?.layout).toBe("hero");

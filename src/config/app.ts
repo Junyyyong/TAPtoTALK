@@ -58,6 +58,7 @@ export const APP_CONFIG = {
       { at: 1000, layout: "hero", clips: [CELEBRATION_MOVIES[2], CELEBRATION_MOVIES[3]] },
       { at: 600, layout: "large", clips: [CELEBRATION_MOVIES[1]] },
       { at: 300, layout: "standard", clips: [CELEBRATION_MOVIES[0]] },
+      { at: 1, layout: "standard", clips: [CELEBRATION_MOVIES[0]] },
       { at: 0, layout: "compact", clips: [FAILURE_MOVIE] },
     ],
   },

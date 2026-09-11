@@ -1,34 +1,31 @@
 import { expect, it } from "vitest";
-import { correctPrefix, timedScore } from "./timedScore";
-import { stageSection, SCORE_POINTS, FULL_SCORE_MS } from "../../content/timedStages";
-
-it("awards no points for mistakes or zero input, but retains correct partial input", () => {
-  expect(correctPrefix(["ㄱ", "ㄱ", "ㅣ"], ["ㄱ", "×", "ㅣ"])).toBe(1);
-  expect(correctPrefix(["ㄱ", "ㄱ"], ["ㄱ"])).toBe(1);
-  expect(timedScore(0, 40, 60000, 60000, false, 20000, SCORE_POINTS)).toBe(0);
-  expect(timedScore(20, 40, 60000, 60000, false, 20000, SCORE_POINTS)).toBe(300);
-});
-it("awards a bounded early clear bonus and caps endless scores", () => {
-  for (const [seconds, score] of [[12,1500], [20,1500], [30,1275], [40,1050], [50,825], [60,600]]) {
-    expect(timedScore(40, 40, seconds! * 1000, 60000, true, 20000, SCORE_POINTS)).toBe(score);
+import { timedScore } from "./timedScore";
+import { stageSection, FULL_SCORE_TARGETS, SCORE_GRADES } from "../../content/timedStages";
+it("scores completed targets only and caps at 1500", () => {
+  for (const target of Object.values(FULL_SCORE_TARGETS)) {
+    expect(timedScore(0, target)).toBe(0);
+    expect(timedScore(target / 2, target)).toBe(750);
+    expect(timedScore(target, target)).toBe(1500);
+    expect(timedScore(target * 2, target)).toBe(1500);
+    expect(timedScore(.9, target)).toBe(0);
   }
-  expect(timedScore(400, 40, 60000, 60000, false, null, SCORE_POINTS)).toBe(1500);
-  expect(timedScore(20, 40, 60000, 60000, false, null, SCORE_POINTS)).toBe(500);
+  expect(timedScore(-1, 10)).toBe(0);
+  expect(timedScore(NaN, 10)).toBe(0);
+  expect(timedScore(1, 0)).toBe(0);
 });
-it("uses a valid, separately tunable full-score time for each fixed section", () => {
-  for (const mode of ["alphabet", "syllable"] as const) {
-    for (const time of Object.values(FULL_SCORE_MS[mode])) {
-      expect(time).toBeGreaterThan(0); expect(time).toBeLessThan(60000);
-      expect(timedScore(40, 40, time, 60000, true, time, SCORE_POINTS)).toBe(1500);
-      expect(timedScore(40, 40, 60000, 60000, true, time, SCORE_POINTS)).toBe(600);
-    }
+it("keeps all fixed board sizes unscored and starts timed play at 8x8", () => {
+  expect(stageSection("alphabet", 0)).toMatchObject({ end: 17, side: 2, tutorial: true });
+  expect(stageSection("alphabet", 17)).toMatchObject({ end: 23, side: 4, tutorial: true });
+  expect(stageSection("alphabet", 23)).toMatchObject({ end: 27, side: 6, tutorial: true });
+  expect(stageSection("alphabet", 27)).toMatchObject({ side: 8, tutorial: false });
+  expect(stageSection("syllable", 0)).toMatchObject({ end: 14, tutorial: true });
+  expect(stageSection("syllable", 14)).toMatchObject({ end: 42, tutorial: true });
+  expect(stageSection("syllable", 42)).toMatchObject({ end: 82, tutorial: true });
+  expect(stageSection("syllable", 82)).toMatchObject({ side: 8, tutorial: false });
+  expect(stageSection("word", 0).tutorial).toBe(false);
+});
+it("uses all six grade boundaries", () => {
+  for (const [score, text] of [[0,"NOT BAD"],[1,"GOOD TRY"],[299,"GOOD TRY"],[300,"GREAT!"],[599,"GREAT!"],[600,"AMAZING!"],[999,"AMAZING!"],[1000,"UNBELIEVABLE!!"],[1399,"UNBELIEVABLE!!"],[1400,"OH MY GOD~!"],[1500,"OH MY GOD~!"]] as const) {
+    expect(SCORE_GRADES.find(g => score >= g.at)?.text).toBe(text);
   }
-});
-it("groups by board size, including retries at the beginning of a section", () => {
-  expect(stageSection("alphabet", 10)).toMatchObject({ start: 0, end: 17, side: 2 });
-  expect(stageSection("alphabet", 18)).toMatchObject({ start: 17, end: 23, side: 4 });
-  expect(stageSection("alphabet", 26)).toMatchObject({ start: 23, end: 27, side: 6 });
-  expect(stageSection("alphabet", 27).end).toBe(Infinity);
-  expect(stageSection("syllable", 15)).toMatchObject({ start: 14, end: 42, side: 4 });
-  expect(stageSection("word", 0).end).toBe(Infinity);
 });

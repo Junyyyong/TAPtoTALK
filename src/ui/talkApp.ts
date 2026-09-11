@@ -7,8 +7,8 @@ import { composeTargetInput, materializeTargetTokens, targetCharacterProgress, t
 import { ALPHABET_ORDER, WORD_TARGETS, type AlphabetStage, type WordTarget } from "../content/prompts";
 import { learningStageAt, LEARNING_TRAP_RATIO, LEARNING_TRANSITION_MS, type LearningMode } from "../content/learningJourney";
 import { createWordJourney } from "../content/wordJourney";
-import { ROUND_MS, COMPLETION_UNITS, SCORE_GRADES, SCORE_POINTS, stageSection } from "../content/timedStages";
-import { correctPrefix, timedScore } from "../core/hangul/timedScore";
+import { ROUND_MS, FULL_SCORE_TARGETS, SCORE_GRADES, stageSection } from "../content/timedStages";
+import { timedScore } from "../core/hangul/timedScore";
 import { APP_CONFIG } from "../config/app";
 import { INTRO_MARKS } from "../config/introMarks";
 import { el } from "./dom";
@@ -90,6 +90,7 @@ export class TalkApp {
 
   private acceptBeforeDeadline(): boolean {
     if (this.roundEnded || this.paused) return false;
+    if (this.roundSection.tutorial) return true;
     this.elapsedMs = performance.now() - this.startedAt;
     if (this.elapsedMs >= ROUND_MS) { this.finishRound(false); return false; }
     return true;
@@ -99,10 +100,8 @@ export class TalkApp {
     if (this.roundEnded) return;
     this.elapsedMs = Math.min(ROUND_MS, performance.now() - this.startedAt);
     const completedItem = this.stageTransitionPending;
-    const partial = completedItem ? 0 : this.mode === "word"
-      ? correctPrefix(materializeTargetTokens(targetToTokens(this.wordTarget.word)), this.input.map(t => t.value))
-      : this.alphabetPartIndex;
-    const score = timedScore(this.roundUnits + partial, this.roundSection.targetUnits, this.elapsedMs, ROUND_MS, cleared, this.roundSection.fullScoreMs, SCORE_POINTS);
+    const tutorial = this.roundSection.tutorial;
+    const score = timedScore(this.roundUnits, FULL_SCORE_TARGETS[this.mode]);
     this.roundEnded = true;
     this.inputLocked = true;
     this.stopClock();
@@ -110,12 +109,12 @@ export class TalkApp {
     this.stageTransitionPending = false;
     this.game.classList.add("is-input-locked");
     this.board.querySelectorAll<HTMLButtonElement>("button").forEach(button => button.disabled = true);
-    this.clock.textContent = formatTime(Math.max(0, ROUND_MS - this.elapsedMs));
+    this.clock.textContent = tutorial ? "PRACTICE" : formatTime(Math.max(0, ROUND_MS - this.elapsedMs));
     const retry = !cleared && Number.isFinite(this.roundSection.end);
     el("cheer-tap").textContent = retry ? "Tap to try again" : "Tap for the next stage";
     const grade = SCORE_GRADES.find(grade => score >= grade.at)!.text;
-    this.cheer.play(cleared ? "BONUS!" : "TIME’S UP!", score, grade, () => {
-      if (!retry) this.roundNumber++;
+    const next = () => {
+      if (!retry) this.roundNumber = tutorial ? 1 : this.roundNumber + 1;
       if (this.mode !== "word") {
         this.alphabetStageIndex = retry ? this.roundSection.start : cleared ? this.roundSection.end : this.alphabetStageIndex + (completedItem ? 1 : 0);
         this.beginRound();
@@ -132,7 +131,9 @@ export class TalkApp {
         }
       }
       this.startClock();
-    });
+    };
+    if (tutorial) this.cheer.playTutorial(next);
+    else this.cheer.play("TIME’S UP!", score, grade, next);
   }
 
   constructor() {
@@ -217,7 +218,7 @@ export class TalkApp {
     el("learning-intro-mark").setAttribute("aria-label", `${el("learning-intro-mark").getAttribute("aria-label")} ${el("learning-intro-caption").textContent}`);
     el("learning-intro-mark").setAttribute("role", "img");
     el("learning-intro-mark").classList.toggle("is-word", mode === "word");
-    el("learning-intro-description").textContent = mode === "word" ? "Build words in 60 seconds." : "60 seconds per stage.";
+    el("learning-intro-description").textContent = mode === "word" ? "Build words in 60 seconds." : "Practice first. Then play for 60 seconds.";
     this.stopClock(); this.cheer.stop();
     this.result.classList.add("hidden"); this.help.classList.add("hidden"); this.game.classList.add("hidden"); this.title.classList.add("hidden");
     this.alphabetIntro.classList.remove("hidden");
@@ -254,7 +255,7 @@ export class TalkApp {
       ? createMixedLearningBoard(stage.sequence, ALPHABET_ORDER, stage.boardSide as 4 | 6 | 8, LEARNING_TRAP_RATIO)
       : createAlphabetStageBoard(stage.sequence, ALPHABET_ORDER, stage.boardSide);
     this.runMode.textContent = this.mode === "syllable" ? "Syllable" : "Alphabet";
-    this.targetLabel.textContent = `STAGE ${this.roundNumber} · ${stage.boardSide}×${stage.boardSide}`;
+    this.targetLabel.textContent = `${this.roundSection.tutorial ? "PRACTICE" : `ROUND ${this.roundNumber}`} · ${stage.boardSide}×${stage.boardSide}`;
     this.renderAlphabetBoard();
     this.renderAlphabetTarget();
   }
@@ -319,7 +320,7 @@ export class TalkApp {
     this.inputLocked = true;
     this.targetPrompt.classList.add("is-alphabet-complete");
     this.stageTransitionPending = true;
-    this.roundUnits += stage.sequence.length + COMPLETION_UNITS;
+    this.roundUnits += 1;
     if (this.alphabetStageIndex + 1 === this.roundSection.end) { this.finishRound(true); return; }
     this.stageTimer = window.setTimeout(() => this.advanceLearningStage(), LEARNING_TRANSITION_MS);
   }
@@ -498,6 +499,7 @@ export class TalkApp {
 
   private startClock(resume = false): void {
     this.stopClock();
+    if (this.roundSection.tutorial) { this.clock.textContent = "PRACTICE"; return; }
     this.startedAt = resume ? performance.now() - this.elapsedMs : performance.now();
     const update = (): void => {
       this.elapsedMs = performance.now() - this.startedAt;
@@ -526,7 +528,7 @@ export class TalkApp {
     this.inputLocked = true; this.targetPrompt.classList.add("is-writing-complete");
     feedback.clear(this.input.length);
     this.stageTransitionPending = true;
-    this.roundUnits += materializeTargetTokens(targetToTokens(this.wordTarget.word)).length + COMPLETION_UNITS;
+    this.roundUnits += 1;
     this.stageTimer = window.setTimeout(() => this.advanceLearningStage(), LEARNING_TRANSITION_MS);
   }
   private startNextWord(): void {
