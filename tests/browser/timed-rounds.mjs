@@ -16,6 +16,7 @@ async function check(scenario) {
   Object.defineProperty(performance, "now", { value: () => now() + offset });
   const mode = scenario === "word" ? "word" : scenario === "syllable" ? "syllable" : "alphabet";
   el(`mode-${mode}`).click(); el("btn-alphabet-start").click();
+  const testStart = performance.now();
   const tap = value => {
     const label = value === "ㆍ" ? "Cheonjiin dot" : value;
     const button = [...document.querySelectorAll("#letter-board button:not(:disabled)")].find(b => b.getAttribute("aria-label") === label && !/(rotate|flip|--shape|stem)/.test(b.className));
@@ -83,11 +84,17 @@ async function check(scenario) {
   const stages = mode === "syllable" ? SYLLABLE_STAGES : ALPHABET_STAGES;
   const limit = mode === "syllable" ? 14 : scenario === "endless" ? 27 : 17;
   for (let i = 0; i < limit; i++) {
+    if (scenario.startsWith("late-clear") && i === limit - 1) offset += 50000 - (performance.now() - testStart);
     stages[i].sequence.forEach(tap);
     const boundary = i + 1 === stages.length || stages[i + 1].boardSide !== stages[i].boardSide;
     if (boundary) {
       assert(el("cheer-headline").textContent === "BONUS!", "No clear bonus at size boundary");
-      assert(Number(el("cheer-score").textContent.replaceAll(",", "")) >= 1000, "Clear score too low");
+      assert(Number(el("cheer-score").textContent.replaceAll(",", "")) >= 600, "Clear score too low");
+      if (scenario.startsWith("late-clear")) {
+        const score = Number(el("cheer-score").textContent.replaceAll(",", ""));
+        assert(scenario.endsWith("before") ? score >= 1080 && score <= 1090 : score >= 820 && score <= 830, "50-second clear score incorrect");
+        return;
+      }
       if (scenario === "bonus") return; // Record the real score card before the dance.
       await finishDance();
     } else await wait(450);

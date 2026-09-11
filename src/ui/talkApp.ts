@@ -7,7 +7,7 @@ import { composeTargetInput, materializeTargetTokens, targetCharacterProgress, t
 import { ALPHABET_ORDER, WORD_TARGETS, type AlphabetStage, type WordTarget } from "../content/prompts";
 import { learningStageAt, LEARNING_TRAP_RATIO, LEARNING_TRANSITION_MS, type LearningMode } from "../content/learningJourney";
 import { createWordJourney } from "../content/wordJourney";
-import { ROUND_MS, COMPLETION_UNITS, SCORE_GRADES, stageSection } from "../content/timedStages";
+import { ROUND_MS, COMPLETION_UNITS, SCORE_GRADES, SCORE_POINTS, stageSection } from "../content/timedStages";
 import { correctPrefix, timedScore } from "../core/hangul/timedScore";
 import { APP_CONFIG } from "../config/app";
 import { INTRO_MARKS } from "../config/introMarks";
@@ -102,7 +102,7 @@ export class TalkApp {
     const partial = completedItem ? 0 : this.mode === "word"
       ? correctPrefix(materializeTargetTokens(targetToTokens(this.wordTarget.word)), this.input.map(t => t.value))
       : this.alphabetPartIndex;
-    const score = timedScore(this.roundUnits + partial, this.roundSection.targetUnits, this.elapsedMs, ROUND_MS, cleared);
+    const score = timedScore(this.roundUnits + partial, this.roundSection.targetUnits, this.elapsedMs, ROUND_MS, cleared, this.roundSection.fullScoreMs, SCORE_POINTS);
     this.roundEnded = true;
     this.inputLocked = true;
     this.stopClock();
