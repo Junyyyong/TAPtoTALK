@@ -30,7 +30,7 @@ async function check(mode) {
     el("btn-pause").click(); el("btn-resume").click();
     const lessons = mode === "alphabet" ? ALPHABET_STAGES : Array.from({ length: 30 }, (_, i) => ({ boardSide: i < 5 ? 2 : 4 }));
     for (let i = 0; i < lessons.length; i++) {
-      (mode === "alphabet" ? lessons[i].sequence : requiredBoardSymbols(el("target-text").textContent)).forEach(tap);
+      (mode === "alphabet" ? lessons[i].sequence : requiredBoardSymbols(el("target-text").querySelector(".target-korean").textContent)).forEach(tap);
       const boundary = i + 1 === lessons.length || lessons[i + 1].boardSide !== lessons[i].boardSide;
       if (boundary) {
         assert(el("cheer-word").textContent === "GREAT!", "Missing tutorial celebration");
@@ -45,7 +45,7 @@ async function check(mode) {
     // Complete one target, then time out with another target unfinished.
     const current = mode === "alphabet"
       ? [...document.querySelectorAll(".alphabet-target-jamo")].map(n => n.getAttribute("aria-label"))
-      : requiredBoardSymbols(el("target-text").textContent);
+      : requiredBoardSymbols(el("target-text").querySelector(".target-korean").textContent);
     current.forEach(tap); await wait(430);
   } else {
     const target = el("target-text").querySelector(".target-korean").textContent;

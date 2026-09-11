@@ -366,7 +366,9 @@ export class TalkApp {
 
   private renderSyllableTarget(stage: AlphabetStage): void {
     this.targetText.classList.remove("is-medium-sequence", "is-long-sequence");
-    this.targetText.textContent = stage.target;
+    const korean = document.createElement("span"); korean.className = "target-korean"; korean.textContent = stage.target;
+    const note = document.createElement("span"); note.className = "syllable-target-note"; note.textContent = stage.note;
+    this.targetText.replaceChildren(korean, note);
     const progress = document.createElement("span"); progress.className = "syllable-taps";
     stage.sequence.forEach((value, index) => {
       if (index) progress.append(" → ");

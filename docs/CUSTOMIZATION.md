@@ -18,6 +18,8 @@ TAPtoTALK은 레이아웃을 다시 디자인해도 한글 규칙을 건드리�
 
 ## 교체형 미디어
 
+Syllable 제시어 아래 안내는 `src/content/syllableNotes.ts`에서 관리한다. 기본음절·모음·쌍자음은 단독 발음의 IPA 기반 간략 표기, 받침 명사는 짧은 영어 뜻을 사용한다. 세션과 무작위 본게임 모두 같은 매핑을 쓴다. `.syllable-target-note`는 16px 고딕이며 기존 제시창 높이와 52px 한글 글자 크기는 유지한다.
+
 ### 튜토리얼 / 본게임 설정
 
 `src/content/timedStages.ts`: Alphabet은 고정2·4·6판, Syllable은 고정2·4판이 무제한 튜토리얼이다. Syllable의 첫 본게임 라운드는6판, 두 번째부터8판이다. Alphabet 본게임과 Word는8판이다. 본게임은 모두60초이며 learningStageAt과 stageSection에 같은 roundNumber를 전달한다. 크기 구간 종료마다 점수 없는 GREAT! 영상과 탭 대기를 제공한다.

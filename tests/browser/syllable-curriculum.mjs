@@ -8,7 +8,7 @@ async function visit(stop) {
   const count = content.createSyllablePractice ? 30 : content.SYLLABLE_STAGES.length;
   el("mode-syllable").click(); el("btn-alphabet-start").click();
   for (let i = 0; i < count; i++) {
-    const target = el("target-text").textContent;
+    const target = (el("target-text").querySelector(".target-korean") ?? el("target-text")).textContent;
     if (target === stop || (stop === "sixth" && i === 5) || (stop === "finals" && i === 25)) return;
     for (const value of requiredBoardSymbols(target)) {
       const button = [...document.querySelectorAll("#letter-board button:not(:disabled)")].find(b => b.getAttribute("aria-label") === (value === "ㆍ" ? "Cheonjiin dot" : value) && !/(rotate|flip|--shape|stem)/.test(b.className));
