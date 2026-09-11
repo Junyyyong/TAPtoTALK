@@ -13,7 +13,7 @@
 .alphabet-intro-mark { display: grid; width: 140px; height: 140px; place-items: center; border-radius: 28px; color: white; background: linear-gradient(180deg,var(--cool),var(--cool-deep)); box-shadow: inset 0 2px 0 rgba(255,255,255,.45),0 8px 0 var(--slab-hard); font-family: "TAP Serif KR",serif; font-size: 72px; font-weight: 700; }
 .alphabet-intro-body p { margin: 0; color: var(--ink-soft); font-size: 14px; font-weight: 700; letter-spacing: .08em; }
 .alphabet-intro-mark { position: relative; transform: translateY(-12px); }
-.intro-mark-glyph { position: absolute; inset: 0; transform: translateY(-14px); }
+.intro-mark-glyph { position: absolute; inset: 0; }
 .alphabet-intro-mark svg { display: block; width: 100%; height: 100%; }
 .alphabet-intro-body .intro-mark-caption { position: absolute; right: 0; bottom: 14px; left: 0; color: white; text-align: center; font-family: "TAP Sans KR",sans-serif; font-size: 16px; letter-spacing: 0; line-height: 1.2; }
 .alphabet-intro-mark.is-word { font-size: 48px; white-space: nowrap; }

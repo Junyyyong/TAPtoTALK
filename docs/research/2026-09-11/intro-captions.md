@@ -17,3 +17,11 @@
 | Alphabet | Syllable | Word |
 | --- | --- | --- |
 | ![ㄱ 설명 내부](screenshots/caption-inside-alphabet.png) | ![가 설명 내부](screenshots/caption-inside-syllable.png) | ![강 설명 내부](screenshots/caption-inside-word.png) |
+
+## 후속: 아이콘 글자 위치 복원
+
+사용자 요청에 따라 글자 윤곽에만 적용했던 translateY(-14px)를 제거했다. ㄱ·가·강은 기존 박스 중앙 위치로 복원하고, 설명의 박스 내부 위치·16px·흰색은 유지한다. 빌드 통과.
+
+![글자 위치 복원](screenshots/intro-original-position.png)
+
+같이 문의한 CI 실패는 실행 `34547031199`에서 확인했다. 테스트·웹 빌드·APK 빌드는 성공했고, 마지막 APK 업로드만 `Artifact storage quota has been hit`로 실패했다. CI 설정 및 저장파일 삭제는 이 요청에서 수행하지 않았다.
