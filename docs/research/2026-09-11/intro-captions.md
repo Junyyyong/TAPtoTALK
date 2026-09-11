@@ -9,3 +9,11 @@
 | Alphabet | Syllable | Word |
 | --- | --- | --- |
 | ![ㄱ](screenshots/caption-alphabet.png) | ![가](screenshots/caption-syllable.png) | ![강](screenshots/caption-word.png) |
+
+## 후속: 설명을 박스 안으로 이동
+
+사용자 요청에 따라 [k/g]·[ka]·river를 파란 아이콘 박스 내부, 글자 아래로 이동했다. 설명은 기존 16px을 유지하고 흰색으로 변경했다. 글자 윤곽은 크기를 유지한 채 박스 안에서 14px 위로 조정해 설명과 겹치지 않게 했다. 테스트 174개와 빌드 통과. 동일한 모바일 캡처 규격이다.
+
+| Alphabet | Syllable | Word |
+| --- | --- | --- |
+| ![ㄱ 설명 내부](screenshots/caption-inside-alphabet.png) | ![가 설명 내부](screenshots/caption-inside-syllable.png) | ![강 설명 내부](screenshots/caption-inside-word.png) |
