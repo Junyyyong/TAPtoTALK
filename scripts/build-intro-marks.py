@@ -12,7 +12,7 @@ font = instantiateVariableFont(TTFont(root / 'font/NotoSerifKR-VariableFont_wght
 glyphs = font.getGlyphSet()
 cmap = font.getBestCmap()
 marks = {}
-for mode, text, size in [('alphabet', 'ㄱ', 72), ('syllable', '가', 72), ('word', '안녕', 48)]:
+for mode, text, size in [('alphabet', 'ㄱ', 72), ('syllable', '가', 72), ('word', '강', 72)]:
     pen = SVGPathPen(glyphs)
     bounds = BoundsPen(glyphs)
     advance = 0

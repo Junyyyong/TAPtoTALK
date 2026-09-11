@@ -149,7 +149,8 @@ export class TalkApp {
     el("learning-intro-title").textContent = mode.toUpperCase();
     // Locally generated outlines, not user-provided markup or webfont text.
     el("learning-intro-mark").innerHTML = INTRO_MARKS[mode];
-    el("learning-intro-mark").setAttribute("aria-label", mode === "alphabet" ? "ㄱ" : mode === "syllable" ? "가" : "안녕");
+    el("learning-intro-mark").setAttribute("aria-label", mode === "alphabet" ? "ㄱ" : mode === "syllable" ? "가" : "강");
+    el("learning-intro-caption").textContent = mode === "alphabet" ? "[k/g]" : mode === "syllable" ? "[ka]" : "river";
     el("learning-intro-mark").setAttribute("role", "img");
     el("learning-intro-mark").classList.toggle("is-word", mode === "word");
     el("learning-intro-description").textContent = mode === "word" ? "Build one word at a time." : "2×2 → 4×4 → 6×6 → 8×8";
