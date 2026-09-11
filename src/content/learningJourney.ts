@@ -17,9 +17,11 @@ const SYLLABLE_ROWS = [
   { text: "가나다라마바사아자차카타파하", side: 2 },
   { text: "아야어여오요우유으이", side: 4 },
   { text: "애에얘예와왜외워웨위의", side: 4 },
+  // Five tense initials, exactly once each per practice session.
   { text: "까따빠싸짜", side: 4 },
-  { text: "각간갇갈감갑갓강갖갗갘같갚갛", side: 4 },
-  { text: "넋앉많읽삶넓곬핥읊싫값밖있", side: 4 },
+  // Familiar standalone nouns, not isolated verb stems or exhaustive final spellings.
+  { text: "산강물불눈손발집밥옷달별입몸", side: 4 },
+  { text: "닭흙값삶몫", side: 4 },
 ] as const;
 
 export const SYLLABLE_STAGES: readonly AlphabetStage[] = SYLLABLE_ROWS.flatMap(({ text, side }) =>

@@ -9,7 +9,7 @@ async function visit(stop) {
   el("mode-syllable").click(); el("btn-alphabet-start").click();
   for (let i = 0; i < count; i++) {
     const target = el("target-text").textContent;
-    if (target === stop || (stop === "sixth" && i === 5)) return;
+    if (target === stop || (stop === "sixth" && i === 5) || (stop === "finals" && i === 25)) return;
     for (const value of requiredBoardSymbols(target)) {
       const button = [...document.querySelectorAll("#letter-board button:not(:disabled)")].find(b => b.getAttribute("aria-label") === (value === "ㆍ" ? "Cheonjiin dot" : value) && !/(rotate|flip|--shape|stem)/.test(b.className));
       if (!button) throw Error("Missing " + value);

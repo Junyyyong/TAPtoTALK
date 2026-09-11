@@ -7,10 +7,10 @@ import { ALPHABET_ORDER, ALPHABET_STAGES } from "./prompts";
 import { learningStageAt, LEARNING_TRAP_RATIO, SYLLABLE_STAGES, WORD_STAGES, WORD_JOURNEY_SCORE_TIME_MS } from "./learningJourney";
 
 describe("continuous learning journeys", () => {
-  it("covers all tense initials and 27 final spellings on 4x4 with enough separate tiles", () => {
+  it("uses noun finals and all tense initials on 4x4 with enough separate tiles", () => {
     const advanced = SYLLABLE_STAGES.filter(s => s.boardSide === 4);
     const finals = new Set(advanced.map(s => JONGSEONG[(s.target.charCodeAt(0) - 0xac00) % 28]).filter(Boolean));
-    expect(finals).toEqual(new Set(JONGSEONG.filter(Boolean)));
+    expect(finals).toEqual(new Set(["ㄴ", "ㅇ", "ㄹ", "ㅂ", "ㅅ", "ㅁ", "ㄺ", "ㅄ", "ㄻ", "ㄳ"]));
     const initials = advanced.map(s => CHOSEONG[Math.floor((s.target.charCodeAt(0) - 0xac00) / 588)]);
     for (const tense of ["ㄲ", "ㄸ", "ㅃ", "ㅆ", "ㅉ"]) expect(initials).toContain(tense);
     for (const stage of advanced) {
@@ -22,7 +22,7 @@ describe("continuous learning journeys", () => {
   it("teaches all 21 vowels and randomizes only practiced syllables", () => {
     const vowels = SYLLABLE_STAGES.map(s => JUNGSEONG[Math.floor((s.target.charCodeAt(0) - 0xac00) % 588 / 28)]);
     expect(new Set(vowels)).toEqual(new Set(JUNGSEONG));
-    expect(SYLLABLE_STAGES.filter(s => s.boardSide === 4).map(s => s.target).join("")).toBe("아야어여오요우유으이애에얘예와왜외워웨위의까따빠싸짜각간갇갈감갑갓강갖갗갘같갚갛넋앉많읽삶넓곬핥읊싫값밖있");
+    expect(SYLLABLE_STAGES.filter(s => s.boardSide === 4).map(s => s.target).join("")).toBe("아야어여오요우유으이애에얘예와왜외워웨위의까따빠싸짜산강물불눈손발집밥옷달별입몸닭흙값삶몫");
     expect(SYLLABLE_STAGES.some(s => s.boardSide === 6)).toBe(false);
     for (let i = 0; i < 100; i++) {
       const target = learningStageAt("syllable", SYLLABLE_STAGES.length + i).target;
@@ -36,7 +36,7 @@ describe("continuous learning journeys", () => {
   });
   it("merges all word lessons into one ordered 33-stage course", () => {
     expect(ALPHABET_STAGES).toHaveLength(27);
-    expect(SYLLABLE_STAGES).toHaveLength(67);
+    expect(SYLLABLE_STAGES).toHaveLength(59);
     expect(WORD_STAGES).toHaveLength(33);
     expect(new Set(WORD_STAGES.map((stage) => stage.word)).size).toBe(33);
     expect(WORD_STAGES[0]!.word).toBe("아기");
