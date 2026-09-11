@@ -54,11 +54,11 @@ export const APP_CONFIG = {
     celebrationAudio: CELEBRATION_MOVIES[0]!.sound,
     failureCelebration: FAILURE_MOVIE,
     celebrations: [
-      { at: 1400, layout: "hero", clips: CELEBRATION_MOVIES },
-      { at: 1000, layout: "hero", clips: CELEBRATION_MOVIES },
-      { at: 600, layout: "large", clips: CELEBRATION_MOVIES },
-      { at: 300, layout: "standard", clips: CELEBRATION_MOVIES },
-      { at: 0, layout: "compact", clips: CELEBRATION_MOVIES },
+      { at: 1400, layout: "hero", clips: [CELEBRATION_MOVIES[4], CELEBRATION_MOVIES[5]] },
+      { at: 1000, layout: "hero", clips: [CELEBRATION_MOVIES[2], CELEBRATION_MOVIES[3]] },
+      { at: 600, layout: "large", clips: [CELEBRATION_MOVIES[1]] },
+      { at: 300, layout: "standard", clips: [CELEBRATION_MOVIES[0]] },
+      { at: 0, layout: "compact", clips: [FAILURE_MOVIE] },
     ],
   },
 } as const;

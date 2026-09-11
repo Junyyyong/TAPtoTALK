@@ -6,7 +6,9 @@ import { isWordMatch } from "../core/hangul/wordChallenge";
 import { composeTargetInput, materializeTargetTokens, targetCharacterProgress, targetToTokens } from "../core/hangul/target";
 import { ALPHABET_ORDER, WORD_TARGETS, type AlphabetStage, type WordTarget } from "../content/prompts";
 import { learningStageAt, LEARNING_TRAP_RATIO, LEARNING_TRANSITION_MS, type LearningMode } from "../content/learningJourney";
-import { createWordJourney, isWordBonusStage } from "../content/wordJourney";
+import { createWordJourney } from "../content/wordJourney";
+import { ROUND_MS, COMPLETION_UNITS, SCORE_GRADES, stageSection } from "../content/timedStages";
+import { correctPrefix, timedScore } from "../core/hangul/timedScore";
 import { APP_CONFIG } from "../config/app";
 import { INTRO_MARKS } from "../config/introMarks";
 import { el } from "./dom";
@@ -72,6 +74,66 @@ export class TalkApp {
   private startedAt = 0;
   private elapsedMs = 0;
   private frame?: number;
+  private roundNumber = 1;
+  private roundUnits = 0;
+  private roundEnded = true;
+  private roundSection = stageSection("alphabet", 0);
+
+  private beginRound(): void {
+    this.elapsedMs = 0;
+    this.roundUnits = 0;
+    this.roundEnded = false;
+    this.roundSection = stageSection(this.mode, this.mode === "word" ? this.wordTargetIndex : this.alphabetStageIndex);
+    this.inputLocked = false;
+    this.game.classList.remove("is-input-locked");
+  }
+
+  private acceptBeforeDeadline(): boolean {
+    if (this.roundEnded || this.paused) return false;
+    this.elapsedMs = performance.now() - this.startedAt;
+    if (this.elapsedMs >= ROUND_MS) { this.finishRound(false); return false; }
+    return true;
+  }
+
+  private finishRound(cleared: boolean): void {
+    if (this.roundEnded) return;
+    this.elapsedMs = Math.min(ROUND_MS, performance.now() - this.startedAt);
+    const completedItem = this.stageTransitionPending;
+    const partial = completedItem ? 0 : this.mode === "word"
+      ? correctPrefix(materializeTargetTokens(targetToTokens(this.wordTarget.word)), this.input.map(t => t.value))
+      : this.alphabetPartIndex;
+    const score = timedScore(this.roundUnits + partial, this.roundSection.targetUnits, this.elapsedMs, ROUND_MS, cleared);
+    this.roundEnded = true;
+    this.inputLocked = true;
+    this.stopClock();
+    window.clearTimeout(this.stageTimer);
+    this.stageTransitionPending = false;
+    this.game.classList.add("is-input-locked");
+    this.board.querySelectorAll<HTMLButtonElement>("button").forEach(button => button.disabled = true);
+    this.clock.textContent = formatTime(Math.max(0, ROUND_MS - this.elapsedMs));
+    const retry = !cleared && Number.isFinite(this.roundSection.end);
+    el("cheer-tap").textContent = retry ? "Tap to try again" : "Tap for the next stage";
+    const grade = SCORE_GRADES.find(grade => score >= grade.at)!.text;
+    this.cheer.play(cleared ? "BONUS!" : "TIME’S UP!", score, grade, () => {
+      if (!retry) this.roundNumber++;
+      if (this.mode !== "word") {
+        this.alphabetStageIndex = retry ? this.roundSection.start : cleared ? this.roundSection.end : this.alphabetStageIndex + (completedItem ? 1 : 0);
+        this.beginRound();
+        this.loadAlphabetStage();
+      } else {
+        this.beginRound();
+        this.targetPrompt.classList.remove("is-writing-complete");
+        if (completedItem) this.startNextWord();
+        else {
+          this.input = []; this.used.clear();
+          this.tiles = createWordBoard(this.wordTarget.word);
+          this.targetLabel.textContent = `STAGE ${this.roundNumber} · 8×8`;
+          this.renderTranslatedTarget(); this.renderBoard(); this.renderInput();
+        }
+      }
+      this.startClock();
+    });
+  }
 
   constructor() {
     el("mode-alphabet").addEventListener("click", () => this.showAlphabetIntro("alphabet"));
@@ -102,6 +164,7 @@ export class TalkApp {
   }
 
   private showTitle(): void {
+    this.roundEnded = true;
     window.clearTimeout(this.stageTimer);
     this.stageTransitionPending = false;
     this.inputLocked = true; this.paused = false;
@@ -121,7 +184,7 @@ export class TalkApp {
     this.input = []; this.used.clear();
     const requiredText = this.wordTarget.word;
     this.tiles = createWordBoard(requiredText);
-    this.targetLabel.textContent = `STAGE ${this.wordTargetIndex + 1}`;
+    this.targetLabel.textContent = `STAGE ${this.roundNumber} · 8×8`;
     this.renderTranslatedTarget();
     this.typedText.dataset.empty = "Your word appears here.";
     this.runMode.textContent = "Word";
@@ -130,7 +193,7 @@ export class TalkApp {
     this.targetPrompt.classList.remove("is-alphabet-complete");
     this.submitRow.classList.add("hidden");
     this.result.classList.add("hidden"); this.title.classList.add("hidden"); this.splash.classList.add("hidden"); this.game.classList.remove("hidden");
-    this.renderBoard(); this.renderInput(); this.startClock();
+    this.beginRound(); this.renderBoard(); this.renderInput(); this.startClock();
   }
 
   private renderTranslatedTarget(): void {
@@ -154,7 +217,7 @@ export class TalkApp {
     el("learning-intro-mark").setAttribute("aria-label", `${el("learning-intro-mark").getAttribute("aria-label")} ${el("learning-intro-caption").textContent}`);
     el("learning-intro-mark").setAttribute("role", "img");
     el("learning-intro-mark").classList.toggle("is-word", mode === "word");
-    el("learning-intro-description").textContent = mode === "word" ? "Build one word at a time." : "2×2 → 4×4 → 6×6 → 8×8";
+    el("learning-intro-description").textContent = mode === "word" ? "Build words in 60 seconds." : "60 seconds per stage.";
     this.stopClock(); this.cheer.stop();
     this.result.classList.add("hidden"); this.help.classList.add("hidden"); this.game.classList.add("hidden"); this.title.classList.add("hidden");
     this.alphabetIntro.classList.remove("hidden");
@@ -168,6 +231,8 @@ export class TalkApp {
     this.inputLocked = false; this.paused = false;
     this.game.classList.remove("is-input-locked");
     this.alphabetStageIndex = 0; this.alphabetPartIndex = 0; this.elapsedMs = 0;
+    this.roundNumber = 1;
+    this.beginRound();
     el("btn-again").textContent = "Play again";
     this.result.classList.add("hidden"); this.title.classList.add("hidden"); this.alphabetIntro.classList.add("hidden"); this.splash.classList.add("hidden"); this.game.classList.remove("hidden");
     this.game.classList.remove("is-word-mode"); this.game.classList.add("is-alphabet-mode");
@@ -189,7 +254,7 @@ export class TalkApp {
       ? createMixedLearningBoard(stage.sequence, ALPHABET_ORDER, stage.boardSide as 4 | 6 | 8, LEARNING_TRAP_RATIO)
       : createAlphabetStageBoard(stage.sequence, ALPHABET_ORDER, stage.boardSide);
     this.runMode.textContent = this.mode === "syllable" ? "Syllable" : "Alphabet";
-    this.targetLabel.textContent = `STAGE ${stage.number}`;
+    this.targetLabel.textContent = `STAGE ${this.roundNumber} · ${stage.boardSide}×${stage.boardSide}`;
     this.renderAlphabetBoard();
     this.renderAlphabetTarget();
   }
@@ -238,6 +303,7 @@ export class TalkApp {
 
   private tapAlphabetTile(tile: AlphabetTile, button: HTMLButtonElement): void {
     if (this.inputLocked || this.paused || this.used.has(tile.id)) return;
+    if (!this.acceptBeforeDeadline()) return;
     const stage = this.learningStage;
     if (tile.transform || tile.shape || tile.value !== stage.sequence[this.alphabetPartIndex]) {
       feedback.reject();
@@ -253,25 +319,16 @@ export class TalkApp {
     this.inputLocked = true;
     this.targetPrompt.classList.add("is-alphabet-complete");
     this.stageTransitionPending = true;
+    this.roundUnits += stage.sequence.length + COMPLETION_UNITS;
+    if (this.alphabetStageIndex + 1 === this.roundSection.end) { this.finishRound(true); return; }
     this.stageTimer = window.setTimeout(() => this.advanceLearningStage(), LEARNING_TRANSITION_MS);
   }
 
   private advanceLearningStage(): void {
     if (!this.stageTransitionPending || this.paused) return;
+    if (!this.acceptBeforeDeadline()) return;
     this.stageTransitionPending = false;
     if (this.mode === "word") {
-      if (isWordBonusStage(this.wordTargetIndex + 1)) {
-        this.stopClock();
-        this.game.classList.add("is-input-locked");
-        this.cheer.playBonus(() => {
-          this.targetPrompt.classList.remove("is-writing-complete");
-          this.game.classList.remove("is-input-locked");
-          this.inputLocked = false;
-          this.startNextWord();
-          this.startClock(true);
-        });
-        return;
-      }
       this.targetPrompt.classList.remove("is-writing-complete");
       this.inputLocked = false;
       this.startNextWord();
@@ -348,6 +405,7 @@ export class TalkApp {
 
   private typeTile(tileId: number, value: BoardSymbol): void {
     if (this.inputLocked || this.paused) return;
+    if (!this.acceptBeforeDeadline()) return;
     const target = this.wordTarget.word;
     if (!canAcceptInput(this.input.length, target)) return;
     if (this.used.has(tileId)) return;
@@ -358,6 +416,7 @@ export class TalkApp {
   }
   private typeTrapTile(tileId: number): void {
     if (this.inputLocked || this.paused || this.used.has(tileId)) return;
+    if (!this.acceptBeforeDeadline()) return;
     const target = this.wordTarget.word;
     if (!canAcceptInput(this.input.length, target)) return;
     feedback.reject();
@@ -367,12 +426,14 @@ export class TalkApp {
   }
   private typeFixed(value: string): void {
     if (this.inputLocked || this.paused || this.mode !== "word") return;
+    if (!this.acceptBeforeDeadline()) return;
     const target = this.wordTarget.word;
     if (!canAcceptInput(this.input.length, target)) return;
     feedback.tap(); this.input.push({ value }); this.renderInput();
   }
   private backspace(): void {
     if (this.inputLocked || this.paused || this.mode !== "word") return;
+    if (!this.acceptBeforeDeadline()) return;
     const removed = this.input.pop();
     if (removed?.tileId !== undefined) {
       this.used.delete(removed.tileId);
@@ -440,7 +501,8 @@ export class TalkApp {
     this.startedAt = resume ? performance.now() - this.elapsedMs : performance.now();
     const update = (): void => {
       this.elapsedMs = performance.now() - this.startedAt;
-      this.clock.textContent = formatTime(this.elapsedMs);
+      this.clock.textContent = formatTime(Math.max(0, ROUND_MS - this.elapsedMs));
+      if (this.elapsedMs >= ROUND_MS) { this.finishRound(false); return; }
       this.frame = requestAnimationFrame(update);
     };
     update();
@@ -459,10 +521,12 @@ export class TalkApp {
     this.submitRow.classList.add("hidden");
   }
   private completeWord(): void {
+    if (this.roundEnded || this.stageTransitionPending) return;
     this.clearWordFeedback();
     this.inputLocked = true; this.targetPrompt.classList.add("is-writing-complete");
     feedback.clear(this.input.length);
     this.stageTransitionPending = true;
+    this.roundUnits += materializeTargetTokens(targetToTokens(this.wordTarget.word)).length + COMPLETION_UNITS;
     this.stageTimer = window.setTimeout(() => this.advanceLearningStage(), LEARNING_TRANSITION_MS);
   }
   private startNextWord(): void {
@@ -470,11 +534,12 @@ export class TalkApp {
     this.wordTarget = this.nextWordTarget();
     this.input = []; this.used.clear();
     this.tiles = createWordBoard(this.wordTarget.word);
-    this.targetLabel.textContent = `STAGE ${this.wordTargetIndex + 1}`;
+    this.targetLabel.textContent = `STAGE ${this.roundNumber} · 8×8`;
     this.renderTranslatedTarget();
     this.renderBoard(); this.renderInput();
   }
   private startWordJourney(): void {
+    this.roundNumber = 1;
     this.wordTargetIndex = 0; this.elapsedMs = 0;
     this.nextWordTarget = createWordJourney();
     this.help.classList.add("hidden");
@@ -492,6 +557,7 @@ export class TalkApp {
   private pauseGame(): void {
     if ((this.inputLocked && !this.stageTransitionPending) || this.paused || this.game.classList.contains("hidden")) return;
     if (this.stageTransitionPending) window.clearTimeout(this.stageTimer);
+    if (!this.acceptBeforeDeadline()) return;
     this.paused = true; this.stopClock();
     this.openHelp("Paused");
     this.helpBody.innerHTML = `<div class="pause-card"><p>Take a break. The clock is stopped.</p><button class="wood-btn" id="btn-resume">Resume</button><button class="text-btn" id="btn-pause-menu">Main menu</button></div>`;

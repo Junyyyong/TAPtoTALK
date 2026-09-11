@@ -1,5 +1,6 @@
 import { el } from "../dom";
 import { APP_CONFIG } from "../../config/app";
+import { RESULT_CARD_MS } from "../../content/timedStages";
 
 /**
  * The beat between the last move and the results panel.
@@ -66,7 +67,7 @@ const SILENCE =
   "data:audio/wav;base64,UklGRkQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YSAAAACAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgA==";
 
 /** How long the score card holds before the dance. */
-const CARD_MS = 4000;
+const CARD_MS = RESULT_CARD_MS;
 
 /** How long the word holds when there is no clip. Long enough to read. */
 const WORD_ONLY_MS = 1400;
@@ -121,8 +122,9 @@ export class Cheer {
   constructor() {
     // The clip stops on its own last frame; the player decides when to leave it.
     this.clip.addEventListener("ended", () => this.hold());
-    this.clip.addEventListener("error", () => this.finish());
-    this.root.addEventListener("pointerdown", () => {
+    this.clip.addEventListener("error", () => { if (this.card.classList.contains("hidden")) this.hold(); });
+    this.root.addEventListener("pointerdown", (event) => {
+      event.preventDefault(); event.stopPropagation();
       if (this.root.classList.contains("cheer-hold")) this.finish();
     });
   }
@@ -173,6 +175,7 @@ export class Cheer {
   }
 
   private begin(headline: string, score: number, text: string, then: () => void, pick: Clip | null): void {
+    this.hush();
     this.automatic = false;
     this.word.textContent = text;
     this.headline.textContent = headline;
@@ -208,14 +211,14 @@ export class Cheer {
     window.clearTimeout(this.timer);
     if (!pick) {
       this.clip.classList.add("hidden");
-      this.timer = window.setTimeout(() => this.finish(), WORD_ONLY_MS);
+      this.timer = window.setTimeout(() => this.hold(), WORD_ONLY_MS);
       return;
     }
 
     this.clip.classList.remove("hidden");
     // Muted and inline, so this is allowed without a gesture; a refusal still
     // lands on `finish` rather than stalling the run.
-    void start(this.clip, videoFor(pick)).catch(() => this.finish());
+    void start(this.clip, videoFor(pick)).catch(() => this.hold());
 
     // The two tracks are the same length and both start here, which is as
     // close to in step as two elements get. Sound is a courtesy: if it will
@@ -232,9 +235,10 @@ export class Cheer {
    * showing it — and the screen starts taking taps.
    */
   private hold(): void {
-    if (!this.done) return;
+    if (!this.done || !this.card.classList.contains("hidden")) return;
     if (this.automatic) { this.finish(); return; }
     window.clearTimeout(this.timer);
+    this.clip.pause();
     this.sound.pause();
     this.root.classList.add("cheer-hold");
   }

@@ -18,6 +18,12 @@ TAPtoTALK은 레이아웃을 다시 디자인해도 한글 규칙을 건드리�
 
 ## 교체형 미디어
 
+### 1분 스테이지 설정
+
+`src/content/timedStages.ts`: 제한시간 60초, 점수 카드 2초, 완성 가산 3단위, 무작위 목표 단위(Alphabet 45 / Syllable 54 / Word 60), 등급 기준을 설정한다. 고정 구간은 해당 판 크기의 전체 자소 수+문제당 완성 3단위를 목표로 사용한다. 정답 입력/목표×1000점에 고정 구간 조기 완료 시 남은 시간 비율×500점을 더하며 최대 1500점이다. 이 값은 초기 밸런스이며 실제 사용자 플레이로 조정할 수 있다.
+
+결과 영상 배정은 `src/config/app.ts`의 `celebrations`에 모여 있다. NOT BAD는 티피, GREAT는 1번, AMAZING은 4번, UNBELIEVABLE은 태피/후피, OH MY GOD은 해피/재피를 사용한다. 이전의 모든 등급 공통 랜덤 배정과 Word 10문제 보너스는 활성 흐름에서 사용하지 않는다.
+
 START 화면의 ㄱ·가·안녕은 `src/config/introMarks.ts`에 명조 SVG 윤곽으로 내장되어 폰트 로딩 전후 모양이 바뀌지 않는다. 원본 Noto Serif KR 700에서 다시 생성하려면 `python3 scripts/build-intro-marks.py`를 실행한다. 아이콘 위치는 `.alphabet-intro-mark`에서 조정한다.
 
 블록 자소·기호는 사용자가 올린 `탭투톡체2.svg`에서 추출한 31개 도형을 사용한다. 원본은 보존하고 게임용 파일은 `public/assets/glyphs/talk-type/`, 연결표는 `src/config/glyphAssets.ts`에 둔다. ㅁ의 원형 함정 `○`는 사용자가 지정한 대로 `ㅇ`과 같은 파일을 공유한다. `ㅍ-stem-one`과 `ㅍ-stem-three`는 전용 함정이다.
@@ -40,9 +46,9 @@ START 화면의 ㄱ·가·안녕은 `src/config/introMarks.ts`에 명조 SVG 윤
 | 성공 영상 | `public/assets/brand/celebration.webm` |
 | 성공 음원 | `public/assets/brand/celebration.mp3` |
 
-완료 영상은 `src/config/app.ts`의 `CELEBRATION_MOVIES`에 등록합니다. 현재 `4`,
-`1`, `4`, `taepi`, `hupi`, `haepi`, `jaepi` 여섯 묶음 중 하나가 성공할 때 무작위로
-선택되고, 실패할 때는 `tipi`만 재생됩니다. 각 묶음은 일반·Android용 WebM, iPhone용 MP4, 동기화 음원 MP3로
+완료 영상은 `src/config/app.ts`의 `CELEBRATION_MOVIES`에 등록합니다.
+`1`, `4`, `taepi`, `hupi`, `haepi`, `jaepi`와 별도 `tipi`를 위의 등급별로 배정합니다.
+각 묶음은 일반·Android용 WebM, iPhone용 MP4, 동기화 음원 MP3로
 구성합니다. 파일명에 한글을 사용하면 macOS와 Linux에서 유니코드 정규화 방식이
 달라질 수 있으므로 미디어 파일명은 영문으로 유지합니다.
 
