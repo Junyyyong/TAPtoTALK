@@ -56,8 +56,9 @@ async function check(mode) {
     el("btn-backspace").click();
     assert(el("typed-text").querySelector(".composed-input").textContent === chars[0], "Space undo failed");
     el("btn-space").click();
+    el("btn-backspace").click();
     requiredBoardSymbols(chars.slice(1).join("")).forEach(tap);
-    assert(el("typed-text").querySelector(".composed-input").textContent === chars[0] + " " + chars.slice(1).join(""), "Spaced word failed");
+    assert(el("typed-text").querySelector(".composed-input").textContent === target, "Committed word failed");
     await wait(430);
     assert(el("target-text").querySelector(".target-korean").textContent !== target, "Spaced word did not advance");
   }

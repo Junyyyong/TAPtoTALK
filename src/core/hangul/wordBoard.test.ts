@@ -15,7 +15,7 @@ describe("8×8 Word board", () => {
         expect(board.filter(t => !t.transform && t.symbol === symbol).length)
           .toBeGreaterThanOrEqual(taps.filter(t => t === symbol).length);
       }
-      expect(composeTargetInput(word, taps)).toBe(word);
+      expect(composeTargetInput(word, [...word].flatMap(c => [...requiredBoardSymbols(c), "\u0000"]))).toBe(word);
     }
   });
   it("supports repeated basic consonants in 꾀, 아빠 and 읽", () => {

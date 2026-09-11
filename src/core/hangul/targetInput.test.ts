@@ -1,54 +1,41 @@
 import { expect, it } from "vitest";
-import { canInsertWordSpace, composeTargetInput, requiredBoardSymbols } from "./target";
+import { COMMIT_BOUNDARY, composeTokens, deleteLastInput } from "./compose";
+import { canInsertWordSpace, composeTargetInput, composedCharacterProgress, requiredBoardSymbols } from "./target";
 import { isWordMatch } from "./wordChallenge";
 
-it("spaces separate syllables without consuming target taps or changing the answer", () => {
-  for (const word of ["걷도", "거또", "아뿔사", "사랑"]) {
-    const input: string[] = [];
-    for (const [index, character] of [...word].entries()) {
-      input.push(...requiredBoardSymbols(character));
-      if (index < word.length - 1) {
-        expect(canInsertWordSpace(word, input)).toBe(true);
-        input.push(" ");
-        expect(canInsertWordSpace(word, input)).toBe(false);
-      }
-    }
-    expect(composeTargetInput(word, input)).toBe([...word].join(" "));
-    expect(isWordMatch(composeTargetInput(word, input), word)).toBe(true);
-    expect(composeTargetInput(word, input.slice(0, -1))).not.toBe([...word].join(" "));
-  }
-  expect(canInsertWordSpace("거또", [])).toBe(false);
-  expect(canInsertWordSpace("거또", requiredBoardSymbols("걷"))).toBe(false);
-  expect(isWordMatch(composeTargetInput("거또", [...requiredBoardSymbols("걷"), " ", ...requiredBoardSymbols("도")]), "거또")).toBe(false);
-  expect(isWordMatch("아ㅂ 불사", "아뿔사")).toBe(false);
+it("distinguishes direct 거또 from committed 걷도 without using the prompt", () => {
+  const direct = requiredBoardSymbols("걷도");
+  expect(composeTargetInput("걷도", direct)).toBe("거또");
+  expect(composeTargetInput("거또", direct)).toBe("거또");
+  const input = requiredBoardSymbols("걷").map(value => ({ value: value as string }));
+  input.push({ value: " " });
+  expect(composeTokens(input.map(t => t.value))).toBe("걷 ");
+  deleteLastInput(input);
+  expect(input.at(-1)?.value).toBe(COMMIT_BOUNDARY);
+  input.push(...requiredBoardSymbols("도").map(value => ({ value })));
+  expect(composeTokens(input.map(t => t.value))).toBe("걷도");
+  expect(isWordMatch("걷 도", "걷도")).toBe(false);
+  expect(composedCharacterProgress("걷도", "거또").some(p => p.state === "wrong")).toBe(true);
 });
-import { canAcceptInput } from "../../ui/inputCapacity";
-
-it("shows tense initials on the next syllable throughout 아뿔사", () => {
-  const taps = requiredBoardSymbols("아뿔사");
-  expect(taps).toEqual(["ㅇ", "ㅣ", "ㆍ", "ㅂ", "ㅂ", "ㅡ", "ㆍ", "ㄹ", "ㅅ", "ㅣ", "ㆍ"]);
-  expect(composeTargetInput("아뿔사", taps.slice(0, 4))).toBe("아ㅂ");
-  expect(composeTargetInput("아뿔사", taps.slice(0, 5))).toBe("아ㅃ");
-  expect(composeTargetInput("아뿔사", taps.slice(0, 7))).toBe("아뿌");
-  expect(composeTargetInput("아뿔사", taps.slice(0, 8))).toBe("아뿔");
-  expect(composeTargetInput("아뿔사", taps)).toBe("아뿔사");
-  for (let i = 0; i < taps.length; i++) expect(canAcceptInput(i, "아뿔사")).toBe(true);
-  // These spellings share a tap stream: the visible target supplies the boundary.
-  expect(requiredBoardSymbols("압불사")).toEqual(taps);
-  expect(composeTargetInput("아뿔사", ["ㅇ", "ㅣ", "ㆍ", "ㅂ", "ㄱ"])).not.toBe("아뿔사");
-});
-
-it("preserves correct syllable boundaries and supports undo by recomposing prefixes", () => {
-  for (const word of ["오빠", "아뿔사", "깜짝이야", "꾀", "읽기", "닭"]) {
-    let end = 0;
-    const taps = requiredBoardSymbols(word);
-    let prefix = "";
-    for (const character of word) {
-      prefix += character;
-      end += requiredBoardSymbols(character).length;
-      expect(composeTargetInput(word, taps.slice(0, end))).toBe(prefix);
-    }
-    expect(composeTargetInput(word, [])).toBe("");
-    expect(composeTargetInput(word, [...taps, "×"])).not.toBe(word);
+it("double consonants become tense initials while compound finals remain possible", () => {
+  for (const word of ["아뿔사", "오빠", "꾀", "읽", "닭", "깜짝이야"]) {
+    expect(composeTargetInput("unrelated", requiredBoardSymbols(word))).toBe(word);
   }
+  expect(composeTokens(requiredBoardSymbols("아뿔사").slice(0, 4))).toBe("압");
+});
+it("space deletion returns no tile, later deletes return original tile ids and clear boundaries", () => {
+  const input = requiredBoardSymbols("걷").map((value, tileId) => ({ value: value as string, tileId: tileId as number | undefined }));
+  input.push({ value: " ", tileId: undefined });
+  expect(deleteLastInput(input)?.tileId).toBeUndefined();
+  expect(deleteLastInput(input)?.tileId).toBe(3);
+  expect(composeTokens(input.map(t => t.value))).toBe("거");
+  while (input.length) deleteLastInput(input);
+  expect(input).toEqual([]);
+  expect(deleteLastInput(input)).toBeUndefined();
+});
+it("space commits wrong input too, independent of the target", () => {
+  expect(canInsertWordSpace("거또", requiredBoardSymbols("걷"))).toBe(true);
+  expect(canInsertWordSpace("가", [])).toBe(false);
+  expect(canInsertWordSpace("가", ["ㄱ", " "])).toBe(false);
+  expect(composeTargetInput("가", ["ㄴ"])).toBe("ㄴ");
 });

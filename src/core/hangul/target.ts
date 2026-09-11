@@ -44,61 +44,14 @@ export function requiredBoardSymbols(text: string): BoardSymbol[] {
   return targetToTokens(text).filter((token): token is BoardSymbol => typeof token === "string");
 }
 
-/** Use the prompt's syllable boundaries while typing, without correcting wrong taps. */
-export function composeTargetInput(target: string, input: readonly string[]): string {
-  if (!target.includes(" ") && input.includes(" ")) {
-    let start = 0;
-    let targetIndex = 0;
-    const chars = [...target.normalize("NFC")];
-    const parts: string[] = [];
-    for (let end = 0; end <= input.length; end++) {
-      if (end < input.length && input[end] !== " ") continue;
-      const chunk = input.slice(start, end);
-      if (end === input.length) {
-        parts.push(composeTargetInput(chars.slice(targetIndex).join(""), chunk));
-        break;
-      }
-      let length = 0;
-      const first = targetIndex;
-      while (targetIndex < chars.length && length < chunk.length) {
-        length += requiredBoardSymbols(chars[targetIndex++]!).length;
-      }
-      if (!chunk.length || length !== chunk.length) return composeTokens(input);
-      const piece = chars.slice(first, targetIndex).join("");
-      if (chunk.some((v, i) => v !== requiredBoardSymbols(piece)[i])) return composeTokens(input);
-      parts.push(piece);
-      start = end + 1;
-    }
-    return parts.join(" ");
-  }
-  const expected = materializeTargetTokens(targetToTokens(target));
-  if (input.length > expected.length || input.some((value, index) => value !== expected[index])) {
-    return composeTokens(input);
-  }
-  let cursor = 0;
-  let result = "";
-  for (const character of target.normalize("NFC")) {
-    const length = materializeTargetTokens(targetToTokens(character)).length;
-    if (cursor >= input.length) break;
-    if (length === 0) continue;
-    if (cursor + length <= input.length) result += character;
-    else result += composeTokens(input.slice(cursor));
-    cursor += length;
-  }
-  return result;
+/** Compatibility entry point: composition never depends on the target. */
+export function composeTargetInput(_target: string, input: readonly string[]): string {
+  return composeTokens(input);
 }
 
-/** A space can separate complete syllables, but not split a vowel or tense initial. */
-export function canInsertWordSpace(target: string, input: readonly string[]): boolean {
-  if (!input.length || input.at(-1) === " ") return false;
-  const taps = input.filter(value => value !== " ");
-  const expected = requiredBoardSymbols(target);
-  if (taps.length >= expected.length || taps.some((v, i) => v !== expected[i])) return false;
-  let count = 0;
-  return [...target].some(character => {
-    count += requiredBoardSymbols(character).length;
-    return count === taps.length;
-  });
+/** Space commits whatever the player typed, independent of correctness. */
+export function canInsertWordSpace(_target: string, input: readonly string[]): boolean {
+  return input.length > 0 && input.at(-1) !== " ";
 }
 
 /** Resolves fixed-key actions to the stream consumed by the Hangul composer. */
@@ -115,6 +68,20 @@ export type TargetCharacterState = "done" | "current" | "wrong" | "pending";
 export interface TargetCharacterProgress {
   character: string;
   state: TargetCharacterState;
+}
+
+/** Feedback follows actual composed letters, not an ambiguous shared tap stream. */
+export function composedCharacterProgress(target: string, typed: string): TargetCharacterProgress[] {
+  const actual = [...typed];
+  return [...target].map((character, index) => {
+    const value = actual[index];
+    if (value === character) return { character, state: "done" };
+    if (value === undefined) return { character, state: index === actual.length ? "current" : "pending" };
+    const taps = requiredBoardSymbols(value);
+    const expected = requiredBoardSymbols(character);
+    const partial = index === actual.length - 1 && taps.length > 0 && taps.length < expected.length && taps.every((v, i) => v === expected[i]);
+    return { character, state: partial ? "current" : "wrong" };
+  });
 }
 
 /** Maps raw jamo input back onto the visible Korean characters in a target. */

@@ -1,9 +1,9 @@
 import { createWordBoard, WORD_BOARD_SIDE, inputValueForTile, MIRROR_TRAP_TOKEN, type LetterTile } from "../core/hangul/board";
 import { createAlphabetStageBoard, createMixedLearningBoard, type AlphabetTile } from "../core/hangul/alphabetGame";
-import { composeTokens } from "../core/hangul/compose";
+import { COMMIT_BOUNDARY, composeTokens, deleteLastInput } from "../core/hangul/compose";
 import { CHEONJIIN_STROKES, CONSONANTS, type BoardSymbol } from "../core/hangul/keys";
 import { isWordMatch } from "../core/hangul/wordChallenge";
-import { canInsertWordSpace, composeTargetInput, materializeTargetTokens, targetCharacterProgress, targetToTokens } from "../core/hangul/target";
+import { canInsertWordSpace, composeTargetInput, composedCharacterProgress, materializeTargetTokens, targetToTokens } from "../core/hangul/target";
 import { ALPHABET_ORDER, WORD_TARGETS, type AlphabetStage, type WordTarget } from "../content/prompts";
 import { learningStageAt, LEARNING_TRAP_RATIO, LEARNING_TRANSITION_MS, type LearningMode } from "../content/learningJourney";
 import { createWordJourney } from "../content/wordJourney";
@@ -408,7 +408,7 @@ export class TalkApp {
     if (this.inputLocked || this.paused) return;
     if (!this.acceptBeforeDeadline()) return;
     const target = this.wordTarget.word;
-    if (!canAcceptInput(this.input.filter(t => t.value !== " ").length, target)) return;
+    if (!canAcceptInput(this.input.filter(t => t.value !== " " && t.value !== COMMIT_BOUNDARY).length, target)) return;
     if (this.used.has(tileId)) return;
     feedback.pick(this.input.length + 1);
     this.used.add(tileId); this.input.push({ value, tileId });
@@ -419,7 +419,7 @@ export class TalkApp {
     if (this.inputLocked || this.paused || this.used.has(tileId)) return;
     if (!this.acceptBeforeDeadline()) return;
     const target = this.wordTarget.word;
-    if (!canAcceptInput(this.input.filter(t => t.value !== " ").length, target)) return;
+    if (!canAcceptInput(this.input.filter(t => t.value !== " " && t.value !== COMMIT_BOUNDARY).length, target)) return;
     feedback.reject();
     this.used.add(tileId); this.input.push({ value: MIRROR_TRAP_TOKEN, tileId });
     this.board.querySelector<HTMLButtonElement>(`[data-tile-id="${tileId}"]`)!.disabled = true;
@@ -435,7 +435,7 @@ export class TalkApp {
   private backspace(): void {
     if (this.inputLocked || this.paused || this.mode !== "word") return;
     if (!this.acceptBeforeDeadline()) return;
-    const removed = this.input.pop();
+    const removed = deleteLastInput(this.input);
     if (removed?.tileId !== undefined) {
       this.used.delete(removed.tileId);
       const button = this.board.querySelector<HTMLButtonElement>(`[data-tile-id="${removed.tileId}"]`)!;
@@ -475,9 +475,10 @@ export class TalkApp {
     const text = composeTargetInput(this.wordTarget.word, this.input.map((token) => token.value));
     const target = this.wordTarget.word;
     const expected = materializeTargetTokens(targetToTokens(target));
-    const typedSymbols = this.input.filter(token => token.value !== " ");
-    const wrongIndex = typedSymbols.findIndex((token, index) => token.value !== expected[index]);
-    const targetNodes = targetCharacterProgress(target, typedSymbols.map((token) => token.value)).map(({ character, state }) => {
+    const typedSymbols = this.input.filter(token => token.value !== " " && token.value !== COMMIT_BOUNDARY);
+    const progress = composedCharacterProgress(target, text);
+    const wrongIndex = progress.findIndex(part => part.state === "wrong");
+    const targetNodes = progress.map(({ character, state }) => {
       const glyph = document.createElement("span"); glyph.className = `target-character is-${state}`; glyph.textContent = character;
       return glyph;
     });

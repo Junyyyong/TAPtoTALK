@@ -18,7 +18,7 @@ describe("endless Word stages", () => {
         expect(fixed.has(item.word)).toBe(false);
         expect(item.translation.trim()).not.toBe("");
         const tokens = requiredBoardSymbols(item.word);
-        expect(composeTargetInput(item.word, tokens)).toBe(item.word);
+        expect(composeTargetInput(item.word, [...item.word].flatMap(c => [...requiredBoardSymbols(c), "\u0000"]))).toBe(item.word);
         for (let run = 0; run < 5; run += 1) {
           const board = createLetterBoard(item.word);
           expect(board).toHaveLength(81);

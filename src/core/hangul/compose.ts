@@ -14,6 +14,16 @@ const isConsonant = (token: string): token is Consonant =>
 const isStroke = (token: string): token is CheonjiinStroke =>
   (CHEONJIIN_STROKES as readonly string[]).includes(token);
 
+/** Invisible composition boundary retained when a visible space is deleted. */
+export const COMMIT_BOUNDARY = "\u0000";
+
+export function deleteLastInput<T extends { value: string }>(input: T[]): T | undefined {
+  while (input.at(-1)?.value === COMMIT_BOUNDARY) input.pop();
+  const removed = input.pop();
+  if (removed?.value === " " && input.length) input.push({ ...removed, value: COMMIT_BOUNDARY });
+  return removed;
+}
+
 interface Syllable {
   initial?: Consonant;
   strokes: CheonjiinStroke[];
@@ -26,6 +36,10 @@ function renderSyllable(syllable: Syllable): string {
 
   const vowel = VOWEL_FROM_STROKES.get(strokes.join(""));
   const final = FINAL_FROM_PARTS.get(finals.join("")) ?? "";
+  const tense = TENSE_FROM_PARTS.get(finals.join(""));
+  if (vowel && finals.length > 0 && !final && tense) {
+    return renderSyllable({ initial, strokes, finals: [] }) + tense;
+  }
   if (!vowel || (finals.length > 0 && !final)) {
     return initial + strokes.join("") + finals.join("");
   }
@@ -55,13 +69,15 @@ export function composeTokens(tokens: readonly string[]): string {
   for (const token of tokens) {
     if (!isConsonant(token) && !isStroke(token)) {
       flush();
-      output.push(token);
+      if (token !== COMMIT_BOUNDARY) output.push(token);
       continue;
     }
 
     if (isStroke(token)) {
       if (current.finals.length) {
-        const moving = current.finals.pop()!;
+        const tense = TENSE_FROM_PARTS.get(current.finals.join(""));
+        const moving = tense ?? current.finals.pop()!;
+        if (tense) current.finals = [];
         flush();
         current.initial = moving;
       }
@@ -86,7 +102,7 @@ export function composeTokens(tokens: readonly string[]): string {
     }
 
     const candidate = [...current.finals, token].join("");
-    if (FINAL_FROM_PARTS.has(candidate)) {
+    if (FINAL_FROM_PARTS.has(candidate) || TENSE_FROM_PARTS.has(candidate)) {
       current.finals.push(token);
     } else {
       flush();

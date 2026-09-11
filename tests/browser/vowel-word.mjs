@@ -37,7 +37,12 @@ async function check(scenario) {
       }
       return;
     }
-    requiredBoardSymbols(target).forEach(tap); await wait(430);
+    if (scenario.endsWith("before")) requiredBoardSymbols(target).forEach(tap);
+    else for (const [index, character] of [...target].entries()) {
+      requiredBoardSymbols(character).forEach(tap);
+      if (index < target.length - 1) { el("btn-space").click(); el("btn-backspace").click(); }
+    }
+    await wait(430);
   }
   throw Error("Word not encountered");
 }

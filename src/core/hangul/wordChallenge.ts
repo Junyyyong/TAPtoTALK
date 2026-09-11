@@ -1,8 +1,8 @@
-/** Optional spaces separate composed syllables in single-word practice. */
+/** Visible spaces matter; deleting them retains only the composition boundary. */
 export function isWordMatch(input: string, target: string): boolean {
   const normalized = target.trim().normalize("NFC");
   const value = input.trim().normalize("NFC");
-  return (normalized.includes(" ") ? value : value.replaceAll(" ", "")) === normalized;
+  return value === normalized;
 }
 
 export function wordCountLabel(count: number): string {

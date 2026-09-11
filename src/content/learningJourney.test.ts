@@ -31,7 +31,7 @@ describe("continuous learning journeys", () => {
     expect(WORD_STAGES[6]!.word).toBe("사랑");
     expect(WORD_STAGES[32]!.word).toBe("외");
     expect(WORD_JOURNEY_SCORE_TIME_MS).toBeGreaterThan(0);
-    for (const stage of WORD_STAGES) expect(composeTargetInput(stage.word, requiredBoardSymbols(stage.word))).toBe(stage.word);
+    for (const stage of WORD_STAGES) expect(composeTargetInput(stage.word, [...stage.word].flatMap(c => [...requiredBoardSymbols(c), "\u0000"]))).toBe(stage.word);
     expect(composeTargetInput("오빠", ["ㅇ", "ㆍ", "ㅡ", "ㅂ", "ㅂ", "ㅣ", "ㆍ"])).toBe("오빠");
     expect(composeTargetInput("오빠", ["ㅇ"])).toBe("ㅇ");
     expect(composeTargetInput("오빠", [...requiredBoardSymbols("오빠"), "ㄱ"])).not.toBe("오빠");
