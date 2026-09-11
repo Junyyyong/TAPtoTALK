@@ -5,7 +5,7 @@ import { CHEONJIIN_STROKES, CONSONANTS, type BoardSymbol } from "../core/hangul/
 import { isWordMatch } from "../core/hangul/wordChallenge";
 import { canInsertWordSpace, composeTargetInput, composedCharacterProgress, materializeTargetTokens, targetToTokens } from "../core/hangul/target";
 import { ALPHABET_ORDER, WORD_TARGETS, type AlphabetStage, type WordTarget } from "../content/prompts";
-import { learningStageAt, LEARNING_TRAP_RATIO, LEARNING_TRANSITION_MS, type LearningMode } from "../content/learningJourney";
+import { createSyllablePractice, learningStageAt, LEARNING_TRAP_RATIO, LEARNING_TRANSITION_MS, type LearningMode } from "../content/learningJourney";
 import { createWordJourney } from "../content/wordJourney";
 import { ROUND_MS, FULL_SCORE_TARGETS, SCORE_CAPS, SCORE_GRADES, stageSection } from "../content/timedStages";
 import { timedScore } from "../core/hangul/timedScore";
@@ -75,6 +75,7 @@ export class TalkApp {
   private elapsedMs = 0;
   private frame?: number;
   private roundNumber = 1;
+  private syllablePractice: readonly AlphabetStage[] = [];
   private roundUnits = 0;
   private roundEnded = true;
   private roundSection = stageSection("alphabet", 0);
@@ -83,7 +84,7 @@ export class TalkApp {
     this.elapsedMs = 0;
     this.roundUnits = 0;
     this.roundEnded = false;
-    this.roundSection = stageSection(this.mode, this.mode === "word" ? this.wordTargetIndex : this.alphabetStageIndex, this.roundNumber);
+    this.roundSection = stageSection(this.mode, this.mode === "word" ? this.wordTargetIndex : this.alphabetStageIndex, this.roundNumber, this.syllablePractice);
     this.inputLocked = false;
     this.game.classList.remove("is-input-locked");
   }
@@ -229,6 +230,7 @@ export class TalkApp {
     this.stageTransitionPending = false;
     this.cheer.stop();
     this.mode = this.introMode;
+    if (this.mode === "syllable") this.syllablePractice = createSyllablePractice();
     this.inputLocked = false; this.paused = false;
     this.game.classList.remove("is-input-locked");
     this.alphabetStageIndex = 0; this.alphabetPartIndex = 0; this.elapsedMs = 0;
@@ -246,7 +248,7 @@ export class TalkApp {
 
   private loadAlphabetStage(): void {
     if (this.mode === "word") return;
-    const stage = learningStageAt(this.mode, this.alphabetStageIndex, this.learningStage.target, Math.random, this.roundNumber);
+    const stage = learningStageAt(this.mode, this.alphabetStageIndex, this.learningStage.target, Math.random, this.roundNumber, this.syllablePractice);
     this.learningStage = stage;
     this.targetPrompt.classList.remove("is-alphabet-complete");
     this.used.clear();

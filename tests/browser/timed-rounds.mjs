@@ -28,9 +28,9 @@ async function check(mode) {
     offset += 120000; await wait(40);
     assert(el("run-clock").textContent === "PRACTICE", "Tutorial timed out");
     el("btn-pause").click(); el("btn-resume").click();
-    const lessons = mode === "alphabet" ? ALPHABET_STAGES : SYLLABLE_STAGES;
+    const lessons = mode === "alphabet" ? ALPHABET_STAGES : Array.from({ length: 30 }, (_, i) => ({ boardSide: i < 5 ? 2 : 4 }));
     for (let i = 0; i < lessons.length; i++) {
-      lessons[i].sequence.forEach(tap);
+      (mode === "alphabet" ? lessons[i].sequence : requiredBoardSymbols(el("target-text").textContent)).forEach(tap);
       const boundary = i + 1 === lessons.length || lessons[i + 1].boardSide !== lessons[i].boardSide;
       if (boundary) {
         assert(el("cheer-word").textContent === "GREAT!", "Missing tutorial celebration");

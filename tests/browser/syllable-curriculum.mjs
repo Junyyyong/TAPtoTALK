@@ -1,14 +1,16 @@
 import { spawnSync } from "node:child_process";
-const [url, output, stop = "애"] = process.argv.slice(2);
+const [url, output, stop = "sixth"] = process.argv.slice(2);
 async function visit(stop) {
   const el = id => document.getElementById(id);
   const wait = ms => new Promise(r => setTimeout(r, ms));
-  const { SYLLABLE_STAGES } = await import("/src/content/learningJourney.ts");
+  const content = await import("/src/content/learningJourney.ts");
+  const { requiredBoardSymbols } = await import("/src/core/hangul/target.ts");
+  const count = content.createSyllablePractice ? 30 : content.SYLLABLE_STAGES.length;
   el("mode-syllable").click(); el("btn-alphabet-start").click();
-  for (let i = 0; i < SYLLABLE_STAGES.length; i++) {
-    const stage = SYLLABLE_STAGES[i];
-    if (stage.target === stop) return;
-    for (const value of stage.sequence) {
+  for (let i = 0; i < count; i++) {
+    const target = el("target-text").textContent;
+    if (target === stop || (stop === "sixth" && i === 5)) return;
+    for (const value of requiredBoardSymbols(target)) {
       const button = [...document.querySelectorAll("#letter-board button:not(:disabled)")].find(b => b.getAttribute("aria-label") === (value === "ㆍ" ? "Cheonjiin dot" : value) && !/(rotate|flip|--shape|stem)/.test(b.className));
       if (!button) throw Error("Missing " + value);
       button.click();

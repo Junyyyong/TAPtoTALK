@@ -1,5 +1,6 @@
 import { createRandomAlphabetTargets } from "../core/hangul/alphabetGame";
 import { requiredBoardSymbols } from "../core/hangul/target";
+import { pickLessonTargets } from "../core/hangul/wordChallenge";
 import { ALPHABET_ORDER, ALPHABET_STAGES, WORD_LEVELS, alphabetTargetNote, type AlphabetStage } from "./prompts";
 
 // Preserve the existing easy-to-hard lesson order, now one word per stage.
@@ -25,15 +26,26 @@ export const SYLLABLE_STAGES: readonly AlphabetStage[] = SYLLABLE_ROWS.flatMap((
   [...text].map((target) => ({ target, boardSide: side, sequence: requiredBoardSymbols(target) })),
 ).map((stage, index) => ({ ...stage, id: `syllable-${index + 1}`, number: index + 1, note: "" }));
 
+export const SYLLABLE_PRACTICE_PER_TYPE = 5;
+/** Draw once per START. Keep the six categories ordered, shuffle within each. */
+export function createSyllablePractice(rng: () => number = Math.random): readonly AlphabetStage[] {
+  return SYLLABLE_ROWS.flatMap(({ text, side }) =>
+    pickLessonTargets([...text], SYLLABLE_PRACTICE_PER_TYPE, rng).map(target => ({
+      target, boardSide: side, sequence: requiredBoardSymbols(target),
+    })),
+  ).map((stage, index) => ({ ...stage, id: `practice-${index + 1}`, number: index + 1, note: "" }));
+}
+
 export function learningStageAt(
   mode: LearningMode,
   index: number,
   previousTarget = "",
   rng: () => number = Math.random,
   roundNumber = 1,
+  practice: readonly AlphabetStage[] = SYLLABLE_STAGES,
 ): AlphabetStage {
   if (!Number.isSafeInteger(index) || index < 0) throw new RangeError("Invalid stage index.");
-  const lessons = mode === "alphabet" ? ALPHABET_STAGES : SYLLABLE_STAGES;
+  const lessons = mode === "alphabet" ? ALPHABET_STAGES : practice;
   const fixed = lessons[index];
   if (fixed) return fixed;
   let target: string;
