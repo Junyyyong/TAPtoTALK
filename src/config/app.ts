@@ -48,8 +48,8 @@ export const APP_CONFIG = {
   timing: { studioSplashMs: 3_000, productSplashMs: 4_000 },
   assets: {
     studioSplash: new URL("../../public/assets/brand/tapeetepee-open-talk.png", import.meta.url).href,
-    logo: new URL("../../TAPtoTALK-logo2.svg", import.meta.url).href,
-    splash: new URL("../../public/assets/brand/taptotalk-cover-0911-01.png", import.meta.url).href,
+    logo: new URL("../../public/assets/brand/taptotalk-logo-0911.png", import.meta.url).href,
+    splash: new URL("../../public/assets/brand/taptotalk-cover-0911-v2.png", import.meta.url).href,
     celebrationVideo: CELEBRATION_MOVIES[0]!.video,
     celebrationAudio: CELEBRATION_MOVIES[0]!.sound,
     failureCelebration: FAILURE_MOVIE,
