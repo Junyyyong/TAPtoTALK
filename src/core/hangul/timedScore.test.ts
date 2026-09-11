@@ -25,9 +25,10 @@ it("keeps all fixed board sizes unscored and starts timed play at 8x8", () => {
   expect(stageSection("alphabet", 23)).toMatchObject({ end: 27, side: 6, tutorial: true });
   expect(stageSection("alphabet", 27)).toMatchObject({ side: 8, tutorial: false });
   expect(stageSection("syllable", 0)).toMatchObject({ end: 14, tutorial: true });
-  expect(stageSection("syllable", 14)).toMatchObject({ end: 24, tutorial: true });
-  expect(stageSection("syllable", 24)).toMatchObject({ end: 35, tutorial: true });
-  expect(stageSection("syllable", 35)).toMatchObject({ side: 8, tutorial: false });
+  expect(stageSection("syllable", 14)).toMatchObject({ end: 67, tutorial: true, side: 4 });
+  expect(stageSection("syllable", 66)).toMatchObject({ end: 67, tutorial: true, side: 4 });
+  expect(stageSection("syllable", 67)).toMatchObject({ side: 6, tutorial: false });
+  expect(stageSection("syllable", 67, 2)).toMatchObject({ side: 8, tutorial: false });
   expect(stageSection("word", 0).tutorial).toBe(false);
 });
 it("uses all six grade boundaries", () => {

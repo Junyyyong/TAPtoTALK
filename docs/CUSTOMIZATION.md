@@ -20,11 +20,11 @@ TAPtoTALK은 레이아웃을 다시 디자인해도 한글 규칙을 건드리�
 
 ### 튜토리얼 / 본게임 설정
 
-`src/content/timedStages.ts`: Alphabet/Syllable의 고정 2·4·6판은 무제한 튜토리얼, 8판과 Word는 60초 본게임이다. 크기 구간 종료마다 점수 없는 GREAT! 영상과 탭 대기를 제공한다.
+`src/content/timedStages.ts`: Alphabet은 고정2·4·6판, Syllable은 고정2·4판이 무제한 튜토리얼이다. Syllable의 첫 본게임 라운드는6판, 두 번째부터8판이다. Alphabet 본게임과 Word는8판이다. 본게임은 모두60초이며 learningStageAt과 stageSection에 같은 roundNumber를 전달한다. 크기 구간 종료마다 점수 없는 GREAT! 영상과 탭 대기를 제공한다.
 
 `FULL_SCORE_TARGETS`는 1500점에 필요한 완성 문제 수다: Alphabet 10, Syllable 20, Word 10. 아직 실측하지 않은 초기 밸런스이며 추후 조정한다. 순수 계산은 `core/hangul/timedScore.ts`: 완성 수/목표×1500. SCORE_CAPS에서 Alphabet은 Infinity(문제당150점, 상한 없음), Syllable/Word는1500으로 지정한다. 부분 입력·오입력·별도 속도 보너스는 없다. 본게임 시작/다음 라운드에 완성 수를 초기화한다. 튜토리얼 진행은 점수에 포함하지 않는다. 기록 저장은 추후 작업이다.
 
-Syllable 학습 순서는 `content/learningJourney.ts`의 `SYLLABLE_ROWS`에 둔다. 가~하 14개, 기본 모음 음절 10개, 나머지 모음 음절 11개로 총35개다. 본게임은 이 목록에서 무작위로 출제한다. Word는 Space 아이콘과 Delete를 제공한다. Space는 제시어와 관계없이 현재 입력을 확정한다. Delete가 공백을 지우면 COMMIT_BOUNDARY를 남겨 후속 입력이 앞 음절과 합쳐지지 않게 한다. compose.ts의 deleteLastInput과 composeTokens에서 처리한다. 보이는 내부 공백은 정답 판정에 반영한다. target.ts의 composeTargetInput은 호환 함수일 뿐 제시어 자동 보정을 하지 않는다. UI에서 조합 규칙을 구현하지 않는다.
+Syllable 학습 순서는 `content/learningJourney.ts`의 `SYLLABLE_ROWS`에 둔다. 2판 가~하14개, 4판 기본모음10·복모음11·쌍자음5·기본받침14·겹받침/쌍받침13개로 총67개다. 모든 문제는 한 음절이며 반복 자소도 개별 블록으로 배치한다. 본게임은 이 목록에서 무작위로 출제한다. Word는 Space 아이콘과 Delete를 제공한다. Space는 제시어와 관계없이 현재 입력을 확정한다. Delete가 공백을 지우면 COMMIT_BOUNDARY를 남겨 후속 입력이 앞 음절과 합쳐지지 않게 한다. compose.ts의 deleteLastInput과 composeTokens에서 처리한다. 보이는 내부 공백은 정답 판정에 반영한다. target.ts의 composeTargetInput은 호환 함수일 뿐 제시어 자동 보정을 하지 않는다. UI에서 조합 규칙을 구현하지 않는다.
 
 등급은 0 NOT BAD / 1–299 GOOD TRY / 300–599 GREAT / 600–999 AMAZING / 1000–1399 UNBELIEVABLE / 1400 이상 OH MY GOD. 영상 배정은 `config/app.ts`의 celebrations에 둔다. GOOD TRY는 GREAT와 1번 영상을 공유하고, 0점만 티피를 사용한다. 튜토리얼도 GREAT 영상을 사용한다.
 

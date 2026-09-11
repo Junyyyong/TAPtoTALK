@@ -15,7 +15,10 @@ export const RANDOM_ALPHABET_LENGTH = 3;
 const SYLLABLE_ROWS = [
   { text: "가나다라마바사아자차카타파하", side: 2 },
   { text: "아야어여오요우유으이", side: 4 },
-  { text: "애에얘예와왜외워웨위의", side: 6 },
+  { text: "애에얘예와왜외워웨위의", side: 4 },
+  { text: "까따빠싸짜", side: 4 },
+  { text: "각간갇갈감갑갓강갖갗갘같갚갛", side: 4 },
+  { text: "넋앉많읽삶넓곬핥읊싫값밖있", side: 4 },
 ] as const;
 
 export const SYLLABLE_STAGES: readonly AlphabetStage[] = SYLLABLE_ROWS.flatMap(({ text, side }) =>
@@ -27,6 +30,7 @@ export function learningStageAt(
   index: number,
   previousTarget = "",
   rng: () => number = Math.random,
+  roundNumber = 1,
 ): AlphabetStage {
   if (!Number.isSafeInteger(index) || index < 0) throw new RangeError("Invalid stage index.");
   const lessons = mode === "alphabet" ? ALPHABET_STAGES : SYLLABLE_STAGES;
@@ -42,7 +46,8 @@ export function learningStageAt(
   }
   const sequence = mode === "alphabet" ? [...target] : requiredBoardSymbols(target);
   return {
-    id: `${mode}-random-${index + 1}`, number: index + 1, boardSide: 8, target, sequence,
+    id: `${mode}-random-${index + 1}`, number: index + 1,
+    boardSide: mode === "syllable" && roundNumber === 1 ? 6 : 8, target, sequence,
     note: mode === "alphabet" ? sequence.map(alphabetTargetNote).join(" · ") : "",
   };
 }

@@ -6,10 +6,10 @@ export const RESULT_CARD_MS = 2_000;
 export const FULL_SCORE_TARGETS = { alphabet: 10, syllable: 20, word: 10 } as const;
 export const SCORE_CAPS = { alphabet: Infinity, syllable: 1500, word: 1500 } as const;
 export type TimedMode = keyof typeof FULL_SCORE_TARGETS;
-export function stageSection(mode: TimedMode, item: number) {
+export function stageSection(mode: TimedMode, item: number, roundNumber = 1) {
   const lessons = mode === "alphabet" ? ALPHABET_STAGES : mode === "syllable" ? SYLLABLE_STAGES : [];
   const current = lessons[item];
-  if (!current) return { start: item, end: Infinity, side: 8, tutorial: false };
+  if (!current) return { start: item, end: Infinity, side: mode === "syllable" && roundNumber === 1 ? 6 : 8, tutorial: false };
   let start = item, end = item + 1;
   while (start > 0 && lessons[start - 1]!.boardSide === current.boardSide) start--;
   while (end < lessons.length && lessons[end]!.boardSide === current.boardSide) end++;

@@ -83,7 +83,7 @@ export class TalkApp {
     this.elapsedMs = 0;
     this.roundUnits = 0;
     this.roundEnded = false;
-    this.roundSection = stageSection(this.mode, this.mode === "word" ? this.wordTargetIndex : this.alphabetStageIndex);
+    this.roundSection = stageSection(this.mode, this.mode === "word" ? this.wordTargetIndex : this.alphabetStageIndex, this.roundNumber);
     this.inputLocked = false;
     this.game.classList.remove("is-input-locked");
   }
@@ -246,7 +246,7 @@ export class TalkApp {
 
   private loadAlphabetStage(): void {
     if (this.mode === "word") return;
-    const stage = learningStageAt(this.mode, this.alphabetStageIndex, this.learningStage.target);
+    const stage = learningStageAt(this.mode, this.alphabetStageIndex, this.learningStage.target, Math.random, this.roundNumber);
     this.learningStage = stage;
     this.targetPrompt.classList.remove("is-alphabet-complete");
     this.used.clear();

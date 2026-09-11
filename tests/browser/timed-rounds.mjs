@@ -40,7 +40,7 @@ async function check(mode) {
         await dance();
       } else await wait(430);
     }
-    assert(el("target-label").textContent === "ROUND 1 · 8×8", "Main game not started");
+    assert(el("target-label").textContent === (mode === "syllable" ? "ROUND 1 · 6×6" : "ROUND 1 · 8×8"), "Main game not started");
     assert(/^(01:00|00:59)/.test(el("run-clock").textContent), "Tutorial time leaked");
     // Complete one target, then time out with another target unfinished.
     const current = mode === "alphabet"
@@ -78,6 +78,7 @@ async function check(mode) {
   assert(!el("cheer").classList.contains("hidden"), "Skipped result card");
   await wait(2100); await dance();
   assert(/^(01:00|00:59)/.test(el("run-clock").textContent), "Round not reset");
+  if (mode === "syllable") assert(el("target-label").textContent === "ROUND 2 · 8×8", "Syllable did not advance to 8x8");
   // Zero completed targets must give Not Bad. Simulate blocked media as well.
   HTMLMediaElement.prototype.play = () => Promise.reject(Error("Test blocked"));
   offset += 60000; await wait(40);

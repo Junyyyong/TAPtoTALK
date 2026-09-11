@@ -1,19 +1,31 @@
 import { describe, expect, it } from "vitest";
 import { composeTokens } from "../core/hangul/compose";
-import { JUNGSEONG } from "../core/hangul/layout";
+import { CHOSEONG, JONGSEONG, JUNGSEONG } from "../core/hangul/layout";
 import { composeTargetInput, requiredBoardSymbols } from "../core/hangul/target";
 import { createAlphabetStageBoard, createMixedLearningBoard } from "../core/hangul/alphabetGame";
 import { ALPHABET_ORDER, ALPHABET_STAGES } from "./prompts";
 import { learningStageAt, LEARNING_TRAP_RATIO, SYLLABLE_STAGES, WORD_STAGES, WORD_JOURNEY_SCORE_TIME_MS } from "./learningJourney";
 
 describe("continuous learning journeys", () => {
+  it("covers all tense initials and 27 final spellings on 4x4 with enough separate tiles", () => {
+    const advanced = SYLLABLE_STAGES.filter(s => s.boardSide === 4);
+    const finals = new Set(advanced.map(s => JONGSEONG[(s.target.charCodeAt(0) - 0xac00) % 28]).filter(Boolean));
+    expect(finals).toEqual(new Set(JONGSEONG.filter(Boolean)));
+    const initials = advanced.map(s => CHOSEONG[Math.floor((s.target.charCodeAt(0) - 0xac00) / 588)]);
+    for (const tense of ["ㄲ", "ㄸ", "ㅃ", "ㅆ", "ㅉ"]) expect(initials).toContain(tense);
+    for (const stage of advanced) {
+      expect(stage.target).toHaveLength(1);
+      expect(stage.sequence.some(t => ["ㄲ", "ㄸ", "ㅃ", "ㅆ", "ㅉ"].includes(t))).toBe(false);
+      expect(stage.sequence.length).toBeLessThanOrEqual(16);
+    }
+  });
   it("teaches all 21 vowels and randomizes only practiced syllables", () => {
     const vowels = SYLLABLE_STAGES.map(s => JUNGSEONG[Math.floor((s.target.charCodeAt(0) - 0xac00) % 588 / 28)]);
     expect(new Set(vowels)).toEqual(new Set(JUNGSEONG));
-    expect(SYLLABLE_STAGES.filter(s => s.boardSide === 4).map(s => s.target).join("")).toBe("아야어여오요우유으이");
-    expect(SYLLABLE_STAGES.filter(s => s.boardSide === 6).map(s => s.target).join("")).toBe("애에얘예와왜외워웨위의");
+    expect(SYLLABLE_STAGES.filter(s => s.boardSide === 4).map(s => s.target).join("")).toBe("아야어여오요우유으이애에얘예와왜외워웨위의까따빠싸짜각간갇갈감갑갓강갖갗갘같갚갛넋앉많읽삶넓곬핥읊싫값밖있");
+    expect(SYLLABLE_STAGES.some(s => s.boardSide === 6)).toBe(false);
     for (let i = 0; i < 100; i++) {
-      const target = learningStageAt("syllable", 35 + i).target;
+      const target = learningStageAt("syllable", SYLLABLE_STAGES.length + i).target;
       expect(SYLLABLE_STAGES.some(s => s.target === target)).toBe(true);
     }
   });
@@ -24,7 +36,7 @@ describe("continuous learning journeys", () => {
   });
   it("merges all word lessons into one ordered 33-stage course", () => {
     expect(ALPHABET_STAGES).toHaveLength(27);
-    expect(SYLLABLE_STAGES).toHaveLength(35);
+    expect(SYLLABLE_STAGES).toHaveLength(67);
     expect(WORD_STAGES).toHaveLength(33);
     expect(new Set(WORD_STAGES.map((stage) => stage.word)).size).toBe(33);
     expect(WORD_STAGES[0]!.word).toBe("아기");
@@ -61,6 +73,7 @@ describe("continuous learning journeys", () => {
       expect(board.filter((tile) => tile.required).map((tile) => tile.value).sort()).toEqual([...stage.sequence].sort());
       expect(board.some((tile) => tile.value === stage.target)).toBe(false);
     }
-    expect(learningStageAt("syllable", 10000).boardSide).toBe(8);
+    expect(learningStageAt("syllable", 10000).boardSide).toBe(6);
+    expect(learningStageAt("syllable", 10000, "", Math.random, 2).boardSide).toBe(8);
   });
 });
