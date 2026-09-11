@@ -1,6 +1,8 @@
-/** A word round accepts only the exact composed target, ignoring edge spaces. */
+/** Optional spaces separate composed syllables in single-word practice. */
 export function isWordMatch(input: string, target: string): boolean {
-  return input.trim().normalize("NFC") === target.trim().normalize("NFC");
+  const normalized = target.trim().normalize("NFC");
+  const value = input.trim().normalize("NFC");
+  return (normalized.includes(" ") ? value : value.replaceAll(" ", "")) === normalized;
 }
 
 export function wordCountLabel(count: number): string {

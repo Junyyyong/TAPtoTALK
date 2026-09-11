@@ -148,8 +148,6 @@
 .letter-tile:disabled { color: rgba(58,15,10,.2); background: rgba(58,15,10,.06); box-shadow: inset 0 0 0 1px rgba(58,15,10,.07); text-shadow: none; }
 .letter-tile:disabled::before { display: none; }
 .fixed-controls { display: grid; flex: 0 0 auto; grid-template-columns: 1fr 1fr; gap: 5px; }
-.talk-screen.is-word-mode .fixed-controls { grid-template-columns: 1fr; }
-.talk-screen.is-word-mode #btn-space { display: none; }
 .fixed-controls .control-btn { height: 44px; min-height: 44px; }
 .control-btn { position: relative; min-width: 0; min-height: 44px; overflow: hidden; padding: 0 8px; border: 1px solid var(--paper-edge); border-radius: 12px; color: var(--ink); background: var(--panel-lit); box-shadow: inset 0 1px 0 rgba(255,255,255,.55),0 1px 2px rgba(29,35,43,.16); font: 600 13px/1 inherit; }
 .control-btn:active { transform: translateY(1px); box-shadow: inset 0 1px 0 rgba(255,255,255,.4); }

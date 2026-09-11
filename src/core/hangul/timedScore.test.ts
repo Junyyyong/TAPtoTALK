@@ -1,6 +1,12 @@
 import { expect, it } from "vitest";
 import { timedScore } from "./timedScore";
-import { stageSection, FULL_SCORE_TARGETS, SCORE_GRADES } from "../../content/timedStages";
+import { stageSection, FULL_SCORE_TARGETS, SCORE_CAPS, SCORE_GRADES } from "../../content/timedStages";
+it("awards 150 points per Alphabet target without an upper cap", () => {
+  for (const n of [0, 1, 6, 10, 11, 12, 100]) {
+    expect(timedScore(n, FULL_SCORE_TARGETS.alphabet, SCORE_CAPS.alphabet)).toBe(n * 150);
+  }
+  expect(SCORE_GRADES.find(g => 1800 >= g.at)?.text).toBe("OH MY GOD~!");
+});
 it("scores completed targets only and caps at 1500", () => {
   for (const target of Object.values(FULL_SCORE_TARGETS)) {
     expect(timedScore(0, target)).toBe(0);

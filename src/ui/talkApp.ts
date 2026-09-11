@@ -3,11 +3,11 @@ import { createAlphabetStageBoard, createMixedLearningBoard, type AlphabetTile }
 import { composeTokens } from "../core/hangul/compose";
 import { CHEONJIIN_STROKES, CONSONANTS, type BoardSymbol } from "../core/hangul/keys";
 import { isWordMatch } from "../core/hangul/wordChallenge";
-import { composeTargetInput, materializeTargetTokens, targetCharacterProgress, targetToTokens } from "../core/hangul/target";
+import { canInsertWordSpace, composeTargetInput, materializeTargetTokens, targetCharacterProgress, targetToTokens } from "../core/hangul/target";
 import { ALPHABET_ORDER, WORD_TARGETS, type AlphabetStage, type WordTarget } from "../content/prompts";
 import { learningStageAt, LEARNING_TRAP_RATIO, LEARNING_TRANSITION_MS, type LearningMode } from "../content/learningJourney";
 import { createWordJourney } from "../content/wordJourney";
-import { ROUND_MS, FULL_SCORE_TARGETS, SCORE_GRADES, stageSection } from "../content/timedStages";
+import { ROUND_MS, FULL_SCORE_TARGETS, SCORE_CAPS, SCORE_GRADES, stageSection } from "../content/timedStages";
 import { timedScore } from "../core/hangul/timedScore";
 import { APP_CONFIG } from "../config/app";
 import { INTRO_MARKS } from "../config/introMarks";
@@ -101,7 +101,7 @@ export class TalkApp {
     this.elapsedMs = Math.min(ROUND_MS, performance.now() - this.startedAt);
     const completedItem = this.stageTransitionPending;
     const tutorial = this.roundSection.tutorial;
-    const score = timedScore(this.roundUnits, FULL_SCORE_TARGETS[this.mode]);
+    const score = timedScore(this.roundUnits, FULL_SCORE_TARGETS[this.mode], SCORE_CAPS[this.mode]);
     this.roundEnded = true;
     this.inputLocked = true;
     this.stopClock();
@@ -408,7 +408,7 @@ export class TalkApp {
     if (this.inputLocked || this.paused) return;
     if (!this.acceptBeforeDeadline()) return;
     const target = this.wordTarget.word;
-    if (!canAcceptInput(this.input.length, target)) return;
+    if (!canAcceptInput(this.input.filter(t => t.value !== " ").length, target)) return;
     if (this.used.has(tileId)) return;
     feedback.pick(this.input.length + 1);
     this.used.add(tileId); this.input.push({ value, tileId });
@@ -419,7 +419,7 @@ export class TalkApp {
     if (this.inputLocked || this.paused || this.used.has(tileId)) return;
     if (!this.acceptBeforeDeadline()) return;
     const target = this.wordTarget.word;
-    if (!canAcceptInput(this.input.length, target)) return;
+    if (!canAcceptInput(this.input.filter(t => t.value !== " ").length, target)) return;
     feedback.reject();
     this.used.add(tileId); this.input.push({ value: MIRROR_TRAP_TOKEN, tileId });
     this.board.querySelector<HTMLButtonElement>(`[data-tile-id="${tileId}"]`)!.disabled = true;
@@ -429,7 +429,7 @@ export class TalkApp {
     if (this.inputLocked || this.paused || this.mode !== "word") return;
     if (!this.acceptBeforeDeadline()) return;
     const target = this.wordTarget.word;
-    if (!canAcceptInput(this.input.length, target)) return;
+    if (value !== " " || !canInsertWordSpace(target, this.input.map(t => t.value))) { feedback.reject(); return; }
     feedback.tap(); this.input.push({ value }); this.renderInput();
   }
   private backspace(): void {
@@ -475,8 +475,9 @@ export class TalkApp {
     const text = composeTargetInput(this.wordTarget.word, this.input.map((token) => token.value));
     const target = this.wordTarget.word;
     const expected = materializeTargetTokens(targetToTokens(target));
-    const wrongIndex = this.input.findIndex((token, index) => token.value !== expected[index]);
-    const targetNodes = targetCharacterProgress(target, this.input.map((token) => token.value)).map(({ character, state }) => {
+    const typedSymbols = this.input.filter(token => token.value !== " ");
+    const wrongIndex = typedSymbols.findIndex((token, index) => token.value !== expected[index]);
+    const targetNodes = targetCharacterProgress(target, typedSymbols.map((token) => token.value)).map(({ character, state }) => {
       const glyph = document.createElement("span"); glyph.className = `target-character is-${state}`; glyph.textContent = character;
       return glyph;
     });
@@ -486,7 +487,7 @@ export class TalkApp {
       this.targetText.replaceChildren(korean, english);
     }
     const composed = document.createElement("span"); composed.className = `composed-input${text ? "" : " is-empty"}`; composed.textContent = text; composed.dataset.empty = this.typedText.dataset.empty;
-    const count = document.createElement("small"); count.className = "writing-token-count"; count.textContent = `${Math.min(this.input.length, expected.length)} / ${expected.length}`;
+    const count = document.createElement("small"); count.className = "writing-token-count"; count.textContent = `${Math.min(typedSymbols.length, expected.length)} / ${expected.length}`;
     this.typedText.replaceChildren(composed, count);
     this.typedText.classList.toggle("is-empty", text.length === 0);
     this.typedText.classList.toggle("is-correct", this.input.length > 0 && wrongIndex < 0);

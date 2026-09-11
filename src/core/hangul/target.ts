@@ -46,6 +46,31 @@ export function requiredBoardSymbols(text: string): BoardSymbol[] {
 
 /** Use the prompt's syllable boundaries while typing, without correcting wrong taps. */
 export function composeTargetInput(target: string, input: readonly string[]): string {
+  if (!target.includes(" ") && input.includes(" ")) {
+    let start = 0;
+    let targetIndex = 0;
+    const chars = [...target.normalize("NFC")];
+    const parts: string[] = [];
+    for (let end = 0; end <= input.length; end++) {
+      if (end < input.length && input[end] !== " ") continue;
+      const chunk = input.slice(start, end);
+      if (end === input.length) {
+        parts.push(composeTargetInput(chars.slice(targetIndex).join(""), chunk));
+        break;
+      }
+      let length = 0;
+      const first = targetIndex;
+      while (targetIndex < chars.length && length < chunk.length) {
+        length += requiredBoardSymbols(chars[targetIndex++]!).length;
+      }
+      if (!chunk.length || length !== chunk.length) return composeTokens(input);
+      const piece = chars.slice(first, targetIndex).join("");
+      if (chunk.some((v, i) => v !== requiredBoardSymbols(piece)[i])) return composeTokens(input);
+      parts.push(piece);
+      start = end + 1;
+    }
+    return parts.join(" ");
+  }
   const expected = materializeTargetTokens(targetToTokens(target));
   if (input.length > expected.length || input.some((value, index) => value !== expected[index])) {
     return composeTokens(input);
@@ -61,6 +86,19 @@ export function composeTargetInput(target: string, input: readonly string[]): st
     cursor += length;
   }
   return result;
+}
+
+/** A space can separate complete syllables, but not split a vowel or tense initial. */
+export function canInsertWordSpace(target: string, input: readonly string[]): boolean {
+  if (!input.length || input.at(-1) === " ") return false;
+  const taps = input.filter(value => value !== " ");
+  const expected = requiredBoardSymbols(target);
+  if (taps.length >= expected.length || taps.some((v, i) => v !== expected[i])) return false;
+  let count = 0;
+  return [...target].some(character => {
+    count += requiredBoardSymbols(character).length;
+    return count === taps.length;
+  });
 }
 
 /** Resolves fixed-key actions to the stream consumed by the Hangul composer. */

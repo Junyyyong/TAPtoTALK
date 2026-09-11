@@ -1,5 +1,27 @@
 import { expect, it } from "vitest";
-import { composeTargetInput, requiredBoardSymbols } from "./target";
+import { canInsertWordSpace, composeTargetInput, requiredBoardSymbols } from "./target";
+import { isWordMatch } from "./wordChallenge";
+
+it("spaces separate syllables without consuming target taps or changing the answer", () => {
+  for (const word of ["걷도", "거또", "아뿔사", "사랑"]) {
+    const input: string[] = [];
+    for (const [index, character] of [...word].entries()) {
+      input.push(...requiredBoardSymbols(character));
+      if (index < word.length - 1) {
+        expect(canInsertWordSpace(word, input)).toBe(true);
+        input.push(" ");
+        expect(canInsertWordSpace(word, input)).toBe(false);
+      }
+    }
+    expect(composeTargetInput(word, input)).toBe([...word].join(" "));
+    expect(isWordMatch(composeTargetInput(word, input), word)).toBe(true);
+    expect(composeTargetInput(word, input.slice(0, -1))).not.toBe([...word].join(" "));
+  }
+  expect(canInsertWordSpace("거또", [])).toBe(false);
+  expect(canInsertWordSpace("거또", requiredBoardSymbols("걷"))).toBe(false);
+  expect(isWordMatch(composeTargetInput("거또", [...requiredBoardSymbols("걷"), " ", ...requiredBoardSymbols("도")]), "거또")).toBe(false);
+  expect(isWordMatch("아ㅂ 불사", "아뿔사")).toBe(false);
+});
 import { canAcceptInput } from "../../ui/inputCapacity";
 
 it("shows tense initials on the next syllable throughout 아뿔사", () => {

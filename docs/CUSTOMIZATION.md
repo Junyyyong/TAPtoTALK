@@ -22,9 +22,9 @@ TAPtoTALK은 레이아웃을 다시 디자인해도 한글 규칙을 건드리�
 
 `src/content/timedStages.ts`: Alphabet/Syllable의 고정 2·4·6판은 무제한 튜토리얼, 8판과 Word는 60초 본게임이다. 크기 구간 종료마다 점수 없는 GREAT! 영상과 탭 대기를 제공한다.
 
-`FULL_SCORE_TARGETS`는 1500점에 필요한 완성 문제 수다: Alphabet 15, Syllable 20, Word 10. 아직 실측하지 않은 초기 밸런스이며 추후 조정한다. 순수 계산은 `core/hangul/timedScore.ts`: 완성 수/목표×1500, 최대1500점. 부분 입력·오입력·별도 속도 보너스는 없다. 본게임 시작/다음 라운드에 완성 수를 초기화한다. 튜토리얼 진행은 점수에 포함하지 않는다. 기록 저장은 추후 작업이다.
+`FULL_SCORE_TARGETS`는 1500점에 필요한 완성 문제 수다: Alphabet 10, Syllable 20, Word 10. 아직 실측하지 않은 초기 밸런스이며 추후 조정한다. 순수 계산은 `core/hangul/timedScore.ts`: 완성 수/목표×1500. SCORE_CAPS에서 Alphabet은 Infinity(문제당150점, 상한 없음), Syllable/Word는1500으로 지정한다. 부분 입력·오입력·별도 속도 보너스는 없다. 본게임 시작/다음 라운드에 완성 수를 초기화한다. 튜토리얼 진행은 점수에 포함하지 않는다. 기록 저장은 추후 작업이다.
 
-Syllable 학습 순서는 `content/learningJourney.ts`의 `SYLLABLE_ROWS`에 둔다. 가~하 14개, 기본 모음 음절 10개, 나머지 모음 음절 11개로 총35개다. 본게임은 이 목록에서 무작위로 출제한다. Word 입력 경계는 `core/hangul/target.ts`에서 제시어 기준으로 판별하며 UI에서 조합 규칙을 구현하지 않는다.
+Syllable 학습 순서는 `content/learningJourney.ts`의 `SYLLABLE_ROWS`에 둔다. 가~하 14개, 기본 모음 음절 10개, 나머지 모음 음절 11개로 총35개다. 본게임은 이 목록에서 무작위로 출제한다. Word는 Space 아이콘과 Delete를 제공한다. canInsertWordSpace는 완성한 음절 경계에서만 공백을 허용한다. 실제 공백은 화면에 유지하고, 단일 단어 정답 비교에서는 제외한다. 공백은 자소 입력 용량과 진행률에 포함하지 않는다.\n\nWord 입력 경계는 `core/hangul/target.ts`에서 제시어 기준으로 판별하며 UI에서 조합 규칙을 구현하지 않는다.
 
 등급은 0 NOT BAD / 1–299 GOOD TRY / 300–599 GREAT / 600–999 AMAZING / 1000–1399 UNBELIEVABLE / 1400 이상 OH MY GOD. 영상 배정은 `config/app.ts`의 celebrations에 둔다. GOOD TRY는 GREAT와 1번 영상을 공유하고, 0점만 티피를 사용한다. 튜토리얼도 GREAT 영상을 사용한다.
 

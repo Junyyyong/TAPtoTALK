@@ -3,7 +3,8 @@ import { SYLLABLE_STAGES } from "./learningJourney";
 export const ROUND_MS = 60_000;
 export const RESULT_CARD_MS = 2_000;
 // Initial tuning: fully completed targets per minute, no tap or speed bonus.
-export const FULL_SCORE_TARGETS = { alphabet: 15, syllable: 20, word: 10 } as const;
+export const FULL_SCORE_TARGETS = { alphabet: 10, syllable: 20, word: 10 } as const;
+export const SCORE_CAPS = { alphabet: Infinity, syllable: 1500, word: 1500 } as const;
 export type TimedMode = keyof typeof FULL_SCORE_TARGETS;
 export function stageSection(mode: TimedMode, item: number) {
   const lessons = mode === "alphabet" ? ALPHABET_STAGES : mode === "syllable" ? SYLLABLE_STAGES : [];

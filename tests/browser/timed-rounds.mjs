@@ -48,8 +48,18 @@ async function check(mode) {
       : requiredBoardSymbols(el("target-text").textContent);
     current.forEach(tap); await wait(430);
   } else {
-    requiredBoardSymbols(el("target-text").querySelector(".target-korean").textContent).forEach(tap);
+    const target = el("target-text").querySelector(".target-korean").textContent;
+    const chars = [...target];
+    requiredBoardSymbols(chars[0]).forEach(tap);
+    el("btn-space").click();
+    assert(el("typed-text").querySelector(".composed-input").textContent === chars[0] + " ", "Space not inserted");
+    el("btn-backspace").click();
+    assert(el("typed-text").querySelector(".composed-input").textContent === chars[0], "Space undo failed");
+    el("btn-space").click();
+    requiredBoardSymbols(chars.slice(1).join("")).forEach(tap);
+    assert(el("typed-text").querySelector(".composed-input").textContent === chars[0] + " " + chars.slice(1).join(""), "Spaced word failed");
     await wait(430);
+    assert(el("target-text").querySelector(".target-korean").textContent !== target, "Spaced word did not advance");
   }
   el("btn-pause").click();
   const paused = el("run-clock").textContent;
@@ -59,7 +69,7 @@ async function check(mode) {
   assert(el("cheer").classList.contains("hidden"), "Pause caused timeout");
   offset += 60000; await wait(40);
   assert(el("cheer-headline").textContent === "TIME’S UP!", "No timeout");
-  const expected = { alphabet: 100, syllable: 75, word: 150 }[mode];
+  const expected = { alphabet: 150, syllable: 75, word: 150 }[mode];
   assert(Number(el("cheer-score").textContent) === expected, "Wrong completed-item score");
   assert(el("cheer-word").textContent === "GOOD TRY", "Wrong grade");
   assert([...document.querySelectorAll("#letter-board button")].every(b => b.disabled), "Result accepts input");
