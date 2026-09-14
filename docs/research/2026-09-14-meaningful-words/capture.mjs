@@ -5,9 +5,10 @@ import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 import { createServer } from 'vite';
 const { chromium } = await import(process.env.PLAYWRIGHT_MODULE || 'playwright');
-const output = new URL('./', import.meta.url).pathname;
+const output = process.env.CAPTURE_OUTPUT || new URL('./', import.meta.url).pathname;
+fs.mkdirSync(output, { recursive: true });
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(),'talk-vocabulary-before-'));
-execFileSync('tar',['-xf','-','-C',tmp],{input:execFileSync('git',['archive','f15212e'],{maxBuffer:512*1024*1024})});
+execFileSync('tar',['-xf','-','-C',tmp],{input:execFileSync('git',['archive',process.env.BEFORE_REVISION || 'f15212e'],{maxBuffer:512*1024*1024})});
 fs.symlinkSync(path.join(process.cwd(),'node_modules'),path.join(tmp,'node_modules'),'dir');
 const browser = await chromium.launch({executablePath:'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'});
 try {
