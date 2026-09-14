@@ -14,10 +14,10 @@ const words = (length: WordLength, values: readonly (readonly [string, string])[
 export const EXTRA_WORDS: Readonly<Record<WordLength, readonly WordTarget[]>> = {
   3: words(3, [
     ["바나나", "banana"], ["토마토", "tomato"], ["고구마", "sweet potato"], ["감자탕", "pork bone soup"],
-    ["비빔밥", "mixed rice"], ["김치전", "kimchi pancake"], ["강아지", "puppy"], ["고양이", "cat"],
+    ["비빔밥", "bibimbap"], ["김치전", "kimchi pancake"], ["강아지", "puppy"], ["고양이", "cat"],
     ["호랑이", "tiger"], ["코끼리", "elephant"], ["병아리", "chick"], ["거북이", "turtle"],
-    ["개구리", "frog"], ["다람쥐", "squirrel"], ["도서관", "library"], ["운동장", "playground"],
-    ["놀이터", "play area"], ["자전거", "bicycle"], ["비행기", "airplane"], ["무지개", "rainbow"],
+    ["개구리", "frog"], ["다람쥐", "squirrel"], ["도서관", "library"], ["운동장", "sports field"],
+    ["놀이터", "playground"], ["자전거", "bicycle"], ["비행기", "airplane"], ["무지개", "rainbow"],
   ]),
   4: words(4, [
     ["해바라기", "sunflower"], ["민들레꽃", "dandelion"], ["카네이션", "carnation"], ["초등학교", "elementary school"],

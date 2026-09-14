@@ -4,7 +4,7 @@ import { CHOSEONG, JONGSEONG, JUNGSEONG } from "../core/hangul/layout";
 import { composeTargetInput, requiredBoardSymbols } from "../core/hangul/target";
 import { createAlphabetStageBoard, createMixedLearningBoard } from "../core/hangul/alphabetGame";
 import { ALPHABET_ORDER, ALPHABET_STAGES } from "./prompts";
-import { learningStageAt, LEARNING_TRAP_RATIO, SYLLABLE_STAGES, WORD_STAGES, WORD_JOURNEY_SCORE_TIME_MS } from "./learningJourney";
+import { learningStageAt, LEARNING_TRAP_RATIO, SYLLABLE_STAGES, SYLLABLE_GAME_TARGETS, WORD_STAGES, WORD_JOURNEY_SCORE_TIME_MS } from "./learningJourney";
 
 describe("continuous learning journeys", () => {
   it("uses noun finals and all tense initials on 4x4 with enough separate tiles", () => {
@@ -19,14 +19,14 @@ describe("continuous learning journeys", () => {
       expect(stage.sequence.length).toBeLessThanOrEqual(16);
     }
   });
-  it("teaches all 21 vowels and randomizes only practiced syllables", () => {
+  it("teaches all 21 vowels but randomizes meaningful vocabulary in main play", () => {
     const vowels = SYLLABLE_STAGES.map(s => JUNGSEONG[Math.floor((s.target.charCodeAt(0) - 0xac00) % 588 / 28)]);
     expect(new Set(vowels)).toEqual(new Set(JUNGSEONG));
     expect(SYLLABLE_STAGES.filter(s => s.boardSide === 4).map(s => s.target).join("")).toBe("아야어여오요우유으이애에얘예와왜외워웨위의까따빠싸짜산강물불눈손발집밥옷달별입몸닭흙값삶몫");
     expect(SYLLABLE_STAGES.some(s => s.boardSide === 6)).toBe(false);
     for (let i = 0; i < 100; i++) {
       const target = learningStageAt("syllable", SYLLABLE_STAGES.length + i).target;
-      expect(SYLLABLE_STAGES.some(s => s.target === target)).toBe(true);
+      expect(SYLLABLE_GAME_TARGETS).toContain(target);
     }
   });
   it("keeps grouped consonants separate from cheonjiin in sky-earth-person order", () => {
@@ -41,7 +41,7 @@ describe("continuous learning journeys", () => {
     expect(new Set(WORD_STAGES.map((stage) => stage.word)).size).toBe(33);
     expect(WORD_STAGES[0]!.word).toBe("아기");
     expect(WORD_STAGES[6]!.word).toBe("사랑");
-    expect(WORD_STAGES[32]!.word).toBe("외");
+    expect(WORD_STAGES[32]!.word).toBe("외국");
     expect(WORD_JOURNEY_SCORE_TIME_MS).toBeGreaterThan(0);
     for (const stage of WORD_STAGES) expect(composeTargetInput(stage.word, [...stage.word].flatMap(c => [...requiredBoardSymbols(c), "\u0000"]))).toBe(stage.word);
     expect(composeTargetInput("오빠", ["ㅇ", "ㆍ", "ㅡ", "ㅂ", "ㅂ", "ㅣ", "ㆍ"])).toBe("오빠");

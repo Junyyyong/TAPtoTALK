@@ -1,7 +1,7 @@
 import { createRandomAlphabetTargets } from "../core/hangul/alphabetGame";
 import { requiredBoardSymbols } from "../core/hangul/target";
 import { pickLessonTargets } from "../core/hangul/wordChallenge";
-import { syllableTargetNote } from "./syllableNotes";
+import { syllableTargetNote, SYLLABLE_MEANINGS } from "./syllableNotes";
 import { ALPHABET_ORDER, ALPHABET_STAGES, WORD_LEVELS, alphabetTargetNote, type AlphabetStage } from "./prompts";
 
 // Preserve the existing easy-to-hard lesson order, now one word per stage.
@@ -30,6 +30,8 @@ export const SYLLABLE_STAGES: readonly AlphabetStage[] = SYLLABLE_ROWS.flatMap((
 ).map((stage, index) => ({ ...stage, id: `syllable-${index + 1}`, number: index + 1, note: syllableTargetNote(stage.target) }));
 
 export const SYLLABLE_PRACTICE_PER_TYPE = 5;
+/** Real one-syllable vocabulary only; pronunciation drills stay in practice. */
+export const SYLLABLE_GAME_TARGETS = Object.keys(SYLLABLE_MEANINGS);
 /** Draw once per START. Keep the six categories ordered, shuffle within each. */
 export function createSyllablePractice(rng: () => number = Math.random): readonly AlphabetStage[] {
   return SYLLABLE_ROWS.flatMap(({ text, side }) =>
@@ -56,8 +58,8 @@ export function learningStageAt(
     target = createRandomAlphabetTargets([RANDOM_ALPHABET_LENGTH], ALPHABET_ORDER, rng)[0]!;
     if (target === previousTarget) target = [...target.slice(1), target[0]!].join("");
   } else {
-    const candidates = SYLLABLE_STAGES.filter((stage) => stage.target !== previousTarget);
-    target = candidates[Math.floor(rng() * candidates.length)]!.target;
+    const candidates = SYLLABLE_GAME_TARGETS.filter(target => target !== previousTarget);
+    target = candidates[Math.floor(rng() * candidates.length)]!;
   }
   const sequence = mode === "alphabet" ? [...target] : requiredBoardSymbols(target);
   return {

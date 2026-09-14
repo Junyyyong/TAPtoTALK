@@ -1,5 +1,5 @@
 import { expect, it } from "vitest";
-import { createSyllablePractice, learningStageAt, SYLLABLE_STAGES } from "./learningJourney";
+import { createSyllablePractice, learningStageAt, SYLLABLE_STAGES, SYLLABLE_GAME_TARGETS } from "./learningJourney";
 import { stageSection } from "./timedStages";
 
 it("draws five distinct examples per ordered type, total thirty", () => {
@@ -24,12 +24,12 @@ it("redraws on a new session without mutating the full candidate list", () => {
   expect(SYLLABLE_STAGES).toHaveLength(59);
   for (let i = 0; i < 30; i++) expect(learningStageAt("syllable", i, "", Math.random, 1, first)).toBe(first[i]);
 });
-it("ends sections after 5 and 30, then draws main-game targets from the full pool", () => {
+it("ends sections after 5 and 30, then draws main-game targets from the vocabulary pool", () => {
   const practice = createSyllablePractice(() => 0);
   expect(stageSection("syllable", 0, 1, practice)).toMatchObject({ side: 2, end: 5, tutorial: true });
   expect(stageSection("syllable", 5, 1, practice)).toMatchObject({ side: 4, end: 30, tutorial: true });
   expect(stageSection("syllable", 30, 1, practice)).toMatchObject({ side: 6, tutorial: false });
   expect(stageSection("syllable", 30, 2, practice)).toMatchObject({ side: 8, tutorial: false });
-  const candidates = SYLLABLE_STAGES.map((_, i) => learningStageAt("syllable", 30, "", () => (i + .5) / SYLLABLE_STAGES.length, 1, practice).target);
-  expect(new Set(candidates)).toEqual(new Set(SYLLABLE_STAGES.map(s => s.target)));
+  const candidates = SYLLABLE_GAME_TARGETS.map((_, i) => learningStageAt("syllable", 30, "", () => (i + .5) / SYLLABLE_GAME_TARGETS.length, 1, practice).target);
+  expect(new Set(candidates)).toEqual(new Set(SYLLABLE_GAME_TARGETS));
 });

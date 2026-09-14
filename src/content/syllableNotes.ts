@@ -9,11 +9,12 @@ const SOUNDS: Readonly<Record<string, string>> = {
   워: "wʌ", 웨: "we", 위: "wi", 의: "ɰi",
   까: "k͈a", 따: "t͈a", 빠: "p͈a", 싸: "s͈a", 짜: "tɕ͈a",
 };
-const MEANINGS: Readonly<Record<string, string>> = {
+export const SYLLABLE_MEANINGS: Readonly<Record<string, string>> = {
   산: "mountain", 강: "river", 물: "water", 불: "fire", 눈: "eye", 손: "hand", 발: "foot",
-  집: "house", 밥: "rice", 옷: "clothes", 달: "moon", 별: "star", 입: "mouth", 몸: "body",
+  집: "house", 밥: "meal", 옷: "clothes", 달: "moon", 별: "star", 입: "mouth", 몸: "body",
   닭: "chicken", 흙: "soil", 값: "price", 삶: "life", 몫: "share",
+  개: "dog", 게: "crab", 귀: "ear", 꿈: "dream", 뼈: "bone", 쌀: "rice", 땀: "sweat",
 };
 export function syllableTargetNote(target: string): string {
-  return MEANINGS[target] ?? (SOUNDS[target] ? `[${SOUNDS[target]}]` : "");
+  return SYLLABLE_MEANINGS[target] ?? (SOUNDS[target] ? `[${SOUNDS[target]}]` : "");
 }
