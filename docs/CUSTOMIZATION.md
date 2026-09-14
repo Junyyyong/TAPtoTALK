@@ -64,6 +64,16 @@ START 화면의 ㄱ·가·안녕은 `src/config/introMarks.ts`에 명조 SVG 윤
 경로 자체를 바꾸려면 `src/config/app.ts` 한 곳과, JavaScript가 실행되기 전 보이는
 시작 이미지 두 군데(`index.html`)만 수정합니다.
 
+## 배경음악
+
+- 경로: `src/config/app.ts`의 `music.menu`, `music.game`.
+- 대기곡: `public/assets/audio/talk-lobby.mp3` — 승인 시안 08, 128 BPM, 30초.
+- 게임곡: `public/assets/audio/talk-game.mp3` — 승인 시안 14(12번에서 지속 베이스 제거), 142 BPM, 약 40.56초.
+- 합성 원본은 `docs/music-demos/2026-09-14/make-lobby-v5.mjs`, `make-game-v9.mjs`. `--loop` 옵션은 페이드 대신 잔향을 시작에 연결한 정수 마디 WAV를 생성한다. 시안 원본은 변경하지 않는다.
+- 메인/설정은 대기곡, 게임 START 안내/플레이는 게임곡. 일시정지·결과/보너스 영상·백그라운드에서는 BGM을 멈춘다.
+- `src/ui/sceneMusic.ts`가 곡 중복을 방지하며 `backgroundMusic.ts`가 디코딩·루프·자동재생·화면 숨김을 담당한다. 기본 게인은 0.28이다.
+- 설정의 Music은 배경음악, Sound는 기존 효과음/영상 소리로 독립적이다. 자동재생이 차단되면 첫 탭/키 입력 후 재생한다.
+
 ## 의존 방향
 
 ```text

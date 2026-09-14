@@ -6,6 +6,7 @@ const out=process.argv[2];
 if(!out)throw Error('Pass a new output directory');
 mkdirSync(out,{recursive:true});
 const SR=44100, TAU=2*Math.PI, bpm=142, beat=60/bpm, bars=24;
+const loop=process.argv.includes('--loop');
 const frames=Math.ceil((bars*4*beat+1.2)*SR);
 const L=new Float64Array(frames),R=new Float64Array(frames);
 let seed=91436;
@@ -111,17 +112,19 @@ const a=L.slice(),b=R.slice();
 for(const [delay,gain]of [[.061,.10],[.127,.065],[.193,.04]]){
  const n=Math.round(delay*SR);for(let i=n;i<frames;i++){L[i]+=b[i-n]*gain;R[i]+=a[i-n]*gain;}
 }
+const outputFrames=loop?Math.round(bars*4*beat*SR):frames;
+if(loop)for(let i=outputFrames;i<frames;i++){L[i-outputFrames]+=L[i];R[i-outputFrames]+=R[i];}
 let peak=0;for(let i=0;i<frames;i++)peak=Math.max(peak,Math.abs(L[i]),Math.abs(R[i]));
-const gain=.70/peak,buffer=Buffer.alloc(44+frames*4);let power=0;
+const gain=.70/peak,buffer=Buffer.alloc(44+outputFrames*4);let power=0;
 buffer.write('RIFF');buffer.writeUInt32LE(buffer.length-8,4);buffer.write('WAVEfmt ',8);
 buffer.writeUInt32LE(16,16);buffer.writeUInt16LE(1,20);buffer.writeUInt16LE(2,22);buffer.writeUInt32LE(SR,24);
-buffer.writeUInt32LE(SR*4,28);buffer.writeUInt16LE(4,32);buffer.writeUInt16LE(16,34);buffer.write('data',36);buffer.writeUInt32LE(frames*4,40);
-for(let i=0;i<frames;i++){
- const fade=Math.min(1,i/(.01*SR),(frames-i)/(.4*SR));
+buffer.writeUInt32LE(SR*4,28);buffer.writeUInt16LE(4,32);buffer.writeUInt16LE(16,34);buffer.write('data',36);buffer.writeUInt32LE(outputFrames*4,40);
+for(let i=0;i<outputFrames;i++){
+ const fade=loop?1:Math.min(1,i/(.01*SR),(frames-i)/(.4*SR));
  const l=L[i]*gain*fade,r=R[i]*gain*fade;power+=l*l+r*r;
  buffer.writeInt16LE(Math.round(l*32767),44+4*i);buffer.writeInt16LE(Math.round(r*32767),46+4*i);
 }
 const name='14-game-version12-no-bass-v9-142bpm';
 writeFileSync(join(out,name+'.wav'),buffer,{flag:'wx'});
-const stats={name,bpm,bars,seconds:frames/SR,peakCeiling:.70,rmsDbFS:20*Math.log10(Math.sqrt(power/(frames*2))),swing:false,synthetic:true,loopReady:false};
+const stats={name,bpm,bars,seconds:outputFrames/SR,peakCeiling:.70,rmsDbFS:20*Math.log10(Math.sqrt(power/(outputFrames*2))),swing:false,synthetic:true,loopReady:loop};
 writeFileSync(join(out,name+'.json'),JSON.stringify(stats,null,2)+'\n',{flag:'wx'});console.log(stats);

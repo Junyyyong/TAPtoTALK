@@ -46,6 +46,10 @@ export const APP_CONFIG = {
   name: "TAP to TALK",
   board: { columns: 9, rows: 9 },
   timing: { studioSplashMs: 3_000, productSplashMs: 4_000 },
+  music: {
+    menu: new URL("../../public/assets/audio/talk-lobby.mp3", import.meta.url).href,
+    game: new URL("../../public/assets/audio/talk-game.mp3", import.meta.url).href,
+  },
   assets: {
     studioSplash: new URL("../../public/assets/brand/tapeetepee-open-talk.png", import.meta.url).href,
     logo: new URL("../../public/assets/brand/taptotalk-logo-0911.png", import.meta.url).href,

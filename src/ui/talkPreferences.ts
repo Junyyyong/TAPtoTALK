@@ -1,16 +1,18 @@
 export interface TalkPreferences {
+  musicOn: boolean;
   soundOn: boolean;
   hapticsOn: boolean;
   tutorialDone: boolean;
 }
 
 const KEY = "taptotalk.preferences.v1";
-const DEFAULTS: TalkPreferences = { soundOn: true, hapticsOn: true, tutorialDone: false };
+const DEFAULTS: TalkPreferences = { musicOn: true, soundOn: true, hapticsOn: true, tutorialDone: false };
 
 export function loadTalkPreferences(): TalkPreferences {
   try {
     const value = JSON.parse(localStorage.getItem(KEY) ?? "{}") as Partial<TalkPreferences>;
     return {
+      musicOn: value.musicOn !== false,
       soundOn: value.soundOn !== false,
       hapticsOn: value.hapticsOn !== false,
       tutorialDone: value.tutorialDone === true,

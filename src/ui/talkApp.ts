@@ -17,6 +17,7 @@ import { createUploadedGlyph } from "./uploadedGlyph";
 import { feedback } from "./feedback";
 import { canAcceptInput } from "./inputCapacity";
 import { Cheer } from "./screens/cheer";
+import { SceneMusic } from "./sceneMusic";
 import { loadTalkPreferences, saveTalkPreferences, type TalkPreferences } from "./talkPreferences";
 
 type Mode = LearningMode | "word";
@@ -34,6 +35,12 @@ const boardColorAt = (index: number): number => ((index * 5 + Math.floor(index /
 
 /** Thin UI coordinator. Hangul behavior stays in core/hangul. */
 export class TalkApp {
+  private readonly music = new SceneMusic(APP_CONFIG.music, undefined, (scene, state) => {
+    document.documentElement.dataset.musicScene = scene;
+    document.documentElement.dataset.musicState = state;
+    const prompt = document.getElementById("music-prompt");
+    if (prompt) prompt.hidden = !(scene === "menu" && state === "blocked");
+  });
   private readonly cheer = new Cheer();
   private readonly studioSplash = el("screen-studio-splash");
   private readonly splash = el("screen-splash");
@@ -81,6 +88,7 @@ export class TalkApp {
   private roundSection = stageSection("alphabet", 0);
 
   private beginRound(): void {
+    this.music.setScene("game");
     this.elapsedMs = 0;
     this.roundUnits = 0;
     this.roundEnded = false;
@@ -99,6 +107,7 @@ export class TalkApp {
 
   private finishRound(cleared: boolean): void {
     if (this.roundEnded) return;
+    this.music.setScene("silent");
     this.elapsedMs = Math.min(ROUND_MS, performance.now() - this.startedAt);
     const completedItem = this.stageTransitionPending;
     const tutorial = this.roundSection.tutorial;
@@ -151,7 +160,10 @@ export class TalkApp {
     el("btn-result-menu").addEventListener("click", () => this.showTitle());
     el("btn-title-settings").addEventListener("click", () => this.showSettings());
     el("btn-help-close").addEventListener("click", () => this.paused ? this.resumeGame() : this.closeHelp());
-    document.addEventListener("pointerdown", () => { this.cheer.unlock(); feedback.unlock(); }, { capture: true });
+    const unlock = () => { this.cheer.unlock(); feedback.unlock(); this.music.unlock(); };
+    document.addEventListener("pointerdown", unlock, { capture: true });
+    document.addEventListener("click", unlock, { capture: true });
+    document.addEventListener("keydown", unlock, { capture: true });
     document.addEventListener("visibilitychange", () => {
       if (document.hidden && !this.game.classList.contains("hidden")) this.pauseGame();
     });
@@ -166,6 +178,7 @@ export class TalkApp {
   }
 
   private showTitle(): void {
+    this.music.setScene("menu");
     this.roundEnded = true;
     window.clearTimeout(this.stageTimer);
     this.stageTransitionPending = false;
@@ -207,6 +220,7 @@ export class TalkApp {
   }
 
   private showAlphabetIntro(mode: Mode): void {
+    this.music.setScene("game");
     window.clearTimeout(this.stageTimer);
     this.stageTransitionPending = false;
     this.inputLocked = true; this.paused = false;
@@ -567,6 +581,7 @@ export class TalkApp {
     if (this.stageTransitionPending) window.clearTimeout(this.stageTimer);
     if (!this.acceptBeforeDeadline()) return;
     this.paused = true; this.stopClock();
+    this.music.setScene("silent");
     this.openHelp("Paused");
     this.helpBody.innerHTML = `<div class="pause-card"><p>Take a break. The clock is stopped.</p><button class="wood-btn" id="btn-resume">Resume</button><button class="text-btn" id="btn-pause-menu">Main menu</button></div>`;
     el("btn-resume").addEventListener("click", () => this.resumeGame());
@@ -576,6 +591,7 @@ export class TalkApp {
   private resumeGame(): void {
     if (!this.paused) return;
     this.paused = false; this.help.classList.add("hidden");
+    this.music.setScene("game");
     this.startClock(true);
     if (this.stageTransitionPending) this.stageTimer = window.setTimeout(() => this.advanceLearningStage(), LEARNING_TRANSITION_MS);
     feedback.tap();
@@ -590,11 +606,13 @@ export class TalkApp {
     this.openHelp("Settings");
     const canVibrate = typeof navigator.vibrate === "function";
     this.helpBody.innerHTML = `<div class="switch-list"><button class="switch-row" id="talk-sound"><span class="switch-text"><b>Sound</b><small>Button sounds and finish sounds</small></span><span class="switch" role="switch" aria-checked="${this.preferences.soundOn}"><span class="switch-knob"></span></span></button><button class="switch-row" id="talk-haptics"><span class="switch-text"><b>Vibration</b><small>Short feedback when you tap</small></span><span class="switch" role="switch" aria-checked="${this.preferences.hapticsOn}"><span class="switch-knob"></span></span></button>${canVibrate ? "" : '<p class="settings-note">Vibration may not work in this browser.</p>'}</div>`;
+    this.helpBody.querySelector(".switch-list")!.insertAdjacentHTML("afterbegin", `<button class="switch-row" id="talk-music"><span class="switch-text"><b>Music</b><small>Menu and game background music</small></span><span class="switch" role="switch" aria-checked="${this.preferences.musicOn}"><span class="switch-knob"></span></span></button>`);
+    el("talk-music").addEventListener("click", () => this.changePreference("musicOn"));
     el("talk-sound").addEventListener("click", () => this.changePreference("soundOn"));
     el("talk-haptics").addEventListener("click", () => this.changePreference("hapticsOn"));
   }
 
-  private changePreference(key: "soundOn" | "hapticsOn"): void {
+  private changePreference(key: "musicOn" | "soundOn" | "hapticsOn"): void {
     this.preferences[key] = !this.preferences[key];
     saveTalkPreferences(this.preferences);
     this.applyPreferences();
@@ -603,6 +621,7 @@ export class TalkApp {
   }
 
   private applyPreferences(): void {
+    this.music.setEnabled(this.preferences.musicOn);
     feedback.setSound(this.preferences.soundOn);
     feedback.setHaptics(this.preferences.hapticsOn);
     this.cheer.setSound(this.preferences.soundOn);
