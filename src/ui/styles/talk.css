@@ -1,5 +1,7 @@
 .prototype-note { margin: 18px 24px max(20px, env(safe-area-inset-bottom)); color: var(--ink-soft); font-size: 12px; text-align: center; }
-#music-prompt { font-size: 13px; }
+.title-music-slot { display: flex; flex: 0 0 100%; justify-content: center; height: 44px; }
+.title-music-prompt { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 44px; padding: 4px 14px; color: var(--ink-soft); font: 700 13px/1.2 "TAP Sans KR",sans-serif; background: none; border: 0; border-radius: 12px; cursor: pointer; }
+.title-music-prompt:focus-visible { outline: 2px solid var(--cool); outline-offset: 1px; }
 #music-prompt[hidden] { display: none; }
 .hud { display: grid; grid-template-columns: 44px 1fr 44px; align-items: center; min-height: 62px; }
 .icon-btn { width: 40px; height: 40px; padding: 0; border: 0; border-radius: 50%; color: var(--ink-soft); background: var(--recess); display: flex; align-items: center; justify-content: center; }
