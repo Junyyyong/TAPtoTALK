@@ -32,6 +32,22 @@ export const SYLLABLE_STAGES: readonly AlphabetStage[] = SYLLABLE_ROWS.flatMap((
 export const SYLLABLE_PRACTICE_PER_TYPE = 5;
 /** Real one-syllable vocabulary only; pronunciation drills stay in practice. */
 export const SYLLABLE_GAME_TARGETS = Object.keys(SYLLABLE_MEANINGS);
+/** One session's shuffle bag. Rebuilding an unfinished stage must not consume a word. */
+export function createSyllableGameJourney(rng: () => number = Math.random): (index: number, previous: string) => string {
+  let bag: string[] = [];
+  let currentIndex = -1;
+  let current = "";
+  return (index, previous) => {
+    if (index === currentIndex) return current;
+    if (!bag.length) {
+      bag = pickLessonTargets(SYLLABLE_GAME_TARGETS, SYLLABLE_GAME_TARGETS.length, rng);
+      if (bag[0] === previous) [bag[0], bag[1]] = [bag[1]!, bag[0]!];
+    }
+    currentIndex = index;
+    current = bag.shift()!;
+    return current;
+  };
+}
 /** Draw once per START. Keep the six categories ordered, shuffle within each. */
 export function createSyllablePractice(rng: () => number = Math.random): readonly AlphabetStage[] {
   return SYLLABLE_ROWS.flatMap(({ text, side }) =>
@@ -48,6 +64,7 @@ export function learningStageAt(
   rng: () => number = Math.random,
   roundNumber = 1,
   practice: readonly AlphabetStage[] = SYLLABLE_STAGES,
+  syllableJourney?: (index: number, previous: string) => string,
 ): AlphabetStage {
   if (!Number.isSafeInteger(index) || index < 0) throw new RangeError("Invalid stage index.");
   const lessons = mode === "alphabet" ? ALPHABET_STAGES : practice;
@@ -59,7 +76,7 @@ export function learningStageAt(
     if (target === previousTarget) target = [...target.slice(1), target[0]!].join("");
   } else {
     const candidates = SYLLABLE_GAME_TARGETS.filter(target => target !== previousTarget);
-    target = candidates[Math.floor(rng() * candidates.length)]!;
+    target = syllableJourney ? syllableJourney(index, previousTarget) : candidates[Math.floor(rng() * candidates.length)]!;
   }
   const sequence = mode === "alphabet" ? [...target] : requiredBoardSymbols(target);
   return {
