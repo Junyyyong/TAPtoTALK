@@ -1,5 +1,13 @@
 # TAPtoTALK 배경음악 청취 시안
 
+## 대기용 V3 — Soft Steps
+
+[120 BPM 부드러운 대기용 시안](05-lobby-soft-steps-v3-120bpm.mp3)
+
+V2가 느리고 ‘띵띵’ 소리가 튄다는 피드백을 반영했다. 108→120 BPM, 약33.2초. 주선율은 한 옥타브 내리고, 노이즈로 시작하는 짧은 현악 합성을 부드러운35ms 어택·낮은 배음·긴 음가의 중음역 음색으로 교체했다. 고음 중복 선율 제거, 관악 응답도 한 옥타브 낮추고 탭·북은 작게 조정했다. 별도 새 파일이며 이전 시안과 게임곡은 그대로다.
+
+재생성: `make-lobby-v3.mjs <새-출력폴더>`. FFmpeg `lowpass=f=3000,acompressor=threshold=0.16:ratio=2:attack=10:release=120,loudnorm=I=-19:TP=-2:LRA=7` 후44.1kHz 스테레오192kbps MP3로 인코딩. 정상 디코딩·길이·피크 확인. 사용자의 실제 청취로 편안함을 확인할 시안이며 아직 게임에 연결하지 않았다.
+
 ## 대기용 V2 — Hangul Courtyard
 
 [새 대기용 시안 듣기](04-lobby-hangul-courtyard-v2-108bpm.mp3)
