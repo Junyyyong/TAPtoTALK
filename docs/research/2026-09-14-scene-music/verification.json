@@ -1,0 +1,13 @@
+{
+  "before": "f7a7d8a",
+  "viewport": "390x844 @2",
+  "checks": [
+    "Menu: one decoded 30-second looping track",
+    "Sound toggle leaves music playing",
+    "Independent Music off/on",
+    "alphabet: intro/game switch, pause silence, resume, menu return",
+    "syllable: intro/game switch, pause silence, resume, menu return",
+    "word: intro/game switch, pause silence, resume, menu return",
+    "Word timeout/result: background music silent"
+  ]
+}
