@@ -178,7 +178,7 @@
 .help-head { display: grid; grid-template-columns: 44px 1fr 44px; align-items: center; padding: 10px 12px; border-bottom: 1px solid var(--paper-edge); }
 .help-head h2 { margin: 0; color: var(--ink); font-family: "TAP Serif KR", serif; font-size: 19px; text-align: center; }
 .help-body { overflow: auto; padding: 22px; }
-.settings-screen .hud { flex: 0 0 auto; }
+.settings-screen .hud { flex: 0 0 auto; padding-inline: 12px; }
 .settings-screen h2 { margin: 0; font: 800 20px/1.2 "TAP Sans KR",sans-serif; letter-spacing: .08em; color: var(--hot-deep); text-align: center; }
 .settings-body { flex: 1; min-height: 0; padding: 6px 16px 20px; overflow-y: auto; }
 .help-kicker { margin: 0 0 6px; color: var(--accent); font-size: 11px; font-weight: 800; letter-spacing: .08em; }
