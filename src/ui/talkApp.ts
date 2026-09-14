@@ -61,6 +61,7 @@ export class TalkApp {
   private readonly help = el("help-layer");
   private readonly helpTitle = el("help-title");
   private readonly helpBody = el("help-body");
+  private readonly settings = el("screen-settings");
   private preferences: TalkPreferences = loadTalkPreferences();
   private mode: Mode = "alphabet";
   private introMode: Mode = "alphabet";
@@ -159,6 +160,9 @@ export class TalkApp {
     el("btn-again").addEventListener("click", () => this.continueFromResult());
     el("btn-result-menu").addEventListener("click", () => this.showTitle());
     el("btn-title-settings").addEventListener("click", () => this.showSettings());
+    el("btn-settings-back").addEventListener("click", () => {
+      feedback.tap(); this.showTitle(); el("btn-title-settings").focus();
+    });
     el("btn-help-close").addEventListener("click", () => this.paused ? this.resumeGame() : this.closeHelp());
     const unlock = () => { this.cheer.unlock(); feedback.unlock(); this.music.unlock(); };
     document.addEventListener("pointerdown", unlock, { capture: true });
@@ -178,6 +182,7 @@ export class TalkApp {
   }
 
   private showTitle(): void {
+    this.settings.classList.add("hidden");
     this.music.setScene("menu");
     this.roundEnded = true;
     window.clearTimeout(this.stageTimer);
@@ -603,20 +608,30 @@ export class TalkApp {
   }
 
   private showSettings(): void {
-    this.openHelp("Settings");
+    const entering = this.settings.classList.contains("hidden");
+    this.title.classList.add("hidden");
+    this.help.classList.add("hidden");
+    this.settings.classList.remove("hidden");
+    if (entering) { feedback.tap(); el("btn-settings-back").focus(); }
+    this.renderSettings(el("settings-body"));
+  }
+
+  private renderSettings(body: HTMLElement): void {
     const canVibrate = typeof navigator.vibrate === "function";
-    this.helpBody.innerHTML = `<div class="switch-list"><button class="switch-row" id="talk-sound"><span class="switch-text"><b>Sound</b><small>Button sounds and finish sounds</small></span><span class="switch" role="switch" aria-checked="${this.preferences.soundOn}"><span class="switch-knob"></span></span></button><button class="switch-row" id="talk-haptics"><span class="switch-text"><b>Vibration</b><small>Short feedback when you tap</small></span><span class="switch" role="switch" aria-checked="${this.preferences.hapticsOn}"><span class="switch-knob"></span></span></button>${canVibrate ? "" : '<p class="settings-note">Vibration may not work in this browser.</p>'}</div>`;
-    this.helpBody.querySelector(".switch-list")!.insertAdjacentHTML("afterbegin", `<button class="switch-row" id="talk-music"><span class="switch-text"><b>Music</b><small>Menu and game background music</small></span><span class="switch" role="switch" aria-checked="${this.preferences.musicOn}"><span class="switch-knob"></span></span></button>`);
+    body.innerHTML = `<div class="switch-list"><button class="switch-row" id="talk-sound"><span class="switch-text"><b>Sound</b><small>Button sounds and finish sounds</small></span><span class="switch" role="switch" aria-checked="${this.preferences.soundOn}"><span class="switch-knob"></span></span></button><button class="switch-row" id="talk-haptics"><span class="switch-text"><b>Vibration</b><small>Short feedback when you tap</small></span><span class="switch" role="switch" aria-checked="${this.preferences.hapticsOn}"><span class="switch-knob"></span></span></button>${canVibrate ? "" : '<p class="settings-note">Vibration may not work in this browser.</p>'}</div>`;
+    body.querySelector(".switch-list")!.insertAdjacentHTML("afterbegin", `<button class="switch-row" id="talk-music"><span class="switch-text"><b>Music</b><small>Menu and game background music</small></span><span class="switch" role="switch" aria-checked="${this.preferences.musicOn}"><span class="switch-knob"></span></span></button>`);
     el("talk-music").addEventListener("click", () => this.changePreference("musicOn"));
     el("talk-sound").addEventListener("click", () => this.changePreference("soundOn"));
     el("talk-haptics").addEventListener("click", () => this.changePreference("hapticsOn"));
   }
 
   private changePreference(key: "musicOn" | "soundOn" | "hapticsOn"): void {
+    const focusedId = document.activeElement?.id;
     this.preferences[key] = !this.preferences[key];
     saveTalkPreferences(this.preferences);
     this.applyPreferences();
     this.showSettings();
+    if (focusedId) document.getElementById(focusedId)?.focus();
     feedback.item();
   }
 
