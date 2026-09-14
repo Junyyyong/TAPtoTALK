@@ -72,6 +72,14 @@
 }
 
 .brand-block {
+  /* Same layout height as TEN's 618×726 wordmark; artwork and KOREAN fit inside. */
+  --reference-brand-width: min(68vw, 250px);
+  height: calc(var(--reference-brand-width) * 726 / 618);
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   text-align: center;
 }
 
@@ -89,7 +97,9 @@
 
 .brand-mark {
   display: block;
-  width: min(89.76vw, 330px);
+  width: auto;
+  max-width: min(89.76vw, 330px);
+  max-height: calc(100% - 24px);
   height: auto;
   /* A little of the night thrown back up at it, so it sits on the background
      rather than on top of it. */
@@ -179,6 +189,7 @@
    fit on a narrow phone at this size, which is why they are set smaller than
    the rest of the screen rather than matching it. */
 .title-links {
+  position: relative;
   display: flex;
   flex: 0 0 auto;
   flex-wrap: wrap;
@@ -196,8 +207,9 @@
  * are the screen's job, and it is the only thing here with room to spare.
  */
 @media (max-height: 700px) {
+  .brand-block { --reference-brand-width: min(58vw, 215px); }
   .brand-mark {
-    width: min(76.56vw, 284px);
+    max-width: min(76.56vw, 284px);
   }
 
   .mode-btn {
@@ -210,7 +222,8 @@
 }
 
 @media (max-height: 580px) {
+  .brand-block { --reference-brand-width: min(44vw, 165px); }
   .brand-mark {
-    width: min(58.08vw, 218px);
+    max-width: min(58.08vw, 218px);
   }
 }
