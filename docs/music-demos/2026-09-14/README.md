@@ -1,5 +1,14 @@
 # TAPtoTALK 배경음악 청취 시안
 
+## 새 제안 — 대기 V4 + 게임 V3
+
+- [대기 Sunny Stroll](06-lobby-sunny-stroll-v4-128bpm.mp3): 128 BPM,31.2초. 동물의 숲 같은 포근하고 발랄한 일상 분위기를 요청받아 별도 작곡. 해당 게임 음악·멜로디·샘플을 사용하지 않았다. G장조의 새 선율, 정박/균등8분음표, 부드러운 중음역, 낮은 기타풍 분산화음, 정박 북/발소리와 작은 셰이커. V3의 긴 쉼·엇박 중심 구성을 교체했다.
+- [게임 Jamo Dance Soft](07-game-jamo-dance-soft-v3-136bpm.mp3): 136 BPM,43.55초. 선호한 V2의 음표·타이밍·편곡은 유지하면서 현악 어택을 둥글게, 고음 탭과 slap의 gain을 낮췄다. 원음은 보존했다.
+
+재생성은 `make-lobby-v4.mjs`와 `make-game-v3.mjs`에 새 출력 폴더를 전달한다. 전자는 lowpass4200Hz, threshold0.16/ratio2/attack10/release120 압축, 후자는 lowpass3400Hz, threshold0.09/ratio4/attack2/release80/makeup2 압축. 둘 다 loudnorm I−19/TP−2/LRA7 후44.1kHz·192kbps MP3로 인코딩했다. 정상 디코딩·길이·피크 확인. 모든 소리는 합성 시안이며 실제 악기 녹음이 아니다. 청취 취향은 사용자 평가로 확인한다.
+
+아직 게임 미적용. 이전 초안과 다른 저장소는 변경하지 않았으며 화면 변경이 없어 스크린샷은 해당 없음.
+
 ## 대기용 V3 — Soft Steps
 
 [120 BPM 부드러운 대기용 시안](05-lobby-soft-steps-v3-120bpm.mp3)
