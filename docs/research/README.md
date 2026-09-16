@@ -1,5 +1,7 @@
 # TAPtoTALK 주요 변경 연구 기록
 
+- [2026-09-16 Space 제거](2026-09-16-remove-space/README.md): `5e97de8` → `490be7a`, Vocabulary 하단 Delete 하나로 정리.
+
 - [2026-09-16 소리·영어 학습명·점 크기](2026-09-16-sound-categories/README.md): `98c8be4` → `d32dc22`, 영상 MP3 재생·차단 복구, 영어 범주, 안내 점 축소·블록 점/함정 확대.
 
 - [2026-09-16 등급별 영상](2026-09-16-grade-videos/README.md): `57550ad` → `adc0c7a`, 네 등급 신규 MP4/WebM/MP3 연결, GREAT·UNBELIEVABLE 기존 유지.
