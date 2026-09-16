@@ -28,9 +28,7 @@
 .talk-screen.is-input-locked .letter-board,.talk-screen.is-input-locked .fixed-controls { pointer-events: none; }
 .talk-screen.is-alphabet-mode .fixed-controls { display: none; }
 .talk-screen.is-alphabet-mode .target-prompt { height: 178px; min-height: 178px; max-height: 178px; width: 100%; }
-.talk-screen.is-alphabet-mode .target-text { color: var(--ink); font-size: 52px; line-height: 1.05; }
-.talk-screen.is-alphabet-mode .target-text.is-medium-sequence { font-size: 44px; }
-.talk-screen.is-alphabet-mode .target-text.is-long-sequence { font-size: 38px; }
+.talk-screen .target-text { color: var(--ink); font-size: clamp(36px,11.3vw,44px); line-height: 1.05; }
 .talk-screen.is-alphabet-mode .target-hint { max-width: 100%; overflow: hidden; font-weight: 650; text-overflow: ellipsis; white-space: nowrap; }
 .talk-screen.is-alphabet-mode .typed-text { display: none; }
 .talk-screen.is-syllable-mode .typed-text { display: none; }
@@ -62,23 +60,21 @@
 .target-text,.typed-text { min-height: 1.45em; margin: 0; color: var(--ink); font-size: clamp(24px,6.3vw,31px); font-weight: 700; line-height: 1.38; word-break: keep-all; }
 .target-text { grid-column: 1 / -1; align-self: center; padding-top: 7px; font-family: "TAP Serif KR", serif; text-align: center; }
 .target-korean,.target-translation-inline,.alphabet-target-note { display: block; }
-.talk-screen.is-alphabet-mode .target-korean { display: flex; align-items: center; justify-content: center; gap: .08em; }
-.alphabet-target-jamo { display: inline-grid; place-items: center; width: 1.16em; height: 1.16em; min-width: 1.16em; padding: 0; border-radius: 50%; transition: color .15s ease,background .15s ease; }
+.talk-screen.is-alphabet-mode .target-korean { display: flex; align-items: center; justify-content: center; gap: 0; }
+.talk-screen.is-alphabet-mode .target-korean .tap-arrow { font-size: 14px; }
+.alphabet-target-jamo { display: inline-grid; place-items: center; width: 1em; height: 1.16em; min-width: 1em; padding: 0; transition: color .15s ease; }
 .alphabet-target-jamo.is-cheonjiin::before { display: block; width: .34em; aspect-ratio: 1; margin: .33em auto; border-radius: .05em; background: currentColor; content: ""; }
 .alphabet-target-jamo.is-current { color: var(--hot-deep); }
 .alphabet-target-jamo.is-done { color: var(--accent); }
 .target-translation-inline,.alphabet-target-note { margin-top: 5px; color: var(--ink-soft); font-family: "TAP Sans KR",sans-serif; font-size: 14px; font-weight: 650; line-height: 1.2; letter-spacing: 0; white-space: nowrap; }
 .talk-screen.is-alphabet-mode .alphabet-target-note { margin-top: 9px; font-size: 18px; }
-.talk-screen.is-alphabet-mode .is-medium-sequence .alphabet-target-note { font-size: 14px; }
-.talk-screen.is-alphabet-mode .is-long-sequence .alphabet-target-note { font-size: 12px; }
 .alphabet-target-note[hidden] { display: none; }
 .target-hint { grid-column: 1 / -1; margin: 3px 0 2px; color: var(--ink-soft); font-size: 14px; line-height: 1.45; text-align: center; }
 .talk-screen.is-word-mode .target-hint { width: 100%; min-width: 0; }
-.vocabulary-taps { display: flex; flex-wrap: wrap; justify-content: center; gap: 0 3px; max-height: 76px; overflow-y: auto; }
+.vocabulary-taps { display: flex; flex-wrap: nowrap; justify-content: center; gap: 0 3px; height: 26px; }
 .typed-text { position: relative; display: flex; min-height: 3.15em; align-items: flex-end; padding: 8px 6px 2px; color: var(--accent-deep); font-family: "TAP Serif KR", serif; font-size: clamp(28px,7.2vw,36px); line-height: 1.25; border-bottom: 1px solid var(--slab); }
 .talk-screen:not(.is-alphabet-mode) .typed-text { height: 64px; min-height: 64px; flex-direction: column; align-items: stretch; justify-content: flex-end; gap: 5px; overflow: hidden; }
 .talk-screen:not(.is-alphabet-mode) .typed-text.is-empty::before { display: none; }
-.talk-screen:not(.is-alphabet-mode) .target-text { font-size: 28px; }
 .target-character { display: inline; color: var(--ink); transition: color .15s ease,background .15s ease; white-space: pre-wrap; }
 .target-character.is-done { color: var(--accent); }
 .target-character.is-current { color: var(--hot); }

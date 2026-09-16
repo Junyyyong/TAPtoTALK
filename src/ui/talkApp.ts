@@ -3,7 +3,7 @@ import { createAlphabetStageBoard, createMixedLearningBoard, type AlphabetTile }
 import { COMMIT_BOUNDARY, deleteLastInput } from "../core/hangul/compose";
 import { CHEONJIIN_STROKES, CONSONANTS, type BoardSymbol } from "../core/hangul/keys";
 import { isWordMatch } from "../core/hangul/wordChallenge";
-import { composeTargetInput, composedCharacterProgress, materializeTargetTokens, targetToTokens } from "../core/hangul/target";
+import { activeTargetSyllable, composeTargetInput, composedCharacterProgress, materializeTargetTokens, targetCharacterProgress, targetToTokens } from "../core/hangul/target";
 import { ALPHABET_ORDER, WORD_TARGETS, type AlphabetStage, type WordTarget } from "../content/prompts";
 import { createSyllablePractice, createSyllableGameJourney, learningStageAt, LEARNING_TRAP_RATIO, LEARNING_TRANSITION_MS, type LearningMode } from "../content/learningJourney";
 import { createWordJourney } from "../content/wordJourney";
@@ -393,8 +393,6 @@ export class TalkApp {
     const note = document.createElement("span"); note.className = "alphabet-target-note"; note.textContent = labels.note;
     note.hidden = !labels.note;
     this.targetText.replaceChildren(korean, note);
-    this.targetText.classList.toggle("is-medium-sequence", stage.sequence.length === 3);
-    this.targetText.classList.toggle("is-long-sequence", stage.sequence.length >= 5);
     this.targetHint.textContent = labels.names;
     this.typedText.replaceChildren();
   }
@@ -403,7 +401,6 @@ export class TalkApp {
     this.targetLabel.textContent = this.roundSection.tutorial
       ? stage.category ?? "Letter Combinations"
       : `STAGE ${this.alphabetStageIndex - this.syllablePractice.length + 1}`;
-    this.targetText.classList.remove("is-medium-sequence", "is-long-sequence");
     const korean = document.createElement("span"); korean.className = "target-korean"; korean.textContent = stage.target;
     const note = document.createElement("span"); note.className = "syllable-target-note"; note.textContent = stage.note;
     this.targetText.replaceChildren(korean, note);
@@ -523,7 +520,8 @@ export class TalkApp {
     const typedSymbols = this.input.filter(token => token.value !== " " && token.value !== COMMIT_BOUNDARY);
     const progress = composedCharacterProgress(target, text);
     const wrongIndex = progress.findIndex(part => part.state === "wrong");
-    const targetNodes = progress.map(({ character, state }) => {
+    const actual = this.input.filter(token => token.value !== COMMIT_BOUNDARY).map(token => token.value);
+    const targetNodes = targetCharacterProgress(target, actual).map(({ character, state }) => {
       const glyph = document.createElement("span"); glyph.className = `target-character is-${state}`; glyph.textContent = character;
       return glyph;
     });
@@ -531,11 +529,11 @@ export class TalkApp {
       const korean = document.createElement("span"); korean.className = "target-korean"; korean.append(...targetNodes);
       const english = document.createElement("span"); english.className = "target-translation-inline"; english.textContent = this.wordTarget.translation;
       this.targetText.replaceChildren(korean, english);
-      const actual = this.input.filter(token => token.value !== COMMIT_BOUNDARY);
-      let current = 0;
-      while (current < expected.length && actual[current]?.value === expected[current]) current += 1;
-      const sequence = this.renderTapSequence(expected, current);
+      const active = activeTargetSyllable(target, actual);
+      const sequence = this.renderTapSequence(active.sequence, active.current);
       sequence.classList.add("vocabulary-taps");
+      sequence.dataset.syllable = active.character;
+      sequence.setAttribute("aria-label", `${active.character}: ${active.sequence.join(" → ")}`);
       this.targetHint.replaceChildren(sequence);
     }
     const composed = document.createElement("span"); composed.className = `composed-input${text ? "" : " is-empty"}`; composed.textContent = text; composed.dataset.empty = this.typedText.dataset.empty;

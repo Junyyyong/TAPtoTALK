@@ -64,6 +64,25 @@ export function materializeTargetTokens(tokens: readonly TargetToken[]): string[
   return values;
 }
 
+/** One syllable's hints, following the correct raw-tap prefix. Errors never skip ahead. */
+export function activeTargetSyllable(target: string, input: readonly string[]) {
+  const parts = [...target.normalize("NFC")].map((character, index) => ({
+    character, index, sequence: materializeTargetTokens(targetToTokens(character)),
+  })).filter(part => part.sequence.length > 0);
+  const expected = parts.flatMap(part => part.sequence);
+  let matched = 0;
+  while (matched < expected.length && input[matched] === expected[matched]) matched++;
+  let start = 0;
+  for (const part of parts) {
+    const end = start + part.sequence.length;
+    if (matched < end || part === parts.at(-1)) {
+      return { ...part, current: Math.min(part.sequence.length, matched - start) };
+    }
+    start = end;
+  }
+  return { character: "", index: 0, sequence: [] as string[], current: 0 };
+}
+
 export type TargetCharacterState = "done" | "current" | "wrong" | "pending";
 export interface TargetCharacterProgress {
   character: string;

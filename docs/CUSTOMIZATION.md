@@ -2,6 +2,10 @@
 
 ## 학습 제시창 (2026-09-16)
 
+세 모드의 제시어는 `.talk-screen .target-text` 공통 크기44px(좁은 화면에서만 뷰포트 기준36~44px)를 사용한다. 자소 개수로 폰트 크기를 바꾸지 않는다. Alphabet 자소 폭1em/간격0, 화살표14px로 다섯 자소도 들어가게 한다. 입력 순서 안내는18px 고딕/650으로 유지한다.
+
+Vocabulary 입력 안내는 `activeTargetSyllable`(core/hangul/target.ts)이 연속 정답 입력 수에 해당하는 현재 음절 하나만 반환한다. 전체 단어·뜻은 남기며 제시어 색도 동일한 원시 입력 기준으로 맞춘다. 오류 시 진행하지 않고 Delete 시 이전 음절로 돌아간다. 마지막 음절 완료 시 마지막 안내 전체를 완료색으로 표시한다. 조합 엔진·정답 판정·점수는 바꾸지 않는다.
+
 Vocabulary 하단은 Delete 단일 버튼이다. Space 버튼과 UI 입력 경로는 제거했다. 과거 공백 확정/삭제의 core 함수는 호환 테스트용으로 보존한다. 현재118개 단어는 모두 공백 없이 조합 가능하다.
 
 Syllable 파란 박스는 튜토리얼에서 `AlphabetStage.category`를 표시한다. 학습 범주는 영어로 Letter Combinations / Basic Vowels / Compound Vowels / Double Consonants / Final Consonants / Double Finals. 타이머가 시작되는 본게임은 STAGE 1부터 음절마다 증가하며 튜토리얼 판수는 제외한다. 1분 라운드 변경 시 번호는 유지한다. HUD PRACTICE/시계는 그대로다. 입력 안내 아래아는 .25em 정사각형, 블록 아래아는1.1배, 기존 하트·별·쉼표는1.1→1.21배로 조정했다.
