@@ -7,6 +7,7 @@ export interface SentencePrompt {
 }
 
 export interface AlphabetStage {
+  category?: string;
   id: string;
   number: number;
   boardSide: 2 | 4 | 6 | 8;

@@ -1,6 +1,7 @@
 import { el } from "../dom";
 import { APP_CONFIG } from "../../config/app";
 import { RESULT_CARD_MS } from "../../content/timedStages";
+import { ClipSound } from "../clipSound";
 
 /**
  * The beat between the last move and the results panel.
@@ -110,6 +111,9 @@ export class Cheer {
   private readonly headline = el<HTMLParagraphElement>("cheer-headline");
   private readonly scoreEl = el<HTMLParagraphElement>("cheer-score");
   private readonly sound = el<HTMLAudioElement>("cheer-sound");
+  private readonly soundtrack = new ClipSound();
+  private readonly soundRetry = document.createElement("button");
+  private soundRevision = 0;
   private timer: number | undefined;
   private soundOn = true;
   /** Whether the sound element has been played inside a touch yet. */
@@ -120,10 +124,19 @@ export class Cheer {
   private automatic = false;
 
   constructor() {
+    this.soundRetry.type = "button";
+    this.soundRetry.className = "cheer-sound-retry hidden";
+    this.soundRetry.textContent = "Tap for sound";
+    this.root.append(this.soundRetry);
+    this.soundRetry.addEventListener("click", event => {
+      event.stopPropagation(); this.soundtrack.unlock();
+      if (this.pick && this.done) void this.playSound(this.pick);
+    });
     // The clip stops on its own last frame; the player decides when to leave it.
     this.clip.addEventListener("ended", () => this.hold());
     this.clip.addEventListener("error", () => { if (this.card.classList.contains("hidden")) this.hold(); });
     this.root.addEventListener("pointerdown", (event) => {
+      if ((event.target as Element).closest(".cheer-sound-retry")) return;
       event.preventDefault(); event.stopPropagation();
       if (this.root.classList.contains("cheer-hold")) this.finish();
     });
@@ -142,12 +155,14 @@ export class Cheer {
    * not the web layer's.
    */
   unlock(): void {
+    this.soundtrack.unlock();
+    if (this.done) return;
     if (this.primed) return;
     this.primed = true;
     this.sound.src = SILENCE;
     const started = this.sound.play() as Promise<void> | undefined;
     void started
-      ?.then(() => this.sound.pause())
+      ?.then(() => { if (!this.done && this.sound.src === SILENCE) this.sound.pause(); })
       .catch(() => {
         this.primed = false;
       });
@@ -195,7 +210,7 @@ export class Cheer {
     if (this.pick) {
       this.root.classList.add(`cheer-layout-${this.pick.layout}`);
       load(this.clip, videoFor(this.pick));
-      if (this.pick.sound) load(this.sound, this.pick.sound);
+      if (this.pick.sound) { load(this.sound, this.pick.sound); this.soundtrack.prepare(this.pick.sound); }
     }
 
     window.clearTimeout(this.timer);
@@ -224,14 +239,10 @@ export class Cheer {
     this.clip.classList.remove("hidden");
     // Muted and inline, so this is allowed without a gesture; a refusal still
     // lands on `finish` rather than stalling the run.
-    void start(this.clip, videoFor(pick)).catch(() => this.hold());
-
-    // The two tracks are the same length and both start here, which is as
-    // close to in step as two elements get. Sound is a courtesy: if it will
-    // not play, the picture carries on regardless.
-    if (pick.sound && this.soundOn) {
-      void start(this.sound, pick.sound).catch(() => undefined);
-    }
+    const revision = this.soundRevision;
+    void start(this.clip, videoFor(pick)).then(() => {
+      if (revision === this.soundRevision && this.done) void this.playSound(pick);
+    }).catch(() => this.hold());
 
     this.timer = window.setTimeout(() => this.hold(), CLIP_CAP_MS);
   }
@@ -246,6 +257,8 @@ export class Cheer {
     window.clearTimeout(this.timer);
     this.clip.pause();
     this.sound.pause();
+    this.soundtrack.stop(); this.soundRevision++;
+    this.soundRetry.classList.add("hidden");
     this.root.classList.add("cheer-hold");
   }
 
@@ -263,10 +276,30 @@ export class Cheer {
   /** Follows the sound switch in settings; the picture always plays. */
   setSound(on: boolean): void {
     this.soundOn = on;
-    if (!on) this.sound.pause();
+    if (!on) { this.sound.pause(); this.soundtrack.stop(); this.soundRevision++; this.soundRetry.classList.add("hidden"); }
+  }
+
+  private async playSound(pick: Clip): Promise<void> {
+    if (!this.soundOn || !pick.sound || !this.done || this.root.classList.contains("cheer-hold")) return;
+    const revision = ++this.soundRevision;
+    this.soundRetry.classList.add("hidden"); this.sound.pause();
+    try {
+      await this.soundtrack.play(pick.sound, () => this.clip.currentTime);
+    } catch {
+      if (revision !== this.soundRevision || !this.done || !this.soundOn) return;
+      try {
+        load(this.sound, pick.sound);
+        if (this.sound.readyState >= 1) this.sound.currentTime = this.clip.currentTime;
+        await this.sound.play();
+        if (revision !== this.soundRevision) this.sound.pause();
+      } catch {
+        if (revision === this.soundRevision && this.soundOn) this.soundRetry.classList.remove("hidden");
+      }
+    }
   }
 
   private hush(): void {
+    this.soundRevision++; this.soundtrack.stop(); this.soundRetry.classList.add("hidden");
     this.clip.pause();
     this.sound.pause();
   }

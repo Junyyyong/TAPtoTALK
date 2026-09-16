@@ -16,18 +16,18 @@ export const RANDOM_ALPHABET_LENGTH = 3;
 
 // One syllable per stage; introduce more vowels as the board grows.
 const SYLLABLE_ROWS = [
-  { text: "가나다라마바사아자차카타파하", side: 2 },
-  { text: "아야어여오요우유으이", side: 4 },
-  { text: "애에얘예와왜외워웨위의", side: 4 },
+  { text: "가나다라마바사아자차카타파하", side: 2, category: "Letter Combinations" },
+  { text: "아야어여오요우유으이", side: 4, category: "Basic Vowels" },
+  { text: "애에얘예와왜외워웨위의", side: 4, category: "Compound Vowels" },
   // Five tense initials, exactly once each per practice session.
-  { text: "까따빠싸짜", side: 4 },
+  { text: "까따빠싸짜", side: 4, category: "Double Consonants" },
   // Familiar standalone nouns, not isolated verb stems or exhaustive final spellings.
-  { text: "산강물불눈손발집밥옷달별입몸", side: 4 },
-  { text: "닭흙값삶몫", side: 4 },
+  { text: "산강물불눈손발집밥옷달별입몸", side: 4, category: "Final Consonants" },
+  { text: "닭흙값삶몫", side: 4, category: "Double Finals" },
 ] as const;
 
-export const SYLLABLE_STAGES: readonly AlphabetStage[] = SYLLABLE_ROWS.flatMap(({ text, side }) =>
-  [...text].map((target) => ({ target, boardSide: side, sequence: requiredBoardSymbols(target) })),
+export const SYLLABLE_STAGES: readonly AlphabetStage[] = SYLLABLE_ROWS.flatMap(({ text, side, category }) =>
+  [...text].map((target) => ({ target, category, boardSide: side, sequence: requiredBoardSymbols(target) })),
 ).map((stage, index) => ({ ...stage, id: `syllable-${index + 1}`, number: index + 1, note: syllableTargetNote(stage.target) }));
 
 export const SYLLABLE_PRACTICE_PER_TYPE = 5;
@@ -56,10 +56,10 @@ export function createSyllableGameJourney(rng: () => number = Math.random, initi
 /** Draw once per START. Keep the six categories ordered, shuffle within each. */
 export function createSyllablePractice(rng: () => number = Math.random): readonly AlphabetStage[] {
   const seen = new Set<string>();
-  return SYLLABLE_ROWS.flatMap(({ text, side }) =>
+  return SYLLABLE_ROWS.flatMap(({ text, side, category }) =>
     pickLessonTargets([...text].filter(target => !seen.has(target)), SYLLABLE_PRACTICE_PER_TYPE, rng).map(target => {
       seen.add(target);
-      return { target, boardSide: side, sequence: requiredBoardSymbols(target) };
+      return { target, category, boardSide: side, sequence: requiredBoardSymbols(target) };
     }),
   ).map((stage, index) => ({ ...stage, id: `practice-${index + 1}`, number: index + 1, note: syllableTargetNote(stage.target) }));
 }
@@ -88,6 +88,7 @@ export function learningStageAt(
   const sequence = mode === "alphabet" ? [...target] : requiredBoardSymbols(target);
   return {
     id: `${mode}-random-${index + 1}`, number: index + 1,
+    category: mode === "syllable" ? "One-Syllable Words" : undefined,
     boardSide: mode === "syllable" && roundNumber === 1 ? 6 : 8, target, sequence,
     note: mode === "alphabet" ? sequence.map(alphabetTargetNote).join(" · ") : syllableTargetNote(target),
   };

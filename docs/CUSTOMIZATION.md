@@ -2,11 +2,13 @@
 
 ## 학습 제시창 (2026-09-16)
 
+Syllable 파란 박스는 `AlphabetStage.category`를 표시한다. 학습 범주는 영어로 Letter Combinations / Basic Vowels / Compound Vowels / Double Consonants / Final Consonants / Double Finals, 본게임은 One-Syllable Words. HUD PRACTICE/시계는 그대로다. 입력 안내 아래아는 .25em 정사각형, 블록 아래아는1.1배, 기존 하트·별·쉼표는1.1→1.21배로 조정했다.
+
 Syllable의 별도 작성 칸은 숨기고 제시어 아래 자소 순서로 진행을 확인한다. Vocabulary는 작성 칸을 유지하며 `STAGE ${wordTargetIndex + 1}`로 단어 진행 번호를 표시한다. 보드 크기와 1분 라운드 번호는 이 표시에 포함하지 않는다.
 
 `learningLabels.ts`에 Alphabet 분류·한글 자모 이름·읽기 노출 정책을 둔다.2/4판에서만 읽기를 표시하고6/8판에서는 숨긴다. HUD의 PRACTICE/시계는 유지한다. `syllableNotes.ts`의 요청된 가~하·쌍자음 표기는 사용자 지정 영문 읽기 안내로 표준 IPA가 아니다. 기존 단어 뜻과 지정하지 않은 모음 안내는 유지한다. `prompts.ts` 천지인 읽기는 `[ah]`, `[eu]`, `[i]`다.
 
-`.alphabet-target-jamo.is-current`와 `.syllable-taps .is-current`는 배경·밑줄 없이 빨간 글자로 현재 위치를 나타내고 완료는 파랑이다. `.tap-arrow`는 자소 사이 화살표다. Syllable·Vocabulary는 `renderTapSequence`를 공유하며 Vocabulary는 실제 입력의 연속 정답 구간까지만 진행한다. `.syllable-tap.is-cheonjiin::before`는 .36em 정사각형으로 폰트의 ■ 글리프를 대체한다. 게임판 자소 크기는 변경하지 않는다.
+`.alphabet-target-jamo.is-current`와 `.syllable-taps .is-current`는 배경·밑줄 없이 빨간 글자로 현재 위치를 나타내고 완료는 파랑이다. `.tap-arrow`는 자소 사이 화살표다. Syllable·Vocabulary는 `renderTapSequence`를 공유하며 Vocabulary는 실제 입력의 연속 정답 구간까지만 진행한다. `.syllable-tap.is-cheonjiin::before`는 .25em 정사각형으로 폰트의 ■ 글리프를 대체한다.
 
 ## 2026-09-16 최신 출제·숙련 설정
 
@@ -87,6 +89,8 @@ START 화면의 ㄱ·가·안녕은 `src/config/introMarks.ts`에 명조 SVG 윤
 시작 이미지 두 군데(`index.html`)만 수정합니다.
 
 ## 배경음악
+
+결과 영상 소리는 `clipSound.ts`의 별도 Web Audio 단발 재생으로 MP3를 캐시·디코딩한다. 사용자 탭에서 context를 활성화하고 영상이 실제 시작되면 현재 재생 위치에 맞춰 음원을 시작한다. 실패하면 기존 HTML audio를 시도하며 이것도 차단되면 Tap for sound를 표시한다. Sound OFF는 유지한다. 영상 종료·나가기·Sound OFF에 즉시 정지하며 늦은 비동기 로딩은 세대 번호로 취소한다. 실제 기기의 무음/볼륨·브라우저 정책은 앱이 강제 해제하지 않는다.
 
 - 경로: `src/config/app.ts`의 `music.menu`, `music.game`.
 - 대기곡: `public/assets/audio/talk-lobby.mp3` — 승인 시안 08, 128 BPM, 30초.

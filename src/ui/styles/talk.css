@@ -38,7 +38,7 @@
 .syllable-tap { display: inline-grid; place-items: center; width: 1em; height: 1.4em; flex: 0 0 1em; }
 .tap-step { display: inline-flex; align-items: center; gap: 3px; }
 .tap-arrow { color: var(--ink-soft); font-family: "TAP Sans KR",sans-serif; font-size: 18px; font-weight: 650; }
-.syllable-tap.is-cheonjiin::before { content: ""; display: block; width: .36em; height: .36em; background: currentColor; }
+.syllable-tap.is-cheonjiin::before { content: ""; display: block; width: .25em; height: .25em; background: currentColor; }
 .syllable-taps .is-done { color: var(--accent); }
 .syllable-target-note { display: block; margin-top: 6px; font-family: "TAP Sans KR",sans-serif; font-size: 16px; font-weight: 600; line-height: 1.2; color: var(--ink-soft); }
 .is-alphabet-complete .syllable-target-note { color: white; }
@@ -151,7 +151,8 @@
 .letter-tile--stroke-vertical .letter-glyph { width: var(--learning-stroke,7px); }
 .letter-tile--alphabet.letter-tile--cheonjiin-dot { font-size: 0; }
 .uploaded-glyph { display: block; width: 1em; height: 1em; transform-origin: 50% 50%; background: currentColor; -webkit-mask: var(--glyph-mask) center / 100% 100% no-repeat; mask: var(--glyph-mask) center / 100% 100% no-repeat; }
-.uploaded-glyph--dot-trap { transform: scale(1.1); }
+.uploaded-glyph--dot-trap { transform: scale(1.21); }
+.letter-tile--cheonjiin-dot .uploaded-glyph { transform: scale(1.1); }
 .letter-tile.has-uploaded-glyph { font-size: clamp(20.4px,5.88vw,25.2px); }
 .letter-tile.has-uploaded-glyph .letter-glyph { display: grid; place-items: center; width: auto; height: auto; font-size: inherit; background: none; transform: none; }
 .letter-tile.has-uploaded-glyph .letter-glyph::before,.letter-tile.has-uploaded-glyph .letter-glyph::after,.letter-tile.has-uploaded-glyph::after { display: none; }
