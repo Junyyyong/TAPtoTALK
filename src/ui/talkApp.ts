@@ -143,7 +143,7 @@ export class TalkApp {
         else {
           this.input = []; this.used.clear();
           this.tiles = createWordBoard(this.wordTarget.word);
-          this.targetLabel.textContent = `STAGE ${this.roundNumber} · 8×8`;
+          this.targetLabel.textContent = "STAGE";
           this.renderTranslatedTarget(); this.renderBoard(); this.renderInput();
         }
       }
@@ -210,7 +210,7 @@ export class TalkApp {
     this.input = []; this.used.clear();
     const requiredText = this.wordTarget.word;
     this.tiles = createWordBoard(requiredText);
-    this.targetLabel.textContent = `STAGE ${this.roundNumber} · 8×8`;
+    this.targetLabel.textContent = "STAGE";
     this.renderTranslatedTarget();
     this.typedText.dataset.empty = "Your word appears here.";
     this.runMode.textContent = "VOCABULARY";
@@ -227,7 +227,18 @@ export class TalkApp {
       const korean = document.createElement("span"); korean.className = "target-korean"; korean.textContent = this.wordTarget.word;
       const english = document.createElement("span"); english.className = "target-translation-inline"; english.textContent = this.wordTarget.translation;
       this.targetText.replaceChildren(korean, english);
-      this.targetHint.textContent = "Complete the target word.";
+      const sequence = document.createElement("span");
+      sequence.className = "syllable-taps vocabulary-taps";
+      sequence.setAttribute("aria-label", "Input order");
+      for (const value of materializeTargetTokens(targetToTokens(this.wordTarget.word))) {
+        const token = document.createElement("span");
+        token.className = "syllable-tap";
+        token.setAttribute("aria-label", value === " " ? "Space" : value);
+        if (value === "ㆍ") token.classList.add("is-cheonjiin");
+        else token.textContent = value === " " ? "␣" : value;
+        sequence.append(token);
+      }
+      this.targetHint.replaceChildren(sequence);
   }
 
   private showAlphabetIntro(mode: Mode): void {
@@ -579,7 +590,7 @@ export class TalkApp {
     this.wordTarget = this.nextWordTarget();
     this.input = []; this.used.clear();
     this.tiles = createWordBoard(this.wordTarget.word);
-    this.targetLabel.textContent = `STAGE ${this.roundNumber} · 8×8`;
+    this.targetLabel.textContent = "STAGE";
     this.renderTranslatedTarget();
     this.renderBoard(); this.renderInput();
   }
