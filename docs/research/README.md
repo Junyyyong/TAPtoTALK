@@ -1,5 +1,7 @@
 # TAPtoTALK 주요 변경 연구 기록
 
+- [2026-09-16 Syllable 본게임 번호](2026-09-16-syllable-stage/README.md): `7d2c6c3` → `6fa54ff`, 타이머 시작부터 STAGE1 표시, 튜토리얼 영어 학습명 유지.
+
 - [2026-09-16 Space 제거](2026-09-16-remove-space/README.md): `5e97de8` → `490be7a`, Vocabulary 하단 Delete 하나로 정리.
 
 - [2026-09-16 소리·영어 학습명·점 크기](2026-09-16-sound-categories/README.md): `98c8be4` → `d32dc22`, 영상 MP3 재생·차단 복구, 영어 범주, 안내 점 축소·블록 점/함정 확대.
