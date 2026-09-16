@@ -1,5 +1,7 @@
 # TAPtoTALK 주요 변경 연구 기록
 
+- [2026-09-16 시작 안내·자소 폰트·점수](2026-09-16-intro-score/README.md): `7f715fb` → `9182afd`, TAPtoTEN 안내 간격·크기, 메인 설명 재사용, 자소 굵기 통일, 본게임 점수1.5배.
+
 - [2026-09-16 Syllable 본게임 번호](2026-09-16-syllable-stage/README.md): `7d2c6c3` → `6fa54ff`, 타이머 시작부터 STAGE1 표시, 튜토리얼 영어 학습명 유지.
 
 - [2026-09-16 Space 제거](2026-09-16-remove-space/README.md): `5e97de8` → `490be7a`, Vocabulary 하단 Delete 하나로 정리.
