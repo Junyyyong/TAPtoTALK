@@ -9,7 +9,7 @@ import { createSyllablePractice, createSyllableGameJourney, learningStageAt, LEA
 import { createWordJourney } from "../content/wordJourney";
 import { alphabetLabels } from "../content/learningLabels";
 import { syllableTargetNote } from "../content/syllableNotes";
-import { ROUND_MS, FULL_SCORE_TARGETS, SCORE_CAPS, SCORE_GRADES, stageSection } from "../content/timedStages";
+import { ROUND_MS, FULL_SCORE_TARGETS, SCORE_CAPS, SCORE_MULTIPLIER, SCORE_GRADES, stageSection } from "../content/timedStages";
 import { timedScore } from "../core/hangul/timedScore";
 import { nextSyllableDifficulty, type SyllableDifficulty } from "../content/timedStages";
 import { APP_CONFIG } from "../config/app";
@@ -117,7 +117,7 @@ export class TalkApp {
     this.elapsedMs = Math.min(ROUND_MS, performance.now() - this.startedAt);
     const completedItem = this.stageTransitionPending;
     const tutorial = this.roundSection.tutorial;
-    const score = timedScore(this.roundUnits, FULL_SCORE_TARGETS[this.mode], SCORE_CAPS[this.mode]);
+    const score = timedScore(this.roundUnits, FULL_SCORE_TARGETS[this.mode], SCORE_CAPS[this.mode], SCORE_MULTIPLIER);
     this.roundEnded = true;
     this.inputLocked = true;
     this.stopClock();
@@ -241,7 +241,7 @@ export class TalkApp {
     el("learning-intro-mark").setAttribute("aria-label", `${el("learning-intro-mark").getAttribute("aria-label")} ${el("learning-intro-caption").textContent}`);
     el("learning-intro-mark").setAttribute("role", "img");
     el("learning-intro-mark").classList.toggle("is-word", mode === "word");
-    el("learning-intro-description").textContent = mode === "word" ? "Build words in 60 seconds." : "Practice first. Then play for 60 seconds.";
+    el("learning-intro-description").textContent = el(`mode-${mode}`).querySelector(".mode-desc")!.textContent;
     this.stopClock(); this.cheer.stop();
     this.result.classList.add("hidden"); this.help.classList.add("hidden"); this.game.classList.add("hidden"); this.title.classList.add("hidden");
     this.alphabetIntro.classList.remove("hidden");

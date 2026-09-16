@@ -13,11 +13,11 @@
 .wood-btn { position: relative; min-height: 48px; overflow: hidden; padding: 0 20px; border: 0; border-radius: 14px; color: white; background: linear-gradient(180deg,var(--go),var(--go-deep)); box-shadow: inset 0 1px 0 rgba(255,255,255,.42),0 4px 0 rgba(29,35,43,.26); font: 600 16px/1 inherit; }
 .alphabet-intro-screen { padding-inline: max(18px,env(safe-area-inset-left)); }
 .alphabet-intro-screen .hud { flex: 0 0 auto; }
-.alphabet-intro-body { display: flex; flex: 1; min-height: 0; flex-direction: column; gap: 18px; align-items: center; justify-content: center; padding: 0 32px max(6vh,28px); }
+.alphabet-intro-body { display: flex; flex: 1; min-height: 0; flex-direction: column; gap: 16px; align-items: center; justify-content: center; padding: 0 32px max(6vh,28px); }
 .alphabet-intro-body h2 { margin: 0; color: var(--hot-deep); font-size: 26px; font-weight: 900; letter-spacing: .12em; }
 .alphabet-intro-mark { display: grid; width: 140px; height: 140px; place-items: center; border-radius: 28px; color: white; background: linear-gradient(180deg,var(--cool),var(--cool-deep)); box-shadow: inset 0 2px 0 rgba(255,255,255,.45),0 8px 0 var(--slab-hard); font-family: "TAP Serif KR",serif; font-size: 72px; font-weight: 700; }
-.alphabet-intro-body p { margin: 0; color: var(--ink-soft); font-size: 14px; font-weight: 700; letter-spacing: .08em; }
-.alphabet-intro-mark { position: relative; transform: translateY(-12px); }
+.alphabet-intro-body p { margin: 0; color: var(--ink-soft); font-size: 14px; font-weight: 600; letter-spacing: normal; text-align: center; }
+.alphabet-intro-mark { position: relative; }
 .intro-mark-glyph { position: absolute; inset: 0; transform: translateY(-5px); }
 .alphabet-intro-mark svg { display: block; width: 100%; height: 100%; }
 .alphabet-intro-body .intro-mark-caption { position: absolute; right: 0; bottom: 14px; left: 0; color: white; text-align: center; font-family: "TAP Sans KR",sans-serif; font-size: 14px; letter-spacing: 0; line-height: 1.2; }
@@ -34,7 +34,7 @@
 .talk-screen.is-alphabet-mode .target-hint { max-width: 100%; overflow: hidden; font-weight: 650; text-overflow: ellipsis; white-space: nowrap; }
 .talk-screen.is-alphabet-mode .typed-text { display: none; }
 .talk-screen.is-syllable-mode .typed-text { display: none; }
-.syllable-taps { display: inline-flex; gap: 3px; align-items: center; font-family: "TAP Sans KR",sans-serif; font-size: 18px; color: var(--ink-soft); }
+.syllable-taps { display: inline-flex; gap: 3px; align-items: center; font-family: "TAP Sans KR",sans-serif; font-size: 18px; font-weight: 650; color: var(--ink-soft); }
 .syllable-tap { display: inline-grid; place-items: center; width: 1em; height: 1.4em; flex: 0 0 1em; }
 .tap-step { display: inline-flex; align-items: center; gap: 3px; }
 .tap-arrow { color: var(--ink-soft); font-family: "TAP Sans KR",sans-serif; font-size: 18px; font-weight: 650; }

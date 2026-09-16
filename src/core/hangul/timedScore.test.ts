@@ -1,11 +1,24 @@
 import { expect, it } from "vitest";
 import { timedScore } from "./timedScore";
-import { stageSection, FULL_SCORE_TARGETS, SCORE_CAPS, SCORE_GRADES } from "../../content/timedStages";
-it("awards 150 points per Alphabet target without an upper cap", () => {
+import { stageSection, FULL_SCORE_TARGETS, SCORE_CAPS, SCORE_MULTIPLIER, SCORE_GRADES } from "../../content/timedStages";
+it("awards 225 points per Alphabet target without an upper cap", () => {
   for (const n of [0, 1, 6, 10, 11, 12, 100]) {
-    expect(timedScore(n, FULL_SCORE_TARGETS.alphabet, SCORE_CAPS.alphabet)).toBe(n * 150);
+    expect(timedScore(n, FULL_SCORE_TARGETS.alphabet, SCORE_CAPS.alphabet, SCORE_MULTIPLIER)).toBe(n * 225);
   }
   expect(SCORE_GRADES.find(g => 1800 >= g.at)?.text).toBe("OH MY GOD~!");
+});
+it("raises all main-game scores by 50 percent before rounding and preserves caps", () => {
+  for (const mode of ["alphabet", "syllable", "word"] as const) {
+    for (const n of [0, 1, 6, 7, 10, 11, 30]) {
+      expect(timedScore(n, FULL_SCORE_TARGETS[mode], SCORE_CAPS[mode], SCORE_MULTIPLIER))
+        .toBe(Math.min(SCORE_CAPS[mode], Math.floor(n * 2250 / FULL_SCORE_TARGETS[mode])));
+    }
+  }
+  expect(timedScore(10, 15, 1500, SCORE_MULTIPLIER)).toBe(1500); // previously exactly 1000
+  expect(timedScore(10, 16, 1500, SCORE_MULTIPLIER)).toBe(1406);
+  expect(timedScore(.9, 10, 1500, SCORE_MULTIPLIER)).toBe(0);
+  expect(timedScore(1, 10, 1500, NaN)).toBe(0);
+  expect(timedScore(1, 10, 1500, -1)).toBe(0);
 });
 it("scores completed targets only and caps at 1500", () => {
   for (const target of Object.values(FULL_SCORE_TARGETS)) {

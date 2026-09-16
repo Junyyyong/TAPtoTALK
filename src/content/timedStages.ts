@@ -2,9 +2,9 @@ import { ALPHABET_STAGES, type AlphabetStage } from "./prompts";
 import { SYLLABLE_STAGES } from "./learningJourney";
 export const ROUND_MS = 60_000;
 export const RESULT_CARD_MS = 2_000;
-// Initial tuning: fully completed targets per minute, no tap or speed bonus.
-// 15 syllables = 1406 (OH MY GOD); 16 = 1500. Fourteen remains UNBELIEVABLE.
+// Baseline targets per minute; the multiplier makes the previous 1000 worth 1500.
 export const FULL_SCORE_TARGETS = { alphabet: 10, syllable: 16, word: 10 } as const;
+export const SCORE_MULTIPLIER = 1.5;
 export type SyllableDifficulty = 0 | 1;
 export function nextSyllableDifficulty(current: SyllableDifficulty, score: number): SyllableDifficulty {
   return score >= 1400 ? 1 : current;
