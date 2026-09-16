@@ -4,7 +4,7 @@
 
 Vocabulary 하단은 Delete 단일 버튼이다. Space 버튼과 UI 입력 경로는 제거했다. 과거 공백 확정/삭제의 core 함수는 호환 테스트용으로 보존한다. 현재118개 단어는 모두 공백 없이 조합 가능하다.
 
-Syllable 파란 박스는 `AlphabetStage.category`를 표시한다. 학습 범주는 영어로 Letter Combinations / Basic Vowels / Compound Vowels / Double Consonants / Final Consonants / Double Finals, 본게임은 One-Syllable Words. HUD PRACTICE/시계는 그대로다. 입력 안내 아래아는 .25em 정사각형, 블록 아래아는1.1배, 기존 하트·별·쉼표는1.1→1.21배로 조정했다.
+Syllable 파란 박스는 튜토리얼에서 `AlphabetStage.category`를 표시한다. 학습 범주는 영어로 Letter Combinations / Basic Vowels / Compound Vowels / Double Consonants / Final Consonants / Double Finals. 타이머가 시작되는 본게임은 STAGE 1부터 음절마다 증가하며 튜토리얼 판수는 제외한다. 1분 라운드 변경 시 번호는 유지한다. HUD PRACTICE/시계는 그대로다. 입력 안내 아래아는 .25em 정사각형, 블록 아래아는1.1배, 기존 하트·별·쉼표는1.1→1.21배로 조정했다.
 
 Syllable의 별도 작성 칸은 숨기고 제시어 아래 자소 순서로 진행을 확인한다. Vocabulary는 작성 칸을 유지하며 `STAGE ${wordTargetIndex + 1}`로 단어 진행 번호를 표시한다. 보드 크기와 1분 라운드 번호는 이 표시에 포함하지 않는다.
 

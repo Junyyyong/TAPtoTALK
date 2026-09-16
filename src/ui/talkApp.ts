@@ -400,7 +400,9 @@ export class TalkApp {
   }
 
   private renderSyllableTarget(stage: AlphabetStage): void {
-    this.targetLabel.textContent = stage.category ?? "One-Syllable Words";
+    this.targetLabel.textContent = this.roundSection.tutorial
+      ? stage.category ?? "Letter Combinations"
+      : `STAGE ${this.alphabetStageIndex - this.syllablePractice.length + 1}`;
     this.targetText.classList.remove("is-medium-sequence", "is-long-sequence");
     const korean = document.createElement("span"); korean.className = "target-korean"; korean.textContent = stage.target;
     const note = document.createElement("span"); note.className = "syllable-target-note"; note.textContent = stage.note;
