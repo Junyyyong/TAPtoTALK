@@ -4,7 +4,7 @@
 
 아래 과거 설명보다 이 설정이 우선한다. `wordJourney.ts` 추가86개(21/17/48), 고정32개. 3글자10판·4글자10판 뒤 전체 추가 풀을 중복 없이 소진한다. 긴 단어가 과반이며 셔플 순서 가중치1/2/4, `recentTargets.ts` 최근10개 제외와 최근3개 두 글자 공통부분 회피를 담당한다. 새 단어는 글자 수·뜻·중복·`composeTokens(requiredBoardSymbols(word)) === word`를 검사한다.
 
-`timedStages.ts` Syllable 만점 목표16, OMG는15개부터. `nextSyllableDifficulty`가 일반→함정30%→창문을 라운드 결과 후 한 단계씩 올린다. UI 세션 상태이며 저장하지 않는다. `core/hangul/windowMotion.ts`는 TAPtoPICK의 6840ms 주기를 정의하고 `ui/windowTiles.ts`는 실제 버튼 노드 두 개를 교환한다. 이미 사용한 타일·동일한 보기끼리는 교환하지 않는다. 현재 정답/함정 데이터와 ID는 변경하지 않는다.
+`timedStages.ts` Syllable 만점 목표16, OMG는15개부터. `nextSyllableDifficulty`가 일반→함정30%까지만 올린다. 그 이후에도30%를 유지하며 창문·자리 교환 기능은 제거했다. UI 세션 상태이며 저장하지 않는다.
 
 TAPtoTALK은 레이아웃을 다시 디자인해도 한글 규칙을 건드리지 않도록 나눕니다.
 

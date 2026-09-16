@@ -10,7 +10,6 @@ import { createWordJourney } from "../content/wordJourney";
 import { ROUND_MS, FULL_SCORE_TARGETS, SCORE_CAPS, SCORE_GRADES, stageSection } from "../content/timedStages";
 import { timedScore } from "../core/hangul/timedScore";
 import { nextSyllableDifficulty, type SyllableDifficulty } from "../content/timedStages";
-import { WindowTiles } from "./windowTiles";
 import { APP_CONFIG } from "../config/app";
 import { INTRO_MARKS } from "../config/introMarks";
 import { el } from "./dom";
@@ -50,7 +49,6 @@ export class TalkApp {
   private readonly alphabetIntro = el("screen-alphabet-intro");
   private readonly game = el("screen-game");
   private readonly board = el("letter-board");
-  private readonly windows = new WindowTiles(this.board);
   private syllableDifficulty: SyllableDifficulty = 0;
   private readonly targetLabel = el("target-label");
   private readonly targetPrompt = document.querySelector<HTMLElement>(".target-prompt")!;
@@ -94,7 +92,6 @@ export class TalkApp {
   private roundSection = stageSection("alphabet", 0);
 
   private beginRound(): void {
-    this.windows.reset(true);
     this.music.setScene("game");
     this.elapsedMs = 0;
     this.roundUnits = 0;
@@ -120,7 +117,6 @@ export class TalkApp {
     const tutorial = this.roundSection.tutorial;
     const score = timedScore(this.roundUnits, FULL_SCORE_TARGETS[this.mode], SCORE_CAPS[this.mode]);
     this.roundEnded = true;
-    this.windows.reset();
     this.inputLocked = true;
     this.stopClock();
     window.clearTimeout(this.stageTimer);
@@ -190,7 +186,6 @@ export class TalkApp {
   }
 
   private showTitle(): void {
-    this.windows.reset(true);
     this.settings.classList.add("hidden");
     this.music.setScene("menu");
     this.roundEnded = true;
@@ -280,7 +275,6 @@ export class TalkApp {
 
   private loadAlphabetStage(): void {
     if (this.mode === "word") return;
-    this.windows.reset();
     const stage = learningStageAt(this.mode, this.alphabetStageIndex, this.learningStage.target, Math.random, this.roundNumber, this.syllablePractice, this.syllableJourney);
     this.learningStage = stage;
     this.targetPrompt.classList.remove("is-alphabet-complete");
@@ -292,7 +286,7 @@ export class TalkApp {
       : createAlphabetStageBoard(stage.sequence, ALPHABET_ORDER, stage.boardSide);
     this.runMode.textContent = this.mode === "syllable" ? "Syllable" : "Alphabet";
     this.targetLabel.textContent = `${this.roundSection.tutorial ? "PRACTICE" : `ROUND ${this.roundNumber}`} · ${stage.boardSide}×${stage.boardSide}`;
-    if (this.mode === "syllable" && !this.roundSection.tutorial && this.syllableDifficulty > 0) this.targetLabel.textContent += this.syllableDifficulty === 1 ? " · CHALLENGE" : " · WINDOWS";
+    if (this.mode === "syllable" && !this.roundSection.tutorial && this.syllableDifficulty > 0) this.targetLabel.textContent += " · CHALLENGE";
     this.renderAlphabetBoard();
     this.renderAlphabetTarget();
   }
@@ -340,7 +334,7 @@ export class TalkApp {
   }
 
   private tapAlphabetTile(tile: AlphabetTile, button: HTMLButtonElement): void {
-    if (this.inputLocked || this.paused || this.windows.busy || this.used.has(tile.id)) return;
+    if (this.inputLocked || this.paused || this.used.has(tile.id)) return;
     if (!this.acceptBeforeDeadline()) return;
     const stage = this.learningStage;
     if (tile.transform || tile.shape || tile.value !== stage.sequence[this.alphabetPartIndex]) {
@@ -546,7 +540,6 @@ export class TalkApp {
       this.elapsedMs = performance.now() - this.startedAt;
       this.clock.textContent = formatTime(Math.max(0, ROUND_MS - this.elapsedMs));
       if (this.elapsedMs >= ROUND_MS) { this.finishRound(false); return; }
-      if (this.mode === "syllable" && this.syllableDifficulty === 2 && !this.inputLocked) this.windows.update(this.elapsedMs);
       this.frame = requestAnimationFrame(update);
     };
     update();
