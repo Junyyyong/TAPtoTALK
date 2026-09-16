@@ -32,10 +32,33 @@ const CELEBRATION_MOVIES = [
 ] as const;
 
 const FAILURE_MOVIE = {
-  video: new URL("../../movie/tipi.webm", import.meta.url).href,
-  iosVideo: new URL("../../movie/tipi.mp4", import.meta.url).href,
-  sound: new URL("../../movie/tipi.mp3", import.meta.url).href,
+  video: new URL("../../movie/notbad.webm", import.meta.url).href,
+  iosVideo: new URL("../../movie/notbad.mp4", import.meta.url).href,
+  sound: new URL("../../movie/notbad.mp3", import.meta.url).href,
   layout: "compact",
+} as const;
+
+const GRADE_MOVIES = {
+  goodTry: {
+    video: new URL("../../movie/GOOD TRY.webm", import.meta.url).href,
+    iosVideo: new URL("../../movie/GOOD TRY.mp4", import.meta.url).href,
+    sound: new URL("../../movie/GOOD TRY.mp3", import.meta.url).href,
+  },
+  great: {
+    video: new URL("../../movie/tipi.webm", import.meta.url).href,
+    iosVideo: new URL("../../movie/tipi.mp4", import.meta.url).href,
+    sound: new URL("../../movie/tipi.mp3", import.meta.url).href,
+  },
+  amazing: {
+    video: new URL("../../movie/AMAZING.webm", import.meta.url).href,
+    iosVideo: new URL("../../movie/AMAZING.mp4", import.meta.url).href,
+    sound: new URL("../../movie/AMAZING.mp3", import.meta.url).href,
+  },
+  ohMyGod: {
+    video: new URL("../../movie/OH MY GOD.webm", import.meta.url).href,
+    iosVideo: new URL("../../movie/OH MY GOD.mp4", import.meta.url).href,
+    sound: new URL("../../movie/OH MY GOD.mp3", import.meta.url).href,
+  },
 } as const;
 
 /**
@@ -58,13 +81,12 @@ export const APP_CONFIG = {
     celebrationAudio: FAILURE_MOVIE.sound,
     failureCelebration: FAILURE_MOVIE,
     celebrations: [
-      // Taepi for AMAZING and above; Tipi for all lower grades and practice.
-      // Keep clip arrays so additional videos can be added later per grade.
-      { at: 1400, layout: "hero", clips: [CELEBRATION_MOVIES[2]] },
+      // Four named uploads; GREAT/practice and UNBELIEVABLE keep existing clips.
+      { at: 1400, layout: "hero", clips: [GRADE_MOVIES.ohMyGod] },
       { at: 1000, layout: "hero", clips: [CELEBRATION_MOVIES[2]] },
-      { at: 600, layout: "large", clips: [CELEBRATION_MOVIES[2]] },
-      { at: 300, layout: "standard", clips: [FAILURE_MOVIE] },
-      { at: 1, layout: "standard", clips: [FAILURE_MOVIE] },
+      { at: 600, layout: "large", clips: [GRADE_MOVIES.amazing] },
+      { at: 300, layout: "standard", clips: [GRADE_MOVIES.great] },
+      { at: 1, layout: "standard", clips: [GRADE_MOVIES.goodTry] },
       { at: 0, layout: "compact", clips: [FAILURE_MOVIE] },
     ],
   },

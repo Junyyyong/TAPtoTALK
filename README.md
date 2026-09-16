@@ -59,7 +59,7 @@ TAP to TEN의 화면 감각과 웹/Android 빌드 기반만 복사했으며, 원
 - Word 단어 순서는 라운드 사이에도 유지한다. 같은 길이의 단어는 한 묶음을 소진하기 전 재등장하지 않고 새 묶음 첫 단어도 직전 단어와 다르게 선택한다. 미완성 단어는 다음 라운드에서 다시 입력한다.
 - 이전 Word의 10문제마다 자동 보너스는 제거했다. 영상 오류·재생 차단 시에도 탭 대기로 전환하며, 최대 영상 대기는 15초다.
 - Alphabet은 고정 27개, Syllable은 매번 추첨한 30개 이후 무작위 스테이지가 계속 이어짐. 세 게임 모두 메뉴로 종료 가능
-- 등급별 영상: NOT BAD·GOOD TRY·GREAT(0–599)는 티피, AMAZING·UNBELIEVABLE·OH MY GOD(600 이상)은 태피. 튜토리얼 GREAT도 티피. 기존 다른 영상 파일은 보존하고 재생 연결만 변경했다.
+- 등급별 영상: NOT BAD→notbad, GOOD TRY→GOOD TRY, GREAT→기존 tipi, AMAZING→AMAZING, UNBELIEVABLE→기존 taepi, OH MY GOD→OH MY GOD. 각 등급의 MP4(iOS)·WebM(일반)·MP3(소리)를 함께 연결한다. 튜토리얼 GREAT는 기존 티피를 유지한다.
 
 ## 개발
 
