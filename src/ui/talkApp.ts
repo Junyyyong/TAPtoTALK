@@ -1,6 +1,6 @@
 import { createWordBoard, WORD_BOARD_SIDE, inputValueForTile, MIRROR_TRAP_TOKEN, type LetterTile } from "../core/hangul/board";
 import { createAlphabetStageBoard, createMixedLearningBoard, type AlphabetTile } from "../core/hangul/alphabetGame";
-import { COMMIT_BOUNDARY, composeTokens, deleteLastInput } from "../core/hangul/compose";
+import { COMMIT_BOUNDARY, deleteLastInput } from "../core/hangul/compose";
 import { CHEONJIIN_STROKES, CONSONANTS, type BoardSymbol } from "../core/hangul/keys";
 import { isWordMatch } from "../core/hangul/wordChallenge";
 import { canInsertWordSpace, composeTargetInput, composedCharacterProgress, materializeTargetTokens, targetToTokens } from "../core/hangul/target";
@@ -143,7 +143,6 @@ export class TalkApp {
         else {
           this.input = []; this.used.clear();
           this.tiles = createWordBoard(this.wordTarget.word);
-          this.targetLabel.textContent = "STAGE";
           this.renderTranslatedTarget(); this.renderBoard(); this.renderInput();
         }
       }
@@ -210,7 +209,6 @@ export class TalkApp {
     this.input = []; this.used.clear();
     const requiredText = this.wordTarget.word;
     this.tiles = createWordBoard(requiredText);
-    this.targetLabel.textContent = "STAGE";
     this.renderTranslatedTarget();
     this.typedText.dataset.empty = "Your word appears here.";
     this.runMode.textContent = "VOCABULARY";
@@ -223,6 +221,7 @@ export class TalkApp {
   }
 
   private renderTranslatedTarget(): void {
+    this.targetLabel.textContent = `STAGE ${this.wordTargetIndex + 1}`;
     this.targetText.classList.remove("is-medium-sequence", "is-long-sequence");
       const korean = document.createElement("span"); korean.className = "target-korean"; korean.textContent = this.wordTarget.word;
       const english = document.createElement("span"); english.className = "target-translation-inline"; english.textContent = this.wordTarget.translation;
@@ -407,8 +406,7 @@ export class TalkApp {
     const note = document.createElement("span"); note.className = "syllable-target-note"; note.textContent = stage.note;
     this.targetText.replaceChildren(korean, note);
     this.targetHint.replaceChildren(this.renderTapSequence(stage.sequence, this.alphabetPartIndex));
-    const composed = composeTokens(stage.sequence.slice(0, this.alphabetPartIndex));
-    this.typedText.textContent = composed || "\u00a0";
+    this.typedText.replaceChildren();
     this.typedText.classList.remove("is-empty", "is-wrong", "is-correct");
   }
 
@@ -596,7 +594,6 @@ export class TalkApp {
     this.wordTarget = this.nextWordTarget();
     this.input = []; this.used.clear();
     this.tiles = createWordBoard(this.wordTarget.word);
-    this.targetLabel.textContent = "STAGE";
     this.renderTranslatedTarget();
     this.renderBoard(); this.renderInput();
   }

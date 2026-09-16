@@ -33,7 +33,7 @@
 .talk-screen.is-alphabet-mode .target-text.is-long-sequence { font-size: 38px; }
 .talk-screen.is-alphabet-mode .target-hint { max-width: 100%; overflow: hidden; font-weight: 650; text-overflow: ellipsis; white-space: nowrap; }
 .talk-screen.is-alphabet-mode .typed-text { display: none; }
-.talk-screen.is-syllable-mode .typed-text { display: flex; height: 58px; min-height: 58px; justify-content: center; align-items: center; font-size: 34px; }
+.talk-screen.is-syllable-mode .typed-text { display: none; }
 .syllable-taps { display: inline-flex; gap: 3px; align-items: center; font-family: "TAP Sans KR",sans-serif; font-size: 18px; color: var(--ink-soft); }
 .syllable-tap { display: inline-grid; place-items: center; width: 1em; height: 1.4em; flex: 0 0 1em; }
 .tap-step { display: inline-flex; align-items: center; gap: 3px; }
