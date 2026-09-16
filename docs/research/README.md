@@ -1,5 +1,7 @@
 # TAPtoTALK 주요 변경 연구 기록
 
+- [2026-09-16 등급별 영상](2026-09-16-grade-videos/README.md): `57550ad` → `adc0c7a`, 네 등급 신규 MP4/WebM/MP3 연결, GREAT·UNBELIEVABLE 기존 유지.
+
 - [2026-09-16 작성 칸·번호 정리](2026-09-16-writing-stage/README.md): `038b7ff` → `2b82b01`, Syllable 작성 칸 제거, Vocabulary STAGE 번호 복원.
 
 - [2026-09-16 화살표·색상 안내](2026-09-16-arrow-hints/README.md): `8b07881` → `4f3af15`, 세 게임의 원형 강조·밑줄 제거, 화살표와 색으로 입력 순서 통일.
