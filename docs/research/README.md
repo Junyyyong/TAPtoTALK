@@ -1,5 +1,7 @@
 # TAPtoTALK 주요 변경 연구 기록
 
+- [2026-09-16 티피·태피 영상 연결](2026-09-16-tipi-taepi/README.md): `144e7b1` → `05f1ada`, GREAT 이하 티피, AMAZING 이상 태피.
+
 - [2026-09-16 창문 효과 제거](2026-09-16-remove-windows/README.md): `b098a33` → `21afb21`, 함정30%까지만 유지, 창문·자리 교환 제거. 정답 자소 및 영상 매핑 확인.
 
 - [2026-09-16 무한 어휘·Syllable 숙련 난도](2026-09-16-endless-mastery/README.md): `5fbb471` → `db5ec62`, 추가 어휘86개, 최근 중복 방지, 15개 OH MY GOD, 함정30%·창문 교환.
