@@ -35,12 +35,14 @@
 .talk-screen.is-alphabet-mode .typed-text { display: none; }
 .talk-screen.is-syllable-mode .typed-text { display: flex; height: 58px; min-height: 58px; justify-content: center; align-items: center; font-size: 34px; }
 .syllable-taps { display: inline-flex; gap: 3px; align-items: center; font-family: "TAP Sans KR",sans-serif; font-size: 18px; color: var(--ink-soft); }
-.syllable-tap { display: inline-grid; place-items: center; width: 1.4em; height: 1.4em; flex: 0 0 1.4em; border-radius: 50%; }
+.syllable-tap { display: inline-grid; place-items: center; width: 1em; height: 1.4em; flex: 0 0 1em; }
+.tap-step { display: inline-flex; align-items: center; gap: 3px; }
+.tap-arrow { color: var(--ink-soft); font-family: "TAP Sans KR",sans-serif; font-size: 18px; font-weight: 650; }
 .syllable-tap.is-cheonjiin::before { content: ""; display: block; width: .36em; height: .36em; background: currentColor; }
 .syllable-taps .is-done { color: var(--accent); }
 .syllable-target-note { display: block; margin-top: 6px; font-family: "TAP Sans KR",sans-serif; font-size: 16px; font-weight: 600; line-height: 1.2; color: var(--ink-soft); }
 .is-alphabet-complete .syllable-target-note { color: white; }
-.syllable-taps .is-current { color: white; background: var(--hot-deep); }
+.syllable-taps .is-current { color: var(--hot-deep); }
 .typed-text small { color: var(--ink-soft); font-family: "TAP Sans KR",sans-serif; font-size: 11px; font-weight: 700; }
 .target-prompt { transition: color .18s ease,background .18s ease,border-color .18s ease; }
 .target-prompt.is-alphabet-complete { color: white; border-color: var(--accent-deep); background: var(--accent); }
@@ -63,8 +65,8 @@
 .talk-screen.is-alphabet-mode .target-korean { display: flex; align-items: center; justify-content: center; gap: .08em; }
 .alphabet-target-jamo { display: inline-grid; place-items: center; width: 1.16em; height: 1.16em; min-width: 1.16em; padding: 0; border-radius: 50%; transition: color .15s ease,background .15s ease; }
 .alphabet-target-jamo.is-cheonjiin::before { display: block; width: .34em; aspect-ratio: 1; margin: .33em auto; border-radius: .05em; background: currentColor; content: ""; }
-.alphabet-target-jamo.is-current { color: white; background: var(--hot-deep); }
-.alphabet-target-jamo.is-done { color: white; background: var(--accent); }
+.alphabet-target-jamo.is-current { color: var(--hot-deep); }
+.alphabet-target-jamo.is-done { color: var(--accent); }
 .target-translation-inline,.alphabet-target-note { margin-top: 5px; color: var(--ink-soft); font-family: "TAP Sans KR",sans-serif; font-size: 14px; font-weight: 650; line-height: 1.2; letter-spacing: 0; white-space: nowrap; }
 .talk-screen.is-alphabet-mode .alphabet-target-note { margin-top: 9px; font-size: 18px; }
 .talk-screen.is-alphabet-mode .is-medium-sequence .alphabet-target-note { font-size: 14px; }
@@ -79,7 +81,7 @@
 .talk-screen:not(.is-alphabet-mode) .target-text { font-size: 28px; }
 .target-character { display: inline; color: var(--ink); transition: color .15s ease,background .15s ease; white-space: pre-wrap; }
 .target-character.is-done { color: var(--accent); }
-.target-character.is-current { color: var(--hot); text-decoration: underline 3px var(--sun); text-underline-offset: 5px; }
+.target-character.is-current { color: var(--hot); }
 .target-character.is-wrong { padding-inline: .04em; border-radius: 4px; color: white; background: var(--ring-bad); }
 .composed-input { min-height: 1.25em; overflow: hidden; color: var(--accent-deep); text-overflow: ellipsis; white-space: nowrap; }
 .composed-input.is-empty::before { content: attr(data-empty); color: var(--ink-faint); font-family: "TAP Sans KR",sans-serif; font-size: 15px; font-weight: 500; }

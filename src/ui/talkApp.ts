@@ -227,18 +227,6 @@ export class TalkApp {
       const korean = document.createElement("span"); korean.className = "target-korean"; korean.textContent = this.wordTarget.word;
       const english = document.createElement("span"); english.className = "target-translation-inline"; english.textContent = this.wordTarget.translation;
       this.targetText.replaceChildren(korean, english);
-      const sequence = document.createElement("span");
-      sequence.className = "syllable-taps vocabulary-taps";
-      sequence.setAttribute("aria-label", "Input order");
-      for (const value of materializeTargetTokens(targetToTokens(this.wordTarget.word))) {
-        const token = document.createElement("span");
-        token.className = "syllable-tap";
-        token.setAttribute("aria-label", value === " " ? "Space" : value);
-        if (value === "ㆍ") token.classList.add("is-cheonjiin");
-        else token.textContent = value === " " ? "␣" : value;
-        sequence.append(token);
-      }
-      this.targetHint.replaceChildren(sequence);
   }
 
   private showAlphabetIntro(mode: Mode): void {
@@ -391,6 +379,10 @@ export class TalkApp {
     this.targetLabel.textContent = labels.category;
     const korean = document.createElement("span"); korean.className = "target-korean";
     stage.sequence.forEach((value, index) => {
+      if (index) {
+        const arrow = document.createElement("span"); arrow.className = "tap-arrow";
+        arrow.textContent = "→"; arrow.setAttribute("aria-hidden", "true"); korean.append(arrow);
+      }
       const jamo = document.createElement("span");
       jamo.className = "alphabet-target-jamo";
       if (value === "ㆍ") jamo.classList.add("is-cheonjiin");
@@ -414,21 +406,29 @@ export class TalkApp {
     const korean = document.createElement("span"); korean.className = "target-korean"; korean.textContent = stage.target;
     const note = document.createElement("span"); note.className = "syllable-target-note"; note.textContent = stage.note;
     this.targetText.replaceChildren(korean, note);
-    const progress = document.createElement("span"); progress.className = "syllable-taps";
-    stage.sequence.forEach((value, index) => {
-      if (index) progress.append(" → ");
-      const token = document.createElement("span");
-      token.className = index < this.alphabetPartIndex ? "is-done" : index === this.alphabetPartIndex ? "is-current" : "";
-      token.classList.add("syllable-tap");
-      token.setAttribute("aria-label", value);
-      if (value === "ㆍ") token.classList.add("is-cheonjiin");
-      else token.textContent = value;
-      progress.append(token);
-    });
-    this.targetHint.replaceChildren(progress);
+    this.targetHint.replaceChildren(this.renderTapSequence(stage.sequence, this.alphabetPartIndex));
     const composed = composeTokens(stage.sequence.slice(0, this.alphabetPartIndex));
     this.typedText.textContent = composed || "\u00a0";
     this.typedText.classList.remove("is-empty", "is-wrong", "is-correct");
+  }
+
+  private renderTapSequence(sequence: readonly string[], current: number): HTMLElement {
+    const progress = document.createElement("span"); progress.className = "syllable-taps";
+    sequence.forEach((value, index) => {
+      const step = document.createElement("span"); step.className = "tap-step";
+      if (index) {
+        const arrow = document.createElement("span"); arrow.className = "tap-arrow";
+        arrow.textContent = "→"; arrow.setAttribute("aria-hidden", "true"); step.append(arrow);
+      }
+      const token = document.createElement("span");
+      token.className = index < current ? "is-done" : index === current ? "is-current" : "";
+      token.classList.add("syllable-tap");
+      token.setAttribute("aria-label", value);
+      if (value === "ㆍ") token.classList.add("is-cheonjiin");
+      else token.textContent = value === " " ? "␣" : value;
+      step.append(token); progress.append(step);
+    });
+    return progress;
   }
 
   private renderBoard(): void {
@@ -538,6 +538,12 @@ export class TalkApp {
       const korean = document.createElement("span"); korean.className = "target-korean"; korean.append(...targetNodes);
       const english = document.createElement("span"); english.className = "target-translation-inline"; english.textContent = this.wordTarget.translation;
       this.targetText.replaceChildren(korean, english);
+      const actual = this.input.filter(token => token.value !== COMMIT_BOUNDARY);
+      let current = 0;
+      while (current < expected.length && actual[current]?.value === expected[current]) current += 1;
+      const sequence = this.renderTapSequence(expected, current);
+      sequence.classList.add("vocabulary-taps");
+      this.targetHint.replaceChildren(sequence);
     }
     const composed = document.createElement("span"); composed.className = `composed-input${text ? "" : " is-empty"}`; composed.textContent = text; composed.dataset.empty = this.typedText.dataset.empty;
     const count = document.createElement("small"); count.className = "writing-token-count"; count.textContent = `${Math.min(typedSymbols.length, expected.length)} / ${expected.length}`;
