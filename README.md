@@ -5,6 +5,8 @@ TAP to TEN의 화면 감각과 웹/Android 빌드 기반만 복사했으며, 원
 
 ## 현재 프로토타입
 
+- Vocabulary 하단은 Delete만 표시하며 Space 버튼은 제거했다. 현재118개 단어는 공백 없이 조합 가능하다. 아래 Space 관련 설명은 과거 구현 이력이다.
+
 ### 2026-09-16 학습 제시창 정리
 
 - Alphabet 파란 표시는 자음/Consonant·모음/Vowel·혼합 Letters 분류, 하단 크기 숫자는 기역·니은·아래아 등 한글 이름으로 교체했다. 상단 PRACTICE/본게임 시계는 유지한다.

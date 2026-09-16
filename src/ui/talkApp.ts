@@ -3,7 +3,7 @@ import { createAlphabetStageBoard, createMixedLearningBoard, type AlphabetTile }
 import { COMMIT_BOUNDARY, deleteLastInput } from "../core/hangul/compose";
 import { CHEONJIIN_STROKES, CONSONANTS, type BoardSymbol } from "../core/hangul/keys";
 import { isWordMatch } from "../core/hangul/wordChallenge";
-import { canInsertWordSpace, composeTargetInput, composedCharacterProgress, materializeTargetTokens, targetToTokens } from "../core/hangul/target";
+import { composeTargetInput, composedCharacterProgress, materializeTargetTokens, targetToTokens } from "../core/hangul/target";
 import { ALPHABET_ORDER, WORD_TARGETS, type AlphabetStage, type WordTarget } from "../content/prompts";
 import { createSyllablePractice, createSyllableGameJourney, learningStageAt, LEARNING_TRAP_RATIO, LEARNING_TRANSITION_MS, type LearningMode } from "../content/learningJourney";
 import { createWordJourney } from "../content/wordJourney";
@@ -161,7 +161,6 @@ export class TalkApp {
     el("btn-back").addEventListener("click", () => this.showTitle());
     el("btn-pause").addEventListener("click", () => this.pauseGame());
     this.setupBackspace();
-    el("btn-space").addEventListener("click", () => this.typeFixed(" "));
     el("btn-again").addEventListener("click", () => this.continueFromResult());
     el("btn-result-menu").addEventListener("click", () => this.showTitle());
     el("btn-title-settings").addEventListener("click", () => this.showSettings());
@@ -475,13 +474,6 @@ export class TalkApp {
     this.used.add(tileId); this.input.push({ value: MIRROR_TRAP_TOKEN, tileId });
     this.board.querySelector<HTMLButtonElement>(`[data-tile-id="${tileId}"]`)!.disabled = true;
     this.renderInput();
-  }
-  private typeFixed(value: string): void {
-    if (this.inputLocked || this.paused || this.mode !== "word") return;
-    if (!this.acceptBeforeDeadline()) return;
-    const target = this.wordTarget.word;
-    if (value !== " " || !canInsertWordSpace(target, this.input.map(t => t.value))) { feedback.reject(); return; }
-    feedback.tap(); this.input.push({ value }); this.renderInput();
   }
   private backspace(): void {
     if (this.inputLocked || this.paused || this.mode !== "word") return;
