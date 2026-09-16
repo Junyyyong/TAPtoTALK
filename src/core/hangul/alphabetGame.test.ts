@@ -24,8 +24,8 @@ describe("Alphabet journey", () => {
     expect(alphabetTargetNote("ㄹ")).toBe("[ɾ/l]");
     expect(alphabetTargetNote("ㅇ")).toBe("[∅/ŋ]");
     expect(alphabetTargetNote("ㅣ")).toBe("[i]");
-    expect(alphabetTargetNote("ㅡ")).toBe("[ɯ]");
-    expect(alphabetTargetNote("ㆍ")).toBe("[ʌ]");
+    expect(alphabetTargetNote("ㅡ")).toBe("[eu]");
+    expect(alphabetTargetNote("ㆍ")).toBe("[ah]");
   });
 
   it("uses only visibly transformed copies of the target consonant", () => {

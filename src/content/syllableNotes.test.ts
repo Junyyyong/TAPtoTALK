@@ -32,9 +32,9 @@ it("labels every candidate and session, including randomized main play", () => {
   }
 });
 it("uses sounds before noun lessons and meanings for noun finals", () => {
-  expect(syllableTargetNote("가")).toBe("[ka]");
+  expect(syllableTargetNote("가")).toBe("[ga/ka]");
   expect(syllableTargetNote("으")).toBe("[ɯ]");
-  expect(syllableTargetNote("까")).toBe("[k͈a]");
+  expect(syllableTargetNote("까")).toBe("[gga]");
   expect(syllableTargetNote("발")).toBe("foot");
   expect(syllableTargetNote("닭")).toBe("chicken");
   expect(SYLLABLE_STAGES.slice(0, 40).every(s => s.note.startsWith("["))).toBe(true);

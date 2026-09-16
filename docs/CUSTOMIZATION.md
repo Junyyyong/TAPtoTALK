@@ -1,5 +1,11 @@
 # 디자인과 콘텐츠 수정 경계
 
+## 학습 제시창 (2026-09-16)
+
+`learningLabels.ts`에 Alphabet 분류·한글 자모 이름·읽기 노출 정책을 둔다.2/4판에서만 읽기를 표시하고6/8판에서는 숨긴다. HUD의 PRACTICE/시계는 유지한다. `syllableNotes.ts`의 요청된 가~하·쌍자음 표기는 사용자 지정 영문 읽기 안내로 표준 IPA가 아니다. 기존 단어 뜻과 지정하지 않은 모음 안내는 유지한다. `prompts.ts` 천지인 읽기는 `[ah]`, `[eu]`, `[i]`다.
+
+`.alphabet-target-jamo.is-current`와 `.syllable-taps .is-current`는 붉은 원/흰 글자로 현재 위치를 나타낸다. `.syllable-tap.is-cheonjiin::before`는 .36em 정사각형으로 폰트의 ■ 글리프를 대체한다. 표적 카드 높이와 게임판 자소 크기는 변경하지 않는다.
+
 ## 2026-09-16 최신 출제·숙련 설정
 
 아래 과거 설명보다 이 설정이 우선한다. `wordJourney.ts` 추가86개(21/17/48), 고정32개. 3글자10판·4글자10판 뒤 전체 추가 풀을 중복 없이 소진한다. 긴 단어가 과반이며 셔플 순서 가중치1/2/4, `recentTargets.ts` 최근10개 제외와 최근3개 두 글자 공통부분 회피를 담당한다. 새 단어는 글자 수·뜻·중복·`composeTokens(requiredBoardSymbols(word)) === word`를 검사한다.

@@ -1,13 +1,12 @@
-// Broad pronunciation of isolated teaching syllables (not English spelling).
-// Korean IPA: https://www.cambridge.org/core/services/aop-cambridge-core/content/view/07312FF2A7409D9C71A4FE83E12AA54D/S0025100300004758a.pdf/korean.pdf
-// 외/위 use their common diphthong pronunciations; 의 is isolated [ɰi].
+// Product-owner supplied reading hints, not a standard IPA transcription.
+// Other vowel hints are retained until a replacement is requested.
 const SOUNDS: Readonly<Record<string, string>> = {
-  가: "ka", 나: "na", 다: "ta", 라: "ɾa", 마: "ma", 바: "pa", 사: "sa",
-  아: "a", 자: "tɕa", 차: "tɕʰa", 카: "kʰa", 타: "tʰa", 파: "pʰa", 하: "ha",
+  가: "ga/ka", 나: "na", 다: "da/ta", 라: "la/ra", 마: "ma", 바: "ba/va", 사: "sa",
+  아: "a", 자: "ja", 차: "tcha", 카: "ka", 타: "ta", 파: "pa", 하: "ha",
   야: "ja", 어: "ʌ", 여: "jʌ", 오: "o", 요: "jo", 우: "u", 유: "ju", 으: "ɯ", 이: "i",
   애: "ɛ", 에: "e", 얘: "jɛ", 예: "je", 와: "wa", 왜: "wɛ", 외: "we",
   워: "wʌ", 웨: "we", 위: "wi", 의: "ɰi",
-  까: "k͈a", 따: "t͈a", 빠: "p͈a", 싸: "s͈a", 짜: "tɕ͈a",
+  까: "gga", 따: "dda", 빠: "bba", 싸: "ssa", 짜: "zza",
 };
 export const SYLLABLE_MEANINGS: Readonly<Record<string, string>> = {
   산: "mountain", 강: "river", 물: "water", 불: "fire", 눈: "eye", 손: "hand", 발: "foot",

@@ -7,6 +7,8 @@ import { canInsertWordSpace, composeTargetInput, composedCharacterProgress, mate
 import { ALPHABET_ORDER, WORD_TARGETS, type AlphabetStage, type WordTarget } from "../content/prompts";
 import { createSyllablePractice, createSyllableGameJourney, learningStageAt, LEARNING_TRAP_RATIO, LEARNING_TRANSITION_MS, type LearningMode } from "../content/learningJourney";
 import { createWordJourney } from "../content/wordJourney";
+import { alphabetLabels } from "../content/learningLabels";
+import { syllableTargetNote } from "../content/syllableNotes";
 import { ROUND_MS, FULL_SCORE_TARGETS, SCORE_CAPS, SCORE_GRADES, stageSection } from "../content/timedStages";
 import { timedScore } from "../core/hangul/timedScore";
 import { nextSyllableDifficulty, type SyllableDifficulty } from "../content/timedStages";
@@ -238,7 +240,7 @@ export class TalkApp {
     // Locally generated outlines, not user-provided markup or webfont text.
     el("learning-intro-glyph").innerHTML = INTRO_MARKS[mode];
     el("learning-intro-mark").setAttribute("aria-label", mode === "alphabet" ? "ㄱ" : mode === "syllable" ? "가" : "강");
-    el("learning-intro-caption").textContent = mode === "alphabet" ? "[k/g]" : mode === "syllable" ? "[ka]" : "river";
+    el("learning-intro-caption").textContent = mode === "alphabet" ? "[k/g]" : mode === "syllable" ? syllableTargetNote("가") : "river";
     el("learning-intro-mark").setAttribute("aria-label", `${el("learning-intro-mark").getAttribute("aria-label")} ${el("learning-intro-caption").textContent}`);
     el("learning-intro-mark").setAttribute("role", "img");
     el("learning-intro-mark").classList.toggle("is-word", mode === "word");
@@ -374,6 +376,8 @@ export class TalkApp {
   private renderAlphabetTarget(): void {
     const stage = this.learningStage;
     if (this.mode === "syllable") { this.renderSyllableTarget(stage); return; }
+    const labels = alphabetLabels(stage);
+    this.targetLabel.textContent = labels.category;
     const korean = document.createElement("span"); korean.className = "target-korean";
     stage.sequence.forEach((value, index) => {
       const jamo = document.createElement("span");
@@ -385,11 +389,12 @@ export class TalkApp {
       jamo.setAttribute("aria-label", value);
       korean.append(jamo);
     });
-    const note = document.createElement("span"); note.className = "alphabet-target-note"; note.textContent = stage.note;
+    const note = document.createElement("span"); note.className = "alphabet-target-note"; note.textContent = labels.note;
+    note.hidden = !labels.note;
     this.targetText.replaceChildren(korean, note);
     this.targetText.classList.toggle("is-medium-sequence", stage.sequence.length === 3);
     this.targetText.classList.toggle("is-long-sequence", stage.sequence.length >= 5);
-    this.targetHint.textContent = `${stage.boardSide} × ${stage.boardSide}`;
+    this.targetHint.textContent = labels.names;
     this.typedText.replaceChildren();
   }
 
@@ -403,7 +408,10 @@ export class TalkApp {
       if (index) progress.append(" → ");
       const token = document.createElement("span");
       token.className = index < this.alphabetPartIndex ? "is-done" : index === this.alphabetPartIndex ? "is-current" : "";
-      token.textContent = value === "ㆍ" ? "■" : value;
+      token.classList.add("syllable-tap");
+      token.setAttribute("aria-label", value);
+      if (value === "ㆍ") token.classList.add("is-cheonjiin");
+      else token.textContent = value;
       progress.append(token);
     });
     this.targetHint.replaceChildren(progress);
