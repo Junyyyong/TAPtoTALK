@@ -3,7 +3,12 @@ import { SYLLABLE_STAGES } from "./learningJourney";
 export const ROUND_MS = 60_000;
 export const RESULT_CARD_MS = 2_000;
 // Initial tuning: fully completed targets per minute, no tap or speed bonus.
-export const FULL_SCORE_TARGETS = { alphabet: 10, syllable: 20, word: 10 } as const;
+// 15 syllables = 1406 (OH MY GOD); 16 = 1500. Fourteen remains UNBELIEVABLE.
+export const FULL_SCORE_TARGETS = { alphabet: 10, syllable: 16, word: 10 } as const;
+export type SyllableDifficulty = 0 | 1 | 2;
+export function nextSyllableDifficulty(current: SyllableDifficulty, score: number): SyllableDifficulty {
+  return score >= 1400 ? Math.min(2, current + 1) as SyllableDifficulty : current;
+}
 export const SCORE_CAPS = { alphabet: Infinity, syllable: 1500, word: 1500 } as const;
 export type TimedMode = keyof typeof FULL_SCORE_TARGETS;
 export function stageSection(mode: TimedMode, item: number, roundNumber = 1, practice: readonly AlphabetStage[] = SYLLABLE_STAGES) {

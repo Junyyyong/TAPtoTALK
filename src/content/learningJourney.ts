@@ -1,4 +1,5 @@
 import { createRandomAlphabetTargets } from "../core/hangul/alphabetGame";
+import { takeFresh } from "./recentTargets";
 import { requiredBoardSymbols } from "../core/hangul/target";
 import { pickLessonTargets } from "../core/hangul/wordChallenge";
 import { syllableTargetNote, SYLLABLE_MEANINGS } from "./syllableNotes";
@@ -33,8 +34,9 @@ export const SYLLABLE_PRACTICE_PER_TYPE = 5;
 /** Real one-syllable vocabulary only; pronunciation drills stay in practice. */
 export const SYLLABLE_GAME_TARGETS = Object.keys(SYLLABLE_MEANINGS);
 /** One session's shuffle bag. Rebuilding an unfinished stage must not consume a word. */
-export function createSyllableGameJourney(rng: () => number = Math.random): (index: number, previous: string) => string {
+export function createSyllableGameJourney(rng: () => number = Math.random, initialHistory: readonly string[] = []): (index: number, previous: string) => string {
   let bag: string[] = [];
+  const history = [...initialHistory];
   let currentIndex = -1;
   let current = "";
   return (index, previous) => {
@@ -44,16 +46,21 @@ export function createSyllableGameJourney(rng: () => number = Math.random): (ind
       if (bag[0] === previous) [bag[0], bag[1]] = [bag[1]!, bag[0]!];
     }
     currentIndex = index;
-    current = bag.shift()!;
+    const recent = history.at(-1) === previous ? history : [...history, previous].filter(Boolean);
+    current = takeFresh(bag, recent, item => item);
+    history.push(current);
+    if (history.length > 10) history.shift();
     return current;
   };
 }
 /** Draw once per START. Keep the six categories ordered, shuffle within each. */
 export function createSyllablePractice(rng: () => number = Math.random): readonly AlphabetStage[] {
+  const seen = new Set<string>();
   return SYLLABLE_ROWS.flatMap(({ text, side }) =>
-    pickLessonTargets([...text], SYLLABLE_PRACTICE_PER_TYPE, rng).map(target => ({
-      target, boardSide: side, sequence: requiredBoardSymbols(target),
-    })),
+    pickLessonTargets([...text].filter(target => !seen.has(target)), SYLLABLE_PRACTICE_PER_TYPE, rng).map(target => {
+      seen.add(target);
+      return { target, boardSide: side, sequence: requiredBoardSymbols(target) };
+    }),
   ).map((stage, index) => ({ ...stage, id: `practice-${index + 1}`, number: index + 1, note: syllableTargetNote(stage.target) }));
 }
 

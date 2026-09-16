@@ -202,3 +202,8 @@
 .switch[aria-checked="true"] .switch-knob { transform: translateX(22px); }
 .settings-note { margin: 4px 2px 0; color: var(--ink-soft); font-size: 12px; }
 @media (max-height:680px) { .hud { min-height: 52px; } .run-heading { padding-top: 5px; } .run-heading strong { font-size: 19px; } .talk-screen { gap: 5px; } .writing-card { padding-block: 2px; } .target-prompt { min-height: 96px; gap: 4px; padding-block: 9px 10px; } .target-hint { margin: 0; font-size: 12px; } .target-text { font-size: 21px; line-height: 1.25; } .typed-text { min-height: 2.4em; padding-block: 6px 4px; font-size: 23px; line-height: 1.2; } .writing-submit-row { margin-top: 2px; } .submit-btn,.control-btn { min-height: 36px; } .fixed-controls { gap: 3px; } }
+/* TAPtoPICK's paired shutters: close, exchange tile positions, reopen. */
+.letter-tile .swap-door { display:none; position:absolute; z-index:4; top:0; bottom:0; width:50.5%; background:linear-gradient(90deg,#dfc8a9,#f3e6d2); pointer-events:none; transform:scaleX(var(--door-close,0)); }
+.letter-tile .swap-door--left { left:0; transform-origin:left; border-right:1px solid #bda17c; }
+.letter-tile .swap-door--right { right:0; transform-origin:right; border-left:1px solid #bda17c; background:linear-gradient(90deg,#f3e6d2,#dfc8a9); }
+.letter-tile.is-swap-door .swap-door { display:block; }

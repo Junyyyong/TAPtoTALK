@@ -1,18 +1,18 @@
 import { describe, expect, it } from "vitest";
-import { createLetterBoard } from "../core/hangul/board";
+import { createWordBoard } from "../core/hangul/board";
 import { composeTokens } from "../core/hangul/compose";
 import { composeTargetInput, requiredBoardSymbols } from "../core/hangul/target";
 import { WORD_STAGES } from "./learningJourney";
 import { createWordJourney, EXTRA_WORDS, wordLengthAt } from "./wordJourney";
 
 describe("endless Word stages", () => {
-  it("adds 57 unique translated words of the declared lengths, excluding all fixed words", () => {
+  it("adds 86 unique translated words of the declared lengths, excluding all fixed words", () => {
     const all = Object.values(EXTRA_WORDS).flat();
-    expect(all).toHaveLength(57);
-    expect(new Set(all.map((item) => item.word)).size).toBe(57);
+    expect(all).toHaveLength(86);
+    expect(new Set(all.map((item) => item.word)).size).toBe(86);
     const fixed = new Set(WORD_STAGES.map((item) => item.word));
     for (const [length, items] of Object.entries(EXTRA_WORDS)) {
-      expect(items).toHaveLength(length === "3" ? 21 : length === "4" ? 17 : 19);
+      expect(items).toHaveLength(length === "3" ? 21 : length === "4" ? 17 : 48);
       for (const item of items) {
         expect(item.word).toMatch(/^[가-힣]+$/);
         expect([...item.word]).toHaveLength(Number(length));
@@ -21,8 +21,8 @@ describe("endless Word stages", () => {
         const tokens = requiredBoardSymbols(item.word);
         expect(composeTargetInput(item.word, [...item.word].flatMap(c => [...requiredBoardSymbols(c), "\u0000"]))).toBe(item.word);
         for (let run = 0; run < 5; run += 1) {
-          const board = createLetterBoard(item.word);
-          expect(board).toHaveLength(81);
+          const board = createWordBoard(item.word);
+          expect(board).toHaveLength(64);
           for (const token of new Set(tokens)) {
             expect(board.filter((tile) => tile.symbol === token && !tile.transform).length)
               .toBeGreaterThanOrEqual(tokens.filter((value) => value === token).length);
@@ -31,7 +31,7 @@ describe("endless Word stages", () => {
       }
     }
   });
-  it("keeps 32 fixed stages, then ten 3-letter, ten 4-letter and endless 5-letter stages", () => {
+  it("keeps the introductory stages then cycles every extra word without recent repeats", () => {
     const next = createWordJourney();
     for (const item of WORD_STAGES) expect(next()).toEqual(item);
     const three = Array.from({ length: 10 }, next);
@@ -40,13 +40,17 @@ describe("endless Word stages", () => {
     expect(new Set(four.map((item) => item.word)).size).toBe(10);
     expect(three.every((item) => item.word.length === 3)).toBe(true);
     expect(four.every((item) => item.word.length === 4)).toBe(true);
-    let previous = "";
+    const history = [...three, ...four].map(t => t.word);
+    const remaining = Array.from({ length: 66 }, next);
+    expect(new Set([...history, ...remaining.map(t => t.word)]).size).toBe(86);
+    history.push(...remaining.map(t => t.word));
     for (let cycle = 0; cycle < 100; cycle += 1) {
-      const round = Array.from({ length: 19 }, next);
-      expect(new Set(round.map((item) => item.word)).size).toBe(19);
-      expect(round.every((item) => item.word.length === 5)).toBe(true);
-      expect(round[0]!.word).not.toBe(previous);
-      previous = round.at(-1)!.word;
+      const round = Array.from({ length: 86 }, next);
+      expect(new Set(round.map(item => item.word))).toEqual(new Set(Object.values(EXTRA_WORDS).flat().map(t => t.word)));
+      for (const item of round) {
+        expect(history.slice(-10)).not.toContain(item.word);
+        history.push(item.word);
+      }
     }
     expect([31, 32, 41, 42, 51, 52, 10000].map(wordLengthAt)).toEqual([undefined, 3, 3, 4, 4, 5, 5]);
   });
@@ -56,9 +60,20 @@ describe("endless Word stages", () => {
     expect(createWordJourney()()).toEqual(WORD_STAGES[0]);
     for (const index of [-1, .5, Infinity, NaN]) expect(() => wordLengthAt(index)).toThrow(RangeError);
   });
+  it("favours difficult vocabulary without restricting the endless pool to one length", () => {
+    let seed = 87;
+    const rng = () => ((seed = (seed * 1664525 + 1013904223) >>> 0) / 4294967296);
+    let five = 0;
+    for (let run = 0; run < 100; run++) {
+      const next = createWordJourney(rng);
+      for (let i = 0; i < WORD_STAGES.length + 20; i++) next();
+      five += Array.from({ length: 20 }, next).filter(t => t.word.length === 5).length;
+    }
+    expect(five).toBeGreaterThan(1200);
+  });
   it("excludes the four ambiguous words and composes every remaining target without Space", () => {
     const words = [...WORD_STAGES, ...Object.values(EXTRA_WORDS).flat()].map(t => t.word);
-    expect(words).toHaveLength(89);
+    expect(words).toHaveLength(118);
     expect(EXTRA_WORDS[3].find(t => t.word === "휴대폰")?.translation).toBe("mobile phone");
     expect(words).not.toContain("휴대전화");
     for (const word of ["학교", "초등학교", "국립박물관", "반짝반짝"]) expect(words).not.toContain(word);

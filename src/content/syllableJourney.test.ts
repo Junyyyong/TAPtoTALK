@@ -33,3 +33,17 @@ it("new sessions start with a fresh independent bag", () => {
   const initial = first(30, ""); first(31, initial);
   expect(createSyllableGameJourney(() => 0)(30, "")).toBe(initial);
 });
+
+it("avoids the last ten targets across practice and shuffled bags", () => {
+  for (const rng of [Math.random, () => 0, () => .999]) {
+    const practice = createSyllablePractice(rng);
+    expect(new Set(practice.map(s => s.target)).size).toBe(30);
+    const history = practice.slice(-10).map(s => s.target);
+    const next = createSyllableGameJourney(rng, history);
+    for (let index = 30; index < 530; index++) {
+      const word = next(index, history.at(-1)!);
+      expect(history.slice(-10)).not.toContain(word);
+      history.push(word);
+    }
+  }
+});
