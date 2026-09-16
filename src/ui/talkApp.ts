@@ -208,7 +208,7 @@ export class TalkApp {
     this.targetLabel.textContent = `STAGE ${this.roundNumber} · 8×8`;
     this.renderTranslatedTarget();
     this.typedText.dataset.empty = "Your word appears here.";
-    this.runMode.textContent = "Word";
+    this.runMode.textContent = "VOCABULARY";
     this.game.classList.add("is-word-mode");
     this.game.classList.remove("is-alphabet-mode", "is-syllable-mode");
     this.targetPrompt.classList.remove("is-alphabet-complete");
@@ -231,7 +231,7 @@ export class TalkApp {
     this.stageTransitionPending = false;
     this.inputLocked = true; this.paused = false;
     this.introMode = mode;
-    el("learning-intro-title").textContent = mode.toUpperCase();
+    el("learning-intro-title").textContent = mode === "word" ? "VOCABULARY" : mode.toUpperCase();
     // Locally generated outlines, not user-provided markup or webfont text.
     el("learning-intro-glyph").innerHTML = INTRO_MARKS[mode];
     el("learning-intro-mark").setAttribute("aria-label", mode === "alphabet" ? "ㄱ" : mode === "syllable" ? "가" : "강");
