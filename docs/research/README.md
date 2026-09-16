@@ -1,5 +1,7 @@
 # TAPtoTALK 주요 변경 연구 기록
 
+- [2026-09-16 작성 칸·번호 정리](2026-09-16-writing-stage/README.md): `038b7ff` → `2b82b01`, Syllable 작성 칸 제거, Vocabulary STAGE 번호 복원.
+
 - [2026-09-16 화살표·색상 안내](2026-09-16-arrow-hints/README.md): `8b07881` → `4f3af15`, 세 게임의 원형 강조·밑줄 제거, 화살표와 색으로 입력 순서 통일.
 
 - [2026-09-16 Vocabulary 자소 안내](2026-09-16-vocabulary-hints/README.md): `33f0f17` → `d800f25`, STAGE 숫자 제거, 영어 지시문을 입력 자소 순서로 교체, 뜻 유지.
