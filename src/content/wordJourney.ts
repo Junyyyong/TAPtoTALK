@@ -10,7 +10,7 @@ type WordLength = 3 | 4 | 5;
 const words = (length: WordLength, values: readonly (readonly [string, string])[]): readonly WordTarget[] =>
   values.map(([word, translation], index) => ({ id: `word-extra-${length}-${index + 1}`, word, translation }));
 
-/** New vocabulary only: no overlap with the introductory 33 words. */
+/** New vocabulary only: no overlap with the introductory words. */
 export const EXTRA_WORDS: Readonly<Record<WordLength, readonly WordTarget[]>> = {
   3: words(3, [
     ["바나나", "banana"], ["토마토", "tomato"], ["고구마", "sweet potato"], ["감자탕", "pork bone soup"],
@@ -20,15 +20,15 @@ export const EXTRA_WORDS: Readonly<Record<WordLength, readonly WordTarget[]>> = 
     ["놀이터", "playground"], ["자전거", "bicycle"], ["비행기", "airplane"], ["무지개", "rainbow"],
   ]),
   4: words(4, [
-    ["해바라기", "sunflower"], ["민들레꽃", "dandelion"], ["카네이션", "carnation"], ["초등학교", "elementary school"],
+    ["해바라기", "sunflower"], ["민들레꽃", "dandelion"], ["카네이션", "carnation"],
     ["놀이공원", "amusement park"], ["지하철역", "subway station"], ["대한민국", "South Korea"], ["우리나라", "our country"],
     ["전화번호", "phone number"], ["휴대전화", "mobile phone"], ["손목시계", "wristwatch"], ["아주머니", "ma'am"],
     ["할아버지", "grandfather"], ["어린이집", "day care"], ["종이접기", "paper folding"], ["쓰레기통", "trash can"],
-    ["횡단보도", "crosswalk"], ["저녁노을", "sunset glow"], ["반짝반짝", "twinkle twinkle"], ["두근두근", "heart beating"],
+    ["횡단보도", "crosswalk"], ["저녁노을", "sunset glow"], ["두근두근", "heart beating"],
   ]),
   5: words(5, [
     ["아이스크림", "ice cream"], ["크리스마스", "Christmas"], ["엘리베이터", "elevator"], ["공기청정기", "air purifier"],
-    ["전자레인지", "microwave"], ["국립박물관", "national museum"], ["자연박물관", "nature museum"], ["과학박물관", "science museum"],
+    ["전자레인지", "microwave"], ["자연박물관", "nature museum"], ["과학박물관", "science museum"],
     ["재활용봉투", "recycling bag"], ["쓰레기봉투", "trash bag"], ["분리수거함", "recycling bin"], ["고무줄놀이", "rubber band game"],
     ["오렌지주스", "orange juice"], ["토마토주스", "tomato juice"], ["초콜릿우유", "chocolate milk"], ["바나나우유", "banana milk"],
     ["비상연락망", "emergency contacts"], ["주민등록증", "ID card"], ["운전면허증", "driver's license"], ["전기자동차", "electric car"],

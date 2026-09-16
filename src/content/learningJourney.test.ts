@@ -34,14 +34,14 @@ describe("continuous learning journeys", () => {
     expect(ALPHABET_STAGES.filter(stage => stage.boardSide === 4).map(stage => stage.target)).toEqual(["ㄱㄴㄷ", "ㄹㅁㅂ", "ㅅㅇㅈ", "ㅊㅋㅌ", "ㅍㅎ", "ㆍㅡㅣ"]);
     expect(ALPHABET_STAGES.filter(stage => stage.boardSide === 6).map(stage => stage.target)).toEqual(["ㄱㄴㄷㄹㅁ", "ㅂㅅㅇㅈㅊ", "ㅋㅌㅍㅎ", "ㆍㅡㅣ"]);
   });
-  it("merges all word lessons into one ordered 33-stage course", () => {
+  it("merges all word lessons into one ordered 32-stage course", () => {
     expect(ALPHABET_STAGES).toHaveLength(27);
     expect(SYLLABLE_STAGES).toHaveLength(59);
-    expect(WORD_STAGES).toHaveLength(33);
-    expect(new Set(WORD_STAGES.map((stage) => stage.word)).size).toBe(33);
+    expect(WORD_STAGES).toHaveLength(32);
+    expect(new Set(WORD_STAGES.map((stage) => stage.word)).size).toBe(32);
     expect(WORD_STAGES[0]!.word).toBe("아기");
     expect(WORD_STAGES[6]!.word).toBe("사랑");
-    expect(WORD_STAGES[32]!.word).toBe("외국");
+    expect(WORD_STAGES[31]!.word).toBe("외국");
     expect(WORD_JOURNEY_SCORE_TIME_MS).toBeGreaterThan(0);
     for (const stage of WORD_STAGES) expect(composeTargetInput(stage.word, [...stage.word].flatMap(c => [...requiredBoardSymbols(c), "\u0000"]))).toBe(stage.word);
     expect(composeTargetInput("오빠", ["ㅇ", "ㆍ", "ㅡ", "ㅂ", "ㅂ", "ㅣ", "ㆍ"])).toBe("오빠");

@@ -101,7 +101,7 @@ const wordTargets = (level: number, values: readonly (readonly [word: string, tr
 /** Five three-word lessons, moving from simple words to expressive Korean and compound vowels. */
 export const WORD_LEVELS: readonly WordLevel[] = [
   { id: "word-beginner", name: "Beginner", description: "Words without final consonants", durationMs: 60_000, targets: wordTargets(0, [["아기", "baby"], ["나비", "butterfly"], ["우유", "milk"], ["모자", "hat"], ["누나", "older sister"], ["오빠", "older brother"]]) },
-  { id: "word-1", name: "Lv.1", description: "Words with final consonants", durationMs: 75_000, targets: wordTargets(1, [["사랑", "love"], ["친구", "friend"], ["공부", "study"], ["학교", "school"], ["행복", "happiness"], ["가족", "family"]]) },
+  { id: "word-1", name: "Lv.1", description: "Words with final consonants", durationMs: 75_000, targets: wordTargets(1, [["사랑", "love"], ["친구", "friend"], ["공부", "study"], ["행복", "happiness"], ["가족", "family"]]) },
   { id: "word-2", name: "Lv.2", description: "Everyday exclamations", durationMs: 90_000, targets: wordTargets(2, [["어머나", "oh my"], ["아이고", "oh dear"], ["아뿔사", "oops"], ["저기요", "excuse me"], ["앗뜨거", "ouch, hot"], ["엄마야", "oh my gosh"], ["깜짝이야", "what a surprise"]]) },
   { id: "word-3", name: "Lv.3", description: "Sounds and movement words", durationMs: 100_000, targets: wordTargets(3, [["쿵", "thump"], ["쾅", "bang"], ["꽥", "squawk"], ["짹짹", "chirp chirp"], ["엉금엉금", "crawl slowly"], ["어슬렁어슬렁", "wander around"]]) },
   { id: "word-4", name: "Lv.4", description: "Compound-vowel words", durationMs: 90_000, targets: wordTargets(4, [["개", "dog"], ["게", "crab"], ["샤워", "shower"], ["의자", "chair"], ["왜", "why"], ["웨이터", "waiter"], ["귀", "ear"], ["외국", "foreign country"]]) },
