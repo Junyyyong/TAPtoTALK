@@ -9,7 +9,7 @@ describe("score-based celebration clips", () => {
     expect(poolFor(600).at(0)?.layout).toBe("large");
     expect(poolFor(1000).at(0)?.layout).toBe("hero");
     expect(poolFor(1400).at(0)?.layout).toBe("hero");
-    const lengths = [1, 1, 1, 2, 2];
+    const lengths = [1, 1, 1, 1, 1];
     for (const [index, score] of [100, 300, 600, 1000, 1400].entries()) {
       const pool = poolFor(score);
       expect(pool).toHaveLength(lengths[index]!);
@@ -26,12 +26,18 @@ describe("score-based celebration clips", () => {
     expect(new Set(picks)).toEqual(new Set(pool.map((clip) => clip.video)));
   });
 
-  it("reserves Tipi for failed runs", () => {
+  it("uses Tipi below AMAZING and Taepi at every higher grade for all formats", () => {
     expect(failureClip().video).toMatch(/movie\/tipi\.webm$/);
     expect(failureClip().iosVideo).toMatch(/movie\/tipi\.mp4$/);
     expect(failureClip().sound).toMatch(/movie\/tipi\.mp3$/);
     expect(poolFor(1000).every((clip) => !clip.video.includes("tipi"))).toBe(true);
     expect(poolFor(0)[0]?.video).toBe(failureClip().video);
-    expect(poolFor(300).some((clip) => /movie\/1\.webm$/.test(clip.video))).toBe(true);
+    for (const score of [0, 1, 299, 300, 599, 600, 999, 1000, 1399, 1400, 1500, 9999]) {
+      const name = score < 600 ? "tipi" : "taepi";
+      const clip = randomClipFor(score)!;
+      expect(clip.video).toMatch(new RegExp(`movie/${name}\\.webm$`));
+      expect(clip.iosVideo).toMatch(new RegExp(`movie/${name}\\.mp4$`));
+      expect(clip.sound).toMatch(new RegExp(`movie/${name}\\.mp3$`));
+    }
   });
 });

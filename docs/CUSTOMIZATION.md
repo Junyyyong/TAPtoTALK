@@ -42,7 +42,7 @@ Syllable 제시어 아래 안내는 `src/content/syllableNotes.ts`에서 관리�
 
 Syllable 학습 순서는 `content/learningJourney.ts`의 `SYLLABLE_ROWS`에 둔다. 전체 후보는 기본음절14·기본모음10·복모음11·쌍자음5·기본받침 명사14·겹받침 명사5개, 총59개다. createSyllablePractice가 START마다 유형별5개를 뽑아 총30개를 만들며 SYLLABLE_PRACTICE_PER_TYPE에서 표본 수를 조절한다. UI는 이 세션 목록을 learningStageAt/stageSection에 함께 전달해5판·30판에서 튜토리얼 구간을 끝낸다. 2판5개,4판25개이며 본게임 풀은 전체59개를 유지한다. 모든 문제는 한 음절이며 반복 자소도 개별 블록으로 배치한다. 본게임은 이 목록에서 무작위로 출제한다. Word는 Space 아이콘과 Delete를 제공한다. Space는 제시어와 관계없이 현재 입력을 확정한다. Delete가 공백을 지우면 COMMIT_BOUNDARY를 남겨 후속 입력이 앞 음절과 합쳐지지 않게 한다. compose.ts의 deleteLastInput과 composeTokens에서 처리한다. 보이는 내부 공백은 정답 판정에 반영한다. target.ts의 composeTargetInput은 호환 함수일 뿐 제시어 자동 보정을 하지 않는다. UI에서 조합 규칙을 구현하지 않는다. 쌍자음 까·따·빠·싸·짜는 튜토리얼마다 각각 한 번만 출제한다. 받침은 산·강·물·불·눈·손·발·집·밥·옷·달·별·입·몸, 겹받침은 닭·흙·값·삶·몫으로 한정한다.
 
-등급은 0 NOT BAD / 1–299 GOOD TRY / 300–599 GREAT / 600–999 AMAZING / 1000–1399 UNBELIEVABLE / 1400 이상 OH MY GOD. 영상 배정은 `config/app.ts`의 celebrations에 둔다. GOOD TRY는 GREAT와 1번 영상을 공유하고, 0점만 티피를 사용한다. 튜토리얼도 GREAT 영상을 사용한다.
+등급은 0 NOT BAD / 1–299 GOOD TRY / 300–599 GREAT / 600–999 AMAZING / 1000–1399 UNBELIEVABLE / 1400 이상 OH MY GOD. 영상 배정은 `config/app.ts`의 celebrations에 둔다. 0–599는 티피, 600이상은 태피로 통일했다. 튜토리얼 GREAT도 티피다. iPhone MP4·일반 WebM·MP3를 한 묶음으로 교체하고, 영상 추가 시 등급의 clips 배열을 늘린다. 점수별 문구와 레이아웃은 유지한다.
 
 START 화면의 ㄱ·가·안녕은 `src/config/introMarks.ts`에 명조 SVG 윤곽으로 내장되어 폰트 로딩 전후 모양이 바뀌지 않는다. 원본 Noto Serif KR 700에서 다시 생성하려면 `python3 scripts/build-intro-marks.py`를 실행한다. 아이콘 위치는 `.alphabet-intro-mark`에서 조정한다.
 
