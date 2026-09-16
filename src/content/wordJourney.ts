@@ -18,11 +18,12 @@ export const EXTRA_WORDS: Readonly<Record<WordLength, readonly WordTarget[]>> = 
     ["호랑이", "tiger"], ["코끼리", "elephant"], ["병아리", "chick"], ["거북이", "turtle"],
     ["개구리", "frog"], ["다람쥐", "squirrel"], ["도서관", "library"], ["운동장", "sports field"],
     ["놀이터", "playground"], ["자전거", "bicycle"], ["비행기", "airplane"], ["무지개", "rainbow"],
+    ["휴대폰", "mobile phone"],
   ]),
   4: words(4, [
     ["해바라기", "sunflower"], ["민들레꽃", "dandelion"], ["카네이션", "carnation"],
     ["놀이공원", "amusement park"], ["지하철역", "subway station"], ["대한민국", "South Korea"], ["우리나라", "our country"],
-    ["전화번호", "phone number"], ["휴대전화", "mobile phone"], ["손목시계", "wristwatch"], ["아주머니", "ma'am"],
+    ["전화번호", "phone number"], ["손목시계", "wristwatch"], ["아주머니", "ma'am"],
     ["할아버지", "grandfather"], ["어린이집", "day care"], ["종이접기", "paper folding"], ["쓰레기통", "trash can"],
     ["횡단보도", "crosswalk"], ["저녁노을", "sunset glow"], ["두근두근", "heart beating"],
   ]),

@@ -12,7 +12,7 @@ describe("endless Word stages", () => {
     expect(new Set(all.map((item) => item.word)).size).toBe(57);
     const fixed = new Set(WORD_STAGES.map((item) => item.word));
     for (const [length, items] of Object.entries(EXTRA_WORDS)) {
-      expect(items).toHaveLength(length === "3" ? 20 : length === "4" ? 18 : 19);
+      expect(items).toHaveLength(length === "3" ? 21 : length === "4" ? 17 : 19);
       for (const item of items) {
         expect(item.word).toMatch(/^[가-힣]+$/);
         expect([...item.word]).toHaveLength(Number(length));
@@ -59,6 +59,8 @@ describe("endless Word stages", () => {
   it("excludes the four ambiguous words and composes every remaining target without Space", () => {
     const words = [...WORD_STAGES, ...Object.values(EXTRA_WORDS).flat()].map(t => t.word);
     expect(words).toHaveLength(89);
+    expect(EXTRA_WORDS[3].find(t => t.word === "휴대폰")?.translation).toBe("mobile phone");
+    expect(words).not.toContain("휴대전화");
     for (const word of ["학교", "초등학교", "국립박물관", "반짝반짝"]) expect(words).not.toContain(word);
     for (const word of words) expect(composeTokens(requiredBoardSymbols(word)), word).toBe(word);
   });
