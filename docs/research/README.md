@@ -1,5 +1,7 @@
 # TAPtoTALK 주요 변경 연구 기록
 
+- [2026-09-16 Vocabulary 자소 안내](2026-09-16-vocabulary-hints/README.md): `33f0f17` → `d800f25`, STAGE 숫자 제거, 영어 지시문을 입력 자소 순서로 교체, 뜻 유지.
+
 - [2026-09-16 학습 제시창](2026-09-16-learning-labels/README.md): `494c30f` → `e625be5`, 분류·자모 이름·원형 강조, 6×6부터 읽기 숨김, 아래아 축소와 지정 읽기 표기.
 
 - [2026-09-16 티피·태피 영상 연결](2026-09-16-tipi-taepi/README.md): `144e7b1` → `05f1ada`, GREAT 이하 티피, AMAZING 이상 태피.
