@@ -1,40 +1,7 @@
-const CELEBRATION_MOVIES = [
-  {
-    video: new URL("../../movie/1.webm", import.meta.url).href,
-    iosVideo: new URL("../../movie/1.mp4", import.meta.url).href,
-    sound: new URL("../../movie/1.mp3", import.meta.url).href,
-  },
-  {
-    video: new URL("../../movie/4.webm", import.meta.url).href,
-    iosVideo: new URL("../../movie/4.mp4", import.meta.url).href,
-    sound: new URL("../../movie/4.mp3", import.meta.url).href,
-  },
-  {
-    video: new URL("../../movie/taepi.webm", import.meta.url).href,
-    iosVideo: new URL("../../movie/taepi.mp4", import.meta.url).href,
-    sound: new URL("../../movie/taepi.mp3", import.meta.url).href,
-  },
-  {
-    video: new URL("../../movie/hupi.webm", import.meta.url).href,
-    iosVideo: new URL("../../movie/hupi.mp4", import.meta.url).href,
-    sound: new URL("../../movie/hupi.mp3", import.meta.url).href,
-  },
-  {
-    video: new URL("../../movie/haepi.webm", import.meta.url).href,
-    iosVideo: new URL("../../movie/haepi.mp4", import.meta.url).href,
-    sound: new URL("../../movie/haepi.mp3", import.meta.url).href,
-  },
-  {
-    video: new URL("../../movie/jaepi.webm", import.meta.url).href,
-    iosVideo: new URL("../../movie/jaepi.mp4", import.meta.url).href,
-    sound: new URL("../../movie/jaepi.mp3", import.meta.url).href,
-  },
-] as const;
-
 const FAILURE_MOVIE = {
-  video: new URL("../../movie/notbad.webm", import.meta.url).href,
-  iosVideo: new URL("../../movie/notbad.mp4", import.meta.url).href,
-  sound: new URL("../../movie/notbad.mp3", import.meta.url).href,
+  video: new URL("../../0917-movie/notbad.webm", import.meta.url).href,
+  iosVideo: new URL("../../0917-movie/notbad.mp4", import.meta.url).href,
+  sound: new URL("../../0917-movie/notbad.mp3", import.meta.url).href,
   layout: "compact",
 } as const;
 
@@ -50,14 +17,19 @@ const GRADE_MOVIES = {
     sound: new URL("../../movie/tipi.mp3", import.meta.url).href,
   },
   amazing: {
-    video: new URL("../../movie/AMAZING.webm", import.meta.url).href,
-    iosVideo: new URL("../../movie/AMAZING.mp4", import.meta.url).href,
-    sound: new URL("../../movie/AMAZING.mp3", import.meta.url).href,
+    video: new URL("../../0917-movie/amazing.webm", import.meta.url).href,
+    iosVideo: new URL("../../0917-movie/amazing.mp4", import.meta.url).href,
+    sound: new URL("../../0917-movie/amazing.mp3", import.meta.url).href,
+  },
+  unbelievable: {
+    video: new URL("../../0917-movie/unbelievable.webm", import.meta.url).href,
+    iosVideo: new URL("../../0917-movie/unbelievable.mp4", import.meta.url).href,
+    sound: new URL("../../0917-movie/unbelievable.mp3", import.meta.url).href,
   },
   ohMyGod: {
-    video: new URL("../../movie/OH MY GOD.webm", import.meta.url).href,
-    iosVideo: new URL("../../movie/OH MY GOD.mp4", import.meta.url).href,
-    sound: new URL("../../movie/OH MY GOD.mp3", import.meta.url).href,
+    video: new URL("../../0917-movie/ohmygod.webm", import.meta.url).href,
+    iosVideo: new URL("../../0917-movie/ohmygod.mp4", import.meta.url).href,
+    sound: new URL("../../0917-movie/ohmygod.mp3", import.meta.url).href,
   },
 } as const;
 
@@ -81,9 +53,9 @@ export const APP_CONFIG = {
     celebrationAudio: FAILURE_MOVIE.sound,
     failureCelebration: FAILURE_MOVIE,
     celebrations: [
-      // Four named uploads; GREAT/practice and UNBELIEVABLE keep existing clips.
+      // September 17 uploads; GOOD TRY and GREAT/practice retain their clips.
       { at: 1400, layout: "hero", clips: [GRADE_MOVIES.ohMyGod] },
-      { at: 1000, layout: "hero", clips: [CELEBRATION_MOVIES[2]] },
+      { at: 1000, layout: "hero", clips: [GRADE_MOVIES.unbelievable] },
       { at: 600, layout: "large", clips: [GRADE_MOVIES.amazing] },
       { at: 300, layout: "standard", clips: [GRADE_MOVIES.great] },
       { at: 1, layout: "standard", clips: [GRADE_MOVIES.goodTry] },

@@ -1,5 +1,9 @@
 # 디자인과 콘텐츠 수정 경계
 
+## 최신 영상 연결 (2026-09-17)
+
+아래 과거 매핑보다 이 항목이 우선한다. `src/config/app.ts`: NOT BAD는 `0917-movie/notbad`, AMAZING은 `0917-movie/amazing`(원본 GREAT), UNBELIEVABLE은 `0917-movie/unbelievable`(원본 Amazing), OH MY GOD은 `0917-movie/ohmygod`으로 MP4/WebM/MP3를 함께 연결한다. GOOD TRY는 `movie/GOOD TRY`, GREAT와 튜토리얼은 `movie/tipi` 유지. 과거 원본 영상은 삭제하지 않았고 미사용 CELEBRATION_MOVIES 연결 상수만 제거했다. 신규 파일명은 소문자·공백 없음으로 통일했다.
+
 ## 학습 제시창 (2026-09-16)
 
 세 모드의 제시어는 `.talk-screen .target-text` 공통 크기44px(좁은 화면에서만 뷰포트 기준36~44px)를 사용한다. 자소 개수로 폰트 크기를 바꾸지 않는다. Alphabet 자소 폭1em/간격0, 화살표14px로 다섯 자소도 들어가게 한다. 입력 순서 안내는18px 고딕/650으로 유지한다.
