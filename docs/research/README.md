@@ -1,5 +1,7 @@
 # TAPtoTALK 주요 변경 연구 기록
 
+- [2026-09-17 등급 영상·파일명](2026-09-17-videos/README.md): `4838108` → `f7ef7e1`, 새 GREAT→AMAZING·Amazing→UNBELIEVABLE, NOT BAD/OMG 교체, GOOD TRY/GREAT 유지.
+
 - [2026-09-16 제시어 크기·한 음절 안내](2026-09-16-single-syllable/README.md): `43923ed` → `09178d5`, 세 게임 제시어44px 통일, 긴 단어는 현재 음절만 안내·삭제 복귀.
 
 - [2026-09-16 시작 안내·자소 폰트·점수](2026-09-16-intro-score/README.md): `7f715fb` → `9182afd`, TAPtoTEN 안내 간격·크기, 메인 설명 재사용, 자소 굵기 통일, 본게임 점수1.5배.
