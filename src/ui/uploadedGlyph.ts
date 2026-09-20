@@ -6,6 +6,7 @@ export function createUploadedGlyph(value: string, transform?: string): HTMLSpan
   const glyph = document.createElement("span");
   glyph.className = "uploaded-glyph";
   if (value === "△") glyph.classList.add("uploaded-glyph--triangle");
+  if (value === "ㆀ") glyph.classList.add("uploaded-glyph--double-ieung");
   if (["♥", ",", "★"].includes(value)) glyph.classList.add("uploaded-glyph--dot-trap");
   glyph.setAttribute("aria-hidden", "true");
   glyph.style.setProperty("--glyph-mask", `url("${asset.url}")`);

@@ -40,12 +40,13 @@ export interface LetterTile {
   required: boolean;
   /** Punctuation-free word boards may show a visibly transformed spare consonant. */
   transform?: GlyphTransform;
+  shape?: "♥" | "★" | "," | "╱" | "╲";
 }
 
 export const MIRROR_TRAP_TOKEN = "×";
 
-export function inputValueForTile(tile: Pick<LetterTile, "symbol" | "transform">): BoardSymbol | typeof MIRROR_TRAP_TOKEN {
-  return tile.transform ? MIRROR_TRAP_TOKEN : tile.symbol;
+export function inputValueForTile(tile: Pick<LetterTile, "symbol" | "transform" | "shape">): BoardSymbol | typeof MIRROR_TRAP_TOKEN {
+  return tile.transform || tile.shape ? MIRROR_TRAP_TOKEN : tile.symbol;
 }
 
 export type SymbolWeights = Readonly<Partial<Record<BoardSymbol, number>>>;
@@ -113,6 +114,18 @@ export function createLetterBoard(
 
 /** Word uses basic consonant taps, including repeated taps for tense consonants. */
 export function createWordBoard(target: string, rng: () => number = Math.random): LetterTile[] {
-  return createLetterBoard(target, rng, DEFAULT_SYMBOL_WEIGHTS, WORD_BOARD_SIDE ** 2,
+  const board = createLetterBoard(target, rng, DEFAULT_SYMBOL_WEIGHTS, WORD_BOARD_SIDE ** 2,
     BOARD_SYMBOLS.filter((symbol) => !TENSE_SYMBOLS.has(symbol)));
+  // Reuse existing trap slots first; never replace the target's 1.5× reserve.
+  const spare = board.filter(tile => !tile.required);
+  const slots = [...spare.filter(tile => tile.transform), ...spare.filter(tile => !tile.transform)];
+  const shapes = shuffle<NonNullable<LetterTile["shape"]>>(["♥", "★", ",", "╱", "╲"], rng);
+  shapes.forEach((shape, index) => {
+    const tile = slots[index];
+    if (!tile) return;
+    tile.shape = shape;
+    tile.symbol = shape === "╱" || shape === "╲" ? "ㅣ" : "ㆍ";
+    delete tile.transform;
+  });
+  return board;
 }

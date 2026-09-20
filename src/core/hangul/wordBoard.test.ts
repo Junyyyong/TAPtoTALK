@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { createWordBoard } from "./board";
+import { createWordBoard, inputValueForTile, MIRROR_TRAP_TOKEN } from "./board";
 import { requiredBoardSymbols, composeTargetInput } from "./target";
 import { WORD_STAGES } from "../../content/learningJourney";
 import { EXTRA_WORDS, isWordBonusStage } from "../../content/wordJourney";
@@ -12,10 +12,24 @@ describe("8×8 Word board", () => {
       expect(board.some(t => "ㄲㄸㅃㅆㅉ".includes(t.symbol))).toBe(false);
       const taps = requiredBoardSymbols(word);
       for (const symbol of new Set(taps)) {
-        expect(board.filter(t => !t.transform && t.symbol === symbol).length)
+        expect(board.filter(t => !t.shape && !t.transform && t.symbol === symbol).length)
           .toBeGreaterThanOrEqual(taps.filter(t => t === symbol).length);
       }
       expect(composeTargetInput(word, [...word].flatMap(c => [...requiredBoardSymbols(c), "\u0000"]))).toBe(word);
+    }
+  });
+  it("includes vowel shape traps without consuming any reserved answer blocks", () => {
+    for (const { word } of [...WORD_STAGES, ...Object.values(EXTRA_WORDS).flat()]) {
+      const board = createWordBoard(word);
+      expect(board.filter(t => t.shape).map(t => t.shape).sort()).toEqual([",", "╱", "╲", "★", "♥"].sort());
+      for (const tile of board) {
+        if (tile.shape) {
+          expect(tile.required).toBe(false);
+          expect(inputValueForTile(tile)).toBe(MIRROR_TRAP_TOKEN);
+        }
+        if (tile.required) expect(inputValueForTile(tile)).toBe(tile.symbol);
+      }
+      expect(board.filter(t => t.required)).toHaveLength(Math.ceil(requiredBoardSymbols(word).length * 1.5));
     }
   });
   it("supports repeated basic consonants in 꾀, 아빠 and 읽", () => {

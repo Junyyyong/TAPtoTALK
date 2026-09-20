@@ -437,17 +437,18 @@ export class TalkApp {
       button.className = `letter-tile letter-tile--color-${color}`; button.type = "button";
       const glyph = document.createElement("span");
       glyph.className = "letter-glyph";
-      glyph.textContent = tile.symbol === "ㆍ" ? "━" : tile.symbol;
-      const uploaded = createUploadedGlyph(tile.symbol, tile.transform);
+      const display = tile.shape ?? tile.symbol;
+      glyph.textContent = display;
+      const uploaded = createUploadedGlyph(display, tile.transform);
       if (uploaded) { glyph.replaceChildren(uploaded); button.classList.add("has-uploaded-glyph"); }
       button.append(glyph);
       if (CONSONANTS.includes(tile.symbol as never)) button.classList.add("letter-tile--consonant");
       else if (CHEONJIIN_STROKES.includes(tile.symbol as never)) button.classList.add("letter-tile--vowel");
       else button.classList.add("letter-tile--punctuation");
-      if (tile.symbol === "ㆍ") button.classList.add("letter-tile--cheonjiin-dot");
+      if (display === "ㆍ") button.classList.add("letter-tile--cheonjiin-dot");
       if (tile.symbol === ".") button.classList.add("letter-tile--period");
       if (tile.transform) button.classList.add(`letter-tile--${tile.transform}`);
-      button.dataset.tileId = String(tile.id); button.setAttribute("aria-label", tile.symbol === "ㆍ" ? "Cheonjiin dot" : tile.symbol);
+      button.dataset.tileId = String(tile.id); button.setAttribute("aria-label", display === "ㆍ" ? "Cheonjiin dot" : display);
       button.addEventListener("click", () => inputValueForTile(tile) === MIRROR_TRAP_TOKEN ? this.typeTrapTile(tile.id) : this.typeTile(tile.id, tile.symbol)); fragment.append(button);
     });
     this.board.replaceChildren(fragment);
