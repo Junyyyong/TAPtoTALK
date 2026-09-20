@@ -1,5 +1,7 @@
 # TAPtoTALK 주요 변경 연구 기록
 
+- [2026-09-20 삼각형 함정 확대](2026-09-20-triangle/README.md): `39bb3c3` → `31a1a71`, 블록 속 △만110% 확대.
+
 - [2026-09-20 제시어 모음천 축소](2026-09-20-target-dot/README.md): `b7abad0` → `b37edee`, 제시어 점 한 변50% 축소, 게임판 유지.
 
 - [2026-09-17 등급 영상·파일명](2026-09-17-videos/README.md): `4838108` → `f7ef7e1`, 새 GREAT→AMAZING·Amazing→UNBELIEVABLE, NOT BAD/OMG 교체, GOOD TRY/GREAT 유지.
