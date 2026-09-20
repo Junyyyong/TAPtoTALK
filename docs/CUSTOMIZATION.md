@@ -108,7 +108,8 @@ START 화면의 ㄱ·가·안녕은 `src/config/introMarks.ts`에 명조 SVG 윤
 
 - 경로: `src/config/app.ts`의 `music.menu`, `music.game`.
 - 대기곡: `public/assets/audio/talk-lobby.mp3` — 승인 시안 08, 128 BPM, 30초.
-- 게임곡: `public/assets/audio/talk-game.mp3` — 승인 시안 14(12번에서 지속 베이스 제거), 142 BPM, 약 40.56초.
+- 게임곡: `public/assets/audio/talk-game-acoustic-142.mp3` — 승인 시안16, 실제 녹음 악기 샘플로 구성한 피아노·마림바·실로폰·타악기, 142 BPM, 약40.56초. 이전 합성 게임곡은 연결 해제했다.
+- 현재 게임곡 제작: `docs/music-demos/2026-09-20/make-acoustic.mjs 142`. CC0 VCSL 샘플 출처는 같은 폴더 `sources-142.json`. 시안16 MP3를 재인코딩 없이 사용한다.
 - 합성 원본은 `docs/music-demos/2026-09-14/make-lobby-v5.mjs`, `make-game-v9.mjs`. `--loop` 옵션은 페이드 대신 잔향을 시작에 연결한 정수 마디 WAV를 생성한다. 시안 원본은 변경하지 않는다.
 - 메인/설정은 대기곡, 게임 START 안내/플레이는 게임곡. 일시정지·결과/보너스 영상·백그라운드에서는 BGM을 멈춘다.
 - `src/ui/sceneMusic.ts`가 곡 중복을 방지하며 `backgroundMusic.ts`가 디코딩·루프·자동재생·화면 숨김을 담당한다. 기본 게인은 0.28이다.

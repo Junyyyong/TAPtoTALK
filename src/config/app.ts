@@ -43,7 +43,7 @@ export const APP_CONFIG = {
   timing: { studioSplashMs: 3_000, productSplashMs: 4_000 },
   music: {
     menu: new URL("../../public/assets/audio/talk-lobby.mp3", import.meta.url).href,
-    game: new URL("../../public/assets/audio/talk-game.mp3", import.meta.url).href,
+    game: new URL("../../public/assets/audio/talk-game-acoustic-142.mp3", import.meta.url).href,
   },
   assets: {
     studioSplash: new URL("../../public/assets/brand/tapeetepee-open-talk.png", import.meta.url).href,
