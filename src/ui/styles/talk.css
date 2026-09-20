@@ -63,7 +63,7 @@
 .talk-screen.is-alphabet-mode .target-korean { display: flex; align-items: center; justify-content: center; gap: 0; }
 .talk-screen.is-alphabet-mode .target-korean .tap-arrow { font-size: 14px; }
 .alphabet-target-jamo { display: inline-grid; place-items: center; width: 1em; height: 1.16em; min-width: 1em; padding: 0; transition: color .15s ease; }
-.alphabet-target-jamo.is-cheonjiin::before { display: block; width: .34em; aspect-ratio: 1; margin: .33em auto; border-radius: .05em; background: currentColor; content: ""; }
+.alphabet-target-jamo.is-cheonjiin::before { display: block; width: .17em; aspect-ratio: 1; margin: .33em auto; border-radius: .025em; background: currentColor; content: ""; }
 .alphabet-target-jamo.is-current { color: var(--hot-deep); }
 .alphabet-target-jamo.is-done { color: var(--accent); }
 .target-translation-inline,.alphabet-target-note { margin-top: 5px; color: var(--ink-soft); font-family: "TAP Sans KR",sans-serif; font-size: 14px; font-weight: 650; line-height: 1.2; letter-spacing: 0; white-space: nowrap; }
