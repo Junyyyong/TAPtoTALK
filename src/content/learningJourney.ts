@@ -16,21 +16,20 @@ export const RANDOM_ALPHABET_LENGTH = 3;
 
 // One syllable per stage; introduce more vowels as the board grows.
 const SYLLABLE_ROWS = [
-  { text: "가나다라마바사아자차카타파하", side: 2, category: "Letter Combinations" },
-  { text: "아야어여오요우유으이", side: 4, category: "Basic Vowels" },
-  { text: "애에얘예와왜외워웨위의", side: 4, category: "Compound Vowels" },
-  // Five tense initials, exactly once each per practice session.
-  { text: "까따빠싸짜", side: 4, category: "Double Consonants" },
+  { text: "가나다라마바사아자차카타파하", side: 2, category: "자음·모음 조합 / Letter Combinations", count: 5 },
+  { text: "아야어여오요우유으이", side: 4, category: "기본 모음 / Basic Vowels", count: 3 },
+  { text: "애에얘예와왜외워웨위의", side: 4, category: "복모음 / Compound Vowels", count: 3 },
+  // Sample tense initials without repeats; redraw on the next START.
+  { text: "까따빠싸짜", side: 4, category: "쌍자음 / Double Consonants", count: 2 },
   // Familiar standalone nouns, not isolated verb stems or exhaustive final spellings.
-  { text: "산강물불눈손발집밥옷달별입몸", side: 4, category: "Final Consonants" },
-  { text: "닭흙값삶몫", side: 4, category: "Double Finals" },
+  { text: "산강물불눈손발집밥옷달별입몸", side: 4, category: "받침 / Final Consonants", count: 3 },
+  { text: "닭흙값삶몫", side: 4, category: "겹받침 / Double Finals", count: 2 },
 ] as const;
 
 export const SYLLABLE_STAGES: readonly AlphabetStage[] = SYLLABLE_ROWS.flatMap(({ text, side, category }) =>
   [...text].map((target) => ({ target, category, boardSide: side, sequence: requiredBoardSymbols(target) })),
 ).map((stage, index) => ({ ...stage, id: `syllable-${index + 1}`, number: index + 1, note: syllableTargetNote(stage.target) }));
 
-export const SYLLABLE_PRACTICE_PER_TYPE = 5;
 /** Real one-syllable vocabulary only; pronunciation drills stay in practice. */
 export const SYLLABLE_GAME_TARGETS = Object.keys(SYLLABLE_MEANINGS);
 /** One session's shuffle bag. Rebuilding an unfinished stage must not consume a word. */
@@ -56,8 +55,8 @@ export function createSyllableGameJourney(rng: () => number = Math.random, initi
 /** Draw once per START. Keep the six categories ordered, shuffle within each. */
 export function createSyllablePractice(rng: () => number = Math.random): readonly AlphabetStage[] {
   const seen = new Set<string>();
-  return SYLLABLE_ROWS.flatMap(({ text, side, category }) =>
-    pickLessonTargets([...text].filter(target => !seen.has(target)), SYLLABLE_PRACTICE_PER_TYPE, rng).map(target => {
+  return SYLLABLE_ROWS.flatMap(({ text, side, category, count }) =>
+    pickLessonTargets([...text].filter(target => !seen.has(target)), count, rng).map(target => {
       seen.add(target);
       return { target, category, boardSide: side, sequence: requiredBoardSymbols(target) };
     }),

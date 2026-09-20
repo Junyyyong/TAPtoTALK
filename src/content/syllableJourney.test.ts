@@ -37,7 +37,7 @@ it("new sessions start with a fresh independent bag", () => {
 it("avoids the last ten targets across practice and shuffled bags", () => {
   for (const rng of [Math.random, () => 0, () => .999]) {
     const practice = createSyllablePractice(rng);
-    expect(new Set(practice.map(s => s.target)).size).toBe(30);
+    expect(new Set(practice.map(s => s.target)).size).toBe(18);
     const history = practice.slice(-10).map(s => s.target);
     const next = createSyllableGameJourney(rng, history);
     for (let index = 30; index < 530; index++) {
