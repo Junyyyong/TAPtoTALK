@@ -1,5 +1,9 @@
 # 디자인과 콘텐츠 수정 경계
 
+## 개별 순경음미음 교체 (2026-09-20)
+
+ㅱ은 `assets/glyph-sources/labial-mieum.svg`의 사용자 원본 두 경로를 사용한다. `extract-talk-type.py`가 시트보다 이 파일을 우선해 넓은 페이지 여백을 제외하고 100×100 viewBox 중앙에 배치한다. 획·비율·원본 좌표 크기는 유지한다. 재생성해도 옛 시트의 ㅱ으로 돌아가지 않는다. 결과는 `public/assets/glyphs/talk-type/u3171.svg`와 `src/config/glyphAssets.ts`에 반영한다.
+
 ## 최신 영상 연결 (2026-09-17)
 
 아래 과거 매핑보다 이 항목이 우선한다. `src/config/app.ts`: NOT BAD는 `0917-movie/notbad`, AMAZING은 `0917-movie/amazing`(원본 GREAT), UNBELIEVABLE은 `0917-movie/unbelievable`(원본 Amazing), OH MY GOD은 `0917-movie/ohmygod`으로 MP4/WebM/MP3를 함께 연결한다. GOOD TRY는 `movie/GOOD TRY`, GREAT와 튜토리얼은 `movie/tipi` 유지. 과거 원본 영상은 삭제하지 않았고 미사용 CELEBRATION_MOVIES 연결 상수만 제거했다. 신규 파일명은 소문자·공백 없음으로 통일했다.

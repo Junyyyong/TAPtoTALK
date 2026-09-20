@@ -71,6 +71,17 @@ for label, suffix in [('ㅣ','02'), ('ㅡ','03'), ('╱','04'), ('╲','05')]:
     groups[label] = nodes
     boxes[label] = [pen.bounds]
 
+# Individual labial-mieum upload: keep its outlines/scale, remove the page margins.
+upload = root / 'assets/glyph-sources/labial-mieum.svg'
+nodes = [n for n in ET.parse(upload).getroot().iter() if n.tag.split('}')[-1] == 'path']
+assert len(nodes) == 2, upload
+groups['ㅱ'] = nodes
+boxes['ㅱ'] = []
+for node in nodes:
+    pen = BoundsPen(None)
+    parse_path(node.get('d'), pen)
+    boxes['ㅱ'].append(pen.bounds)
+
 entries=[]
 for label,nodes in groups.items():
     assert nodes,label

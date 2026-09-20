@@ -5,6 +5,13 @@ import { ALPHABET_ORDER } from "../content/prompts";
 import { readFileSync } from "node:fs";
 
 describe("uploaded glyph mapping", () => {
+  it("uses both outlines from the replacement labial mieum upload", () => {
+    const source = readFileSync("assets/glyph-sources/labial-mieum.svg", "utf8");
+    const svg = decodeURIComponent(GLYPH_ASSETS["ㅱ"]!.url.slice("data:image/svg+xml,".length));
+    const paths = [...source.matchAll(/ d="([^"]+)"/g)].map(match => match[1]);
+    expect(paths).toHaveLength(2);
+    for (const d of paths) expect(svg).toContain(d);
+  });
   it("uses the longer uploaded strokes for both vowels and diagonals", () => {
     for (const value of ["ㅣ", "ㅡ", "╱", "╲"]) {
       const svg = decodeURIComponent(GLYPH_ASSETS[value]!.url.split(",").slice(1).join(","));
