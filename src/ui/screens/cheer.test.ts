@@ -8,9 +8,9 @@ describe("score-based celebration clips", () => {
     expect(poolFor(300).at(0)?.layout).toBe("standard");
     expect(poolFor(600).at(0)?.layout).toBe("large");
     expect(poolFor(1000).at(0)?.layout).toBe("hero");
-    expect(poolFor(1400).at(0)?.layout).toBe("hero");
+    expect(poolFor(1500).at(0)?.layout).toBe("hero");
     const lengths = [1, 1, 1, 1, 1];
-    for (const [index, score] of [100, 300, 600, 1000, 1400].entries()) {
+    for (const [index, score] of [100, 300, 600, 1000, 1500].entries()) {
       const pool = poolFor(score);
       expect(pool).toHaveLength(lengths[index]!);
       expect(new Set(pool.map((clip) => clip.video)).size).toBe(lengths[index]);
@@ -32,8 +32,8 @@ describe("score-based celebration clips", () => {
     expect(failureClip().sound).toMatch(/movie\/notbad\.mp3$/);
     expect(poolFor(1000).every((clip) => !clip.video.includes("tipi"))).toBe(true);
     expect(poolFor(0)[0]?.video).toBe(failureClip().video);
-    for (const score of [0, 1, 299, 300, 599, 600, 999, 1000, 1399, 1400, 1500, 9999]) {
-      const name = score === 0 ? "notbad" : score < 300 ? "GOOD TRY" : score < 600 ? "tipi" : score < 1000 ? "amazing" : score < 1400 ? "unbelievable" : "ohmygod";
+    for (const score of [0, 1, 299, 300, 599, 600, 999, 1000, 1399, 1400, 1499, 1500, 9999]) {
+      const name = score === 0 ? "notbad" : score < 300 ? "GOOD TRY" : score < 600 ? "tipi" : score < 1000 ? "amazing" : score < 1500 ? "unbelievable" : "ohmygod";
       const folder = score > 0 && score < 600 ? "movie" : "0917-movie";
       const clip = randomClipFor(score)!;
       expect(decodeURI(clip.video)).toMatch(new RegExp(`/${folder}/${name}\\.webm$`));

@@ -9,7 +9,7 @@ import { createSyllablePractice, createSyllableGameJourney, learningStageAt, LEA
 import { createWordJourney } from "../content/wordJourney";
 import { alphabetLabels } from "../content/learningLabels";
 import { syllableTargetNote } from "../content/syllableNotes";
-import { ROUND_MS, FULL_SCORE_TARGETS, SCORE_CAPS, SCORE_MULTIPLIER, SCORE_GRADES, stageSection } from "../content/timedStages";
+import { ROUND_MS, POINTS_PER_TARGET, SCORE_GRADES, stageSection } from "../content/timedStages";
 import { timedScore } from "../core/hangul/timedScore";
 import { nextSyllableDifficulty, type SyllableDifficulty } from "../content/timedStages";
 import { APP_CONFIG } from "../config/app";
@@ -117,7 +117,7 @@ export class TalkApp {
     this.elapsedMs = Math.min(ROUND_MS, performance.now() - this.startedAt);
     const completedItem = this.stageTransitionPending;
     const tutorial = this.roundSection.tutorial;
-    const score = timedScore(this.roundUnits, FULL_SCORE_TARGETS[this.mode], SCORE_CAPS[this.mode], SCORE_MULTIPLIER);
+    const score = timedScore(this.roundUnits, POINTS_PER_TARGET[this.mode]);
     this.roundEnded = true;
     this.inputLocked = true;
     this.stopClock();
@@ -148,7 +148,7 @@ export class TalkApp {
       }
       this.startClock();
     };
-    if (tutorial) this.cheer.playTutorial(next);
+    if (tutorial) this.cheer.playTutorial(next, this.roundSection.side);
     else this.cheer.play("TIME’S UP!", score, grade, next);
   }
 

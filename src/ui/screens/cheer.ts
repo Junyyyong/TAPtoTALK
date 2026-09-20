@@ -1,6 +1,6 @@
 import { el } from "../dom";
 import { APP_CONFIG } from "../../config/app";
-import { RESULT_CARD_MS } from "../../content/timedStages";
+import { RESULT_CARD_MS, tutorialReward } from "../../content/timedStages";
 import { ClipSound } from "../clipSound";
 
 /**
@@ -183,8 +183,9 @@ export class Cheer {
   }
 
   /** Unscored tutorial milestone; wait for a tap after the dance. */
-  playTutorial(then: () => void): void {
-    this.begin("", 0, "GREAT!", then, randomClipFor(300));
+  playTutorial(then: () => void, side = 2): void {
+    const reward = tutorialReward(side);
+    this.begin("", 0, reward.text, then, randomClipFor(reward.at));
     this.dance();
   }
 

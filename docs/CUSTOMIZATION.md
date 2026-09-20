@@ -1,5 +1,9 @@
 # 디자인과 콘텐츠 수정 경계
 
+## 최신 점수·튜토리얼 영상 (2026-09-20)
+
+아래 과거 점수 설명을 대체한다. `timedStages.ts`의 `POINTS_PER_TARGET`는 Alphabet150/Syllable150/Word225. `timedScore(completed, pointsPerTarget)`는 완성 정수 개수×점수, 상한 없음. OH MY GOD1500점, UNBELIEVABLE1000~1499, 나머지 경계 유지. `app.ts` 영상 기준도 동일. `tutorialReward(side)`는2/4/6/8판 완료에 GREAT/AMAZING/UNBELIEVABLE/OH MY GOD를 매핑하며 현재 연습은Alphabet6판·Syllable4판까지다. 연습 영상에는 점수창 없음. Syllable 함정30% 해금은1500점. 시간60초·결과창2초·탭 진행 유지.
+
 ## 개별 순경음미음 교체 (2026-09-20)
 
 ㅱ은 `assets/glyph-sources/labial-mieum.svg`의 사용자 원본 두 경로를 사용한다. `extract-talk-type.py`가 시트보다 이 파일을 우선해 넓은 페이지 여백을 제외하고 100×100 viewBox 중앙에 배치한다. 획·비율·원본 좌표 크기는 유지한다. 재생성해도 옛 시트의 ㅱ으로 돌아가지 않는다. 결과는 `public/assets/glyphs/talk-type/u3171.svg`와 `src/config/glyphAssets.ts`에 반영한다.

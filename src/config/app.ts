@@ -54,7 +54,7 @@ export const APP_CONFIG = {
     failureCelebration: FAILURE_MOVIE,
     celebrations: [
       // September 17 uploads; GOOD TRY and GREAT/practice retain their clips.
-      { at: 1400, layout: "hero", clips: [GRADE_MOVIES.ohMyGod] },
+      { at: 1500, layout: "hero", clips: [GRADE_MOVIES.ohMyGod] },
       { at: 1000, layout: "hero", clips: [GRADE_MOVIES.unbelievable] },
       { at: 600, layout: "large", clips: [GRADE_MOVIES.amazing] },
       { at: 300, layout: "standard", clips: [GRADE_MOVIES.great] },

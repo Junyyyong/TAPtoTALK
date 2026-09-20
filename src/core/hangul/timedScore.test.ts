@@ -1,36 +1,20 @@
 import { expect, it } from "vitest";
 import { timedScore } from "./timedScore";
-import { stageSection, FULL_SCORE_TARGETS, SCORE_CAPS, SCORE_MULTIPLIER, SCORE_GRADES } from "../../content/timedStages";
-it("awards 225 points per Alphabet target without an upper cap", () => {
-  for (const n of [0, 1, 6, 10, 11, 12, 100]) {
-    expect(timedScore(n, FULL_SCORE_TARGETS.alphabet, SCORE_CAPS.alphabet, SCORE_MULTIPLIER)).toBe(n * 225);
-  }
-  expect(SCORE_GRADES.find(g => 1800 >= g.at)?.text).toBe("OH MY GOD~!");
+import { stageSection, POINTS_PER_TARGET, SCORE_GRADES, tutorialReward } from "../../content/timedStages";
+it("scores completed targets without a cap and reaches OMG at 10/10/7", () => {
+ for (const mode of ["alphabet","syllable","word"] as const) {
+  for (const n of [0,1,6,7,9,10,11,100])
+   expect(timedScore(n,POINTS_PER_TARGET[mode])).toBe(n*(mode==="word"?225:150));
+  const threshold=mode==="word"?7:10;
+  expect(timedScore(threshold-1,POINTS_PER_TARGET[mode])).toBeLessThan(1500);
+  expect(timedScore(threshold,POINTS_PER_TARGET[mode])).toBeGreaterThanOrEqual(1500);
+ }
+ for (const n of [-1,.9,NaN,Infinity]) expect(timedScore(n,150)).toBe(0);
+ expect(timedScore(1,0)).toBe(0);
+ expect(timedScore(1,NaN)).toBe(0);
 });
-it("raises all main-game scores by 50 percent before rounding and preserves caps", () => {
-  for (const mode of ["alphabet", "syllable", "word"] as const) {
-    for (const n of [0, 1, 6, 7, 10, 11, 30]) {
-      expect(timedScore(n, FULL_SCORE_TARGETS[mode], SCORE_CAPS[mode], SCORE_MULTIPLIER))
-        .toBe(Math.min(SCORE_CAPS[mode], Math.floor(n * 2250 / FULL_SCORE_TARGETS[mode])));
-    }
-  }
-  expect(timedScore(10, 15, 1500, SCORE_MULTIPLIER)).toBe(1500); // previously exactly 1000
-  expect(timedScore(10, 16, 1500, SCORE_MULTIPLIER)).toBe(1406);
-  expect(timedScore(.9, 10, 1500, SCORE_MULTIPLIER)).toBe(0);
-  expect(timedScore(1, 10, 1500, NaN)).toBe(0);
-  expect(timedScore(1, 10, 1500, -1)).toBe(0);
-});
-it("scores completed targets only and caps at 1500", () => {
-  for (const target of Object.values(FULL_SCORE_TARGETS)) {
-    expect(timedScore(0, target)).toBe(0);
-    expect(timedScore(Math.floor(target / 2), target)).toBe(Math.floor(target / 2) / target * 1500);
-    expect(timedScore(target, target)).toBe(1500);
-    expect(timedScore(target * 2, target)).toBe(1500);
-    expect(timedScore(.9, target)).toBe(0);
-  }
-  expect(timedScore(-1, 10)).toBe(0);
-  expect(timedScore(NaN, 10)).toBe(0);
-  expect(timedScore(1, 0)).toBe(0);
+it("advances tutorial video tiers", () => {
+ expect([2,4,6,8].map(side=>tutorialReward(side).at)).toEqual([300,600,1000,1500]);
 });
 it("keeps all fixed board sizes unscored and starts timed play at 8x8", () => {
   expect(stageSection("alphabet", 0)).toMatchObject({ end: 17, side: 2, tutorial: true });
@@ -45,7 +29,7 @@ it("keeps all fixed board sizes unscored and starts timed play at 8x8", () => {
   expect(stageSection("word", 0).tutorial).toBe(false);
 });
 it("uses all six grade boundaries", () => {
-  for (const [score, text] of [[0,"NOT BAD"],[1,"GOOD TRY"],[299,"GOOD TRY"],[300,"GREAT!"],[599,"GREAT!"],[600,"AMAZING!"],[999,"AMAZING!"],[1000,"UNBELIEVABLE!!"],[1399,"UNBELIEVABLE!!"],[1400,"OH MY GOD~!"],[1500,"OH MY GOD~!"]] as const) {
+  for (const [score, text] of [[0,"NOT BAD"],[1,"GOOD TRY"],[299,"GOOD TRY"],[300,"GREAT!"],[599,"GREAT!"],[600,"AMAZING!"],[999,"AMAZING!"],[1000,"UNBELIEVABLE!!"],[1399,"UNBELIEVABLE!!"],[1400,"UNBELIEVABLE!!"],[1499,"UNBELIEVABLE!!"],[1500,"OH MY GOD~!"]] as const) {
     expect(SCORE_GRADES.find(g => score >= g.at)?.text).toBe(text);
   }
 });

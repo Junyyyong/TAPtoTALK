@@ -1,17 +1,17 @@
 import { expect, it } from "vitest";
-import { nextSyllableDifficulty, FULL_SCORE_TARGETS } from "../../content/timedStages";
+import { nextSyllableDifficulty, POINTS_PER_TARGET } from "../../content/timedStages";
 import { timedScore } from "./timedScore";
 import { createMixedLearningBoard } from "./alphabetGame";
 import { ALPHABET_ORDER } from "../../content/prompts";
 import { requiredBoardSymbols } from "./target";
 
 it("unlocks 30% traps but never adds another difficulty tier", () => {
-  expect(timedScore(14, FULL_SCORE_TARGETS.syllable)).toBe(1312);
-  expect(timedScore(15, FULL_SCORE_TARGETS.syllable)).toBe(1406);
-  expect(timedScore(16, FULL_SCORE_TARGETS.syllable)).toBe(1500);
-  expect(nextSyllableDifficulty(0, 1399)).toBe(0);
-  expect(nextSyllableDifficulty(0, 1406)).toBe(1);
-  expect(nextSyllableDifficulty(1, 1406)).toBe(1);
+  expect(timedScore(9, POINTS_PER_TARGET.syllable)).toBe(1350);
+  expect(timedScore(10, POINTS_PER_TARGET.syllable)).toBe(1500);
+  expect(timedScore(11, POINTS_PER_TARGET.syllable)).toBe(1650);
+  expect(nextSyllableDifficulty(0, 1499)).toBe(0);
+  expect(nextSyllableDifficulty(0, 1500)).toBe(1);
+  expect(nextSyllableDifficulty(1, 1500)).toBe(1);
   expect(nextSyllableDifficulty(1, 1500)).toBe(1);
   expect(nextSyllableDifficulty(1, 0)).toBe(1);
 });

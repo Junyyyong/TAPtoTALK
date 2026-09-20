@@ -2,15 +2,12 @@ import { ALPHABET_STAGES, type AlphabetStage } from "./prompts";
 import { SYLLABLE_STAGES } from "./learningJourney";
 export const ROUND_MS = 60_000;
 export const RESULT_CARD_MS = 2_000;
-// Baseline targets per minute; the multiplier makes the previous 1000 worth 1500.
-export const FULL_SCORE_TARGETS = { alphabet: 10, syllable: 16, word: 10 } as const;
-export const SCORE_MULTIPLIER = 1.5;
+export const POINTS_PER_TARGET = { alphabet: 150, syllable: 150, word: 225 } as const;
 export type SyllableDifficulty = 0 | 1;
 export function nextSyllableDifficulty(current: SyllableDifficulty, score: number): SyllableDifficulty {
-  return score >= 1400 ? 1 : current;
+  return score >= 1500 ? 1 : current;
 }
-export const SCORE_CAPS = { alphabet: Infinity, syllable: 1500, word: 1500 } as const;
-export type TimedMode = keyof typeof FULL_SCORE_TARGETS;
+export type TimedMode = keyof typeof POINTS_PER_TARGET;
 export function stageSection(mode: TimedMode, item: number, roundNumber = 1, practice: readonly AlphabetStage[] = SYLLABLE_STAGES) {
   const lessons = mode === "alphabet" ? ALPHABET_STAGES : mode === "syllable" ? practice : [];
   const current = lessons[item];
@@ -21,10 +18,16 @@ export function stageSection(mode: TimedMode, item: number, roundNumber = 1, pra
   return { start, end, side: current.boardSide, tutorial: true };
 }
 export const SCORE_GRADES = [
-  { at: 1400, text: "OH MY GOD~!" },
+  { at: 1500, text: "OH MY GOD~!" },
   { at: 1000, text: "UNBELIEVABLE!!" },
   { at: 600, text: "AMAZING!" },
   { at: 300, text: "GREAT!" },
   { at: 1, text: "GOOD TRY" },
   { at: 0, text: "NOT BAD" },
 ] as const;
+
+/** Board-size milestones: GREAT, AMAZING, UNBELIEVABLE, then OH MY GOD. */
+export function tutorialReward(side: number) {
+  const at = side === 2 ? 300 : side === 4 ? 600 : side === 6 ? 1000 : 1500;
+  return SCORE_GRADES.find(grade => grade.at === at)!;
+}
