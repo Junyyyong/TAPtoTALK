@@ -6,9 +6,9 @@ import { ALPHABET_ORDER } from "../../content/prompts";
 import { requiredBoardSymbols } from "./target";
 
 it("unlocks 30% traps but never adds another difficulty tier", () => {
-  expect(timedScore(9, POINTS_PER_TARGET.syllable)).toBe(1350);
-  expect(timedScore(10, POINTS_PER_TARGET.syllable)).toBe(1500);
-  expect(timedScore(11, POINTS_PER_TARGET.syllable)).toBe(1650);
+  expect(timedScore(7, POINTS_PER_TARGET.syllable)).toBe(1312);
+  expect(timedScore(8, POINTS_PER_TARGET.syllable)).toBe(1500);
+  expect(timedScore(9, POINTS_PER_TARGET.syllable)).toBe(1687);
   expect(nextSyllableDifficulty(0, 1499)).toBe(0);
   expect(nextSyllableDifficulty(0, 1500)).toBe(1);
   expect(nextSyllableDifficulty(1, 1500)).toBe(1);

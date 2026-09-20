@@ -5,6 +5,8 @@ TAP to TEN의 화면 감각과 웹/Android 빌드 기반만 복사했으며, 원
 
 ## 현재 프로토타입
 
+- 최신 플레이 조정: Alphabet/Syllable은 문제당187.5점(8개1500점), Vocabulary250점(6개1500점). 합산 후 소수점 버림, 상한 없음. 아래150/225점 설명은 이전 기록이며 등급·튜토리얼 영상·60초는 유지한다.
+
 - 2026-09-20 최신 점수(아래 과거 설명보다 우선): 완성 수×고정 점수, Alphabet/Syllable150점·Vocabulary225점, 모든 상한 제거. OH MY GOD1500점부터(10/10/7개). 1000~1499 UNBELIEVABLE, 나머지 경계 유지. 튜토리얼은2×2 완료GREAT→4×4 완료AMAZING→6×6 완료UNBELIEVABLE, 점수 없이 영상 후 탭 진행. Syllable은4×4에서 연습이 끝나므로 영상2회. Syllable 함정30% 전환도1500점 기준.
 
 - 2026-09-17 영상 연결(아래 과거 영상 설명보다 우선): NOT BAD→0917-movie/notbad, GOOD TRY→기존 movie/GOOD TRY, GREAT/튜토리얼→기존 movie/tipi, AMAZING→0917-movie/amazing(업로드 당시 GREAT), UNBELIEVABLE→0917-movie/unbelievable(업로드 당시 Amazing), OH MY GOD→0917-movie/ohmygod. 각 MP4/WebM/MP3를 함께 연결하며 점수·레이아웃은 유지한다.

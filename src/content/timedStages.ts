@@ -2,7 +2,7 @@ import { ALPHABET_STAGES, type AlphabetStage } from "./prompts";
 import { SYLLABLE_STAGES } from "./learningJourney";
 export const ROUND_MS = 60_000;
 export const RESULT_CARD_MS = 2_000;
-export const POINTS_PER_TARGET = { alphabet: 150, syllable: 150, word: 225 } as const;
+export const POINTS_PER_TARGET = { alphabet: 187.5, syllable: 187.5, word: 250 } as const;
 export type SyllableDifficulty = 0 | 1;
 export function nextSyllableDifficulty(current: SyllableDifficulty, score: number): SyllableDifficulty {
   return score >= 1500 ? 1 : current;

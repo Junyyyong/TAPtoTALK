@@ -1,13 +1,14 @@
 import { expect, it } from "vitest";
 import { timedScore } from "./timedScore";
 import { stageSection, POINTS_PER_TARGET, SCORE_GRADES, tutorialReward } from "../../content/timedStages";
-it("scores completed targets without a cap and reaches OMG at 10/10/7", () => {
+it("scores completed targets without a cap and reaches OMG at 8/8/6", () => {
  for (const mode of ["alphabet","syllable","word"] as const) {
-  for (const n of [0,1,6,7,9,10,11,100])
-   expect(timedScore(n,POINTS_PER_TARGET[mode])).toBe(n*(mode==="word"?225:150));
-  const threshold=mode==="word"?7:10;
+  for (const n of [0,1,5,6,7,8,9,10,11,100])
+   expect(timedScore(n,POINTS_PER_TARGET[mode])).toBe(Math.floor(n*(mode==="word"?250:187.5)));
+  const threshold=mode==="word"?6:8;
   expect(timedScore(threshold-1,POINTS_PER_TARGET[mode])).toBeLessThan(1500);
-  expect(timedScore(threshold,POINTS_PER_TARGET[mode])).toBeGreaterThanOrEqual(1500);
+  expect(timedScore(threshold,POINTS_PER_TARGET[mode])).toBe(1500);
+  expect(timedScore(threshold+1,POINTS_PER_TARGET[mode])).toBeGreaterThan(1500);
  }
  for (const n of [-1,.9,NaN,Infinity]) expect(timedScore(n,150)).toBe(0);
  expect(timedScore(1,0)).toBe(0);
