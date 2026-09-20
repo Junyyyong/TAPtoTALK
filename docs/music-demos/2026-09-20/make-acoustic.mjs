@@ -12,7 +12,9 @@ const sources={
  shaker:'Idiophones/Struck Idiophones/Shaker, Small/Mid_ShakerDouble_Down_rr1.wav',
  bongo:'Membranophones/Struck Membranophones/Bongos/BongoH_Hit1_v1_rr1_Mid.wav',
 };
-const SR=44100,bpm=136,beat=60/bpm,bars=24,N=Math.round(bars*4*beat*SR);
+const bpm=Number(process.argv[2] ?? 136);
+if (![136,142].includes(bpm)) throw Error('Supported tempos: 136, 142');
+const SR=44100,beat=60/bpm,bars=24,N=Math.round(bars*4*beat*SR);
 const mix=new Float64Array(N*2),samples={};
 for(const [key,p] of Object.entries(sources)) {
  const url='https://raw.githubusercontent.com/sgossner/VCSL/master/'+p.split('/').map(encodeURIComponent).join('/');
@@ -69,8 +71,8 @@ let l=0,r=0,peak=0;
 for(let i=0;i<N;i++){l+=.38*(mix[i*2]-l);r+=.38*(mix[i*2+1]-r);mix[i*2]=l;mix[i*2+1]=r;peak=Math.max(peak,Math.abs(l),Math.abs(r));}
 const wav=Buffer.alloc(44+N*4);wav.write('RIFF');wav.writeUInt32LE(wav.length-8,4);wav.write('WAVEfmt ',8);wav.writeUInt32LE(16,16);wav.writeUInt16LE(1,20);wav.writeUInt16LE(2,22);wav.writeUInt32LE(SR,24);wav.writeUInt32LE(SR*4,28);wav.writeUInt16LE(4,32);wav.writeUInt16LE(16,34);wav.write('data',36);wav.writeUInt32LE(N*4,40);
 for(let i=0;i<N*2;i++)wav.writeInt16LE(Math.round(mix[i]*.65/peak*32767),44+i*2);
-const dest=path.join(out,'15-game-acoustic-percussion-136bpm');
+const dest=path.join(out,`${bpm===136?'15':'16'}-game-acoustic-percussion-${bpm}bpm`);
 fs.writeFileSync(dest+'.wav',wav);
 execFileSync('ffmpeg',['-v','error','-y','-i',dest+'.wav','-codec:a','libmp3lame','-b:a','192k',dest+'.mp3']);
-fs.writeFileSync(path.join(out,'sources.json'),JSON.stringify({library:'Versilian Community Sample Library',license:'CC0',url:'https://versilian-studios.com/vcsl/',bpm,seconds:N/SR,sources},null,2));
+fs.writeFileSync(path.join(out,bpm===136?'sources.json':`sources-${bpm}.json`),JSON.stringify({library:'Versilian Community Sample Library',license:'CC0',url:'https://versilian-studios.com/vcsl/',bpm,seconds:N/SR,sources},null,2));
 console.log(dest+'.mp3');

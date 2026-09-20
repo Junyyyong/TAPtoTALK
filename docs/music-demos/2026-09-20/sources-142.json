@@ -1,0 +1,15 @@
+{
+  "library": "Versilian Community Sample Library",
+  "license": "CC0",
+  "url": "https://versilian-studios.com/vcsl/",
+  "bpm": 142,
+  "seconds": 40.563378684807255,
+  "sources": {
+    "piano": "Chordophones/Zithers/Grand Piano, Kawai - Legacy/Sustains/GrandPno_Main_Sus_C3_v2_rr1.wav",
+    "marimba": "Idiophones/Struck Idiophones/Marimba/Marimba_hit_Outrigger_C4_soft_01.wav",
+    "xylo": "Idiophones/Struck Idiophones/Xylophone/Hard Mallets/Xylo_Hard_C4_pp_01_far.wav",
+    "wood": "Idiophones/Struck Idiophones/Woodblock/wood_click_pp_rr1.wav",
+    "shaker": "Idiophones/Struck Idiophones/Shaker, Small/Mid_ShakerDouble_Down_rr1.wav",
+    "bongo": "Membranophones/Struck Membranophones/Bongos/BongoH_Hit1_v1_rr1_Mid.wav"
+  }
+}
