@@ -22,6 +22,7 @@ import { canAcceptInput } from "./inputCapacity";
 import { Cheer } from "./screens/cheer";
 import { SceneMusic } from "./sceneMusic";
 import { loadTalkPreferences, saveTalkPreferences, type TalkPreferences } from "./talkPreferences";
+import { loadTalkProgress, saveTalkProgress } from "./talkProgress";
 
 type Mode = LearningMode | "word";
 interface TypedToken { value: string; tileId?: number }
@@ -92,6 +93,65 @@ export class TalkApp {
   private roundUnits = 0;
   private roundEnded = true;
   private roundSection = stageSection("alphabet", 0);
+  private progressActive = false;
+
+  private saveProgress(result = false, cleared = false): void {
+    if (!this.progressActive || this.roundEnded) return;
+    const elapsedMs = this.roundSection.tutorial ? 0 : this.paused || this.frame === undefined
+      ? this.elapsedMs : performance.now() - this.startedAt;
+    const saved = saveTalkProgress({
+      version: 1, mode: this.mode, alphabetStageIndex: this.alphabetStageIndex,
+      wordTargetIndex: this.wordTargetIndex, roundNumber: this.roundNumber,
+      elapsedMs: Math.min(ROUND_MS, Math.max(0, elapsedMs)), roundUnits: this.roundUnits,
+      syllableDifficulty: this.syllableDifficulty, practice: this.syllablePractice,
+      stage: this.learningStage, word: this.wordTarget, alphabetTiles: this.alphabetTiles,
+      tiles: this.tiles, part: this.alphabetPartIndex, used: [...this.used], input: this.input,
+      pending: this.stageTransitionPending, result, cleared,
+      wordJourney: this.nextWordTarget.snapshot(), syllableJourney: this.syllableJourney.snapshot(),
+    });
+    if (!saved) this.clock.title = "Progress could not be saved on this browser.";
+  }
+
+  private restoreProgress(mode: Mode): boolean {
+    const saved = loadTalkProgress(mode);
+    if (!saved) return false;
+    this.stopClock(); window.clearTimeout(this.stageTimer); this.cheer.stop();
+    this.mode = mode; this.paused = false;
+    this.alphabetStageIndex = saved.alphabetStageIndex; this.wordTargetIndex = saved.wordTargetIndex;
+    this.roundNumber = saved.roundNumber; this.syllableDifficulty = saved.syllableDifficulty;
+    this.syllablePractice = saved.practice; this.learningStage = saved.stage; this.wordTarget = saved.word;
+    this.nextWordTarget = createWordJourney(Math.random, saved.wordJourney);
+    this.syllableJourney = createSyllableGameJourney(Math.random, [], saved.syllableJourney);
+    this.beginRound();
+    this.elapsedMs = saved.elapsedMs; this.roundUnits = saved.roundUnits;
+    this.alphabetTiles = saved.alphabetTiles; this.tiles = saved.tiles;
+    this.alphabetPartIndex = saved.part; this.used = new Set(saved.used); this.input = saved.input;
+    this.stageTransitionPending = saved.pending; this.inputLocked = saved.pending;
+    this.progressActive = true;
+    for (const screen of [this.title,this.alphabetIntro,this.splash,this.result,this.help]) screen.classList.add("hidden");
+    this.game.classList.remove("hidden");
+    this.game.classList.toggle("is-word-mode",mode === "word");
+    this.game.classList.toggle("is-alphabet-mode",mode !== "word");
+    this.game.classList.toggle("is-syllable-mode",mode === "syllable");
+    this.targetPrompt.classList.toggle("is-writing-complete",mode === "word" && saved.pending);
+    this.targetPrompt.classList.toggle("is-alphabet-complete",mode !== "word" && saved.pending);
+    this.submitRow.classList.add("hidden");
+    this.runMode.textContent = mode === "word" ? "VOCABULARY" : mode === "syllable" ? "Syllable" : "Alphabet";
+    if (mode === "word") {
+      this.typedText.dataset.empty = "Your word appears here.";
+      this.renderTranslatedTarget(); this.renderBoard(); this.renderInput();
+    } else { this.renderAlphabetBoard(); this.renderAlphabetTarget(); }
+    this.board.querySelectorAll<HTMLButtonElement>("button[data-tile-id]").forEach(button => {
+      button.disabled = this.used.has(Number(button.dataset.tileId));
+    });
+    this.startedAt = performance.now() - this.elapsedMs;
+    if (saved.result) this.finishRound(saved.cleared);
+    else {
+      this.startClock(true);
+      if (saved.pending && !this.roundEnded) this.stageTimer = window.setTimeout(() => this.advanceLearningStage(), LEARNING_TRANSITION_MS);
+    }
+    return true;
+  }
 
   private beginRound(): void {
     this.music.setScene("game");
@@ -113,6 +173,7 @@ export class TalkApp {
 
   private finishRound(cleared: boolean): void {
     if (this.roundEnded) return;
+    this.saveProgress(true, cleared);
     this.music.setScene("silent");
     this.elapsedMs = Math.min(ROUND_MS, performance.now() - this.startedAt);
     const completedItem = this.stageTransitionPending;
@@ -147,6 +208,7 @@ export class TalkApp {
         }
       }
       this.startClock();
+      this.saveProgress();
     };
     if (tutorial) this.cheer.playTutorial(next, this.roundSection.side);
     else this.cheer.play("TIME’S UP!", score, grade, next);
@@ -174,7 +236,11 @@ export class TalkApp {
     document.addEventListener("keydown", unlock, { capture: true });
     document.addEventListener("visibilitychange", () => {
       if (document.hidden && !this.game.classList.contains("hidden")) this.pauseGame();
+      if (document.hidden) this.saveProgress();
     });
+    window.addEventListener("pagehide", () => this.saveProgress());
+    document.addEventListener("click", () => this.saveProgress());
+    window.setInterval(() => this.saveProgress(), 1000);
     this.applyPreferences();
     window.setTimeout(() => this.showProductSplash(), APP_CONFIG.timing.studioSplashMs);
     window.setTimeout(() => this.showTitle(), APP_CONFIG.timing.studioSplashMs + APP_CONFIG.timing.productSplashMs);
@@ -186,6 +252,7 @@ export class TalkApp {
   }
 
   private showTitle(): void {
+    this.saveProgress(); this.progressActive = false;
     this.settings.classList.add("hidden");
     this.music.setScene("menu");
     this.roundEnded = true;
@@ -248,6 +315,8 @@ export class TalkApp {
   }
 
   private startAlphabetJourney(): void {
+    if (this.restoreProgress(this.introMode)) return;
+    this.progressActive = true;
     window.clearTimeout(this.stageTimer);
     this.stageTransitionPending = false;
     this.cheer.stop();
@@ -288,6 +357,7 @@ export class TalkApp {
     if (this.mode === "syllable" && !this.roundSection.tutorial && this.syllableDifficulty > 0) this.targetLabel.textContent += " · CHALLENGE";
     this.renderAlphabetBoard();
     this.renderAlphabetTarget();
+    this.saveProgress();
   }
 
   private renderAlphabetBoard(): void {
@@ -484,7 +554,7 @@ export class TalkApp {
       const button = this.board.querySelector<HTMLButtonElement>(`[data-tile-id="${removed.tileId}"]`)!;
       button.disabled = false;
     }
-    feedback.tap(); this.renderInput();
+    feedback.tap(); this.renderInput(); this.saveProgress();
   }
 
   private setupBackspace(): void {
@@ -590,8 +660,11 @@ export class TalkApp {
     this.tiles = createWordBoard(this.wordTarget.word);
     this.renderTranslatedTarget();
     this.renderBoard(); this.renderInput();
+    this.saveProgress();
   }
   private startWordJourney(): void {
+    if (this.restoreProgress("word")) return;
+    this.progressActive = true;
     this.roundNumber = 1;
     this.wordTargetIndex = 0; this.elapsedMs = 0;
     this.nextWordTarget = createWordJourney();

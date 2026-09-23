@@ -1,5 +1,7 @@
 # TAPtoTALK 주요 변경 연구 기록
 
+- [2026-09-23 세 게임 이어하기](2026-09-23-resume/README.md): 브라우저별 진행·튜토리얼·입력·남은 시간·결과 상태 자동 저장/복원.
+
 - [2026-09-20 Syllable 연습 축소·한영 제목](2026-09-20-short-practice/README.md): 첫5판 유지, 둘째25→13판, 총18판.
 
 - [2026-09-20 OMG 달성 수 조정](2026-09-20-score-8-6/README.md): Alphabet/Syllable8개·Vocabulary6개=1500점.

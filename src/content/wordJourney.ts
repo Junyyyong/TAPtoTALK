@@ -59,15 +59,19 @@ export function wordLengthAt(index: number): WordLength | undefined {
   return extra < 0 ? undefined : extra < WORD_LENGTH_PRACTICE_STAGES ? 3 : extra < WORD_LENGTH_PRACTICE_STAGES * 2 ? 4 : 5;
 }
 
-/** Intro length pools, then a weighted mixed bag; reset only at a new START. */
-export function createWordJourney(rng: () => number = Math.random): () => WordTarget {
-  let index = 0;
-  const history: string[] = [];
-  const bags = new Map<WordLength, WordTarget[]>();
-  const introduced = new Set<string>();
-  let firstEndlessBag = true;
-  let endless: WordTarget[] = [];
-  return () => {
+export interface WordJourneyState {
+  index: number; history: string[]; bags: [WordLength, WordTarget[]][];
+  introduced: string[]; firstEndlessBag: boolean; endless: WordTarget[];
+}
+/** Preserve shuffle bags as well as the visible stage across browser restarts. */
+export function createWordJourney(rng: () => number = Math.random, saved?: WordJourneyState) {
+  let index = saved?.index ?? 0;
+  const history: string[] = [...(saved?.history ?? [])];
+  const bags = new Map<WordLength, WordTarget[]>((saved?.bags ?? []).map(([key, values]) => [key, [...values]]));
+  const introduced = new Set<string>(saved?.introduced);
+  let firstEndlessBag = saved?.firstEndlessBag ?? true;
+  let endless: WordTarget[] = [...(saved?.endless ?? [])];
+  const next = () => {
     const length = wordLengthAt(index);
     if (length === undefined) {
       const target = WORD_STAGES[index++]!; history.push(target.word); return target;
@@ -95,4 +99,5 @@ export function createWordJourney(rng: () => number = Math.random): () => WordTa
     index += 1;
     return target;
   };
+  return Object.assign(next, { snapshot: (): WordJourneyState => ({ index, history: [...history], bags: [...bags].map(([key, values]) => [key, [...values]]), introduced: [...introduced], firstEndlessBag, endless: [...endless] }) });
 }

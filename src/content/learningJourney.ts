@@ -33,12 +33,13 @@ export const SYLLABLE_STAGES: readonly AlphabetStage[] = SYLLABLE_ROWS.flatMap((
 /** Real one-syllable vocabulary only; pronunciation drills stay in practice. */
 export const SYLLABLE_GAME_TARGETS = Object.keys(SYLLABLE_MEANINGS);
 /** One session's shuffle bag. Rebuilding an unfinished stage must not consume a word. */
-export function createSyllableGameJourney(rng: () => number = Math.random, initialHistory: readonly string[] = []): (index: number, previous: string) => string {
-  let bag: string[] = [];
-  const history = [...initialHistory];
-  let currentIndex = -1;
-  let current = "";
-  return (index, previous) => {
+export interface SyllableJourneyState { bag: string[]; history: string[]; currentIndex: number; current: string }
+export function createSyllableGameJourney(rng: () => number = Math.random, initialHistory: readonly string[] = [], saved?: SyllableJourneyState) {
+  let bag: string[] = [...(saved?.bag ?? [])];
+  const history = [...(saved?.history ?? initialHistory)];
+  let currentIndex = saved?.currentIndex ?? -1;
+  let current = saved?.current ?? "";
+  const next = (index: number, previous: string) => {
     if (index === currentIndex) return current;
     if (!bag.length) {
       bag = pickLessonTargets(SYLLABLE_GAME_TARGETS, SYLLABLE_GAME_TARGETS.length, rng);
@@ -51,6 +52,7 @@ export function createSyllableGameJourney(rng: () => number = Math.random, initi
     if (history.length > 10) history.shift();
     return current;
   };
+  return Object.assign(next, { snapshot: (): SyllableJourneyState => ({ bag: [...bag], history: [...history], currentIndex, current }) });
 }
 /** Draw once per START. Keep the six categories ordered, shuffle within each. */
 export function createSyllablePractice(rng: () => number = Math.random): readonly AlphabetStage[] {
