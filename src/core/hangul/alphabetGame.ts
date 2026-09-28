@@ -1,6 +1,7 @@
 import { trapTransformFor, trapTransformsFor, type GlyphTransform } from "./board";
 import { FINAL_PARTS, TENSE_PARTS } from "./layout";
 import { trapLooksLikeTarget } from "./visualTraps";
+import { reserveAnswerCopies } from "./answerCopies";
 
 type AlphabetTransform = GlyphTransform | "flip-x-rotate-90" | "rotate-45" | "rotate-135" | "rotate-180" | "rotate-270" | "stem-one" | "stem-three";
 
@@ -119,11 +120,14 @@ export function createMixedLearningBoard(
   boardSide: 4 | 6 | 8,
   trapRatio: number,
   rng: () => number = Math.random,
+  extraAnswerCopies?: number,
 ): AlphabetTile[] {
   const size = boardSide * boardSide;
   if (!sequence.length || sequence.length >= size || !pool.length) throw new RangeError("Invalid learning board.");
   if (trapRatio < 0 || trapRatio > 1) throw new RangeError("Invalid trap ratio.");
-  const tiles: AlphabetTile[] = sequence.map((value, id) => ({ id, value, required: true }));
+  const reserved = extraAnswerCopies === undefined ? sequence
+    : reserveAnswerCopies(sequence, extraAnswerCopies, Math.max(sequence.length, size - Math.round(size * trapRatio)));
+  const tiles: AlphabetTile[] = reserved.map((value, id) => ({ id, value, required: true }));
   const traps = shuffle(trapCandidates(pool).filter(t => !trapLooksLikeTarget(t.value, t.transform, sequence)), rng);
   const trapCount = Math.min(Math.round(size * trapRatio), size - tiles.length);
   if (!traps.length && trapCount) throw new RangeError("No available learning traps.");
@@ -132,8 +136,15 @@ export function createMixedLearningBoard(
   }
   // Include each ordinary jamo when there is room (all 17 fit in 8×8).
   const missing = shuffle([...new Set(pool)].filter((value) => !sequence.includes(value)), rng);
+  const fillerPool = extraAnswerCopies === undefined ? pool : pool.filter(value => !sequence.includes(value));
   while (tiles.length < size) {
-    const value = missing.shift() ?? pool[Math.floor(rng() * pool.length)]!;
+    if (!fillerPool.length) {
+      const trap = traps[tiles.length % traps.length];
+      if (!trap) throw new RangeError("No non-answer filler available.");
+      tiles.push({ ...trap, id: tiles.length, required: false });
+      continue;
+    }
+    const value = missing.shift() ?? fillerPool[Math.floor(rng() * fillerPool.length)]!;
     tiles.push({ id: tiles.length, value, required: false });
   }
   return shuffle(tiles, rng);

@@ -57,6 +57,16 @@
 .time-penalty.is-visible { animation: time-penalty 500ms ease-out both; }
 @keyframes time-penalty { 0%,55% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; transform: translateY(-4px); } }
 @media (prefers-reduced-motion: reduce) { .time-penalty.is-visible { animation: none; opacity: 1; } }
+.talk-screen::after { content: ""; position: absolute; inset: 0; z-index: 4; pointer-events: none; background: rgba(220,38,38,.08); opacity: 0; border-radius: inherit; }
+.talk-screen.is-mistake-feedback::after { animation: mistake-tint 280ms ease-out both; }
+.talk-screen.is-mistake-feedback .letter-board { animation: mistake-shake 240ms ease-out; }
+@keyframes mistake-tint { 0% { opacity: 0; } 20%,45% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes mistake-shake { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-2px); } 60% { transform: translateX(2px); } }
+@media (prefers-reduced-motion: reduce) {
+  .talk-screen.is-mistake-feedback .letter-board { animation: none; }
+  .letter-tile.is-wrong-pick { animation: none; }
+  .talk-screen.is-mistake-feedback::after { animation: none; opacity: 1; }
+}
 .run-heading strong { font-size: 21px; line-height: 1; font-variant-numeric: tabular-nums; }
 .writing-card { flex: 0 0 auto; padding: 2px 0 6px; border: 0; background: transparent; box-shadow: none; }
 .target-prompt { display: grid; min-height: 132px; grid-template-rows: auto 1fr auto; align-items: center; justify-items: center; gap: 5px; padding: 13px 16px 14px; border: 1px solid var(--paper-edge); border-radius: 10px; background: var(--panel-lit); box-shadow: 0 2px 8px var(--recess); }

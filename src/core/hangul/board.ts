@@ -1,6 +1,7 @@
 import { BOARD_SYMBOLS, PUNCTUATION_SYMBOLS, type BoardSymbol } from "./keys";
 import { requiredBoardSymbols } from "./target";
 import { trapLooksLikeTarget } from "./visualTraps";
+import { reserveAnswerCopies } from "./answerCopies";
 
 export const BOARD_SIZE = 81;
 export const WORD_BOARD_SIDE = 8;
@@ -85,6 +86,7 @@ export function createLetterBoard(
   weights: SymbolWeights = DEFAULT_SYMBOL_WEIGHTS,
   size = BOARD_SIZE,
   symbols: readonly BoardSymbol[] = BOARD_SYMBOLS,
+  extraAnswerCopies?: number,
 ): LetterTile[] {
   const targetSymbols = requiredBoardSymbols(target);
   const punctuationFree = !targetSymbols.some((symbol) =>
@@ -94,8 +96,8 @@ export function createLetterBoard(
     ? symbols.filter((symbol) => !(PUNCTUATION_SYMBOLS as readonly string[]).includes(symbol))
     : symbols;
   const bufferedCount = Math.ceil(targetSymbols.length * TARGET_SYMBOL_BUFFER);
-  const required = [...targetSymbols];
-  for (let index = required.length; index < bufferedCount; index += 1) {
+  const required = extraAnswerCopies === undefined ? [...targetSymbols] : reserveAnswerCopies(targetSymbols, extraAnswerCopies, size);
+  for (let index = required.length; extraAnswerCopies === undefined && index < bufferedCount; index += 1) {
     required.push(targetSymbols[index % targetSymbols.length]!);
   }
   if (required.length > size) {
@@ -103,8 +105,14 @@ export function createLetterBoard(
   }
 
   const tiles: LetterTile[] = required.map((symbol, id) => ({ id, symbol, required: true }));
+  // A capped answer must not sneak back in through the random filler pool.
+  const fillerSymbols = extraAnswerCopies === undefined ? dealSymbols : dealSymbols.filter(symbol => !targetSymbols.includes(symbol));
   while (tiles.length < size) {
-    const symbol = weightedPick(rng, weights, dealSymbols);
+    if (!fillerSymbols.length) {
+      tiles.push({ id: tiles.length, symbol: "ㆍ", shape: "★", required: false });
+      continue;
+    }
+    const symbol = weightedPick(rng, weights, fillerSymbols);
     let transform = punctuationFree && rng() < MIRROR_TRAP_CHANCE ? trapTransformFor(symbol, rng) : undefined;
     if (transform && trapLooksLikeTarget(symbol, transform, targetSymbols)) transform = undefined;
     tiles.push({ id: tiles.length, symbol, required: false, ...(transform ? { transform } : {}) });
@@ -113,10 +121,10 @@ export function createLetterBoard(
 }
 
 /** Word uses basic consonant taps, including repeated taps for tense consonants. */
-export function createWordBoard(target: string, rng: () => number = Math.random): LetterTile[] {
+export function createWordBoard(target: string, rng: () => number = Math.random, extraAnswerCopies?: number): LetterTile[] {
   const board = createLetterBoard(target, rng, DEFAULT_SYMBOL_WEIGHTS, WORD_BOARD_SIDE ** 2,
-    BOARD_SYMBOLS.filter((symbol) => !TENSE_SYMBOLS.has(symbol)));
-  // Reuse existing trap slots first; never replace the target's 1.5× reserve.
+    BOARD_SYMBOLS.filter((symbol) => !TENSE_SYMBOLS.has(symbol)), extraAnswerCopies);
+  // Reuse existing trap slots first; never replace reserved answers or their spares.
   const spare = board.filter(tile => !tile.required);
   const slots = [...spare.filter(tile => tile.transform), ...spare.filter(tile => !tile.transform)];
   const shapes = shuffle<NonNullable<LetterTile["shape"]>>(["♥", "★", ",", "╱", "╲"], rng);

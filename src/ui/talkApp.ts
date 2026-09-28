@@ -4,7 +4,8 @@ import { COMMIT_BOUNDARY, deleteLastInput } from "../core/hangul/compose";
 import { CHEONJIIN_STROKES, CONSONANTS, type BoardSymbol } from "../core/hangul/keys";
 import { isWordMatch } from "../core/hangul/wordChallenge";
 import { activeTargetSyllable, composeTargetInput, composedCharacterProgress, materializeTargetTokens, targetCharacterProgress, targetToTokens } from "../core/hangul/target";
-import { ALPHABET_ORDER, WORD_TARGETS, type AlphabetStage, type WordTarget } from "../content/prompts";
+import { ALPHABET_ORDER, ALPHABET_STAGES, WORD_TARGETS, type AlphabetStage, type WordTarget } from "../content/prompts";
+import { extraAnswerCopiesAt } from "../content/boardDifficulty";
 import { createSyllablePractice, createSyllableGameJourney, learningStageAt, LEARNING_TRAP_RATIO, LEARNING_TRANSITION_MS, type LearningMode } from "../content/learningJourney";
 import { createWordJourney } from "../content/wordJourney";
 import { alphabetLabels } from "../content/learningLabels";
@@ -98,6 +99,16 @@ export class TalkApp {
   private roundSection = stageSection("alphabet", 0);
   private progressActive = false;
 
+  private answerExtras(): number | undefined {
+    const stage = this.mode === "word" ? this.wordTargetIndex + 1
+      : this.alphabetStageIndex - (this.mode === "alphabet" ? ALPHABET_STAGES.length : this.syllablePractice.length) + 1;
+    return stage < 1 ? undefined : extraAnswerCopiesAt(stage);
+  }
+
+  private makeWordBoard(): LetterTile[] {
+    return createWordBoard(this.wordTarget.word, Math.random, this.answerExtras());
+  }
+
   private saveProgress(result = false, cleared = false): void {
     if (!this.progressActive || this.roundEnded) return;
     const elapsedMs = this.roundSection.tutorial ? 0 : this.paused || this.frame === undefined
@@ -140,7 +151,7 @@ export class TalkApp {
     this.runMode.textContent = mode === "word" ? "VOCABULARY" : mode === "syllable" ? "Syllable" : "Alphabet";
     if (mode === "word") {
       if (checkpoint.advance) this.wordTarget = this.nextWordTarget();
-      this.tiles = createWordBoard(this.wordTarget.word);
+      this.tiles = this.makeWordBoard();
       this.typedText.dataset.empty = "Your word appears here.";
       this.renderTranslatedTarget(); this.renderBoard(); this.renderInput();
     } else this.loadAlphabetStage(checkpoint.advance ? undefined : { ...saved.stage, boardSide: this.roundSection.side as 2 | 4 | 6 | 8 });
@@ -182,6 +193,7 @@ export class TalkApp {
   private finishRound(cleared: boolean): void {
     if (this.roundEnded) return;
     this.saveProgress(true, cleared);
+    this.timePenalty.clear();
     this.music.setScene("silent");
     this.elapsedMs = Math.min(ROUND_MS, performance.now() - this.startedAt);
     const completedItem = this.stageTransitionPending;
@@ -211,7 +223,7 @@ export class TalkApp {
         if (completedItem) this.startNextWord();
         else {
           this.input = []; this.used.clear();
-          this.tiles = createWordBoard(this.wordTarget.word);
+          this.tiles = this.makeWordBoard();
           this.renderTranslatedTarget(); this.renderBoard(); this.renderInput();
         }
       }
@@ -282,8 +294,7 @@ export class TalkApp {
     this.mode = "word";
     this.wordTarget = this.nextWordTarget();
     this.input = []; this.used.clear();
-    const requiredText = this.wordTarget.word;
-    this.tiles = createWordBoard(requiredText);
+    this.tiles = this.makeWordBoard();
     this.renderTranslatedTarget();
     this.typedText.dataset.empty = "Your word appears here.";
     this.runMode.textContent = "VOCABULARY";
@@ -359,7 +370,8 @@ export class TalkApp {
     this.alphabetPartIndex = 0;
     this.alphabetTiles = stage.boardSide === 8 || (this.mode === "syllable" && stage.boardSide !== 2)
       ? createMixedLearningBoard(stage.sequence, ALPHABET_ORDER, stage.boardSide as 4 | 6 | 8,
-          this.mode === "syllable" && !this.roundSection.tutorial && this.syllableDifficulty > 0 ? .3 : LEARNING_TRAP_RATIO)
+          this.mode === "syllable" && !this.roundSection.tutorial && this.syllableDifficulty > 0 ? .3 : LEARNING_TRAP_RATIO,
+          Math.random, this.answerExtras())
       : createAlphabetStageBoard(stage.sequence, ALPHABET_ORDER, stage.boardSide);
     this.runMode.textContent = this.mode === "syllable" ? "Syllable" : "Alphabet";
     this.targetLabel.textContent = `${this.roundSection.tutorial ? "PRACTICE" : `ROUND ${this.roundNumber}`} · ${stage.boardSide}×${stage.boardSide}`;
@@ -670,7 +682,7 @@ export class TalkApp {
     this.wordTargetIndex += 1;
     this.wordTarget = this.nextWordTarget();
     this.input = []; this.used.clear();
-    this.tiles = createWordBoard(this.wordTarget.word);
+    this.tiles = this.makeWordBoard();
     this.renderTranslatedTarget();
     this.renderBoard(); this.renderInput();
     this.saveProgress();
@@ -698,6 +710,7 @@ export class TalkApp {
     if (this.stageTransitionPending) window.clearTimeout(this.stageTimer);
     if (!this.acceptBeforeDeadline()) return;
     this.paused = true; this.stopClock();
+    this.timePenalty.clear();
     this.music.setScene("silent");
     this.openHelp("Paused");
     this.helpBody.innerHTML = `<div class="pause-card"><p>Take a break. The clock is stopped.</p><button class="wood-btn" id="btn-resume">Resume</button><button class="text-btn" id="btn-pause-menu">Main menu</button></div>`;
