@@ -1,6 +1,7 @@
 import { ALPHABET_STAGES, type AlphabetStage } from "./prompts";
 import { SYLLABLE_STAGES } from "./learningJourney";
 export const ROUND_MS = 60_000;
+export const MISTAKE_PENALTY_MS = 1_000;
 export const RESULT_CARD_MS = 2_000;
 export const POINTS_PER_TARGET = { alphabet: 187.5, syllable: 187.5, word: 250 } as const;
 export type SyllableDifficulty = 0 | 1;

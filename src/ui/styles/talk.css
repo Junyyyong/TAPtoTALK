@@ -51,7 +51,12 @@
 .target-prompt.is-writing-complete .target-text,.target-prompt.is-writing-complete .target-hint,.target-prompt.is-writing-complete .target-translation-inline { color: white; }
 .target-prompt.is-writing-complete .target-character { color: white; background: transparent; text-decoration: none; }
 .run-heading { display: grid; padding-top: 9px; text-align: center; }
-.run-heading span { display: none; }
+.run-heading > #run-mode { display: none; }
+.run-stat-number { display: inline-flex; position: relative; justify-self: center; }
+.time-penalty { position: absolute; left: calc(100% + 3px); top: 50%; margin-top: -.6em; color: #dc2626; font-size: 12px; font-weight: 700; line-height: 1.2; white-space: nowrap; pointer-events: none; transition-property: none; opacity: 0; }
+.time-penalty.is-visible { animation: time-penalty 500ms ease-out both; }
+@keyframes time-penalty { 0%,55% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; transform: translateY(-4px); } }
+@media (prefers-reduced-motion: reduce) { .time-penalty.is-visible { animation: none; opacity: 1; } }
 .run-heading strong { font-size: 21px; line-height: 1; font-variant-numeric: tabular-nums; }
 .writing-card { flex: 0 0 auto; padding: 2px 0 6px; border: 0; background: transparent; box-shadow: none; }
 .target-prompt { display: grid; min-height: 132px; grid-template-rows: auto 1fr auto; align-items: center; justify-items: center; gap: 5px; padding: 13px 16px 14px; border: 1px solid var(--paper-edge); border-radius: 10px; background: var(--panel-lit); box-shadow: 0 2px 8px var(--recess); }
