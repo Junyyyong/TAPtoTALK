@@ -43,7 +43,14 @@
           <h2 id="settings-title">SETTINGS</h2>
           <span class="icon-spacer" aria-hidden="true"></span>
         </header>
-        <div class="settings-body" id="settings-body"></div>
+        <div class="settings-body">
+          <div id="settings-body"></div>
+          <nav class="settings-links" aria-label="Legal information">
+            <button class="settings-legal-link" id="btn-privacy">Privacy policy</button>
+            <span aria-hidden="true">·</span>
+            <button class="settings-legal-link" id="btn-licenses">Licenses</button>
+          </nav>
+        </div>
       </section>
       <section class="screen alphabet-intro-screen hidden" id="screen-alphabet-intro">
         <header class="hud">
@@ -116,6 +123,13 @@
         </section>
       </div>
     </main>
+    <dialog class="legal-dialog" id="legal-dialog" aria-labelledby="legal-title">
+      <header class="legal-dialog-header">
+        <h2 id="legal-title">Privacy policy</h2>
+        <button id="btn-legal-close" aria-label="Close legal information" autofocus>Close</button>
+      </header>
+      <iframe id="legal-frame" title="Privacy policy" sandbox="allow-same-origin" referrerpolicy="no-referrer"></iframe>
+    </dialog>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

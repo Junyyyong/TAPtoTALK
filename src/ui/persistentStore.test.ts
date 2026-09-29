@@ -1,5 +1,6 @@
 import { expect, it, vi } from "vitest";
 import { PersistentStore, type NativePreferences } from "./persistentStore";
+import { TALK_STORAGE_KEYS } from "./talkStorage";
 const KEY = "taptotalk.progress.v1.alphabet";
 const old = '{"stage":10}', next = '{"stage":11}', latest = '{"stage":12}';
 function memory(entries: [string, string][] = []) {
@@ -64,4 +65,20 @@ it("web writes immediately and keeps a recovery copy even for the first save",as
   const web=memory(),store=new PersistentStore(()=>web);await store.initialize([KEY]);store.write(KEY,old);
   expect(web.data.get(KEY)).toBe(old);expect(web.data.get(`${KEY}.backup`)).toBe(old);
   store.write(KEY,next);expect(web.data.get(KEY)).toBe(next);expect(web.data.get(`${KEY}.backup`)).toBe(old);
+});
+
+it.each([false, true])("a new app instance keeps every stable key and backup untouched, native=%s", async useNative => {
+  const entries = TALK_STORAGE_KEYS.flatMap((key, index) => [
+    [key, JSON.stringify({ saved: index, version: 1 })] as [string, string],
+    [key + ".backup", JSON.stringify({ saved: index - 1, version: 1 })] as [string, string],
+  ]);
+  const data = memory(entries), app = useNative ? native(data).bridge : undefined;
+  for (let launch = 0; launch < 2; launch++) {
+    const store = new PersistentStore(() => data, app);
+    await store.initialize(TALK_STORAGE_KEYS);
+    for (const key of TALK_STORAGE_KEYS) expect(store.read(key)).toBe(data.data.get(key));
+    await store.flush();
+  }
+  expect([...data.data]).toEqual(entries);
+  expect(data.setItem).not.toHaveBeenCalled();
 });

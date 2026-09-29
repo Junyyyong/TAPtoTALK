@@ -1,0 +1,34 @@
+TAPtoTALK — TapeeTepee openstudio
+Source review: 2026-09-29
+
+Noto Sans KR and Noto Serif KR
+Copyright 2014-2021 Adobe (Noto Sans KR); Copyright 2012 Google Inc. (Noto Serif KR).
+Noto Sans KR reserves the Font Name 'Source'.
+Licensed under the SIL Open Font License 1.1; full texts accompany this document.
+Local WOFF2 versions were converted from the corresponding variable TTF files.
+The outlined Korean marks on the START screen were generated from Noto Serif KR.
+The in-game "TAP Sans KR" and "TAP Serif KR" family aliases identify these local fonts.
+Sources:
+https://github.com/google/fonts/tree/main/ofl/notosanskr
+https://github.com/google/fonts/tree/main/ofl/notoserifkr
+
+Game background music: talk-game-acoustic-142.mp3
+An original TAPtoTALK arrangement using recorded instruments from
+Versilian Community Sample Library (VCSL), released under CC0 1.0 Universal.
+The full CC0 text accompanies this document.
+Library by Versilian Studios and contributors:
+https://versilian-studios.com/vcsl/
+https://github.com/sgossner/VCSL
+https://github.com/sgossner/VCSL/blob/master/LICENSE
+
+Samples used (paths within VCSL):
+- Chordophones/Zithers/Grand Piano, Kawai - Legacy/Sustains/GrandPno_Main_Sus_C3_v2_rr1.wav
+- Idiophones/Struck Idiophones/Marimba/Marimba_hit_Outrigger_C4_soft_01.wav
+- Idiophones/Struck Idiophones/Xylophone/Hard Mallets/Xylo_Hard_C4_pp_01_far.wav
+- Idiophones/Struck Idiophones/Woodblock/wood_click_pp_rr1.wav
+- Idiophones/Struck Idiophones/Shaker, Small/Mid_ShakerDouble_Down_rr1.wav
+- Membranophones/Struck Membranophones/Bongos/BongoH_Hit1_v1_rr1_Mid.wav
+
+The lobby track (talk-lobby.mp3) was locally synthesized for TAPtoTALK.
+These third-party licenses do not grant permission to reuse the game's
+logos, custom glyph artwork, cover art, characters, videos or arrangements.

@@ -23,6 +23,7 @@ import { createUploadedGlyph } from "./uploadedGlyph";
 import { feedback } from "./feedback";
 import { canAcceptInput } from "./inputCapacity";
 import { Cheer } from "./screens/cheer";
+import { LegalDocuments } from "./screens/legalDocuments";
 import { SceneMusic } from "./sceneMusic";
 import { loadTalkPreferences, saveTalkPreferences, type TalkPreferences } from "./talkPreferences";
 import { loadTalkProgress, restartCheckpoint, saveTalkProgress } from "./talkProgress";
@@ -241,6 +242,7 @@ export class TalkApp {
   }
 
   constructor() {
+    new LegalDocuments();
     el("mode-alphabet").addEventListener("click", () => this.showAlphabetIntro("alphabet"));
     el("btn-alphabet-intro-back").addEventListener("click", () => this.showTitle());
     el("btn-alphabet-start").addEventListener("click", () => this.introMode === "word" ? this.startWordJourney() : this.startAlphabetJourney());
@@ -754,7 +756,7 @@ export class TalkApp {
 
   private renderSettings(body: HTMLElement): void {
     const canVibrate = typeof navigator.vibrate === "function";
-    body.innerHTML = `<div class="switch-list"><button class="switch-row" id="talk-sound"><span class="switch-text"><b>Sound</b><small>Button sounds and finish sounds</small></span><span class="switch" role="switch" aria-checked="${this.preferences.soundOn}"><span class="switch-knob"></span></span></button><button class="switch-row" id="talk-haptics"><span class="switch-text"><b>Vibration</b><small>Short feedback when you tap</small></span><span class="switch" role="switch" aria-checked="${this.preferences.hapticsOn}"><span class="switch-knob"></span></span></button>${canVibrate ? "" : '<p class="settings-note">Vibration may not work in this browser.</p>'}</div>`;
+    body.innerHTML = `<div class="switch-list"><button class="switch-row" id="talk-sound"><span class="switch-text"><b>Sound</b><small>Button sounds and finish sounds</small></span><span class="switch" role="switch" aria-checked="${this.preferences.soundOn}"><span class="switch-knob"></span></span></button><button class="switch-row" id="talk-haptics"><span class="switch-text"><b>Vibration</b><small>Short feedback when you tap</small></span><span class="switch" role="switch" aria-checked="${this.preferences.hapticsOn}"><span class="switch-knob"></span></span></button></div>${!canVibrate && this.preferences.hapticsOn ? '<p class="settings-note">Vibration may not work in this browser.</p>' : ""}`;
     body.querySelector(".switch-list")!.insertAdjacentHTML("afterbegin", `<button class="switch-row" id="talk-music"><span class="switch-text"><b>Music</b><small>Menu and game background music</small></span><span class="switch" role="switch" aria-checked="${this.preferences.musicOn}"><span class="switch-knob"></span></span></button>`);
     el("talk-music").addEventListener("click", () => this.changePreference("musicOn"));
     el("talk-sound").addEventListener("click", () => this.changePreference("soundOn"));

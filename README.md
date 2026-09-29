@@ -85,6 +85,12 @@ TAP to TEN의 화면 감각과 웹/Android 빌드 기반만 복사했으며, 원
 - Alphabet은 고정 27개, Syllable은 매번 추첨한 30개 이후 무작위 스테이지가 계속 이어짐. 세 게임 모두 메뉴로 종료 가능
 - 등급별 영상: NOT BAD→notbad, GOOD TRY→GOOD TRY, GREAT→기존 tipi, AMAZING→AMAZING, UNBELIEVABLE→기존 taepi, OH MY GOD→OH MY GOD. 각 등급의 MP4(iOS)·WebM(일반)·MP3(소리)를 함께 연결한다. 튜토리얼 GREAT는 기존 티피를 유지한다.
 
+## 출시용 개인정보·라이선스
+
+Settings 하단의 **Privacy policy · Licenses**에서 앱에 포함된 문서를 읽을 수 있습니다. 한·영 방침은 TAPtoTALK의 실제 진도·최고 스테이지·입력 상태·설정 저장을 설명합니다. 연락처는 **wnsdydtml@gmail.com**입니다. 세 게임의 저장 키와 앱 ID는 그대로 유지합니다.
+
+Play Console 신고·대상 연령·미디어 권리·실기기 업데이트 등 남은 확인은 [출시 점검표](docs/PLAY_POLICY_CHECKLIST.md)를 참고하세요. 문서 추가가 심사 통과를 보장하지는 않습니다.
+
 ## 개발
 
 ```bash

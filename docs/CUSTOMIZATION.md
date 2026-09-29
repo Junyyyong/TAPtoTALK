@@ -1,5 +1,13 @@
 # 디자인과 콘텐츠 수정 경계
 
+## 개인정보·라이선스 공통 화면 (2026-09-30)
+
+`src/ui/screens/legalDocuments.ts`와 `styles/legal.css`는 TAPtoTEN과 같은 로컬 문서 읽기 화면이다. Settings 링크는13px/500·44px 터치 높이·6px 간격·26px 위 여백을 유지한다. Settings만 HUD56px와 상속 폰트/설명13px로 맞춰390×844에서 TEN과 동일한 y327에 링크가 온다. 진동 미지원 안내는 켜진 경우에만 스위치 목록 밖에 표시해 같은 간격으로 밀어낸다. 게임 HUD/블록에는 영향이 없다.
+
+`public/privacy.html`은 한·영 방침, `public/licenses.html`은 생성된 라이선스 전문이다. iframe은 같은 origin만 사용하며 스크립트를 허용하지 않는다. 닫기/Escape 후 원래 링크에 포커스가 돌아오고 빠르게 다시 열어도 문서가 지워지지 않는다. 정책 열람은 저장 API를 호출하지 않는다.
+
+게임별 데이터 차이는 문서 내용에서 설명하고 UI 위치·크기는 공통 규격을 따른다. Noto Serif와 VCSL 샘플은 TALK에 맞게 별도 고지한다. `docs/PLAY_POLICY_CHECKLIST.md`에 실제 권한·통신·배포 확인 및 담당자 할 일을 구분한다. 문서 변경 시 연락처와 저장 키 회귀 테스트, 모바일 캡처를 함께 실행한다.
+
 ## 본게임 번호·최고 도달 기록·100개 어휘 (2026-09-29)
 
 `content/stageNumber.ts`의 `mainStageNumber`는 튜토리얼이면0, 본게임이면1부터 반환한다. Alphabet 고정 연습 수와 Syllable의 **실제 저장된** 연습 목록 길이를 제외하며 Vocabulary는 첫 단어부터1이다. Alphabet 본게임 파란 배지·정답 여분 난도·세 게임 최고 도달 기록에 같은 번호를 사용한다. 60초 라운드가 바뀌어도 번호는 계속 증가한다.
