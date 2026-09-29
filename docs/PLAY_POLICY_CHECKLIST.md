@@ -10,6 +10,7 @@
 - 실제 사용 서체2종(SIL OFL), Capacitor3종(MIT), Android release 의존성50개(Apache-2.0), Cordova/AndroidX 고지, VCSL 악기 샘플(CC0) 전문 포함.
 - package/appId/applicationId/namespace: `io.github.junyyyong.taptotalk` **변경하지 않음**. `MainActivity`, strings, Preferences 등록도 확인.
 - 게임 규칙·콘텐츠·진행 키·최고기록 키·시작 흐름 유지. 새 앱 인스턴스/이전 저장 데이터로 검증한다.
+- 저장 읽기 실패→Retry 성공 시 blocking 안내의 클래스/표시를 모두 해제한다. 이전의 hidden/display 충돌을 실제 브라우저에서 재현했고 복구 뒤 일반 클릭으로3게임·Settings·정책에 들어갈 수 있는지 검증한다.
 
 ## 실제 데이터·통신 감사
 

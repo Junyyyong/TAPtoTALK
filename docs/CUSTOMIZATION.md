@@ -2,6 +2,8 @@
 
 ## 개인정보·라이선스 공통 화면 (2026-09-30)
 
+저장 복구 안내는 `StorageNotice.hide()`에서 blocking 클래스를 제거하며 CSS에서도 hidden이 blocking 표시보다 우선한다. Retry 성공 후 보이지 않는 전체화면 패널이 메뉴 클릭을 가로막지 않도록 두 조건을 함께 유지한다. 실패한 Retry는 기존 데이터를 보존하고 다시 시도할 수 있어야 한다.
+
 `src/ui/screens/legalDocuments.ts`와 `styles/legal.css`는 TAPtoTEN과 같은 로컬 문서 읽기 화면이다. Settings 링크는13px/500·44px 터치 높이·6px 간격·26px 위 여백을 유지한다. Settings만 HUD56px와 상속 폰트/설명13px로 맞춰390×844에서 TEN과 동일한 y327에 링크가 온다. 진동 미지원 안내는 켜진 경우에만 스위치 목록 밖에 표시해 같은 간격으로 밀어낸다. 게임 HUD/블록에는 영향이 없다.
 
 `public/privacy.html`은 한·영 방침, `public/licenses.html`은 생성된 라이선스 전문이다. iframe은 같은 origin만 사용하며 스크립트를 허용하지 않는다. 닫기/Escape 후 원래 링크에 포커스가 돌아오고 빠르게 다시 열어도 문서가 지워지지 않는다. 정책 열람은 저장 API를 호출하지 않는다.

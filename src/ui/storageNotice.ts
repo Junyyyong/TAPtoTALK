@@ -28,6 +28,7 @@ export class StorageNotice {
   }
   hide(): void {
     this.panel.hidden = true;
+    this.panel.classList.remove("storage-blocking");
     document.getElementById("app")!.inert = false;
   }
 }
