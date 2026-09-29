@@ -66,4 +66,6 @@
 
 코드와 기록을 `origin/main`에 normal push한다. 공개 주소는 [Privacy policy](https://taptotalk.vercel.app/privacy.html), [Licenses](https://taptotalk.vercel.app/licenses.html). 공개 응답의 본문·해시 확인 결과는 별도 배포 확인 기록에 남긴다.
 
+9월30일00:11 KST 두 공개 주소 HTTP200·HTML 게임명/연락처·로컬 파일 SHA-256 일치를 확인했다. [배포 확인](deployment.json). 앱 Play 배포를 뜻하지 않는다. 후속 저장 Retry 복구 수정은 [별도 기록](../2026-09-30-storage-retry/README.md)에 남겼다.
+
 [출시 점검표](../../PLAY_POLICY_CHECKLIST.md)에 공식 User Data/Data Safety/Families 근거 및 콘솔 신고·대상 연령·미디어 권리·실기기 업데이트 할 일을 구분했다. 정책 파일 추가나 테스트 통과가 심사/법률 준수를 보장하지 않으며 Play 업로드·제출은 하지 않았다.

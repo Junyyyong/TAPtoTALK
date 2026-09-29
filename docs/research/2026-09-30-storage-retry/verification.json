@@ -1,0 +1,48 @@
+{
+  "before": "a861ab0",
+  "after": "520deca",
+  "capturedAt": "2026-09-29T15:13:21.991Z",
+  "browser": "154.0.8037.58",
+  "mobile": {
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "deviceScaleFactor": 2,
+    "isMobile": true,
+    "hasTouch": true,
+    "locale": "en-US",
+    "timezoneId": "Asia/Seoul"
+  },
+  "results": {
+    "before": {
+      "hidden": true,
+      "blocking": true,
+      "display": "flex",
+      "appInert": false
+    },
+    "after": {
+      "hidden": true,
+      "blocking": false,
+      "display": "none",
+      "appInert": false
+    }
+  },
+  "files": {
+    "before-retry.png": {
+      "sha256": "baa1cc2e432b29036689bca58ec1a3079c4c85c25f28df4674d22d232f252b4f",
+      "width": 780,
+      "height": 1688
+    },
+    "after-retry.png": {
+      "sha256": "5d2edaeddc503151c49cc295b7670df67b75d4116d033323ad13104b7964d548",
+      "width": 780,
+      "height": 1688
+    }
+  },
+  "checks": [
+    "Reproduced hidden-but-flex blocker in previous commit",
+    "Failed Retry preserves all 3 game saves/settings/records",
+    "Successful Retry removes blocker and inert; normal clicks reach Settings/legal and all 3 games"
+  ]
+}

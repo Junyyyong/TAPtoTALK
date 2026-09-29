@@ -1,5 +1,7 @@
 # TAPtoTALK 주요 변경 연구 기록
 
+- [2026-09-30 저장 복구 후 클릭 차단 수정](2026-09-30-storage-retry/README.md): Retry 성공 뒤 hidden/blocking 충돌 해소, 기존 데이터 보존·일반 클릭 재개 확인.
+
 - [2026-09-29~30 출시용 개인정보·라이선스](2026-09-29-play-policy/README.md): TAPtoTEN 공통 Settings 링크/읽기창, 한·영 방침, 실제 서체·음악·SDK 고지, 저장 보존·모바일 비교.
 
 - [2026-09-29 본게임 번호·최고 도달 기록·100개 어휘](2026-09-29-stage-records-content/README.md): Alphabet Stage 표시, TAPtoTEN 위치의 최고기록, Syllable100·Vocabulary추가100, 기존 진행 보존.

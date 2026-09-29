@@ -1,0 +1,25 @@
+{
+  "checkedAt": "2026-09-29T15:11:41.910Z",
+  "pushedHead": "a861ab00ab1f2b7bce1174fda98b5426608f4aae",
+  "results": [
+    {
+      "url": "https://taptotalk.vercel.app/privacy.html",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "title": "TAPtoTALK — Privacy policy",
+      "matchesBundledDocument": true,
+      "sha256": "6823f3293d8f24a52bb448943350bed90504873f19da448d965a6de5b041df1d",
+      "contactCorrect": true
+    },
+    {
+      "url": "https://taptotalk.vercel.app/licenses.html",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "title": "TAPtoTALK — Open-source licenses",
+      "matchesBundledDocument": true,
+      "sha256": "55fb39258fee4e08da0f52b599def783cf511b8ca5cc0078a625c3911b0a09fe",
+      "contactCorrect": true
+    }
+  ],
+  "note": "Unauthenticated public HTML matches the bundled files, not a SPA fallback. This verifies web document publication, not Play Console approval."
+}
