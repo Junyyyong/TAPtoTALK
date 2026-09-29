@@ -1,0 +1,21 @@
+{
+  "checkedAt": "2026-09-29T15:06:28.729Z",
+  "applicationId": "io.github.junyyyong.taptotalk",
+  "minSdk": 24,
+  "targetSdk": 36,
+  "allowBackup": true,
+  "permissions": [
+    "android.permission.INTERNET",
+    "io.github.junyyyong.taptotalk.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+  ],
+  "manifestSha256": "db9e4796692d362d027c27cdc54b88e4c2fdf580ba846004cdd247f934529e39",
+  "releaseDependencyCount": 50,
+  "capacitorPlugin": [
+    {
+      "pkg": "@capacitor/preferences",
+      "classpath": "com.capacitorjs.plugins.preferences.PreferencesPlugin"
+    }
+  ],
+  "packageIdentityChanged": false,
+  "signedArtifactBuilt": false
+}

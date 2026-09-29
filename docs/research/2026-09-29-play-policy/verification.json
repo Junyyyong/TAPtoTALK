@@ -1,0 +1,668 @@
+{
+  "before": "717c4252d2bddcc433e40843e996235d43833ccf",
+  "after": "53980cdf8a264663f02e37be7c65404456c97b82",
+  "reference": "cae2e49b5af230a95b2f1890daf01b47b321b621",
+  "capturedAt": "2026-09-29T15:06:28.039Z",
+  "browser": "154.0.8037.58",
+  "viewport": {
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "deviceScaleFactor": 2,
+    "isMobile": true,
+    "hasTouch": true,
+    "locale": "en-US",
+    "timezoneId": "Asia/Seoul"
+  },
+  "metrics": {
+    "reference": {
+      ".settings-links": {
+        "x": 16,
+        "y": 327,
+        "width": 358,
+        "height": 44,
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "fontFamily": "\"Apple SD Gothic Neo\", \"Noto Sans KR\", \"Malgun Gothic\", system-ui, sans-serif",
+        "lineHeight": "normal",
+        "padding": "0px",
+        "gap": "4px 6px",
+        "marginTop": "26px"
+      },
+      "#btn-privacy": {
+        "x": 114.90625,
+        "y": 327,
+        "width": 85.828125,
+        "height": 44,
+        "fontSize": "13px",
+        "fontWeight": "500",
+        "fontFamily": "\"Apple SD Gothic Neo\", \"Noto Sans KR\", \"Malgun Gothic\", system-ui, sans-serif",
+        "lineHeight": "normal",
+        "padding": "8px 6px",
+        "gap": "normal",
+        "marginTop": "0px"
+      },
+      "#btn-licenses": {
+        "x": 217.59375,
+        "y": 327,
+        "width": 57.5,
+        "height": 44,
+        "fontSize": "13px",
+        "fontWeight": "500",
+        "fontFamily": "\"Apple SD Gothic Neo\", \"Noto Sans KR\", \"Malgun Gothic\", system-ui, sans-serif",
+        "lineHeight": "normal",
+        "padding": "8px 6px",
+        "gap": "normal",
+        "marginTop": "0px"
+      },
+      ".switch-list": {
+        "x": 16,
+        "y": 62,
+        "width": 358,
+        "height": 239,
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "fontFamily": "\"Apple SD Gothic Neo\", \"Noto Sans KR\", \"Malgun Gothic\", system-ui, sans-serif",
+        "lineHeight": "normal",
+        "padding": "0px",
+        "gap": "10px",
+        "marginTop": "0px"
+      },
+      ".switch-row": {
+        "x": 16,
+        "y": 62,
+        "width": 358,
+        "height": 73,
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "fontFamily": "\"Apple SD Gothic Neo\", \"Noto Sans KR\", \"Malgun Gothic\", system-ui, sans-serif",
+        "lineHeight": "normal",
+        "padding": "16px 18px",
+        "gap": "16px",
+        "marginTop": "0px"
+      },
+      ".legal-dialog": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "fontFamily": "\"Apple SD Gothic Neo\", \"Noto Sans KR\", \"Malgun Gothic\", system-ui, sans-serif",
+        "lineHeight": "normal",
+        "padding": "0px",
+        "gap": "normal",
+        "marginTop": "auto"
+      },
+      "#btn-legal-close": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "fontSize": "14px",
+        "fontWeight": "400",
+        "fontFamily": "\"Apple SD Gothic Neo\", \"Noto Sans KR\", \"Malgun Gothic\", system-ui, sans-serif",
+        "lineHeight": "normal",
+        "padding": "8px",
+        "gap": "normal",
+        "marginTop": "0px"
+      },
+      "dialog": {
+        ".settings-links": {
+          "x": 16,
+          "y": 327,
+          "width": 358,
+          "height": 44,
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "fontFamily": "\"Apple SD Gothic Neo\", \"Noto Sans KR\", \"Malgun Gothic\", system-ui, sans-serif",
+          "lineHeight": "normal",
+          "padding": "0px",
+          "gap": "4px 6px",
+          "marginTop": "26px"
+        },
+        "#btn-privacy": {
+          "x": 114.90625,
+          "y": 327,
+          "width": 85.828125,
+          "height": 44,
+          "fontSize": "13px",
+          "fontWeight": "500",
+          "fontFamily": "\"Apple SD Gothic Neo\", \"Noto Sans KR\", \"Malgun Gothic\", system-ui, sans-serif",
+          "lineHeight": "normal",
+          "padding": "8px 6px",
+          "gap": "normal",
+          "marginTop": "0px"
+        },
+        "#btn-licenses": {
+          "x": 217.59375,
+          "y": 327,
+          "width": 57.5,
+          "height": 44,
+          "fontSize": "13px",
+          "fontWeight": "500",
+          "fontFamily": "\"Apple SD Gothic Neo\", \"Noto Sans KR\", \"Malgun Gothic\", system-ui, sans-serif",
+          "lineHeight": "normal",
+          "padding": "8px 6px",
+          "gap": "normal",
+          "marginTop": "0px"
+        },
+        ".switch-list": {
+          "x": 16,
+          "y": 62,
+          "width": 358,
+          "height": 239,
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "fontFamily": "\"Apple SD Gothic Neo\", \"Noto Sans KR\", \"Malgun Gothic\", system-ui, sans-serif",
+          "lineHeight": "normal",
+          "padding": "0px",
+          "gap": "10px",
+          "marginTop": "0px"
+        },
+        ".switch-row": {
+          "x": 16,
+          "y": 62,
+          "width": 358,
+          "height": 73,
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "fontFamily": "\"Apple SD Gothic Neo\", \"Noto Sans KR\", \"Malgun Gothic\", system-ui, sans-serif",
+          "lineHeight": "normal",
+          "padding": "16px 18px",
+          "gap": "16px",
+          "marginTop": "0px"
+        },
+        ".legal-dialog": {
+          "x": 19,
+          "y": 42,
+          "width": 352,
+          "height": 760,
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "fontFamily": "\"Apple SD Gothic Neo\", \"Noto Sans KR\", \"Malgun Gothic\", system-ui, sans-serif",
+          "lineHeight": "normal",
+          "padding": "0px",
+          "gap": "normal",
+          "marginTop": "42px"
+        },
+        "#btn-legal-close": {
+          "x": 306.546875,
+          "y": 51,
+          "width": 47.453125,
+          "height": 44,
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "fontFamily": "\"Apple SD Gothic Neo\", \"Noto Sans KR\", \"Malgun Gothic\", system-ui, sans-serif",
+          "lineHeight": "normal",
+          "padding": "8px",
+          "gap": "normal",
+          "marginTop": "0px"
+        }
+      },
+      "noVibration": {
+        ".settings-links": {
+          "x": 16,
+          "y": 361.796875,
+          "width": 358,
+          "height": 44,
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "fontFamily": "\"Apple SD Gothic Neo\", \"Noto Sans KR\", \"Malgun Gothic\", system-ui, sans-serif",
+          "lineHeight": "normal",
+          "padding": "0px",
+          "gap": "4px 6px",
+          "marginTop": "26px"
+        },
+        "#btn-privacy": {
+          "x": 114.90625,
+          "y": 361.796875,
+          "width": 85.828125,
+          "height": 44,
+          "fontSize": "13px",
+          "fontWeight": "500",
+          "fontFamily": "\"Apple SD Gothic Neo\", \"Noto Sans KR\", \"Malgun Gothic\", system-ui, sans-serif",
+          "lineHeight": "normal",
+          "padding": "8px 6px",
+          "gap": "normal",
+          "marginTop": "0px"
+        },
+        "#btn-licenses": {
+          "x": 217.59375,
+          "y": 361.796875,
+          "width": 57.5,
+          "height": 44,
+          "fontSize": "13px",
+          "fontWeight": "500",
+          "fontFamily": "\"Apple SD Gothic Neo\", \"Noto Sans KR\", \"Malgun Gothic\", system-ui, sans-serif",
+          "lineHeight": "normal",
+          "padding": "8px 6px",
+          "gap": "normal",
+          "marginTop": "0px"
+        },
+        ".switch-list": {
+          "x": 16,
+          "y": 62,
+          "width": 358,
+          "height": 239,
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "fontFamily": "\"Apple SD Gothic Neo\", \"Noto Sans KR\", \"Malgun Gothic\", system-ui, sans-serif",
+          "lineHeight": "normal",
+          "padding": "0px",
+          "gap": "10px",
+          "marginTop": "0px"
+        },
+        ".switch-row": {
+          "x": 16,
+          "y": 62,
+          "width": 358,
+          "height": 73,
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "fontFamily": "\"Apple SD Gothic Neo\", \"Noto Sans KR\", \"Malgun Gothic\", system-ui, sans-serif",
+          "lineHeight": "normal",
+          "padding": "16px 18px",
+          "gap": "16px",
+          "marginTop": "0px"
+        },
+        ".legal-dialog": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "fontFamily": "\"Apple SD Gothic Neo\", \"Noto Sans KR\", \"Malgun Gothic\", system-ui, sans-serif",
+          "lineHeight": "normal",
+          "padding": "0px",
+          "gap": "normal",
+          "marginTop": "auto"
+        },
+        "#btn-legal-close": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "fontFamily": "\"Apple SD Gothic Neo\", \"Noto Sans KR\", \"Malgun Gothic\", system-ui, sans-serif",
+          "lineHeight": "normal",
+          "padding": "8px",
+          "gap": "normal",
+          "marginTop": "0px"
+        }
+      }
+    },
+    "before": {
+      ".switch-list": {
+        "x": 16,
+        "y": 68,
+        "width": 358,
+        "height": 230,
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "fontFamily": "\"Apple SD Gothic Neo\", \"Noto Sans KR\", \"Malgun Gothic\", system-ui, sans-serif",
+        "lineHeight": "normal",
+        "padding": "0px",
+        "gap": "10px",
+        "marginTop": "0px"
+      },
+      ".switch-row": {
+        "x": 16,
+        "y": 68,
+        "width": 358,
+        "height": 70,
+        "fontSize": "13.3333px",
+        "fontWeight": "400",
+        "fontFamily": "Arial",
+        "lineHeight": "normal",
+        "padding": "16px",
+        "gap": "12px",
+        "marginTop": "0px"
+      }
+    },
+    "after": {
+      ".settings-links": {
+        "x": 16,
+        "y": 327,
+        "width": 358,
+        "height": 44,
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "fontFamily": "\"Apple SD Gothic Neo\", \"Noto Sans KR\", \"Malgun Gothic\", system-ui, sans-serif",
+        "lineHeight": "normal",
+        "padding": "0px",
+        "gap": "4px 6px",
+        "marginTop": "26px"
+      },
+      "#btn-privacy": {
+        "x": 114.90625,
+        "y": 327,
+        "width": 85.828125,
+        "height": 44,
+        "fontSize": "13px",
+        "fontWeight": "500",
+        "fontFamily": "\"Apple SD Gothic Neo\", \"Noto Sans KR\", \"Malgun Gothic\", system-ui, sans-serif",
+        "lineHeight": "normal",
+        "padding": "8px 6px",
+        "gap": "normal",
+        "marginTop": "0px"
+      },
+      "#btn-licenses": {
+        "x": 217.59375,
+        "y": 327,
+        "width": 57.5,
+        "height": 44,
+        "fontSize": "13px",
+        "fontWeight": "500",
+        "fontFamily": "\"Apple SD Gothic Neo\", \"Noto Sans KR\", \"Malgun Gothic\", system-ui, sans-serif",
+        "lineHeight": "normal",
+        "padding": "8px 6px",
+        "gap": "normal",
+        "marginTop": "0px"
+      },
+      ".switch-list": {
+        "x": 16,
+        "y": 62,
+        "width": 358,
+        "height": 239,
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "fontFamily": "\"Apple SD Gothic Neo\", \"Noto Sans KR\", \"Malgun Gothic\", system-ui, sans-serif",
+        "lineHeight": "normal",
+        "padding": "0px",
+        "gap": "10px",
+        "marginTop": "0px"
+      },
+      ".switch-row": {
+        "x": 16,
+        "y": 62,
+        "width": 358,
+        "height": 73,
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "fontFamily": "\"Apple SD Gothic Neo\", \"Noto Sans KR\", \"Malgun Gothic\", system-ui, sans-serif",
+        "lineHeight": "normal",
+        "padding": "16px",
+        "gap": "12px",
+        "marginTop": "0px"
+      },
+      ".legal-dialog": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "fontFamily": "\"Apple SD Gothic Neo\", \"Noto Sans KR\", \"Malgun Gothic\", system-ui, sans-serif",
+        "lineHeight": "normal",
+        "padding": "0px",
+        "gap": "normal",
+        "marginTop": "auto"
+      },
+      "#btn-legal-close": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "fontSize": "14px",
+        "fontWeight": "400",
+        "fontFamily": "\"Apple SD Gothic Neo\", \"Noto Sans KR\", \"Malgun Gothic\", system-ui, sans-serif",
+        "lineHeight": "normal",
+        "padding": "8px",
+        "gap": "normal",
+        "marginTop": "0px"
+      },
+      "dialog": {
+        ".settings-links": {
+          "x": 16,
+          "y": 327,
+          "width": 358,
+          "height": 44,
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "fontFamily": "\"Apple SD Gothic Neo\", \"Noto Sans KR\", \"Malgun Gothic\", system-ui, sans-serif",
+          "lineHeight": "normal",
+          "padding": "0px",
+          "gap": "4px 6px",
+          "marginTop": "26px"
+        },
+        "#btn-privacy": {
+          "x": 114.90625,
+          "y": 327,
+          "width": 85.828125,
+          "height": 44,
+          "fontSize": "13px",
+          "fontWeight": "500",
+          "fontFamily": "\"Apple SD Gothic Neo\", \"Noto Sans KR\", \"Malgun Gothic\", system-ui, sans-serif",
+          "lineHeight": "normal",
+          "padding": "8px 6px",
+          "gap": "normal",
+          "marginTop": "0px"
+        },
+        "#btn-licenses": {
+          "x": 217.59375,
+          "y": 327,
+          "width": 57.5,
+          "height": 44,
+          "fontSize": "13px",
+          "fontWeight": "500",
+          "fontFamily": "\"Apple SD Gothic Neo\", \"Noto Sans KR\", \"Malgun Gothic\", system-ui, sans-serif",
+          "lineHeight": "normal",
+          "padding": "8px 6px",
+          "gap": "normal",
+          "marginTop": "0px"
+        },
+        ".switch-list": {
+          "x": 16,
+          "y": 62,
+          "width": 358,
+          "height": 239,
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "fontFamily": "\"Apple SD Gothic Neo\", \"Noto Sans KR\", \"Malgun Gothic\", system-ui, sans-serif",
+          "lineHeight": "normal",
+          "padding": "0px",
+          "gap": "10px",
+          "marginTop": "0px"
+        },
+        ".switch-row": {
+          "x": 16,
+          "y": 62,
+          "width": 358,
+          "height": 73,
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "fontFamily": "\"Apple SD Gothic Neo\", \"Noto Sans KR\", \"Malgun Gothic\", system-ui, sans-serif",
+          "lineHeight": "normal",
+          "padding": "16px",
+          "gap": "12px",
+          "marginTop": "0px"
+        },
+        ".legal-dialog": {
+          "x": 19,
+          "y": 42,
+          "width": 352,
+          "height": 760,
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "fontFamily": "\"Apple SD Gothic Neo\", \"Noto Sans KR\", \"Malgun Gothic\", system-ui, sans-serif",
+          "lineHeight": "normal",
+          "padding": "0px",
+          "gap": "normal",
+          "marginTop": "42px"
+        },
+        "#btn-legal-close": {
+          "x": 306.546875,
+          "y": 51,
+          "width": 47.453125,
+          "height": 44,
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "fontFamily": "\"Apple SD Gothic Neo\", \"Noto Sans KR\", \"Malgun Gothic\", system-ui, sans-serif",
+          "lineHeight": "normal",
+          "padding": "8px",
+          "gap": "normal",
+          "marginTop": "0px"
+        }
+      },
+      "noVibration": {
+        ".settings-links": {
+          "x": 16,
+          "y": 361.796875,
+          "width": 358,
+          "height": 44,
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "fontFamily": "\"Apple SD Gothic Neo\", \"Noto Sans KR\", \"Malgun Gothic\", system-ui, sans-serif",
+          "lineHeight": "normal",
+          "padding": "0px",
+          "gap": "4px 6px",
+          "marginTop": "26px"
+        },
+        "#btn-privacy": {
+          "x": 114.90625,
+          "y": 361.796875,
+          "width": 85.828125,
+          "height": 44,
+          "fontSize": "13px",
+          "fontWeight": "500",
+          "fontFamily": "\"Apple SD Gothic Neo\", \"Noto Sans KR\", \"Malgun Gothic\", system-ui, sans-serif",
+          "lineHeight": "normal",
+          "padding": "8px 6px",
+          "gap": "normal",
+          "marginTop": "0px"
+        },
+        "#btn-licenses": {
+          "x": 217.59375,
+          "y": 361.796875,
+          "width": 57.5,
+          "height": 44,
+          "fontSize": "13px",
+          "fontWeight": "500",
+          "fontFamily": "\"Apple SD Gothic Neo\", \"Noto Sans KR\", \"Malgun Gothic\", system-ui, sans-serif",
+          "lineHeight": "normal",
+          "padding": "8px 6px",
+          "gap": "normal",
+          "marginTop": "0px"
+        },
+        ".switch-list": {
+          "x": 16,
+          "y": 62,
+          "width": 358,
+          "height": 239,
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "fontFamily": "\"Apple SD Gothic Neo\", \"Noto Sans KR\", \"Malgun Gothic\", system-ui, sans-serif",
+          "lineHeight": "normal",
+          "padding": "0px",
+          "gap": "10px",
+          "marginTop": "0px"
+        },
+        ".switch-row": {
+          "x": 16,
+          "y": 62,
+          "width": 358,
+          "height": 73,
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "fontFamily": "\"Apple SD Gothic Neo\", \"Noto Sans KR\", \"Malgun Gothic\", system-ui, sans-serif",
+          "lineHeight": "normal",
+          "padding": "16px",
+          "gap": "12px",
+          "marginTop": "0px"
+        },
+        ".legal-dialog": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "fontFamily": "\"Apple SD Gothic Neo\", \"Noto Sans KR\", \"Malgun Gothic\", system-ui, sans-serif",
+          "lineHeight": "normal",
+          "padding": "0px",
+          "gap": "normal",
+          "marginTop": "auto"
+        },
+        "#btn-legal-close": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "fontFamily": "\"Apple SD Gothic Neo\", \"Noto Sans KR\", \"Malgun Gothic\", system-ui, sans-serif",
+          "lineHeight": "normal",
+          "padding": "8px",
+          "gap": "normal",
+          "marginTop": "0px"
+        }
+      }
+    }
+  },
+  "files": {
+    "reference-settings.png": {
+      "sha256": "0c20167bc5dbd16f856ee07f4420759406d169fe0bb43b3f4220955bb13dd1c2",
+      "width": 780,
+      "height": 1688
+    },
+    "reference-privacy-en.png": {
+      "sha256": "93abfcdf7ae2f501b207d9d7ead0d23804d66910fb861c353118bc227846f3ba",
+      "width": 780,
+      "height": 1688
+    },
+    "before-settings.png": {
+      "sha256": "7456410002ec8d14279e30d0b177cab9ed5dbd3400c0c351817eb5717a2c5a95",
+      "width": 780,
+      "height": 1688
+    },
+    "after-settings.png": {
+      "sha256": "c136d6d73b3116a46fc9f65d8823f596c91c28474f73addee013692f37b81ff7",
+      "width": 780,
+      "height": 1688
+    },
+    "after-privacy-en.png": {
+      "sha256": "db6b85871e0842be281cf3892078a3254fbfad196732ac0900a7513a44a0546c",
+      "width": 780,
+      "height": 1688
+    },
+    "after-privacy-ko.png": {
+      "sha256": "abaf7f37ffa34d23e1e4776f864856ea97e47388978c5070f994c0f031f6bd07",
+      "width": 780,
+      "height": 1688
+    },
+    "after-licenses.png": {
+      "sha256": "3c95f495ae05308ae123177538f3ee2fff5af77931e1ef0c351e255f49f613f4",
+      "width": 780,
+      "height": 1688
+    },
+    "after-settings-no-vibration.png": {
+      "sha256": "c29553d1c06feb79a837de2ef3f14d290b2b3504a0e851d08ead5eff87835973",
+      "width": 780,
+      "height": 1688
+    },
+    "public/privacy.html": {
+      "sha256": "6823f3293d8f24a52bb448943350bed90504873f19da448d965a6de5b041df1d"
+    },
+    "public/licenses.html": {
+      "sha256": "55fb39258fee4e08da0f52b599def783cf511b8ca5cc0078a625c3911b0a09fe"
+    },
+    "public/legal/dependencies.json": {
+      "sha256": "3c94e1febae2594c92ebb3222374e29ba1ab26f9edc0633a74853f704042d88e"
+    },
+    "src/ui/screens/legalDocuments.ts": {
+      "sha256": "52e18a1e8708ce559cfd27a271b98380ee5a9b0160f82a30cd07200e211753ac"
+    },
+    "src/ui/styles/legal.css": {
+      "sha256": "223eb5a173223c9dfdf599e3a83c6a0632674be9713d86d76402970d618ffb23"
+    }
+  },
+  "checks": [
+    "Esc from iframe; close focus restoration; rapid reopen; legal localStorage unchanged; prior-version saves and all 3 best stages resumed; 320/390/430px fit",
+    "Settings legal links and dialog geometry/typography match TAPtoTEN",
+    "All PNGs 780×1688; zero page exceptions; zero external requests in captured flows"
+  ]
+}

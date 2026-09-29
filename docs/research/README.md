@@ -1,5 +1,7 @@
 # TAPtoTALK 주요 변경 연구 기록
 
+- [2026-09-29~30 출시용 개인정보·라이선스](2026-09-29-play-policy/README.md): TAPtoTEN 공통 Settings 링크/읽기창, 한·영 방침, 실제 서체·음악·SDK 고지, 저장 보존·모바일 비교.
+
 - [2026-09-29 본게임 번호·최고 도달 기록·100개 어휘](2026-09-29-stage-records-content/README.md): Alphabet Stage 표시, TAPtoTEN 위치의 최고기록, Syllable100·Vocabulary추가100, 기존 진행 보존.
 
 - [2026-09-28 정답 블록 감소·오답 화면 효과](2026-09-28-answer-scarcity/README.md): 본게임 여분2→1→0, 반복 입력 필수 개수 보장, 옅은 붉은색·2px 흔들림.
