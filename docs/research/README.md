@@ -1,5 +1,7 @@
 # TAPtoTALK 주요 변경 연구 기록
 
+- [2026-09-29 본게임 번호·최고 도달 기록·100개 어휘](2026-09-29-stage-records-content/README.md): Alphabet Stage 표시, TAPtoTEN 위치의 최고기록, Syllable100·Vocabulary추가100, 기존 진행 보존.
+
 - [2026-09-28 정답 블록 감소·오답 화면 효과](2026-09-28-answer-scarcity/README.md): 본게임 여분2→1→0, 반복 입력 필수 개수 보장, 옅은 붉은색·2px 흔들림.
 
 - [2026-09-28 저장 안정화·스테이지 재시작·오답−1초](2026-09-28-durable-checkpoints/README.md): 앱 전용 저장/기존 데이터 이관/백업·오류 보호, 세 게임 새60초 이어하기, TAPtoTEN 동일 차감 효과.
