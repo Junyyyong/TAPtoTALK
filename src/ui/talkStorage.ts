@@ -9,5 +9,6 @@ export const PROGRESS_KEYS = {
   syllable: "taptotalk.progress.v1.syllable",
   word: "taptotalk.progress.v1.word",
 } as const;
-export const TALK_STORAGE_KEYS = [PREFERENCES_KEY, ...Object.values(PROGRESS_KEYS)];
+export const RECORDS_KEY = "taptotalk.records.v1";
+export const TALK_STORAGE_KEYS = [PREFERENCES_KEY, ...Object.values(PROGRESS_KEYS), RECORDS_KEY];
 export const talkStore = new PersistentStore(() => localStorage, Capacitor.isNativePlatform() ? Preferences : undefined);

@@ -3,7 +3,8 @@ import type { WordJourneyState } from "../content/wordJourney";
 import type { SyllableJourneyState } from "../content/learningJourney";
 import type { AlphabetTile } from "../core/hangul/alphabetGame";
 import type { LetterTile } from "../core/hangul/board";
-import { PROGRESS_KEYS, talkStore } from "./talkStorage";
+import { PROGRESS_KEYS, RECORDS_KEY, talkStore } from "./talkStorage";
+import { validStageRecords } from "./stageRecords";
 import { savedObject, type PersistentStore } from "./persistentStore";
 import { nextSyllableDifficulty, POINTS_PER_TARGET, stageSection } from "../content/timedStages";
 import { timedScore } from "../core/hangul/timedScore";
@@ -41,6 +42,7 @@ export function validProgress(v: unknown, mode: ProgressMode): v is TalkProgress
 export function validateTalkSave(key: string, raw: string): void {
   if (raw.length > 200000) throw Error("Saved data is too large");
   const value = savedObject(raw);
+  if (key === RECORDS_KEY && !validStageRecords(value)) throw Error("Saved stage records need recovery");
   const mode = (Object.keys(PROGRESS_KEYS) as ProgressMode[]).find(mode => PROGRESS_KEYS[mode] === key);
   if (mode && !validProgress(value, mode)) throw Error("Saved progress needs recovery");
 }

@@ -17,6 +17,11 @@ export const SYLLABLE_MEANINGS: Readonly<Record<string, string>> = {
   폐: "lung", 간: "liver", 뇌: "brain", 혀: "tongue",
   꽃: "flower", 풀: "grass", 숲: "forest", 돌: "stone", 섬: "island", 땅: "ground", 길: "path",
   책: "book", 문: "door", 컵: "cup", 빵: "bread", 콩: "bean", 팥: "red bean",
+  힘: "strength", 꾀: "wit", 소: "cow", 말: "horse", 술: "alcohol", 춤: "dance", 해: "sun", 비: "rain", 밤: "night", 낮: "daytime",
+  봄: "spring", 벌: "bee", 뱀: "snake", 새: "bird", 쥐: "mouse", 곰: "bear", 양: "sheep", 용: "dragon", 왕: "king", 돈: "money",
+  금: "gold", 은: "silver", 철: "iron", 실: "thread", 줄: "string", 끈: "cord", 천: "cloth", 솜: "cotton", 빗: "comb", 붓: "paintbrush",
+  떡: "rice cake", 죽: "porridge", 국: "soup", 면: "noodles", 잣: "pine nut", 꿀: "honey", 잎: "leaf", 싹: "sprout", 논: "rice paddy", 밭: "field",
+  늪: "swamp", 굴: "cave", 빛: "light", 맛: "taste", 뿔: "horn", 알: "egg", 볼: "cheek", 짐: "luggage", 잠: "sleep", 일: "work",
 };
 export function syllableTargetNote(target: string): string {
   return SYLLABLE_MEANINGS[target] ?? (SOUNDS[target] ? `[${SOUNDS[target]}]` : "");

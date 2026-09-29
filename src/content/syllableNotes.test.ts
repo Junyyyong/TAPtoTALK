@@ -6,7 +6,8 @@ import { composeTokens } from "../core/hangul/compose";
 import { requiredBoardSymbols } from "../core/hangul/target";
 
 it("uses only meaningful, composable single syllables after practice", () => {
-  expect(SYLLABLE_GAME_TARGETS).toHaveLength(50);
+  expect(SYLLABLE_GAME_TARGETS).toHaveLength(100);
+  expect(new Set(SYLLABLE_GAME_TARGETS).size).toBe(100);
   for (const target of SYLLABLE_GAME_TARGETS) {
     expect(target).toHaveLength(1);
     expect(syllableTargetNote(target)).not.toMatch(/^\[/);

@@ -20,6 +20,7 @@ export const EXTRA_WORDS: Readonly<Record<WordLength, readonly WordTarget[]>> = 
     ["개구리", "frog"], ["다람쥐", "squirrel"], ["도서관", "library"], ["운동장", "sports field"],
     ["놀이터", "playground"], ["자전거", "bicycle"], ["비행기", "airplane"], ["무지개", "rainbow"],
     ["휴대폰", "mobile phone"],
+    ["손전등", "flashlight"], ["계산기", "calculator"],
   ]),
   4: words(4, [
     ["해바라기", "sunflower"], ["민들레꽃", "dandelion"], ["카네이션", "carnation"],
@@ -27,6 +28,7 @@ export const EXTRA_WORDS: Readonly<Record<WordLength, readonly WordTarget[]>> = 
     ["전화번호", "phone number"], ["손목시계", "wristwatch"], ["아주머니", "ma'am"],
     ["할아버지", "grandfather"], ["어린이집", "day care"], ["종이접기", "paper folding"], ["쓰레기통", "trash can"],
     ["횡단보도", "crosswalk"], ["저녁노을", "sunset glow"], ["두근두근", "heart beating"],
+    ["머리카락", "hair"], ["보물찾기", "treasure hunt"], ["불가사리", "starfish"], ["프라이팬", "frying pan"],
   ]),
   5: words(5, [
     ["아이스크림", "ice cream"], ["크리스마스", "Christmas"], ["엘리베이터", "elevator"], ["공기청정기", "air purifier"],
@@ -50,6 +52,8 @@ export const EXTRA_WORDS: Readonly<Record<WordLength, readonly WordTarget[]>> = 
     ["여행안내서", "travel guide"], ["우주정거장", "space station"],
     ["태양광발전", "solar power generation"], ["식물성기름", "vegetable oil"],
     ["일회용장갑", "disposable gloves"], ["한글맞춤법", "Korean spelling"],
+    ["자원봉사자", "volunteer"], ["환경미화원", "street cleaner"], ["오케스트라", "orchestra"], ["건강보험증", "health insurance card"],
+    ["심폐소생술", "CPR"], ["비디오게임", "video game"], ["고속터미널", "express bus terminal"], ["소프트웨어", "software"],
   ]),
 };
 

@@ -1,5 +1,17 @@
 # 디자인과 콘텐츠 수정 경계
 
+## 본게임 번호·최고 도달 기록·100개 어휘 (2026-09-29)
+
+`content/stageNumber.ts`의 `mainStageNumber`는 튜토리얼이면0, 본게임이면1부터 반환한다. Alphabet 고정 연습 수와 Syllable의 **실제 저장된** 연습 목록 길이를 제외하며 Vocabulary는 첫 단어부터1이다. Alphabet 본게임 파란 배지·정답 여분 난도·세 게임 최고 도달 기록에 같은 번호를 사용한다. 60초 라운드가 바뀌어도 번호는 계속 증가한다.
+
+`ui/stageRecords.ts`는 `taptotalk.records.v1`에 세 모드의 최고 도달 번호를 별도 저장한다. 업데이트 때 키를 바꾸지 않는다. START 직전 화면에서 예전 progress의 도달 번호를 최고기록으로 반영하되 기존 progress를 수정하거나 완료 직후 다음 문제를 미리 카운트하지 않는다. 실제 새 문제 진입 후 저장에서 번호가 증가한다. 이전 번호로 재시작해도 최고기록은 내려가지 않는다. 웹/앱 저장·백업·손상 데이터 보호는 기존 PersistentStore를 공유한다. 계정/서버/다른 기기 간 동기화는 아니다.
+
+`.learning-intro-stats`는 TAPtoTEN `intro-stats`와 같은 설명 아래/START 위 배치, 라벨13px/700·값18px/800·가로간격20px를 쓴다. TEN의 두 번째 기록행 공간만 남겨 세로 위치를 맞춘다(추가 기록은 표시하지 않음). intro HUD56px, START260×50px로390×844에서 기록과 START 세로 좌표도 일치한다. 게임 중 HUD/블록은 바꾸지 않는다.
+
+Syllable `SYLLABLE_MEANINGS`는 의미 있는 한 음절100개이며 본게임에서 영어 뜻을 표시한다. 기존 발음용 튜토리얼 후보/18판 구성은 바꾸지 않는다. Vocabulary `EXTRA_WORDS`는3/4/5글자23/21/56개, 합100개로 고정32개와 겹치지 않는다. 기존 ID가 유지되도록 각 길이 목록 뒤에만 추가한다. 새14개는 받침의 마지막 기본 자음과 다음 초성이 동일한 경우도 제외했다. **전체132개**의 실제 `composeTokens(requiredBoardSymbols(word))` 결과가 목표와 일치해야 한다(수족관→수조꽌 같은 후보는 제외).
+
+단어 추가 시 한 음절은 독립적인 뜻이 있어야 하며 발음 연습만 가능한 워/외/웨/까 등을 본게임에 넣지 않는다. 최근10개 반복 회피·최근3개 복합어 부분중복 회피·3/4/5글자1/2/4 가중치는 유지한다. 진행 중인 저장된 셔플 목록을 초기화하지 않으므로 새로운100개 풀은 기존 묶음을 소진한 다음 적용된다. `syllableJourney.test.ts`, `wordJourney.test.ts`는100개 한 묶음 중복 없음/옛 작은 묶음 복원을 검증하고 `answerCopies.test.ts`는모든 정답의 필수 블록 수를 각 난도에서 확인한다.
+
 ## 정답 블록 여분·오답 화면 효과 (2026-09-28)
 
 `content/boardDifficulty.ts`의 `ANSWER_COPY_TIERS`가 본게임 문제별 여분을 관리한다.1~10: 각 정답 자소의 필요 횟수+2,11~20:+1,21이후:+0. Alphabet/Syllable은 튜토리얼 개수를 제외한 문제 번호, Vocabulary는 표시 STAGE 번호를 사용한다.60초 라운드 번호나 이번에 맞힌 개수로 계산하지 않는다. 이어하기/재접속/라운드 종료 후에도 저장된 단계에 맞는 난도가 유지된다.
@@ -16,7 +28,7 @@
 
 `TalkApp`은 START에서 하던 문제를 새 입력·새 블록·0점·새60초로 시작한다(튜토리얼은 시간 제한 없음). `restartCheckpoint`는 완료 전환 대기/결과 중 종료된 정답은 한 번만 건너뛰고 라운드/해금 난도를 반영한다. 단순 일시정지의 Resume은 현재 입력·남은 시간을 유지한다. 이미 추첨한 튜토리얼 목록·현재 제시어·Word/Syllable 남은 셔플 목록·최근 기록을 보존한다. 예전18/30판 학습 목록도 계속 읽으며 옛 블록 ID/부분 입력은 재사용하지 않는다. 클릭·삭제·문제 변경·메뉴 복귀·pagehide/visibilitychange·활성 게임1초 주기에 저장하고 메뉴/intro는 덮어쓰지 않는다. 강제 종료 직전 아직 저장되지 않은 변경은 유실될 수 있다. core에는 저장소 의존성이 없다.
 
-웹 배포 자체는 같은 origin의 저장을 초기화하지 않는다. 도메인/브라우저가 다르면 별도 저장이고, 방문 데이터/앱 삭제 및 기기 변경은 복구 보장 대상이 아니다. 웹 Safari의 저장을 네이티브 앱이 자동으로 가져오는 구조도 아니다. 서버 동기화·계정·신기록 저장 기능은 아직 없다. Android는 `@capacitor/preferences`를 `cap sync android`로 연결했다. 앱 업데이트 시 같은 appId/서명 유지, 삭제 후 재설치 금지. 나중에 iOS 프로젝트를 만들면 Preferences의 UserDefaults용 `PrivacyInfo.xcprivacy`(`NSPrivacyAccessedAPICategoryUserDefaults`, `CA92.1`)도 추가해야 한다. 실제 앱 업데이트 보존 검증은 같은 서명의 구버전→신버전 설치로 별도 확인한다.
+웹 배포 자체는 같은 origin의 저장을 초기화하지 않는다. 도메인/브라우저가 다르면 별도 저장이고, 방문 데이터/앱 삭제 및 기기 변경은 복구 보장 대상이 아니다. 웹 Safari의 저장을 네이티브 앱이 자동으로 가져오는 구조도 아니다. 서버 동기화·계정은 아직 없으며 최고 도달 스테이지는2026-09-29부터 로컬에 저장한다. Android는 `@capacitor/preferences`를 `cap sync android`로 연결했다. 앱 업데이트 시 같은 appId/서명 유지, 삭제 후 재설치 금지. 나중에 iOS 프로젝트를 만들면 Preferences의 UserDefaults용 `PrivacyInfo.xcprivacy`(`NSPrivacyAccessedAPICategoryUserDefaults`, `CA92.1`)도 추가해야 한다. 실제 앱 업데이트 보존 검증은 같은 서명의 구버전→신버전 설치로 별도 확인한다.
 
 ## 오답 시간 차감 (2026-09-28)
 
@@ -44,7 +56,7 @@
 
 Vocabulary 입력 안내는 `activeTargetSyllable`(core/hangul/target.ts)이 연속 정답 입력 수에 해당하는 현재 음절 하나만 반환한다. 전체 단어·뜻은 남기며 제시어 색도 동일한 원시 입력 기준으로 맞춘다. 오류 시 진행하지 않고 Delete 시 이전 음절로 돌아간다. 마지막 음절 완료 시 마지막 안내 전체를 완료색으로 표시한다. 조합 엔진·정답 판정·점수는 바꾸지 않는다.
 
-Vocabulary 하단은 Delete 단일 버튼이다. Space 버튼과 UI 입력 경로는 제거했다. 과거 공백 확정/삭제의 core 함수는 호환 테스트용으로 보존한다. 현재118개 단어는 모두 공백 없이 조합 가능하다.
+Vocabulary 하단은 Delete 단일 버튼이다. Space 버튼과 UI 입력 경로는 제거했다. 과거 공백 확정/삭제의 core 함수는 호환 테스트용으로 보존한다. 현재132개 단어는 모두 공백 없이 조합 가능하다.
 
 Syllable 파란 박스는 튜토리얼에서 `AlphabetStage.category`를 표시한다. 학습 범주는 영어로 Letter Combinations / Basic Vowels / Compound Vowels / Double Consonants / Final Consonants / Double Finals. 타이머가 시작되는 본게임은 STAGE 1부터 음절마다 증가하며 튜토리얼 판수는 제외한다. 1분 라운드 변경 시 번호는 유지한다. HUD PRACTICE/시계는 그대로다. 입력 안내 아래아는 .25em 정사각형, 블록 아래아는1.1배, 기존 하트·별·쉼표는1.1→1.21배로 조정했다.
 

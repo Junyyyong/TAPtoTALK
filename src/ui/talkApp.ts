@@ -4,8 +4,10 @@ import { COMMIT_BOUNDARY, deleteLastInput } from "../core/hangul/compose";
 import { CHEONJIIN_STROKES, CONSONANTS, type BoardSymbol } from "../core/hangul/keys";
 import { isWordMatch } from "../core/hangul/wordChallenge";
 import { activeTargetSyllable, composeTargetInput, composedCharacterProgress, materializeTargetTokens, targetCharacterProgress, targetToTokens } from "../core/hangul/target";
-import { ALPHABET_ORDER, ALPHABET_STAGES, WORD_TARGETS, type AlphabetStage, type WordTarget } from "../content/prompts";
+import { ALPHABET_ORDER, WORD_TARGETS, type AlphabetStage, type WordTarget } from "../content/prompts";
 import { extraAnswerCopiesAt } from "../content/boardDifficulty";
+import { mainStageNumber } from "../content/stageNumber";
+import { recordReachedStage } from "./stageRecords";
 import { createSyllablePractice, createSyllableGameJourney, learningStageAt, LEARNING_TRAP_RATIO, LEARNING_TRANSITION_MS, type LearningMode } from "../content/learningJourney";
 import { createWordJourney } from "../content/wordJourney";
 import { alphabetLabels } from "../content/learningLabels";
@@ -99,9 +101,12 @@ export class TalkApp {
   private roundSection = stageSection("alphabet", 0);
   private progressActive = false;
 
+  private mainStage(): number {
+    return mainStageNumber(this.mode, this.mode === "word" ? this.wordTargetIndex : this.alphabetStageIndex, this.syllablePractice.length);
+  }
+
   private answerExtras(): number | undefined {
-    const stage = this.mode === "word" ? this.wordTargetIndex + 1
-      : this.alphabetStageIndex - (this.mode === "alphabet" ? ALPHABET_STAGES.length : this.syllablePractice.length) + 1;
+    const stage = this.mainStage();
     return stage < 1 ? undefined : extraAnswerCopiesAt(stage);
   }
 
@@ -111,6 +116,7 @@ export class TalkApp {
 
   private saveProgress(result = false, cleared = false): void {
     if (!this.progressActive || this.roundEnded) return;
+    recordReachedStage(this.mode, this.mainStage());
     const elapsedMs = this.roundSection.tutorial ? 0 : this.paused || this.frame === undefined
       ? this.elapsedMs : performance.now() - this.startedAt;
     const saved = saveTalkProgress({
@@ -329,6 +335,11 @@ export class TalkApp {
     el("learning-intro-mark").setAttribute("role", "img");
     el("learning-intro-mark").classList.toggle("is-word", mode === "word");
     el("learning-intro-description").textContent = el(`mode-${mode}`).querySelector(".mode-desc")!.textContent;
+    // Seed new records from existing progress without advancing or rewriting it.
+    const saved = loadTalkProgress(mode);
+    const reached = saved ? mainStageNumber(mode, mode === "word" ? saved.wordTargetIndex : saved.alphabetStageIndex, saved.practice.length) : 0;
+    const best = recordReachedStage(mode, reached);
+    el("learning-intro-best").textContent = best ? `Stage ${best.toLocaleString()}` : "—";
     this.stopClock(); this.cheer.stop();
     this.result.classList.add("hidden"); this.help.classList.add("hidden"); this.game.classList.add("hidden"); this.title.classList.add("hidden");
     this.alphabetIntro.classList.remove("hidden");
@@ -466,7 +477,7 @@ export class TalkApp {
     const stage = this.learningStage;
     if (this.mode === "syllable") { this.renderSyllableTarget(stage); return; }
     const labels = alphabetLabels(stage);
-    this.targetLabel.textContent = labels.category;
+    this.targetLabel.textContent = this.roundSection.tutorial ? labels.category : `Stage ${this.mainStage()}`;
     const korean = document.createElement("span"); korean.className = "target-korean";
     stage.sequence.forEach((value, index) => {
       if (index) {
@@ -492,7 +503,7 @@ export class TalkApp {
   private renderSyllableTarget(stage: AlphabetStage): void {
     this.targetLabel.textContent = this.roundSection.tutorial
       ? stage.category ?? "Letter Combinations"
-      : `STAGE ${this.alphabetStageIndex - this.syllablePractice.length + 1}`;
+      : `STAGE ${this.mainStage()}`;
     const korean = document.createElement("span"); korean.className = "target-korean"; korean.textContent = stage.target;
     const note = document.createElement("span"); note.className = "syllable-target-note"; note.textContent = stage.note;
     this.targetText.replaceChildren(korean, note);
