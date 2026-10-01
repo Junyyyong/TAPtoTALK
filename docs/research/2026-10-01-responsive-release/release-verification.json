@@ -1,0 +1,142 @@
+{
+  "checkedAt": "2026-10-01T07:12:12.031668+00:00",
+  "bundle": "/Users/scdi/Documents/ChatGPT/TAPtoTALK/android/releases/TAPtoTALK-1.0.3-vc5-20261001.aab",
+  "package": "io.github.junyyyong.taptotalk",
+  "versionName": "1.0.3",
+  "versionCode": 5,
+  "previousVersionCode": 4,
+  "bytes": 56626636,
+  "sha256": "227971302528f0bf7235190d8420cc54bb6191be4bc80ce1e79fdf12d185300c",
+  "previousBundle": "/Users/scdi/Documents/ChatGPT/TAPtoTALK/android/releases/TAPtoTALK-1.0.2-vc4-20261001.aab",
+  "previousSha256": "431ac1d446b34da2ba1c4859739b45525620cd1571333bdeb60d0d6951181d93",
+  "uploadCertificateSha256": "C8:69:BF:30:43:94:DC:9C:7C:B0:73:2E:FF:F6:9A:F2:A6:E9:8F:01:F8:5E:17:A5:0A:1A:57:CC:36:F7:69:FD",
+  "sameUploadCertificate": true,
+  "bundletoolValidation": "PASS",
+  "jarsignerVerification": "PASS",
+  "signatureWarnings": "Self-signed/no timestamp; Gradle JAR manifest ZIP ordering warnings as in previous bundle. JarFile verification passed.",
+  "webAssetsMatched": 89,
+  "iconPixelMatches": [
+    "base/res/mipmap-mdpi-v4/ic_launcher.png",
+    "base/res/mipmap-mdpi-v4/ic_launcher_round.png",
+    "base/res/mipmap-mdpi-v4/ic_launcher_foreground.png",
+    "base/res/mipmap-hdpi-v4/ic_launcher.png",
+    "base/res/mipmap-hdpi-v4/ic_launcher_round.png",
+    "base/res/mipmap-hdpi-v4/ic_launcher_foreground.png",
+    "base/res/mipmap-xhdpi-v4/ic_launcher.png",
+    "base/res/mipmap-xhdpi-v4/ic_launcher_round.png",
+    "base/res/mipmap-xhdpi-v4/ic_launcher_foreground.png",
+    "base/res/mipmap-xxhdpi-v4/ic_launcher.png",
+    "base/res/mipmap-xxhdpi-v4/ic_launcher_round.png",
+    "base/res/mipmap-xxhdpi-v4/ic_launcher_foreground.png",
+    "base/res/mipmap-xxxhdpi-v4/ic_launcher.png",
+    "base/res/mipmap-xxxhdpi-v4/ic_launcher_round.png",
+    "base/res/mipmap-xxxhdpi-v4/ic_launcher_foreground.png"
+  ],
+  "unchangedPreviousMediaIconEntries": 73,
+  "bundledFontsVerified": true,
+  "nativeFrameUpdateAuthorized": false,
+  "nativeDexComparison": [
+    {
+      "entry": "base/dex/classes.dex",
+      "sha256": "f6f19ab9e35ff3feb3edf1895175d31f467fd18efbb41dd2de177d1c7767c9fc",
+      "previousSha256": "f6f19ab9e35ff3feb3edf1895175d31f467fd18efbb41dd2de177d1c7767c9fc",
+      "changed": false
+    }
+  ],
+  "iconUpdateAuthorized": true,
+  "changedIconEntries": [
+    {
+      "entry": "base/res/mipmap-hdpi-v4/ic_launcher.png",
+      "sha256": "5b2ffb942369ff842ed921644a07e55dec3ac4a385348f34269f7ba866a4b882",
+      "previousSha256": "1bed06e13f3ad88ef42ec05600f5136448506bf870e709199c3d6cdfc18783d4"
+    },
+    {
+      "entry": "base/res/mipmap-hdpi-v4/ic_launcher_foreground.png",
+      "sha256": "b261d598bddc1728194a4ab98fb73268ab6f87f1cca28023215a5fca85861dc7",
+      "previousSha256": "762f7277840b11418d575d4161e7d4a7333e7e90fd39f13d86ea165e0bdb4dc9"
+    },
+    {
+      "entry": "base/res/mipmap-hdpi-v4/ic_launcher_round.png",
+      "sha256": "3f582440e1a89100cff2ea1b20119007c991b577673b5776f12bfebc55ba0d93",
+      "previousSha256": "e6da3e8f2dc5f56dca4e03e377dbcbf49faece1ed3ef5a7b1d345022fc3501fa"
+    },
+    {
+      "entry": "base/res/mipmap-mdpi-v4/ic_launcher.png",
+      "sha256": "b57d3d31445ad4a816c105904b3be4a2b005081bed03df8347cf0fbf0866daa2",
+      "previousSha256": "dfa343f47df919ba40728c64dbe26576ef420246b3634ebd58172f63685a9ab5"
+    },
+    {
+      "entry": "base/res/mipmap-mdpi-v4/ic_launcher_foreground.png",
+      "sha256": "e13e5ad7cafbea5114ce5c25bde5557bbac1d3c2337787971183b801fde4852a",
+      "previousSha256": "78c0f246ed8b72abd54c4aafb5b26bc85d4c9d138fb43d6601c85cdf3d706b85"
+    },
+    {
+      "entry": "base/res/mipmap-mdpi-v4/ic_launcher_round.png",
+      "sha256": "47e09f26d8c480018aa2b02b6514d3df4a7e162c2d33347f6ebdb5d46c563ed8",
+      "previousSha256": "a5a8e6aaebfbb0413dd2ef9809358c2360069f747e8696629d890f6d916e66d9"
+    },
+    {
+      "entry": "base/res/mipmap-xhdpi-v4/ic_launcher.png",
+      "sha256": "473864f88a529965aaefa5f8c11dad41d6077b7aacd50af374d5ca697ef1aee2",
+      "previousSha256": "c986887ac60f11ad6183ff764cae2db918f4165b71d503341cfc4a2847583953"
+    },
+    {
+      "entry": "base/res/mipmap-xhdpi-v4/ic_launcher_foreground.png",
+      "sha256": "7708dbffc0a3b044ece60f02a30f644b0c41269d9a376bf377e4c15804900400",
+      "previousSha256": "7560472082e4b34621d9b91229be9c8703bf666051e1c1de9be53336bf25fb34"
+    },
+    {
+      "entry": "base/res/mipmap-xhdpi-v4/ic_launcher_round.png",
+      "sha256": "ddc3ca24a42bdf3b24859b604825f2ee0bd1dde35c32019b75106c48586cc521",
+      "previousSha256": "24019768e0cb6c8d397d98fdb18576047836ecca576ca90487f877f324c3296e"
+    },
+    {
+      "entry": "base/res/mipmap-xxhdpi-v4/ic_launcher.png",
+      "sha256": "75d59c97cd8b24e710a3d7e19fb5423e452390a485e3a3d4886812dd1937008e",
+      "previousSha256": "30bf3d790b0d8316d231e25649315fb9cb22abcebf1e502601a473605ed79b6a"
+    },
+    {
+      "entry": "base/res/mipmap-xxhdpi-v4/ic_launcher_foreground.png",
+      "sha256": "f2cf0926599f8c2cbf5259f30ec862767d2b2fd092f126744cb6d78e32d884c6",
+      "previousSha256": "89820858d938960fa203823e090b266a97f13587e9f909f17088626a3ce69084"
+    },
+    {
+      "entry": "base/res/mipmap-xxhdpi-v4/ic_launcher_round.png",
+      "sha256": "32ff61a534dd3b2695d4a09d836bc5ca11118e6f98feeebbefec4bbd5d22f5c2",
+      "previousSha256": "e074b3a40d65b61f71d99725775895c04dae87d4e7f24ae9343b31ec0e121c17"
+    },
+    {
+      "entry": "base/res/mipmap-xxxhdpi-v4/ic_launcher.png",
+      "sha256": "27d0323dcc60c2551608b56f9016434a1ba1f4ebf979262da4895c64ddb421e6",
+      "previousSha256": "afaf98c48e5841ce0675d75a8d755bb3fef58e16e5e01fc77487bfda89e0189a"
+    },
+    {
+      "entry": "base/res/mipmap-xxxhdpi-v4/ic_launcher_foreground.png",
+      "sha256": "e7ec94bf3a6338cb3e6dda46840c2c9316924dfdc7c1191908e0b88f9448e050",
+      "previousSha256": "906d4718cf8f087f87508bfddd0f5009ceeded60c9a24e323b58e70316e65c53"
+    },
+    {
+      "entry": "base/res/mipmap-xxxhdpi-v4/ic_launcher_round.png",
+      "sha256": "b0f3fb4494efc975d207ffffbe369ac0426fde1203dcb83e108aded1e3a998ac",
+      "previousSha256": "98e66b337eca866cd46d4576885ff05c94ed339257e4c98af70a331f721f49aa"
+    }
+  ],
+  "iconPixelComparison": "Exact alpha and visible RGBA; AAPT zeroing RGB at alpha=0 is permitted",
+  "legacyContentRatio": "40dp / 48dp; matches adaptive visible 60dp / 72dp",
+  "roundMaskVerification": "All five densities: circular alpha mask, transparent corners, opaque center",
+  "adaptiveResources": "both foreground/background references present",
+  "permissions": [
+    "android.permission.INTERNET",
+    "io.github.junyyyong.taptotalk.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+  ],
+  "minSdk": "24",
+  "targetSdk": "36",
+  "fontScaleConfigHandled": true,
+  "textZoomDexPresent": true,
+  "privateSigningMaterialBundled": false,
+  "deviceVerification": "NOT RUN: no connected Android device; emulator/system image not installed",
+  "sourceRevision": "a1c91a940343a824f39afb7310bd075a6629da09",
+  "verifierSha256": "e37f5eac080eed710da14596c41f4b7747ded4f54be69f6219c6b98dbd3bc112",
+  "sourceWorkingTreeClean": true,
+  "sourceWorkingTreeChanges": ""
+}

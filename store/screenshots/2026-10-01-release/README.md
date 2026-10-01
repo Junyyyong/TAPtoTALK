@@ -6,6 +6,7 @@
 - 모두 **780×1688 PNG** — 390×844 CSS px, DPR2.
 - Chrome의 Android 플랫폼 모의 렌더링이다. 실제 설치 Android 캡처가 아니며 상태바·이미지 합성을 하지 않았다.
 - 남은 native 안전영역0, 독립 저장 상태, 난수 seed20261001, 시간 정지, 영상0.5초. 이전 연락시트와 표본 글자/블록은 다를 수 있다.
+- 화면 소스 커밋: `a1c91a9` — AAB1.0.3(5)에 포함된 앱 코드와 같다.
 - [캡처 조건·파일 해시](capture-verification.json), [출시 검증 기록](../../../docs/research/2026-10-01-responsive-release/README.md).
 
 | 번호 | 화면 | 파일 |
