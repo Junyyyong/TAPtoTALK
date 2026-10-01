@@ -1,5 +1,37 @@
 # 디자인과 콘텐츠 수정 경계
 
+## 흰 기본 UI·강조색·Android 기준 화면 (2026-10-01 최신)
+
+`styles/neutral.css`의 `--ui-*`는 **기본 표면과 일반 글자만** 담당한다. 배경 `#ffffff`, 박스 `#f5f6f8`, 테두리 `#cdd2da`, 글자 `#363c46`, 설명 `#626b78`. 게임 선택 박스·뒤로가기/일시정지 버튼·설정 항목·제시창·Delete·정책/팝업의 표면은 평면으로, 로고 CSS drop-shadow는 제거한 채 유지한다.
+
+BEST STAGE와 상단 시계는 박스가 아닌 독립 글자다. `.learning-intro-stats`/`.run-stat-number`에 배경·테두리·outline·모서리 스타일을 추가하지 않는다. 기존 기록 자리/예비 행과 시계 옆−1 위치는 유지한다. [박스 제거 전후](research/2026-10-01-bare-records-timer/README.md).
+
+강조 제목/버튼/아이콘/배지/스위치는 회색 reset에 넣지 않는다. `title.css`/`talk.css`/`overlay.css`의 기존 팔레트와 효과를 그대로 통과시킨다: 메인 게임명 파랑, Settings 및 START 제목 주황, START 아이콘 파란 그라데이션+흰 글자, START/Resume 초록 그라데이션·광택·그림자, Stage 배지 파랑, 켜진 스위치 초록+기존 knob 그림자. 최고기록 값은 TAPtoTEST와 같은 강조 역할로 `--cool`을 쓴다. 점수는 기존 노랑/그림자와 어두운 오버레이를 함께 복원해 흰 제목/라벨의 가독성을 유지한다. 활성 진행 게이지는 없으며 새 게이지를 추가하지 않았다. [강조색 전후 PNG·검증](research/2026-10-01-ui-accents/README.md).
+
+`tokens.css`의 기존 `--v1~9`, `--slab`, `--accent`, 정답/오답 토큰을 중립색으로 바꾸면 **게임 블록과 피드백까지 바뀌므로 금지**한다. 일반 미입력 글자는 진한 회색, 현재/완료/오답 글자는 기존 색을 유지한다. 서체·크기·굵기·행간과 모든 이미지·음악은 변경하지 않는다.
+
+Android에서만 `nativeFrame.ts`가 390×844 전체 화면에 동일한 transform 배율을 적용한다. 각 요소에 별도 확대를 적용하지 않는다. `MainActivity`/`GameInsets`는 시스템바·cutout과 WebView의 실제 위치·크기를 비교해 남은 겹침만 `--android-game-inset-*`로 전달한다. 0도 유효한 측정값이다. 웹의 env/inset을 더하지 않는다. 앱 내부 안전영역은 0으로 하고 바깥 프레임에서 한 번만 제외한다. OS density/fontScale은 변경하지 않고 기존 WebView textZoom 100%를 유지한다.
+
+`nativeFrame.css`의 앱 container query와 `--layout-vw/vh`를 사용해야 Android 확대 설정에서도 같은 배치가 유지된다. 새 활성 CSS에 직접 viewport `vw/vh` 또는 높이 media query를 추가하지 않는다. 웹에서는 이 변수가 원래 viewport 단위로 fallback하고 container 높이가 기존 화면 높이이므로 같은 반응형 배치를 유지한다. container query 미지원 구형 WebView는 기존 레이아웃으로 fallback한다.
+
+정책 dialog는 browser top layer여서 앱 transform을 상속하지 않는다. 저장 오류 안내도 body의 독립 패널이다. 둘은 같은 `--frame-scale/left/top`을 별도로 사용한다. 저장 오류 패널을 `#app` 안으로 옮기면 blocking 시 inert가 Retry도 막으므로 옮기지 않는다. 화면 좌표 기반 탭은 브라우저가 transform을 역변환한다; 별도 좌표 곱셈을 추가하지 않는다.
+
+[전후 PNG·모의검사·실기기 검증 한계](research/2026-10-01-neutral-proportional-frame/README.md). 이번 작업은 코드·검증만이며 AAB 생성, 버전 증가, commit/push, Play 업로드는 하지 않는다.
+
+## 기존 디자인과 Android 안전영역 (2026-10-01)
+
+기본 body는 기존 기기 폰트 스택을 유지한다. TAP Sans KR/TAP Serif KR를 지정했던 영역만 내장 서체를 사용하며 전역 Noto 강제·폰트 크기/굵기 일괄 변경은 하지 않는다. 기존 메인21px/800·설명13px/700 및700/580px 높이 분기를 유지한다.
+
+`tokens.css`의 `--safe-top/right/bottom/left`는 Capacitor가 전달한 **남은** inset을 우선하며 없으면 CSS env를 쓴다. native padding과 CSS inset을 합산하거나 OS 바 높이를 상수로 만들지 않는다. 일반 화면·팝업·등급/점수·정책 창에서 이를 함께 사용한다. `.letter-board-space`는 편집 버튼을 제외한 남은 공간이며 보드는 기존52vh/너비 한도와 이 공간 중 작은 값으로 정방형을 유지한다. 기본390×844에서는 원래 기하를 유지한다. 전후 및 Android 미리보기 한계는 [연구기록](research/2026-10-01-safe-layout/README.md)에 남긴다. 새 AAB 생성은 화면 확인 전 보류 상태다.
+
+## Android 글자 배율·설치 아이콘 (2026-09-30)
+
+`MainActivity`는 Capacitor의 `super.onCreate` 이후 WebView 생성이 끝난 시점과 `onResume`·`onConfigurationChanged`에서 `setTextZoom(100)`을 적용한다. 뷰 설정 전달 이후에도 유지하도록 UI queue에 한 번 더 적용하며 null bridge/WebView는 건너뛴다. manifest의 `fontScale` configuration 처리와 `tokens.css`의 `text-size-adjust:100%`를 함께 유지한다. OS `fontScale`/density/전체 화면 확대를 덮어쓰거나 저장 데이터를 초기화하지 않는다.
+
+아이콘 원본은 `assets/icon-source/ICON-TAPtoTALK.png`. `python3 scripts/build-android-icons.py`는 전체 PNG를 자르지 않고 중앙60dp 콘텐츠/108dp 투명 foreground + 흰 배경으로 밀도별 아이콘을 생성한다. 같은 날 최종 검수에서 legacy/round를 **40dp 콘텐츠/48dp 캔버스**로 보정했다. 이는 adaptive의 실제 보이는60/72 비율과 같으며 이전 후보의60/108 배치를 대체한다. round는 원형 알파 마스크를 사용한다. `store/android/`의512px 이미지와 원형·둥근 사각형 마스크 **미리보기**는 설치 화면 캡처가 아니다. 마스크 미리보기에서 TAP/to/TALK 글씨가 보존됨을 확인했다. 실제 launcher와 OS 큰 글씨 설정 검증은 Android 테스트 기기가 필요하다.
+
+Android 버전은1.0.1/versionCode3. 첫 후보 코드2의 Play 업로드를 사용자가 확인했으므로 최종 아이콘 보정본의 내부 코드만3으로 높였다. 기존 업로드키를 유지하며 `android/keystore.properties`와 키는 Git 제외다. 새 AAB는 이전 `android/releases/` 파일을 덮어쓰지 않는다. 검증 스크립트 `scripts/verify-android-release.py`는 이전 AAB보다 높은 버전 코드·인증서·manifest·dist88개·아이콘15개 픽셀을 비교하며 비밀번호나 개인키를 읽지 않는다.
+
 ## 개인정보·라이선스 공통 화면 (2026-09-30)
 
 저장 복구 안내는 `StorageNotice.hide()`에서 blocking 클래스를 제거하며 CSS에서도 hidden이 blocking 표시보다 우선한다. Retry 성공 후 보이지 않는 전체화면 패널이 메뉴 클릭을 가로막지 않도록 두 조건을 함께 유지한다. 실패한 Retry는 기존 데이터를 보존하고 다시 시도할 수 있어야 한다.

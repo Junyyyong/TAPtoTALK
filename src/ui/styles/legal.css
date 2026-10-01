@@ -27,9 +27,10 @@
 #btn-legal-close:focus-visible { outline: 2px solid var(--hot-deep); outline-offset: 2px; }
 
 .legal-dialog {
-  width: min(640px, calc(100% - 24px));
-  height: min(760px, calc(100% - 32px));
-  max-height: calc(100% - 32px);
+  inset: var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left);
+  width: min(640px, calc(100% - var(--safe-left) - var(--safe-right) - 24px));
+  height: min(760px, calc(var(--app-h, 100dvh) - var(--safe-top) - var(--safe-bottom) - 32px));
+  max-height: calc(var(--app-h, 100dvh) - var(--safe-top) - var(--safe-bottom) - 32px);
   padding: 0;
   border: 1px solid var(--paper-edge);
   border-radius: 18px;

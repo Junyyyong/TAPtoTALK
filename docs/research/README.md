@@ -1,5 +1,15 @@
 # TAPtoTALK 주요 변경 연구 기록
 
+- [2026-10-01 BEST STAGE·상단 타이머 박스 제거](2026-10-01-bare-records-timer/README.md): 추가된 회색 배경/시계 outline만 제거, 세 게임 START/본게임 전후16장·기록/시간의 크기·위치·색 유지, 테스트300개. AAB/push 없음.
+
+- [2026-10-01 흰 기본 UI 유지·강조색/효과 복원](2026-10-01-ui-accents/README.md): TAPtoTEST 참고, 게임명/기록 파랑·Settings 주황·파란 START 아이콘·초록 주요 버튼/스위치·기존 점수 효과 복원. 기본 표면/로고 그림자 제거/블록/Android 전체 비율 유지, 전후780×1688 PNG. AAB·commit/push 없음.
+
+- [2026-10-01 일반 UI 평면화·Android 고정 비율 화면](2026-10-01-neutral-proportional-frame/README.md): TAPtoTEN 흰색/연회색 UI, 블록·피드백·서체 보존,390×844 전체 비율 및 남은 native 안전영역, 전후780×1688 PNG·확대/터치 모의검사. 코드·검증만, 실기기 미검증·AAB/push 없음.
+
+- [2026-10-01 기존 디자인 유지·안전영역·모바일 미리보기](2026-10-01-safe-layout/README.md): 원래 기기 서체/크기/굵기 복원, 작은 화면 보드·하단 버튼·오버레이 안전영역. 실제 Android 캡처가 아닌 브라우저 재현. 새 AAB는 화면 검토 전 보류.
+
+- [2026-09-30 Android 글자 배율·설치 아이콘·1.0.1 AAB](2026-09-30-android-text-icons/README.md): WebView100%, 사용자 PNG/60dp 안전 배치, 기존 서명 유지, 전후 웹 캡처10장. 로컬 준비 상태·실기기 미검증.
+
 - [2026-09-30 저장 복구 후 클릭 차단 수정](2026-09-30-storage-retry/README.md): Retry 성공 뒤 hidden/blocking 충돌 해소, 기존 데이터 보존·일반 클릭 재개 확인.
 
 - [2026-09-29~30 출시용 개인정보·라이선스](2026-09-29-play-policy/README.md): TAPtoTEN 공통 Settings 링크/읽기창, 한·영 방침, 실제 서체·음악·SDK 고지, 저장 보존·모바일 비교.

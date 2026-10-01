@@ -1,0 +1,59 @@
+/* Neutral foundations, colourful emphasis (matching TAPtoTEST).
+   Leave primary actions, START artwork, badges, score flourishes and switches
+   to their original rules. Gameplay materials/feedback/fonts stay independent. */
+:root {
+  --ui-background: #ffffff;
+  --ui-surface: #f5f6f8;
+  --ui-pressed: #e9edf2;
+  --ui-selected: #dce1e8;
+  --ui-border: #cdd2da;
+  --ui-ink: #363c46;
+  --ui-muted: #626b78;
+  --ui-scrim: rgba(0,0,0,.55);
+}
+body, #app, .title-screen { background: var(--ui-background); color: var(--ui-ink); }
+#app::before { background: none; }
+.brand-mark { filter: none; }
+.brand-version, .run-heading, .help-head h2,
+.target-text, .typed-text, .composed-input, .result-panel h2 {
+  color: var(--ui-ink);
+}
+.mode-desc, .tagline, .title-music-prompt,
+.alphabet-intro-body p, .learning-intro-stats dt, .pause-card p,
+.target-hint, .target-translation-inline, .alphabet-target-note,
+.syllable-target-note, .writing-token-count, .writing-feedback,
+.switch-text small, .settings-note, .settings-links, .settings-legal-link,
+.panel-body, .syllable-taps, .tap-arrow { color: var(--ui-muted); }
+.composed-input.is-empty::before, .typed-text.is-empty::before { color: var(--ui-muted); }
+.typed-text small { color: var(--ui-muted); }
+.target-character:not(.is-current):not(.is-done):not(.is-wrong) { color: var(--ui-ink); }
+.talk-screen .target-text { color: var(--ui-ink); }
+.typed-text { border-bottom-color: var(--ui-border); }
+.mode-btn, .icon-btn, .control-btn, #btn-backspace, .switch-row, .level-btn,
+.target-prompt, .help-panel, .result-panel, .legal-dialog, .storage-notice,
+.storage-notice button, .cheer-sound-retry {
+  color: var(--ui-ink);
+  background: var(--ui-surface);
+  border-color: var(--ui-border);
+  box-shadow: none;
+  text-shadow: none;
+}
+/* Inset borders don't consume space or change the existing border-box sizes. */
+.icon-btn, .result-panel, .storage-notice button,
+.cheer-sound-retry { outline: 1px solid var(--ui-border); outline-offset: -1px; }
+.control-btn::before { display: none; }
+.mode-btn:active, .icon-btn:active,
+.control-btn:active, #btn-backspace:active,
+.text-btn:active, .switch-row:active, .storage-notice button:active {
+  background: var(--ui-pressed);
+  box-shadow: none;
+}
+.mode-btn[aria-pressed="true"], .level-btn[aria-current="true"] { background: var(--ui-selected); }
+.help-layer, .result-layer { background: var(--ui-scrim); }
+.help-head, .legal-dialog-header { border-color: var(--ui-border); }
+.legal-dialog::backdrop { background: var(--ui-scrim); }
+.legal-dialog, #btn-legal-close { color: var(--ui-ink); }
+#legal-frame { background: var(--ui-background); }
+/* Records and the clock sit directly on the screen, without added boxes. */
+.learning-intro-stats dd { color: var(--cool); }
+.panel-title { color: var(--ui-ink); text-shadow: none; }

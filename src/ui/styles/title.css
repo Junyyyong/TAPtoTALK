@@ -65,7 +65,8 @@
    */
   justify-content: space-evenly;
   gap: 10px;
-  padding: max(3vh, 16px) 22px max(2.5vh, 14px);
+  padding: max(calc(3 * var(--layout-vh, 1vh)), 16px, var(--safe-top)) max(22px, var(--safe-right))
+    max(calc(2.5 * var(--layout-vh, 1vh)), 14px, var(--safe-bottom)) max(22px, var(--safe-left));
   background:
     radial-gradient(58% 28% at 50% 24%, rgba(255, 181, 0, 0.14), transparent 75%),
     linear-gradient(180deg, transparent, var(--recess));
@@ -73,7 +74,7 @@
 
 .brand-block {
   /* Same layout height as TEN's 618×726 wordmark; artwork and KOREAN fit inside. */
-  --reference-brand-width: min(68vw, 250px);
+  --reference-brand-width: min(calc(68 * var(--layout-vw, 1vw)), 250px);
   height: calc(var(--reference-brand-width) * 726 / 618);
   flex: 0 0 auto;
   display: flex;
@@ -98,7 +99,7 @@
 .brand-mark {
   display: block;
   width: auto;
-  max-width: min(89.76vw, 330px);
+  max-width: min(calc(89.76 * var(--layout-vw, 1vw)), 330px);
   max-height: calc(100% - 24px);
   height: auto;
   /* A little of the night thrown back up at it, so it sits on the background
@@ -206,6 +207,30 @@
  * Short screens. The wordmark gives way first — the three modes and the links
  * are the screen's job, and it is the only thing here with room to spare.
  */
+@container app (max-height: 700px) {
+  .brand-block { --reference-brand-width: min(calc(58 * var(--layout-vw, 1vw)), 215px); }
+  .brand-mark {
+    max-width: min(calc(76.56 * var(--layout-vw, 1vw)), 284px);
+  }
+
+  .mode-btn {
+    padding: 10px 18px;
+  }
+
+  .mode-list { gap: 7px; }
+  .mode-name { font-size: 19px; }
+  .mode-desc { font-size: 12px; }
+}
+
+@container app (max-height: 580px) {
+  .brand-block { --reference-brand-width: min(calc(44 * var(--layout-vw, 1vw)), 165px); }
+  .brand-mark {
+    max-width: min(calc(58.08 * var(--layout-vw, 1vw)), 218px);
+  }
+}
+
+/* Older WebViews keep the original responsive fallback. */
+@supports not (container-type: size) {
 @media (max-height: 700px) {
   .brand-block { --reference-brand-width: min(58vw, 215px); }
   .brand-mark {
@@ -220,10 +245,10 @@
   .mode-name { font-size: 19px; }
   .mode-desc { font-size: 12px; }
 }
-
 @media (max-height: 580px) {
   .brand-block { --reference-brand-width: min(44vw, 165px); }
   .brand-mark {
     max-width: min(58.08vw, 218px);
   }
+}
 }

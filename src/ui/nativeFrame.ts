@@ -1,0 +1,57 @@
+/** Android scales the approved composition as a whole; web keeps its layout. */
+export const NATIVE_FRAME = { width: 390, height: 844 } as const;
+export interface FrameInsets { top: number; right: number; bottom: number; left: number }
+
+export function fitNativeFrame(width: number, height: number, insets: FrameInsets) {
+  const safe = (value: number) => Number.isFinite(value) ? Math.max(0, value) : 0;
+  const left = safe(insets.left), top = safe(insets.top);
+  const availableWidth = Math.max(0, safe(width) - left - safe(insets.right));
+  const availableHeight = Math.max(0, safe(height) - top - safe(insets.bottom));
+  const scale = Math.min(availableWidth / NATIVE_FRAME.width, availableHeight / NATIVE_FRAME.height);
+  return {
+    scale,
+    x: left + (availableWidth - NATIVE_FRAME.width * scale) / 2,
+    y: top + (availableHeight - NATIVE_FRAME.height * scale) / 2,
+  };
+}
+
+/** A measured zero is authoritative when native padding already excludes a bar. */
+export function remainingFrameInset(measured: string, fallback: string): number {
+  const value = parseFloat(measured);
+  return Number.isFinite(value) ? Math.max(0, value) : Math.max(0, parseFloat(fallback) || 0);
+}
+
+export function trackNativeFrame(enabled: boolean): void {
+  if (!enabled || !CSS.supports("container-type", "size")) return;
+  const app = document.getElementById("app")!;
+  app.classList.add("is-native-frame");
+  document.body.classList.add("native-frame-active");
+  app.style.setProperty("--app-h", `${NATIVE_FRAME.height}px`);
+  app.style.setProperty("--layout-vw", `${NATIVE_FRAME.width / 100}px`);
+  app.style.setProperty("--layout-vh", `${NATIVE_FRAME.height / 100}px`);
+  let frame = 0;
+  const measure = (): void => {
+    frame = 0;
+    const viewport = window.visualViewport;
+    if (viewport && viewport.scale > 1.01) return;
+    const css = getComputedStyle(document.documentElement);
+    const inset = (side: string) => remainingFrameInset(
+      css.getPropertyValue(`--android-game-inset-${side}`), css.getPropertyValue(`--safe-${side}`),
+    );
+    const fit = fitNativeFrame(viewport?.width ?? innerWidth, viewport?.height ?? innerHeight, {
+      top: inset("top"), right: inset("right"), bottom: inset("bottom"), left: inset("left"),
+    });
+    // Body values also fit top-layer legal dialogs and independent save notices.
+    // Mutating body rather than the observed root avoids observer feedback loops.
+    document.body.style.setProperty("--frame-scale", String(fit.scale));
+    document.body.style.setProperty("--frame-left", `${fit.x}px`);
+    document.body.style.setProperty("--frame-top", `${fit.y}px`);
+  };
+  const schedule = (): void => { if (!frame) frame = requestAnimationFrame(measure); };
+  new MutationObserver(schedule).observe(document.documentElement, { attributes: true, attributeFilter: ["style"] });
+  new ResizeObserver(schedule).observe(document.body);
+  window.addEventListener("resize", schedule);
+  window.addEventListener("pageshow", schedule);
+  window.visualViewport?.addEventListener("resize", schedule);
+  measure();
+}

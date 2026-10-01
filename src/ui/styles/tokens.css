@@ -37,6 +37,12 @@
  * the board is read in groups, so no two digits may be confusable at 35px.
  */
 :root {
+  /* Capacitor supplies remaining insets (zero when native padding consumes
+     them). Browsers use env(). Never add the two or guess status-bar heights. */
+  --safe-top: var(--safe-area-inset-top, env(safe-area-inset-top, 0px));
+  --safe-right: var(--safe-area-inset-right, env(safe-area-inset-right, 0px));
+  --safe-bottom: var(--safe-area-inset-bottom, env(safe-area-inset-bottom, 0px));
+  --safe-left: var(--safe-area-inset-left, env(safe-area-inset-left, 0px));
   /* TAPtoTEN paper skin, copied from the source project. */
   --paper: #fff6e9;
   --paper-lit: #fffdf8;
@@ -152,6 +158,9 @@
 html {
   height: 100%;
   overscroll-behavior: none;
+  /* Match the native game’s 100% text zoom; do not alter viewport/density. */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 /*
@@ -219,10 +228,10 @@ body {
   flex-direction: column;
   height: 100%;
   padding:
-    env(safe-area-inset-top)
-    env(safe-area-inset-right)
-    env(safe-area-inset-bottom)
-    env(safe-area-inset-left);
+    var(--safe-top)
+    var(--safe-right)
+    var(--safe-bottom)
+    var(--safe-left);
 }
 
 .screen.hidden {

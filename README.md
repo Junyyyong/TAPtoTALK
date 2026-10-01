@@ -5,6 +5,12 @@ TAP to TEN의 화면 감각과 웹/Android 빌드 기반만 복사했으며, 원
 
 ## 현재 프로토타입
 
+- 2026-10-01 후속 수정: BEST STAGE와 게임 상단 타이머에 추가됐던 회색 배경/타이머 테두리를 제거했다. 기록의 파란색, 글자 크기·위치, 모든 다른 표면과 강조 효과는 유지한다. [전후 화면](docs/research/2026-10-01-bare-records-timer/README.md).
+
+- 2026-10-01 흰 배경·연회색 기본 박스는 유지하고 TAPtoTEST처럼 **강조 요소만 기존 색/효과로 복원**했다. 메인 게임명·기록은 파랑, Settings·START 제목은 주황, 시작 아이콘은 파랑/흰 글자, START/Resume·켜진 스위치는 초록이다. 점수의 기존 노랑/그림자와 어두운 결과 배경도 복원했다. 게임 블록·피드백·서체·크기·배치·이미지·음악·규칙·저장은 그대로다. [전후 PNG·검증 기록](docs/research/2026-10-01-ui-accents/README.md). Android390×844 전체 비율과 웹의 기존 반응형 배치는 [직전 프레임 작업](docs/research/2026-10-01-neutral-proportional-frame/README.md)을 유지한다. 실제 갤럭시 검증은 미완료이며 AAB·commit/push는 수행하지 않았다.
+
+- 2026-09-30 Android `1.0.1 (3)`: WebView 글자 확대를 시작·복귀·설정 변경 시100%로 유지한다. 시스템 density/돋보기는 변경하지 않는다. 사용자 PNG 전체를 사용한 launcher/adaptive/round 아이콘과512px 스토어 아이콘을 추가했다. 기존 앱ID·업로드키·진도/기록/설정 형식은 그대로다. 사용자가 첫 후보 코드2를 Play에 업로드했으므로 최종 아이콘 보정본은 코드3으로 재빌드한다. [연구기록·출시 안내](docs/research/2026-09-30-android-text-icons/README.md). 최종 후보는 로컬 준비 상태이며 에이전트의 push/Play 업로드는 수행하지 않았다.
+
 - 2026-09-29 스테이지·최고기록: Alphabet도 타이머가 시작되는 본게임부터 `Stage 1`을 표시하고 정답마다 증가한다. 튜토리얼은 기존 학습명을 유지한다. 세 게임 START 위에 TAPtoTEN과 같은 기록 글자 크기·세로 배치로 `BEST STAGE / Stage N`을 표시한다. 본게임에 도달하지 않았으면 `—`. 최고 **도달** 스테이지를 이어하기와 별도 저장하며 예전 진행 위치를 이관하고 기록이 낮아지지 않게 한다.
 
 - 2026-09-29 콘텐츠 확장(아래 과거 개수 설명보다 우선): Syllable 본게임은 뜻 있는 한 음절100개, Vocabulary는 고정32개+추가100개(3글자23/4글자21/5글자56), 총132개다. 의미 없는 음절은 본게임에서 제외하고 모든 단어의 공백 없는 연속 조합을 검사한다. 최근 중복·복합어 겹침 회피 및 긴 단어 우선 추첨은 유지한다. 기존 문제/남은 셔플 묶음은 보존하며 새 어휘는 다음 묶음부터 포함된다. 세 게임 모두 스테이지는 계속 이어지지만 어휘는 한 묶음을 소진한 뒤 다시 섞인다.
@@ -112,6 +118,8 @@ npm run build
 | 화면 동작 | `src/ui/talkApp.ts` |
 | 레이아웃 | `index.html`, `src/ui/styles/talk.css` |
 | 색·폰트·공통 질감 | `src/ui/styles/tokens.css` |
+| 일반 UI 흰색·회색 스킨 | `src/ui/styles/neutral.css` |
+| Android 전체 화면 비율 | `src/ui/nativeFrame.ts`, `src/ui/styles/nativeFrame.css` |
 | 로고·스플래시·영상 | `public/assets/brand/` |
 
 Claude로 디자인을 수정할 때는 [`docs/CUSTOMIZATION.md`](docs/CUSTOMIZATION.md)를 먼저 참고하세요.

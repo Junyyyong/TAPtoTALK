@@ -1,0 +1,46 @@
+/* The entire Android canvas, including overlays, shares one transform. */
+#app { container: app / size; }
+#app.is-native-frame {
+  position: absolute;
+  left: var(--frame-left, 0px);
+  top: var(--frame-top, 0px);
+  width: 390px;
+  height: 844px;
+  transform: scale(var(--frame-scale, 1));
+  transform-origin: top left;
+  --safe-top: 0px;
+  --safe-right: 0px;
+  --safe-bottom: 0px;
+  --safe-left: 0px;
+}
+
+/* Modal dialogs live in the browser top layer, outside #app's transform. */
+.native-frame-active .legal-dialog {
+  inset: auto;
+  left: calc(var(--frame-left) + 12px * var(--frame-scale));
+  top: calc(var(--frame-top) + 42px * var(--frame-scale));
+  width: 366px;
+  height: 760px;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  transform: scale(var(--frame-scale));
+  transform-origin: top left;
+}
+.native-frame-active .storage-notice {
+  inset: auto;
+  left: calc(var(--frame-left) + 12px * var(--frame-scale));
+  bottom: calc(100% - var(--frame-top) - 832px * var(--frame-scale));
+  width: 366px;
+  transform: scale(var(--frame-scale));
+  transform-origin: bottom left;
+}
+.native-frame-active .storage-notice.storage-blocking {
+  left: var(--frame-left);
+  top: var(--frame-top);
+  bottom: auto;
+  width: 390px;
+  height: 844px;
+  padding: 16px;
+  transform-origin: top left;
+}
