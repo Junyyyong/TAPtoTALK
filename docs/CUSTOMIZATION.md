@@ -1,5 +1,19 @@
 # 디자인과 콘텐츠 수정 경계
 
+## 승인된 최종 출시 — 1.0.3 (5)
+
+후속 승인으로 아래 반응형 후보와 내비게이션 고정을 확정한다. 기존 앱ID·서명키를 유지하며 Android 버전만1.0.3/versionCode5로 증가한다. [출시 검증](research/2026-10-01-responsive-release/README.md), [최종7장](../store/screenshots/2026-10-01-release/README.md). 과거 후보의 미커밋/AAB·push 없음은 당시 상태를 기록한 것이다.
+
+## 기기 비율 반응형 후속 후보 (2026-10-01 최신)
+
+아래 고정390×844 프레임 설명을 대체한다. Android의 `nativeFrame.ts`는 남은 native inset을 먼저 제외하고 `min(가용너비/390, 가용높이/640)` 배율로 density를 정규화한다. 논리 너비/높이는 가용 치수÷배율이며844 고정이 아니다. 같은 물리 기기에서 화면 확대가 바뀌어도 논리 치수는 같고, 실제 종횡비가 다르면 배치가 달라진다. 원래 서체·기준 글자 크기·색·효과·규칙·저장은 유지한다.
+
+`nativeResponsive.css`는 Android 전용이다. 보드 flex 잔여 공간의 `100cqw/cqh`와560px 한도 중 작은 값으로 정방형을 유지한다. 가로로 넓은 기기의 제시창/편집/HUD/Settings 본문은560px 열에 둔다. `talkLayout.ts`는 native 메인 음악 안내가 넘칠 때만 자연 흐름/스크롤로 전환하며 웹에는 실행하지 않는다. 앱에 배율 메뉴를 추가하거나 OS 설정을 변경하지 않는다.
+
+처음 스튜디오/커버만 `--frame-safe-*`, `--frame-full-width/height`로 남은 바 영역까지 칠한다. 첫 배경은#1d2087, 원본 PNG의 흰 글씨까지 contain한다. 커버는 이미지 한 장의 가로100%/높이auto/세로중앙이며 좌우 자르기·별도 그라데이션·반복·합성을 금지한다. 메인 이후와 독립 정책/저장 복구창은 안전 가용 프레임 안에 둔다. native 측정0이 권위 있는 값이며 fallback inset을 더하지 않는다.
+
+아이콘 원본은 최신 캐릭터 PNG로 교체했다. 기존 생성 방식과 appId/버전/서명키를 유지하고 브라우저 favicon은`public/icon.png`로 연결했다. [검증·전후 캡처](research/2026-10-01-responsive-aspect/README.md), [스토어7장 목록](../store/screenshots/2026-10-01/README.md). 현재 작업은 미커밋 소스 후보이며 새 AAB·push는 하지 않았다.
+
 ## 최신 Android 출시 후보 (2026-10-01)
 
 후속 승인으로 최종 런타임을 커밋`fed5879`에 확정하고 기존 서명키로 **1.0.2/versionCode4** AAB를 생성했다. [검증·출시 입력값](research/2026-10-01-android-release/README.md). 아래 보류/미커밋·코드3 설명은 각 후보 캡처 당시 상태이며 현재 버전보다 우선하지 않는다. 실제 기기·Play 업로드/출시는 미실시다.

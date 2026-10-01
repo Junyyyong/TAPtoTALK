@@ -22,14 +22,16 @@ describe("Android release presentation contract", () => {
   it("keeps app identity, release signing and backup while increasing the version", () => {
     const gradle = read("android/app/build.gradle");
     expect(gradle).toContain('applicationId "io.github.junyyyong.taptotalk"');
-    expect(gradle).toContain("versionCode 4");
-    expect(gradle).toContain('versionName "1.0.2"');
+    expect(gradle).toContain("versionCode 5");
+    expect(gradle).toContain('versionName "1.0.3"');
     expect(gradle).toContain("signingConfig signingConfigs.release");
     expect(read("android/app/src/main/AndroidManifest.xml")).toContain('android:allowBackup="true"');
   });
   it("requires explicit native-frame validation without weakening signature or media checks", () => {
     const verifier = read("scripts/verify-android-release.py");
     expect(verifier).toContain('--native-frame-update');
+    expect(verifier).toContain('--icon-update');
+    expect(verifier).toContain('authorized_icon_names');
     expect(verifier).toContain('b"Lio/github/junyyyong/taptotalk/GameInsets;"');
     expect(verifier).toContain('b"publishGameInsets"');
     expect(verifier).toContain('assert new_cert == old_cert');
@@ -54,6 +56,8 @@ describe("Android release presentation contract", () => {
     }
     const store = readFileSync("store/android/taptotalk-play-icon-512.png");
     expect([store.readUInt32BE(16), store.readUInt32BE(20)]).toEqual([512, 512]);
+    expect(readFileSync("public/icon.png")).toEqual(store);
+    expect(read("index.html")).toContain('rel="icon" type="image/png" href="./icon.png"');
     expect(read("android/app/src/main/res/values/ic_launcher_background.xml")).toContain("#FFFFFF");
     for (const icon of ["ic_launcher", "ic_launcher_round"]) {
       expect(read(`android/app/src/main/res/mipmap-anydpi-v26/${icon}.xml`)).toContain('@mipmap/ic_launcher_foreground');

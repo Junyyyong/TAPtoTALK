@@ -1,0 +1,23 @@
+{
+  "referenceProject": "/Users/scdi/Documents/ChatGPT/TaptoPick",
+  "accessInThisTask": "read-only; no write commands targeted reference source",
+  "note": "One reference file changed between the edge run and final read-only audit. Keep the originally read hash as evidence; this task did not modify it. Density normalization and board fitting concepts remain the same in the re-read file.",
+  "files": {
+    "src/ui/nativeFrame.ts": {
+      "readAtTest": "abcd105f072f6fd4a4c9c415f5641eb5d9b76e94271fe8c0215a59b27b34e232",
+      "finalAudit": "abcd105f072f6fd4a4c9c415f5641eb5d9b76e94271fe8c0215a59b27b34e232"
+    },
+    "src/ui/styles/nativeResponsive.css": {
+      "readAtTest": "57d4db27afc93c231829775b4820bff5631bbc6ddcb085c6551e413552a26637",
+      "finalAudit": "a0e0e90ab158f8d5c152c724f5e5b249a7103780cb4ab1ddaa6416865f3f9ce2"
+    },
+    "src/ui/pickLayout.ts": {
+      "readAtTest": "df34b512e38fd0f7dff58fb412516a8088fc6fd55d9804e5c19ed544f1ca0106",
+      "finalAudit": "df34b512e38fd0f7dff58fb412516a8088fc6fd55d9804e5c19ed544f1ca0106"
+    },
+    "src/ui/styles/title.css": {
+      "readAtTest": "26dbb4f09505a7077c2ad005833e2dcbe71dde15d78a63e0f317363b88031e79",
+      "finalAudit": "26dbb4f09505a7077c2ad005833e2dcbe71dde15d78a63e0f317363b88031e79"
+    }
+  }
+}

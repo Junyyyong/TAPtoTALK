@@ -5,6 +5,10 @@ TAP to TEN의 화면 감각과 웹/Android 빌드 기반만 복사했으며, 원
 
 ## 현재 프로토타입
 
+- 2026-10-01 최종 승인 **1.0.3 (5)**: 새 앱 아이콘·Android 기기 비율 반응형·고정 뒤로가기/일시정지 위치를 출시 후보에 반영한다. 기존 패키지/서명키·게임/저장은 유지한다. 테스트307개 통과, [최종 스크린샷7장·ZIP](store/screenshots/2026-10-01-release/README.md), [출시 검증](docs/research/2026-10-01-responsive-release/README.md). 아래 미커밋/AAB·push 없음은 각 후보 캡처 당시 상태다.
+
+- 2026-10-01 반응형 후속 후보: Android는390×844 고정 사각형 대신 실제 가용 비율을 사용하며, 같은 기기의 화면 확대 변경에는 같은 배치를 유지한다. 스튜디오 전체 배경·커버 가로100%·정방형 보드·기존 디자인/규칙/저장 보존. 새 PNG 아이콘과 [스토어 스크린샷7장](store/screenshots/2026-10-01/README.md), [전후 연구기록](docs/research/2026-10-01-responsive-aspect/README.md). 소스/검증만 완료하며 AAB·commit/push 없음. 아래 고정 프레임 설명은 이전 버전이다.
+
 - 2026-10-01 출시 후보 `1.0.2 (4)`: 승인된 UI·Android 전체 비율·아이콘·연구자료를 `fed5879`로 확정하고 기존 키로 새 AAB를 생성했다. 테스트301개·앱 Java5개·서명/번들 검증 통과. 실기기 검증과 Play 업로드/출시는 미실시다. [AAB 검증·출시명·출시노트](docs/research/2026-10-01-android-release/README.md). 아래 “보류/미커밋/AAB·push 없음”은 각 후보 캡처 당시 상태다.
 
 - 2026-10-01 후속 수정: BEST STAGE와 게임 상단 타이머에 추가됐던 회색 배경/타이머 테두리를 제거했다. 기록의 파란색, 글자 크기·위치, 모든 다른 표면과 강조 효과는 유지한다. [전후 화면](docs/research/2026-10-01-bare-records-timer/README.md).

@@ -1,10 +1,11 @@
 """Verify an AAB against dist/resources and a previous bundle, without loading secrets.
 
 JAVA_HOME and BUNDLETOOL_JAR must point to existing local tools.
-Usage: python3 scripts/verify-android-release.py NEW.aab OLD.aab report.json [--native-frame-update]
+Usage: python3 scripts/verify-android-release.py NEW.aab OLD.aab report.json [--native-frame-update] [--icon-update]
 
 The optional flag permits the reviewed MainActivity/GameInsets update, but still
-requires its compiled hooks and keeps media, fonts and icons byte-identical.
+requires its compiled hooks and keeps media and fonts byte-identical. The icon
+flag permits only the generated launcher resources and the browser icon PNG.
 """
 import hashlib
 import io
@@ -23,8 +24,10 @@ ROOT = Path(__file__).resolve().parents[1]
 JAVA = Path(os.environ["JAVA_HOME"]) / "bin"
 TOOL = os.environ["BUNDLETOOL_JAR"]
 bundle, previous, output = map(Path, sys.argv[1:4])
-assert sys.argv[4:] in ([], ["--native-frame-update"]), "Unknown verification option"
-native_frame_update = sys.argv[4:] == ["--native-frame-update"]
+options = set(sys.argv[4:])
+assert options <= {"--native-frame-update", "--icon-update"}, "Unknown verification option"
+native_frame_update = "--native-frame-update" in options
+icon_update = "--icon-update" in options
 
 
 def run(*args):
@@ -69,6 +72,7 @@ assert permissions == ["android.permission.INTERNET", "io.github.junyyyong.tapto
 assets, icons = [], []
 unchanged = []
 native_entries = []
+changed_icons = []
 with zipfile.ZipFile(bundle) as archive:
     names = archive.namelist()
     assert not any(re.search(r"(?:^|/)(?:keystore\.properties|\.git|\.env)(?:$|/)|\.(?:p12|jks|keystore)$", name) for name in names)
@@ -131,7 +135,8 @@ with zipfile.ZipFile(bundle) as archive:
         media_suffixes = (".png", ".jpg", ".jpeg", ".webp", ".svg", ".woff2", ".ttf", ".mp3", ".mp4", ".webm", ".wav")
         media_names = {name for name in names if name.startswith("base/assets/public/") and name.endswith(media_suffixes)}
         prior_media_names = {name for name in prior_names if name.startswith("base/assets/public/") and name.endswith(media_suffixes)}
-        assert media_names == prior_media_names, "Bundled media/font inventory changed"
+        authorized_icon_names = set(icons) | {"base/assets/public/icon.png"} if icon_update else set()
+        assert media_names - authorized_icon_names == prior_media_names - authorized_icon_names, "Bundled media/font inventory changed"
         for name in names:
             if name.startswith("base/dex/"):
                 current_bytes = archive.read(name)
@@ -142,6 +147,11 @@ with zipfile.ZipFile(bundle) as archive:
                 if not native_frame_update:
                     assert old_bytes == current_bytes, "Unexpected native change: " + name
             if name in prior_names and (name in media_names or name in icons):
+                if name in authorized_icon_names:
+                    if archive.read(name) != prior.read(name):
+                        changed_icons.append({"entry": name, "sha256": digest(archive.read(name)),
+                                              "previousSha256": digest(prior.read(name))})
+                    continue
                 assert archive.read(name) == prior.read(name), "Unexpected native/media/icon change: " + name
                 unchanged.append(name)
 
@@ -159,6 +169,7 @@ report = {"checkedAt": datetime.now(timezone.utc).isoformat(), "bundle": str(bun
           "webAssetsMatched": len(assets), "iconPixelMatches": icons,
           "unchangedPreviousMediaIconEntries": len(unchanged), "bundledFontsVerified": True,
           "nativeFrameUpdateAuthorized": native_frame_update, "nativeDexComparison": native_entries,
+          "iconUpdateAuthorized": icon_update, "changedIconEntries": changed_icons,
           "iconPixelComparison": "Exact alpha and visible RGBA; AAPT zeroing RGB at alpha=0 is permitted",
           "legacyContentRatio": "40dp / 48dp; matches adaptive visible 60dp / 72dp",
           "roundMaskVerification": "All five densities: circular alpha mask, transparent corners, opaque center",

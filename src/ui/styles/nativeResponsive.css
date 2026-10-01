@@ -1,0 +1,31 @@
+/* Only Android's density-normalized canvas. No color, typeface or game changes. */
+.is-native-frame > .studio-splash-screen,
+.is-native-frame > .splash-screen {
+  position: absolute;
+  top: calc(-1 * var(--frame-safe-top, 0px));
+  left: calc(-1 * var(--frame-safe-left, 0px));
+  width: var(--frame-full-width, 100%);
+  height: var(--frame-full-height, 100%);
+}
+.is-native-frame .studio-splash-cover { max-height: 70%; object-fit: contain; }
+.is-native-frame .title-screen { overflow-y: auto; }
+.is-native-frame .mode-name { font-size: 21px; }
+.is-native-frame .mode-desc { font-size: 13px; }
+.is-native-frame .title-screen.is-space-limited { justify-content: flex-start; }
+.is-native-frame .title-screen.is-space-limited .mode-list { flex-shrink: 0; }
+.is-native-frame .title-screen.is-space-limited .title-links { flex-shrink: 0; }
+.is-native-frame .alphabet-intro-body { overflow-y: auto; }
+.is-native-frame .talk-screen { gap: clamp(5px, calc(var(--app-h) * .0142), 12px); }
+.is-native-frame .talk-screen > .hud,
+.is-native-frame .talk-screen > .writing-card,
+.is-native-frame .talk-screen > .fixed-controls,
+.is-native-frame .settings-screen > .hud,
+.is-native-frame .settings-body {
+  width: min(100%, 560px);
+  align-self: center;
+}
+.is-native-frame .letter-board { width: min(100cqw, 100cqh, 560px); }
+/* Short-window rules used to shrink type. Keep the approved reference sizes. */
+.is-native-frame .run-heading strong { font-size: 21px; }
+.is-native-frame .target-hint { font-size: 14px; }
+.is-native-frame .control-btn { min-height: 44px; }

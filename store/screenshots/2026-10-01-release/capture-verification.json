@@ -1,0 +1,52 @@
+{
+  "capturedAt": "2026-10-01T07:08:32.263Z",
+  "browser": "154.0.8037.58",
+  "passed": true,
+  "actualAndroidDevice": false,
+  "conditions": "Chrome Android platform simulation; 390x844 CSS px, DPR2, remaining system insets0. Isolated saves, seed20261001; clocks frozen; video0.5s. Research-only routes expose app/skip splash delays. No composition or OS bars.",
+  "files": [
+    {
+      "name": "01-cover.png",
+      "width": 780,
+      "height": 1688,
+      "sha256": "502aaecf80dcf07d2db88c0d02ad9d265d557177619d395f3fe0f1ac1bdc1ccf"
+    },
+    {
+      "name": "02-main.png",
+      "width": 780,
+      "height": 1688,
+      "sha256": "a8ddef34be992aac991cf66c9cf78688131b8c482c692098cc67dd8b462885b1"
+    },
+    {
+      "name": "03-alphabet-start.png",
+      "width": 780,
+      "height": 1688,
+      "sha256": "d690964222008670cdc3fb4ec24ec9a2bff44aeff5468e339dafbf1a611baf9c"
+    },
+    {
+      "name": "04-alphabet-practice.png",
+      "width": 780,
+      "height": 1688,
+      "sha256": "a7a1e6e084996d14988fee9c54eedd9e4fe8af490da0cbeb10ef391cb5c4216f"
+    },
+    {
+      "name": "05-syllable-start.png",
+      "width": 780,
+      "height": 1688,
+      "sha256": "d0540b27cccae49a4e287902887e14d16c0d8cb4f7334e8a81a07fa9156140ac"
+    },
+    {
+      "name": "06-syllable-game.png",
+      "width": 780,
+      "height": 1688,
+      "sha256": "5829ec128d524bad47e2b0cbd4582bf97cd1c425b440c8c4d135c6242f7a726c"
+    },
+    {
+      "name": "07-great.png",
+      "width": 780,
+      "height": 1688,
+      "sha256": "6b89405b215f57f14162a9f2b947778289341a4514b2ac250a674a306b9d9ef5"
+    }
+  ],
+  "errors": []
+}

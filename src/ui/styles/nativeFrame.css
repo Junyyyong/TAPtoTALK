@@ -1,11 +1,12 @@
-/* The entire Android canvas, including overlays, shares one transform. */
+/* Density normalization with a responsive logical width/height, not letterboxing. */
 #app { container: app / size; }
 #app.is-native-frame {
   position: absolute;
   left: var(--frame-left, 0px);
   top: var(--frame-top, 0px);
-  width: 390px;
-  height: 844px;
+  width: var(--frame-width, 390px);
+  height: var(--frame-height, 844px);
+  overflow: visible;
   transform: scale(var(--frame-scale, 1));
   transform-origin: top left;
   --safe-top: 0px;
@@ -19,8 +20,8 @@
   inset: auto;
   left: calc(var(--frame-left) + 12px * var(--frame-scale));
   top: calc(var(--frame-top) + 42px * var(--frame-scale));
-  width: 366px;
-  height: 760px;
+  width: calc(var(--frame-width) - 24px);
+  height: calc(var(--frame-height) - 84px);
   max-width: none;
   max-height: none;
   margin: 0;
@@ -30,8 +31,8 @@
 .native-frame-active .storage-notice {
   inset: auto;
   left: calc(var(--frame-left) + 12px * var(--frame-scale));
-  bottom: calc(100% - var(--frame-top) - 832px * var(--frame-scale));
-  width: 366px;
+  bottom: calc(100% - var(--frame-top) - (var(--frame-height) - 12px) * var(--frame-scale));
+  width: calc(var(--frame-width) - 24px);
   transform: scale(var(--frame-scale));
   transform-origin: bottom left;
 }
@@ -39,8 +40,8 @@
   left: var(--frame-left);
   top: var(--frame-top);
   bottom: auto;
-  width: 390px;
-  height: 844px;
+  width: var(--frame-width);
+  height: var(--frame-height);
   padding: 16px;
   transform-origin: top left;
 }

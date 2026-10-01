@@ -9,6 +9,11 @@
 @container app (max-height: 580px) { .title-music-slot { height: 40px; } .title-music-prompt { min-height: 40px; } }
 @container app (max-height: 580px) { .title-links:has(#music-prompt:not([hidden])) { padding-bottom: 42px; } }
 .hud { display: grid; grid-template-columns: 44px 1fr 44px; align-items: center; min-height: 62px; }
+/* Anchor navigation to the safe screen, not a changing HUD/content column. */
+.screen > .hud > .icon-btn { position: absolute; top: calc(var(--safe-top) + 11px); }
+.screen > .hud > .icon-btn:first-child { left: max(12px, var(--safe-left)); }
+.screen > .hud > .pause-btn { right: max(12px, var(--safe-right)); }
+.screen > .hud > :nth-child(2) { grid-column: 2; }
 .icon-btn { width: 40px; height: 40px; padding: 0; border: 0; border-radius: 50%; color: var(--ink-soft); background: var(--recess); display: flex; align-items: center; justify-content: center; }
 .icon-spacer { width: 44px; height: 44px; }
 .pause-btn span { display: block; width: 14px; height: 17px; border-inline: 4px solid currentColor; }

@@ -1,5 +1,5 @@
-/** Android scales the approved composition as a whole; web keeps its layout. */
-export const NATIVE_FRAME = { width: 390, height: 844 } as const;
+/** Normalize Android density, not device aspect ratio. Web keeps its layout. */
+export const NATIVE_FRAME = { width: 390, height: 844, minHeight: 640 } as const;
 export interface FrameInsets { top: number; right: number; bottom: number; left: number }
 
 export function fitNativeFrame(width: number, height: number, insets: FrameInsets) {
@@ -7,11 +7,19 @@ export function fitNativeFrame(width: number, height: number, insets: FrameInset
   const left = safe(insets.left), top = safe(insets.top);
   const availableWidth = Math.max(0, safe(width) - left - safe(insets.right));
   const availableHeight = Math.max(0, safe(height) - top - safe(insets.bottom));
-  const scale = Math.min(availableWidth / NATIVE_FRAME.width, availableHeight / NATIVE_FRAME.height);
+  const scale = Math.min(availableWidth / NATIVE_FRAME.width, availableHeight / NATIVE_FRAME.minHeight);
   return {
     scale,
-    x: left + (availableWidth - NATIVE_FRAME.width * scale) / 2,
-    y: top + (availableHeight - NATIVE_FRAME.height * scale) / 2,
+    x: left,
+    y: top,
+    width: scale > 0 ? availableWidth / scale : NATIVE_FRAME.width,
+    height: scale > 0 ? availableHeight / scale : NATIVE_FRAME.minHeight,
+    insets: {
+      top: scale > 0 ? top / scale : 0,
+      right: scale > 0 ? safe(insets.right) / scale : 0,
+      bottom: scale > 0 ? safe(insets.bottom) / scale : 0,
+      left: scale > 0 ? left / scale : 0,
+    },
   };
 }
 
@@ -26,9 +34,6 @@ export function trackNativeFrame(enabled: boolean): void {
   const app = document.getElementById("app")!;
   app.classList.add("is-native-frame");
   document.body.classList.add("native-frame-active");
-  app.style.setProperty("--app-h", `${NATIVE_FRAME.height}px`);
-  app.style.setProperty("--layout-vw", `${NATIVE_FRAME.width / 100}px`);
-  app.style.setProperty("--layout-vh", `${NATIVE_FRAME.height / 100}px`);
   let frame = 0;
   const measure = (): void => {
     frame = 0;
@@ -46,6 +51,16 @@ export function trackNativeFrame(enabled: boolean): void {
     document.body.style.setProperty("--frame-scale", String(fit.scale));
     document.body.style.setProperty("--frame-left", `${fit.x}px`);
     document.body.style.setProperty("--frame-top", `${fit.y}px`);
+    document.body.style.setProperty("--frame-width", `${fit.width}px`);
+    document.body.style.setProperty("--frame-height", `${fit.height}px`);
+    for (const [edge, value] of Object.entries(fit.insets)) {
+      document.body.style.setProperty(`--frame-safe-${edge}`, `${value}px`);
+    }
+    document.body.style.setProperty("--frame-full-width", `${fit.width + fit.insets.left + fit.insets.right}px`);
+    document.body.style.setProperty("--frame-full-height", `${fit.height + fit.insets.top + fit.insets.bottom}px`);
+    app.style.setProperty("--app-h", `${fit.height}px`);
+    app.style.setProperty("--layout-vw", `${fit.width / 100}px`);
+    app.style.setProperty("--layout-vh", `${fit.height / 100}px`);
   };
   const schedule = (): void => { if (!frame) frame = requestAnimationFrame(measure); };
   new MutationObserver(schedule).observe(document.documentElement, { attributes: true, attributeFilter: ["style"] });

@@ -3,6 +3,7 @@ import { APP_CONFIG } from "./config/app";
 import { TalkApp } from "./ui/talkApp";
 import { trackViewport } from "./ui/viewport";
 import { trackNativeFrame } from "./ui/nativeFrame";
+import { trackTalkTitleLayout } from "./ui/talkLayout";
 import { Capacitor } from "@capacitor/core";
 import { TALK_STORAGE_KEYS, talkStore } from "./ui/talkStorage";
 import { validateTalkSave } from "./ui/talkProgress";
@@ -13,6 +14,7 @@ document.querySelector<HTMLImageElement>(".splash-cover")!.src = APP_CONFIG.asse
 document.querySelector<HTMLImageElement>(".brand-mark")!.src = APP_CONFIG.assets.logo;
 trackViewport();
 trackNativeFrame(Capacitor.getPlatform() === "android");
+trackTalkTitleLayout(Capacitor.getPlatform() === "android");
 const storageNotice = new StorageNotice();
 talkStore.onSaveFailure = failed => failed
   ? storageNotice.show(false, () => talkStore.flush()) : storageNotice.hide();
