@@ -5,6 +5,8 @@ TAP to TEN의 화면 감각과 웹/Android 빌드 기반만 복사했으며, 원
 
 ## 현재 프로토타입
 
+- 2026-10-01 출시 후보 `1.0.2 (4)`: 승인된 UI·Android 전체 비율·아이콘·연구자료를 `fed5879`로 확정하고 기존 키로 새 AAB를 생성했다. 테스트301개·앱 Java5개·서명/번들 검증 통과. 실기기 검증과 Play 업로드/출시는 미실시다. [AAB 검증·출시명·출시노트](docs/research/2026-10-01-android-release/README.md). 아래 “보류/미커밋/AAB·push 없음”은 각 후보 캡처 당시 상태다.
+
 - 2026-10-01 후속 수정: BEST STAGE와 게임 상단 타이머에 추가됐던 회색 배경/타이머 테두리를 제거했다. 기록의 파란색, 글자 크기·위치, 모든 다른 표면과 강조 효과는 유지한다. [전후 화면](docs/research/2026-10-01-bare-records-timer/README.md).
 
 - 2026-10-01 흰 배경·연회색 기본 박스는 유지하고 TAPtoTEST처럼 **강조 요소만 기존 색/효과로 복원**했다. 메인 게임명·기록은 파랑, Settings·START 제목은 주황, 시작 아이콘은 파랑/흰 글자, START/Resume·켜진 스위치는 초록이다. 점수의 기존 노랑/그림자와 어두운 결과 배경도 복원했다. 게임 블록·피드백·서체·크기·배치·이미지·음악·규칙·저장은 그대로다. [전후 PNG·검증 기록](docs/research/2026-10-01-ui-accents/README.md). Android390×844 전체 비율과 웹의 기존 반응형 배치는 [직전 프레임 작업](docs/research/2026-10-01-neutral-proportional-frame/README.md)을 유지한다. 실제 갤럭시 검증은 미완료이며 AAB·commit/push는 수행하지 않았다.

@@ -124,9 +124,14 @@ with zipfile.ZipFile(bundle) as archive:
     for font in ["NotoSansKR-Variable.woff2", "NotoSerifKR-Variable.woff2"]:
         assert archive.read("base/assets/public/assets/fonts/" + font) == (ROOT / "public/assets/fonts" / font).read_bytes()
     styles = b"\n".join(archive.read(name) for name in names if name.startswith("base/assets/public/assets/") and name.endswith(".css"))
-    assert b'font-family:"TAP Sans KR",sans-serif' in styles
+    # Vite can omit optional quotes around a multi-word family name.
+    assert re.search(rb'''font-family:(?:"TAP Sans KR"|'TAP Sans KR'|TAP Sans KR),sans-serif''', styles)
     with zipfile.ZipFile(previous) as prior:
         prior_names = set(prior.namelist())
+        media_suffixes = (".png", ".jpg", ".jpeg", ".webp", ".svg", ".woff2", ".ttf", ".mp3", ".mp4", ".webm", ".wav")
+        media_names = {name for name in names if name.startswith("base/assets/public/") and name.endswith(media_suffixes)}
+        prior_media_names = {name for name in prior_names if name.startswith("base/assets/public/") and name.endswith(media_suffixes)}
+        assert media_names == prior_media_names, "Bundled media/font inventory changed"
         for name in names:
             if name.startswith("base/dex/"):
                 current_bytes = archive.read(name)
@@ -136,7 +141,7 @@ with zipfile.ZipFile(bundle) as archive:
                                        "changed": old_bytes != current_bytes})
                 if not native_frame_update:
                     assert old_bytes == current_bytes, "Unexpected native change: " + name
-            if name in prior_names and (name.startswith(("base/assets/public/assets/brand/", "base/assets/public/assets/fonts/", "base/assets/public/assets/glyphs/", "base/assets/public/assets/audio/")) or name in icons):
+            if name in prior_names and (name in media_names or name in icons):
                 assert archive.read(name) == prior.read(name), "Unexpected native/media/icon change: " + name
                 unchanged.append(name)
 
@@ -163,6 +168,7 @@ report = {"checkedAt": datetime.now(timezone.utc).isoformat(), "bundle": str(bun
           "fontScaleConfigHandled": True, "textZoomDexPresent": True, "privateSigningMaterialBundled": False,
           "deviceVerification": "NOT RUN: no connected Android device; emulator/system image not installed",
           "sourceRevision": run("git", "-C", ROOT, "rev-parse", "HEAD").strip(),
+          "verifierSha256": digest(Path(__file__).read_bytes()),
           "sourceWorkingTreeClean": not source_status,
           "sourceWorkingTreeChanges": source_status}
 output.parent.mkdir(parents=True, exist_ok=True)
