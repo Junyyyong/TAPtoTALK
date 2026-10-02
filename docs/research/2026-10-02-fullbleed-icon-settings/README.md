@@ -51,4 +51,4 @@
 
 [새 adaptive 원형 미리보기](after-adaptive-circle-preview.png), [새512px 스토어 아이콘](../../../store/android/taptotalk-play-icon-512.png).
 
-기존1.0.3(5) AAB 파일을 수정하거나 덮어쓰지 않았다. 설치 앱에 반영하려면 추후 승인 후 versionCode를 높인 새 AAB를 생성·배포해야 한다.
+위의 “소스 후보/AAB·push 없음”은 캡처 당시 상태다. 이후 사용자 승인으로`682daf8`에 적용하고 기존 키로1.0.4(6) 새 AAB를 생성·검증했다. [후속 출시 기록·출시노트](../2026-10-02-icon-settings-release/README.md). 기존1.0.3(5) AAB는 수정/덮어쓰기하지 않았다. Play 업로드와 실제 설치 검증은 미실시다.

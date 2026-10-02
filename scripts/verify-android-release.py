@@ -69,6 +69,10 @@ if native_frame_update:
     assert int(activity.attrib[android + "configChanges"], 0) & 0x1000  # CONFIG_DENSITY
 permissions = [p.attrib[android + "name"] for p in root.findall("uses-permission")]
 assert permissions == ["android.permission.INTERNET", "io.github.junyyyong.taptotalk.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"]
+resources = run(JAVA / "java", "-jar", TOOL, "dump", "resources", f"--bundle={bundle}", "--values")
+for label in ["app_name", "title_activity_main"]:
+    assert re.search(rf'string/{label}\n\s+\(default\) - \[STR\] "TAPtoTALK"', resources), label
+assert re.search(r'color/ic_launcher_background\n\s+\(default\) - \[COLOR_RGB8\] #1d2087', resources)
 assets, icons = [], []
 unchanged = []
 native_entries = []
@@ -78,6 +82,10 @@ with zipfile.ZipFile(bundle) as archive:
     assert not any(re.search(r"(?:^|/)(?:keystore\.properties|\.git|\.env)(?:$|/)|\.(?:p12|jks|keystore)$", name) for name in names)
     for file in sorted((ROOT / "dist").rglob("*")):
         if not file.is_file():
+            continue
+        # Finder can create this after Vite builds. Android's documented
+        # ignoreAssetsPattern excludes it; it is not an application asset.
+        if file.name.lower() == ".ds_store":
             continue
         entry = "base/assets/public/" + file.relative_to(ROOT / "dist").as_posix()
         assert digest(archive.read(entry)) == digest(file.read_bytes()), entry
@@ -177,6 +185,7 @@ report = {"checkedAt": datetime.now(timezone.utc).isoformat(), "bundle": str(bun
           "legacyContentRatio": "48dp / 48dp; matches adaptive visible 72dp / 72dp; no white inset",
           "roundMaskVerification": "All five densities: circular alpha mask, transparent corners, opaque center",
           "adaptiveResources": "both foreground/background references present",
+          "bundledAppName": "TAPtoTALK", "bundledActivityName": "TAPtoTALK", "bundledIconBackground": "#1D2087",
           "permissions": permissions, "minSdk": root.find("uses-sdk").attrib[android + "minSdkVersion"],
           "targetSdk": root.find("uses-sdk").attrib[android + "targetSdkVersion"],
           "fontScaleConfigHandled": True, "textZoomDexPresent": True, "privateSigningMaterialBundled": False,

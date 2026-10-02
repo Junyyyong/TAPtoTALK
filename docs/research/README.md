@@ -1,6 +1,6 @@
 # TAPtoTALK 주요 변경 연구 기록
 
-- [2026-10-02 아이콘·앱 이름·Settings1.0.4(6) 출시](2026-10-02-icon-settings-release/README.md): 현재 변경 commit/push·기존 키 AAB 승인, 게임/기록/세로 방향/시스템바 대응 유지. 전후780×1688 PNG와 출시명·노트·번들 검증 연결.
+- [2026-10-02 아이콘·앱 이름·Settings1.0.4(6) 출시](2026-10-02-icon-settings-release/README.md): 적용 소스`682daf8`, 기존 키 AAB 생성·서명/번들 검증·테스트313개 통과. 게임/기록/세로 방향/시스템바 대응 유지. 전후780×1688 PNG·출시명·노트 연결, 실제 기기/Play 업로드 미실시.
 
 - [2026-10-02 설치 아이콘 full-bleed·이름·진동 제거](2026-10-02-fullbleed-icon-settings/README.md): 흰 아이콘 여백 제거, 표시 이름TAPtoTALK, Music/Sound만 유지·기존 진동ON 무시. 테스트313개·compiled icons15종·780×1688 Settings 전후. 소스 후보, AAB/push 없음.
 
