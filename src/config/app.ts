@@ -38,7 +38,7 @@ const GRADE_MOVIES = {
  * Keep the public paths stable and a redesign only needs new asset files.
  */
 export const APP_CONFIG = {
-  name: "TAP to TALK",
+  name: "TAPtoTALK",
   board: { columns: 9, rows: 9 },
   timing: { studioSplashMs: 3_000, productSplashMs: 4_000 },
   music: {

@@ -1,0 +1,35 @@
+{
+  "revision": "41385dbca02aed44433b26a6c85800328ca508f4",
+  "beforeRoot": "/private/var/folders/d9/t0cdtg0d5lv7bwx2zgjbz6t80000gn/T/talk-icon-settings-mm2cb9/before",
+  "actualDevice": false,
+  "passed": true,
+  "errors": [],
+  "checks": [
+    {
+      "side": "before",
+      "switches": 3,
+      "buzzCalls": 1
+    },
+    "Music/Sound toggles independent; legacy haptics ignored; no vibrate on settings/start/correct tile; correct tile advances",
+    {
+      "side": "after",
+      "switches": 2,
+      "buzzCalls": 0
+    }
+  ],
+  "screens": [
+    {
+      "file": "before-settings.png",
+      "width": 780,
+      "height": 1688,
+      "sha256": "eb81d8e82230e6bc0cef358eaafbb97f7f3101576cb99f2778c63d03cfee4ac4"
+    },
+    {
+      "file": "after-settings.png",
+      "width": 780,
+      "height": 1688,
+      "sha256": "f3ecad935f0899698fb2d5366311f23448c7861cac62205f860b2b2000bff4a6"
+    }
+  ],
+  "conditions": "Chrome Android simulation,390x844 CSS,DPR2, remaining native insets0; isolated preferences with legacy vibration=true. Before is genuine separate commit archive."
+}

@@ -1,5 +1,15 @@
 # 디자인과 콘텐츠 수정 경계
 
+## 아이콘 full-bleed·앱 이름·진동 제거 (2026-10-02 최신)
+
+아래의 옛60/72 및40/48 아이콘 배치 설명을 대체한다. 사용자 원본 PNG는 변경하지 않는다. `build-android-icons.py`는 legacy48dp 전체와 adaptive72dp 가시 영역을 이미지로 채우고,108dp foreground의 외곽과 native background는#1D2087로 채운다. 정사각형 보정은 중앙fit이며2134×2135 원본의 극미세한 가장자리만 잘린다. 원형/둥근 모서리 자르기는 런처 mask의 동작이다. 설치 아이콘에 흰 inset·테두리를 다시 추가하지 않는다. mask 미리보기는 실제 홈 화면 캡처가 아니다.
+
+표시 이름은 Android `app_name`/`title_activity_main`, Capacitor `appName`, `APP_CONFIG.name`, 웹 title/alt 모두 **TAPtoTALK**이다. package/appId·서명키를 바꾸지 않는다.
+
+활성 TALK Settings는 Music·Sound만 표시한다. `TalkPreferences.hapticsOn`은 저장 호환을 위해 필드를 남기지만 load/save 모두false이고 `TalkApp`은 feedback.setHaptics(false)를 적용한다. 기존 Music·Sound·tutorialDone·진도/기록 키는 보존한다. 복사된 숫자 게임의 설정/feedback API는 미사용 참조이며 수정하지 않는다. 한·영 방침도 음악/효과음 설정만 설명한다.
+
+[전후 화면·리소스 검증](research/2026-10-02-fullbleed-icon-settings/README.md). 후속 승인으로 Android **1.0.4/versionCode6** 출시 후보에 반영한다. 기존 패키지·서명키·기록은 유지하고 세로 방향 제한·시스템바 대응은 바꾸지 않는다. [번들 검증·출시 안내](research/2026-10-02-icon-settings-release/README.md). 아래 옛 버전/미커밋 설명은 각 후보 당시의 기록이다.
+
 ## 승인된 최종 출시 — 1.0.3 (5)
 
 후속 승인으로 아래 반응형 후보와 내비게이션 고정을 확정한다. 기존 앱ID·서명키를 유지하며 Android 버전만1.0.3/versionCode5로 증가한다. [출시 검증](research/2026-10-01-responsive-release/README.md), [최종7장](../store/screenshots/2026-10-01-release/README.md). 과거 후보의 미커밋/AAB·push 없음은 당시 상태를 기록한 것이다.

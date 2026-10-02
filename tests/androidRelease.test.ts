@@ -22,8 +22,8 @@ describe("Android release presentation contract", () => {
   it("keeps app identity, release signing and backup while increasing the version", () => {
     const gradle = read("android/app/build.gradle");
     expect(gradle).toContain('applicationId "io.github.junyyyong.taptotalk"');
-    expect(gradle).toContain("versionCode 5");
-    expect(gradle).toContain('versionName "1.0.3"');
+    expect(gradle).toContain("versionCode 6");
+    expect(gradle).toContain('versionName "1.0.4"');
     expect(gradle).toContain("signingConfig signingConfigs.release");
     expect(read("android/app/src/main/AndroidManifest.xml")).toContain('android:allowBackup="true"');
   });
@@ -43,10 +43,11 @@ describe("Android release presentation contract", () => {
     const hash = (path: string) => createHash("sha256").update(readFileSync(path)).digest("hex");
     expect(hash(metadata.source)).toBe(metadata.sourceSha256);
     expect(metadata.foregroundDp).toBe(108);
-    expect(metadata.contentDp).toBe(60);
+    expect(metadata.contentDp).toBe(72);
     expect(metadata.adaptiveVisibleDp).toBe(72);
     expect(metadata.legacyCanvasDp).toBe(48);
-    expect(metadata.legacyContentDp).toBe(40);
+    expect(metadata.legacyContentDp).toBe(48);
+    expect(metadata.placement).toBe("full-bleed-square");
     expect(metadata.legacyContentDp / metadata.legacyCanvasDp).toBe(metadata.contentDp / metadata.adaptiveVisibleDp);
     expect(Object.keys(metadata.outputs)).toHaveLength(15);
     for (const [path, info] of Object.entries(metadata.outputs) as [string, { size: number[]; sha256: string }][]) {
@@ -58,9 +59,16 @@ describe("Android release presentation contract", () => {
     expect([store.readUInt32BE(16), store.readUInt32BE(20)]).toEqual([512, 512]);
     expect(readFileSync("public/icon.png")).toEqual(store);
     expect(read("index.html")).toContain('rel="icon" type="image/png" href="./icon.png"');
-    expect(read("android/app/src/main/res/values/ic_launcher_background.xml")).toContain("#FFFFFF");
+    expect(read("android/app/src/main/res/values/ic_launcher_background.xml")).toContain("#1D2087");
     for (const icon of ["ic_launcher", "ic_launcher_round"]) {
       expect(read(`android/app/src/main/res/mipmap-anydpi-v26/${icon}.xml`)).toContain('@mipmap/ic_launcher_foreground');
     }
+  });
+  it("uses TAPtoTALK without spaces for launcher, activity and web names", () => {
+    expect(read("android/app/src/main/res/values/strings.xml")).toContain('<string name="app_name">TAPtoTALK</string>');
+    expect(read("android/app/src/main/res/values/strings.xml")).toContain('<string name="title_activity_main">TAPtoTALK</string>');
+    expect(read("capacitor.config.ts")).toContain('appName: "TAPtoTALK"');
+    expect(read("src/config/app.ts")).toContain('name: "TAPtoTALK"');
+    expect(read("index.html")).toContain('<title>TAPtoTALK</title>');
   });
 });

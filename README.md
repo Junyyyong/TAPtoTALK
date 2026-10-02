@@ -1,9 +1,11 @@
-# TAP to TALK
+# TAPtoTALK
 
 자모 타일을 탭하며 한글의 낱자부터 음절과 단어까지 익히는 모바일 게임입니다.
 TAP to TEN의 화면 감각과 웹/Android 빌드 기반만 복사했으며, 원본 저장소에는 push할 수 없도록 설정했습니다.
 
 ## 현재 프로토타입
+
+- 2026-10-02 승인된 출시 후보 **1.0.4 (6)**: 설치 아이콘을 흰 여백 없는 full-bleed로 변경하고 launcher/activity/웹 이름을`TAPtoTALK`으로 통일했다. Settings의 진동 스위치/안내를 제거하고 예전 진동ON 저장값도 무시한다. Music·Sound와 기존 게임/기록은 유지한다. [전후 기록](docs/research/2026-10-02-fullbleed-icon-settings/README.md), [AAB 검증·출시명·출시노트](docs/research/2026-10-02-icon-settings-release/README.md). 이전1.0.3(5)에는 이 변경이 없다. 세로 방향 제한·시스템바 대응은 이번에 변경하지 않는다.
 
 - 2026-10-01 최종 승인 **1.0.3 (5)**: 새 앱 아이콘·Android 기기 비율 반응형·고정 뒤로가기/일시정지 위치를 출시 후보에 반영한다. 기존 패키지/서명키·게임/저장은 유지한다. 테스트307개 통과, [최종 스크린샷7장·ZIP](store/screenshots/2026-10-01-release/README.md), [출시 검증](docs/research/2026-10-01-responsive-release/README.md). 아래 미커밋/AAB·push 없음은 각 후보 캡처 당시 상태다.
 

@@ -755,15 +755,13 @@ export class TalkApp {
   }
 
   private renderSettings(body: HTMLElement): void {
-    const canVibrate = typeof navigator.vibrate === "function";
-    body.innerHTML = `<div class="switch-list"><button class="switch-row" id="talk-sound"><span class="switch-text"><b>Sound</b><small>Button sounds and finish sounds</small></span><span class="switch" role="switch" aria-checked="${this.preferences.soundOn}"><span class="switch-knob"></span></span></button><button class="switch-row" id="talk-haptics"><span class="switch-text"><b>Vibration</b><small>Short feedback when you tap</small></span><span class="switch" role="switch" aria-checked="${this.preferences.hapticsOn}"><span class="switch-knob"></span></span></button></div>${!canVibrate && this.preferences.hapticsOn ? '<p class="settings-note">Vibration may not work in this browser.</p>' : ""}`;
+    body.innerHTML = `<div class="switch-list"><button class="switch-row" id="talk-sound"><span class="switch-text"><b>Sound</b><small>Button sounds and finish sounds</small></span><span class="switch" role="switch" aria-checked="${this.preferences.soundOn}"><span class="switch-knob"></span></span></button></div>`;
     body.querySelector(".switch-list")!.insertAdjacentHTML("afterbegin", `<button class="switch-row" id="talk-music"><span class="switch-text"><b>Music</b><small>Menu and game background music</small></span><span class="switch" role="switch" aria-checked="${this.preferences.musicOn}"><span class="switch-knob"></span></span></button>`);
     el("talk-music").addEventListener("click", () => this.changePreference("musicOn"));
     el("talk-sound").addEventListener("click", () => this.changePreference("soundOn"));
-    el("talk-haptics").addEventListener("click", () => this.changePreference("hapticsOn"));
   }
 
-  private changePreference(key: "musicOn" | "soundOn" | "hapticsOn"): void {
+  private changePreference(key: "musicOn" | "soundOn"): void {
     const focusedId = document.activeElement?.id;
     this.preferences[key] = !this.preferences[key];
     saveTalkPreferences(this.preferences);
@@ -776,7 +774,7 @@ export class TalkApp {
   private applyPreferences(): void {
     this.music.setEnabled(this.preferences.musicOn);
     feedback.setSound(this.preferences.soundOn);
-    feedback.setHaptics(this.preferences.hapticsOn);
+    feedback.setHaptics(false);
     this.cheer.setSound(this.preferences.soundOn);
   }
 }

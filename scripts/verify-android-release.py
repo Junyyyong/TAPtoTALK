@@ -84,8 +84,9 @@ with zipfile.ZipFile(bundle) as archive:
         assets.append(entry)
     metadata = json.loads((ROOT / "store/android/icon-generation.json").read_text())
     assert digest((ROOT / metadata["source"]).read_bytes()) == metadata["sourceSha256"]
-    assert (metadata["legacyCanvasDp"], metadata["legacyContentDp"]) == (48, 40)
-    assert (metadata["foregroundDp"], metadata["contentDp"], metadata["adaptiveVisibleDp"]) == (108, 60, 72)
+    assert (metadata["legacyCanvasDp"], metadata["legacyContentDp"]) == (48, 48)
+    assert (metadata["foregroundDp"], metadata["contentDp"], metadata["adaptiveVisibleDp"]) == (108, 72, 72)
+    assert metadata["placement"] == "full-bleed-square" and metadata["background"] == "#1D2087"
     source = Image.open(ROOT / metadata["source"]).convert("RGBA")
     for name in metadata["outputs"]:
         file = ROOT / name
@@ -98,25 +99,27 @@ with zipfile.ZipFile(bundle) as archive:
         # exact alpha and visible RGB, rather than falsely rejecting this lossless optimization.
         assert all(a == b or (a[3] == 0 and b[3] == 0)
                    for a, b in zip(original.getdata(), packed.getdata())), name
-        if file.name in ("ic_launcher.png", "ic_launcher_round.png"):
-            size = original.width
-            content = round(size * 40 / 48)
-            resized = ImageOps.contain(source, (content, content), Image.Resampling.LANCZOS)
-            expected = Image.new("RGBA", original.size, "white")
-            expected.alpha_composite(resized, ((size - resized.width) // 2, (size - resized.height) // 2))
-            if file.name == "ic_launcher_round.png":
-                mask = Image.new("L", (size * 4, size * 4), 0)
-                ImageDraw.Draw(mask).ellipse((0, 0, size * 4 - 1, size * 4 - 1), fill=255)
-                expected.putalpha(mask.resize((size, size), Image.Resampling.LANCZOS))
-                assert all(packed.getpixel(p)[3] == 0 for p in [(0, 0), (size-1, 0), (0, size-1), (size-1, size-1)])
-                assert packed.getpixel((size // 2, size // 2))[3] == 255
-            assert expected.tobytes() == original.tobytes(), "Source placement / 40dp sizing mismatch: " + name
+        size = original.width
+        content = round(size * 72 / 108) if file.name == "ic_launcher_foreground.png" else size
+        resized = ImageOps.fit(source, (content, content), Image.Resampling.LANCZOS)
+        expected = Image.new("RGBA", original.size, metadata["background"])
+        expected.alpha_composite(resized, ((size - content) // 2, (size - content) // 2))
+        if file.name == "ic_launcher_round.png":
+            mask = Image.new("L", (size * 4, size * 4), 0)
+            ImageDraw.Draw(mask).ellipse((0, 0, size * 4 - 1, size * 4 - 1), fill=255)
+            expected.putalpha(mask.resize((size, size), Image.Resampling.LANCZOS))
+            assert all(packed.getpixel(p)[3] == 0 for p in [(0, 0), (size-1, 0), (0, size-1), (size-1, size-1)])
+            assert packed.getpixel((size // 2, size // 2))[3] == 255
+        else:
+            assert packed.getchannel("A").getextrema() == (255, 255), "Icon must be opaque: " + name
+        assert expected.tobytes() == original.tobytes(), "Full-bleed source placement mismatch: " + name
         icons.append(matches[0])
     for name in ["ic_launcher", "ic_launcher_round"]:
         data = archive.read(f"base/res/mipmap-anydpi-v26/{name}.xml")
         assert b"ic_launcher_foreground" in data and b"ic_launcher_background" in data
     config = json.loads(archive.read("base/assets/capacitor.config.json"))
     assert config["appId"] == "io.github.junyyyong.taptotalk" and not config.get("server", {}).get("url")
+    assert config["appName"] == "TAPtoTALK"
     dex = b"\n".join(archive.read(name) for name in names if name.startswith("base/dex/") and name.endswith(".dex"))
     assert b"applyGameTextZoom" in dex and b"setTextZoom" in dex
     if native_frame_update:
@@ -171,7 +174,7 @@ report = {"checkedAt": datetime.now(timezone.utc).isoformat(), "bundle": str(bun
           "nativeFrameUpdateAuthorized": native_frame_update, "nativeDexComparison": native_entries,
           "iconUpdateAuthorized": icon_update, "changedIconEntries": changed_icons,
           "iconPixelComparison": "Exact alpha and visible RGBA; AAPT zeroing RGB at alpha=0 is permitted",
-          "legacyContentRatio": "40dp / 48dp; matches adaptive visible 60dp / 72dp",
+          "legacyContentRatio": "48dp / 48dp; matches adaptive visible 72dp / 72dp; no white inset",
           "roundMaskVerification": "All five densities: circular alpha mask, transparent corners, opaque center",
           "adaptiveResources": "both foreground/background references present",
           "permissions": permissions, "minSdk": root.find("uses-sdk").attrib[android + "minSdkVersion"],
