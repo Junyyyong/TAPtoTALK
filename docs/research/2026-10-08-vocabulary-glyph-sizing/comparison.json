@@ -1,0 +1,272 @@
+{
+  "actualDevice": false,
+  "comparedConditions": 16,
+  "renderedConditions": 32,
+  "runtimeErrors": 0,
+  "reference390x844": "UNCHANGED",
+  "boardGeometryAndContents": "UNCHANGED",
+  "symbolScaleFactors": "UNCHANGED",
+  "alphabetAndSyllableReference": "UNCHANGED",
+  "liveResizeCoordinateTapAndDelete": [
+    {
+      "platform": "web",
+      "liveResize": "PASS",
+      "coordinateTap": "PASS",
+      "delete": "PASS"
+    },
+    {
+      "platform": "android-simulation",
+      "liveResize": "PASS",
+      "coordinateTap": "PASS",
+      "delete": "PASS"
+    }
+  ],
+  "screenshots": [
+    {
+      "file": "before-web-390x844.png",
+      "cssWidth": 390,
+      "cssHeight": 844,
+      "pngWidth": 780,
+      "pngHeight": 1688
+    },
+    {
+      "file": "before-web-390x600.png",
+      "cssWidth": 390,
+      "cssHeight": 600,
+      "pngWidth": 780,
+      "pngHeight": 1200
+    },
+    {
+      "file": "before-web-1280x800.png",
+      "cssWidth": 1280,
+      "cssHeight": 800,
+      "pngWidth": 2560,
+      "pngHeight": 1600
+    },
+    {
+      "file": "before-web-1280x600.png",
+      "cssWidth": 1280,
+      "cssHeight": 600,
+      "pngWidth": 2560,
+      "pngHeight": 1200
+    },
+    {
+      "file": "before-android-simulation-390x844.png",
+      "cssWidth": 390,
+      "cssHeight": 844,
+      "pngWidth": 780,
+      "pngHeight": 1688
+    },
+    {
+      "file": "before-android-simulation-390x600.png",
+      "cssWidth": 390,
+      "cssHeight": 600,
+      "pngWidth": 780,
+      "pngHeight": 1200
+    },
+    {
+      "file": "after-web-390x844.png",
+      "cssWidth": 390,
+      "cssHeight": 844,
+      "pngWidth": 780,
+      "pngHeight": 1688
+    },
+    {
+      "file": "after-web-390x600.png",
+      "cssWidth": 390,
+      "cssHeight": 600,
+      "pngWidth": 780,
+      "pngHeight": 1200
+    },
+    {
+      "file": "after-web-1280x800.png",
+      "cssWidth": 1280,
+      "cssHeight": 800,
+      "pngWidth": 2560,
+      "pngHeight": 1600
+    },
+    {
+      "file": "after-web-1280x600.png",
+      "cssWidth": 1280,
+      "cssHeight": 600,
+      "pngWidth": 2560,
+      "pngHeight": 1200
+    },
+    {
+      "file": "after-android-simulation-390x844.png",
+      "cssWidth": 390,
+      "cssHeight": 844,
+      "pngWidth": 780,
+      "pngHeight": 1688
+    },
+    {
+      "file": "after-android-simulation-390x600.png",
+      "cssWidth": 390,
+      "cssHeight": 600,
+      "pngWidth": 780,
+      "pngHeight": 1200
+    }
+  ],
+  "measurements": [
+    {
+      "platform": "web",
+      "width": 390,
+      "height": 844,
+      "tilePx": 42.25,
+      "beforeGlyphPx": 22.921875,
+      "afterGlyphPx": 22.921875,
+      "beforeRatio": 0.5425295857988166,
+      "afterRatio": 0.5425295857988166
+    },
+    {
+      "platform": "web",
+      "width": 390,
+      "height": 740,
+      "tilePx": 40.5,
+      "beforeGlyphPx": 22.921875,
+      "afterGlyphPx": 21.9375,
+      "beforeRatio": 0.5659722222222222,
+      "afterRatio": 0.5416666666666666
+    },
+    {
+      "platform": "web",
+      "width": 390,
+      "height": 640,
+      "tilePx": 34.25,
+      "beforeGlyphPx": 22.921875,
+      "afterGlyphPx": 18.375,
+      "beforeRatio": 0.6692518248175182,
+      "afterRatio": 0.5364963503649635
+    },
+    {
+      "platform": "web",
+      "width": 390,
+      "height": 600,
+      "tilePx": 29.25,
+      "beforeGlyphPx": 22.921875,
+      "afterGlyphPx": 15.53125,
+      "beforeRatio": 0.7836538461538461,
+      "afterRatio": 0.530982905982906
+    },
+    {
+      "platform": "web",
+      "width": 430,
+      "height": 600,
+      "tilePx": 29.25,
+      "beforeGlyphPx": 25.1875,
+      "afterGlyphPx": 15.53125,
+      "beforeRatio": 0.8611111111111112,
+      "afterRatio": 0.530982905982906
+    },
+    {
+      "platform": "web",
+      "width": 800,
+      "height": 600,
+      "tilePx": 29.25,
+      "beforeGlyphPx": 25.1875,
+      "afterGlyphPx": 15.53125,
+      "beforeRatio": 0.8611111111111112,
+      "afterRatio": 0.530982905982906
+    },
+    {
+      "platform": "web",
+      "width": 1280,
+      "height": 800,
+      "tilePx": 48,
+      "beforeGlyphPx": 25.1875,
+      "afterGlyphPx": 25.1875,
+      "beforeRatio": 0.5247395833333334,
+      "afterRatio": 0.5247395833333334
+    },
+    {
+      "platform": "web",
+      "width": 1280,
+      "height": 600,
+      "tilePx": 29.25,
+      "beforeGlyphPx": 25.1875,
+      "afterGlyphPx": 15.53125,
+      "beforeRatio": 0.8611111111111112,
+      "afterRatio": 0.530982905982906
+    },
+    {
+      "platform": "android-simulation",
+      "width": 390,
+      "height": 844,
+      "tilePx": 42.25,
+      "beforeGlyphPx": 22.921875,
+      "afterGlyphPx": 22.921875,
+      "beforeRatio": 0.5425295857988166,
+      "afterRatio": 0.5425295857988166
+    },
+    {
+      "platform": "android-simulation",
+      "width": 390,
+      "height": 740,
+      "tilePx": 41.0625,
+      "beforeGlyphPx": 22.921875,
+      "afterGlyphPx": 22.265625,
+      "beforeRatio": 0.5582191780821918,
+      "afterRatio": 0.5422374429223744
+    },
+    {
+      "platform": "android-simulation",
+      "width": 390,
+      "height": 640,
+      "tilePx": 32.71875,
+      "beforeGlyphPx": 22.921875,
+      "afterGlyphPx": 17.5,
+      "beforeRatio": 0.7005730659025788,
+      "afterRatio": 0.5348615090735435
+    },
+    {
+      "platform": "android-simulation",
+      "width": 390,
+      "height": 600,
+      "tilePx": 30.673828125,
+      "beforeGlyphPx": 22.9248046875,
+      "afterGlyphPx": 16.40625,
+      "beforeRatio": 0.7473734479465138,
+      "afterRatio": 0.5348615090735435
+    },
+    {
+      "platform": "android-simulation",
+      "width": 430,
+      "height": 600,
+      "tilePx": 30.673828125,
+      "beforeGlyphPx": 23.61328125,
+      "afterGlyphPx": 16.40625,
+      "beforeRatio": 0.76981852913085,
+      "afterRatio": 0.5348615090735435
+    },
+    {
+      "platform": "android-simulation",
+      "width": 800,
+      "height": 600,
+      "tilePx": 30.673828125,
+      "beforeGlyphPx": 23.61328125,
+      "afterGlyphPx": 16.40625,
+      "beforeRatio": 0.76981852913085,
+      "afterRatio": 0.5348615090735435
+    },
+    {
+      "platform": "android-simulation",
+      "width": 1280,
+      "height": 800,
+      "tilePx": 40.8984375,
+      "beforeGlyphPx": 31.484375,
+      "afterGlyphPx": 21.875,
+      "beforeRatio": 0.76981852913085,
+      "afterRatio": 0.5348615090735435
+    },
+    {
+      "platform": "android-simulation",
+      "width": 1280,
+      "height": 600,
+      "tilePx": 30.673828125,
+      "beforeGlyphPx": 23.61328125,
+      "afterGlyphPx": 16.40625,
+      "beforeRatio": 0.76981852913085,
+      "afterRatio": 0.5348615090735435
+    }
+  ]
+}

@@ -1,0 +1,6578 @@
+{
+  "revision": "before",
+  "root": "/private/tmp/talk-glyph-before-LJqSva",
+  "actualDevice": false,
+  "seed": 1234,
+  "screenshotScale": 2,
+  "errors": [],
+  "measurements": [
+    {
+      "platform": "web",
+      "width": 390,
+      "height": 844,
+      "target": "아기",
+      "grid": "8",
+      "tileWidth": 42.25,
+      "tileHeight": 42.25,
+      "glyphDisplayWidth": 22.921875,
+      "glyphDisplayHeight": 22.921875,
+      "glyphFontPx": 22.932,
+      "glyphToTile": 0.5425295857988166,
+      "boardWidth": 366,
+      "boardHeight": 366,
+      "logicalWidth": 390,
+      "logicalHeight": 844,
+      "symbols": [
+        "ㅊ",
+        "ㅣ",
+        ",",
+        "ㅣ",
+        "ㅁ",
+        "ㅡ",
+        "ㅇ",
+        "ㄴ",
+        "ㅡ",
+        "ㅣ",
+        "ㄹ",
+        "╱",
+        "ㄴ",
+        "ㄴ",
+        "ㅅ",
+        "ㄷ",
+        "★",
+        "ㅡ",
+        "ㅂ",
+        "ㅡ",
+        "ㄴ",
+        "ㅁ",
+        "ㅍ",
+        "ㅂ",
+        "ㄴ",
+        "ㄱ",
+        "♥",
+        "Cheonjiin dot",
+        "╲",
+        "ㅊ",
+        "ㅈ",
+        "ㄴ",
+        "ㄱ",
+        "ㅂ",
+        "ㄴ",
+        "ㅋ",
+        "ㅊ",
+        "ㄴ",
+        "ㅈ",
+        "ㅈ",
+        "ㄹ",
+        "ㅡ",
+        "Cheonjiin dot",
+        "ㅡ",
+        "ㅣ",
+        "ㅌ",
+        "ㅈ",
+        "ㄹ",
+        "ㄱ",
+        "ㅋ",
+        "ㅇ",
+        "ㄹ",
+        "ㅇ",
+        "ㄴ",
+        "ㅌ",
+        "ㅁ",
+        "ㅈ",
+        "Cheonjiin dot",
+        "ㅈ",
+        "ㅋ",
+        "ㄷ",
+        "ㄹ",
+        "ㅊ",
+        "ㄷ"
+      ],
+      "glyphScales": [
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1, 0, 0, 1.4, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph uploaded-glyph--dot-trap",
+          "transform": "matrix(1.331, 0, 0, 1.331, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1, 0, 0, 1.4, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1, 0, 0, 1.4, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.2, -0.2, -0.2, 1.2, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph uploaded-glyph--dot-trap",
+          "transform": "matrix(1.331, 0, 0, 1.331, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph uploaded-glyph--dot-trap",
+          "transform": "matrix(1.331, 0, 0, 1.331, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.21, 0, 0, 1.21, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.2, 0.2, 0.2, 1.2, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.21, 0, 0, 1.21, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1, 0, 0, 1.4, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(-1, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(0, 1, -1, 0, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.21, 0, 0, 1.21, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(-1, 0, 0, -1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(0, -1, 1, 0, 0, 0)",
+          "scale": "none"
+        }
+      ]
+    },
+    {
+      "platform": "web",
+      "width": 390,
+      "height": 740,
+      "target": "아기",
+      "grid": "8",
+      "tileWidth": 40.5,
+      "tileHeight": 40.5,
+      "glyphDisplayWidth": 22.921875,
+      "glyphDisplayHeight": 22.921875,
+      "glyphFontPx": 22.932,
+      "glyphToTile": 0.5659722222222222,
+      "boardWidth": 352.015625,
+      "boardHeight": 352.015625,
+      "logicalWidth": 390,
+      "logicalHeight": 740,
+      "symbols": [
+        "ㅊ",
+        "ㅣ",
+        ",",
+        "ㅣ",
+        "ㅁ",
+        "ㅡ",
+        "ㅇ",
+        "ㄴ",
+        "ㅡ",
+        "ㅣ",
+        "ㄹ",
+        "╱",
+        "ㄴ",
+        "ㄴ",
+        "ㅅ",
+        "ㄷ",
+        "★",
+        "ㅡ",
+        "ㅂ",
+        "ㅡ",
+        "ㄴ",
+        "ㅁ",
+        "ㅍ",
+        "ㅂ",
+        "ㄴ",
+        "ㄱ",
+        "♥",
+        "Cheonjiin dot",
+        "╲",
+        "ㅊ",
+        "ㅈ",
+        "ㄴ",
+        "ㄱ",
+        "ㅂ",
+        "ㄴ",
+        "ㅋ",
+        "ㅊ",
+        "ㄴ",
+        "ㅈ",
+        "ㅈ",
+        "ㄹ",
+        "ㅡ",
+        "Cheonjiin dot",
+        "ㅡ",
+        "ㅣ",
+        "ㅌ",
+        "ㅈ",
+        "ㄹ",
+        "ㄱ",
+        "ㅋ",
+        "ㅇ",
+        "ㄹ",
+        "ㅇ",
+        "ㄴ",
+        "ㅌ",
+        "ㅁ",
+        "ㅈ",
+        "Cheonjiin dot",
+        "ㅈ",
+        "ㅋ",
+        "ㄷ",
+        "ㄹ",
+        "ㅊ",
+        "ㄷ"
+      ],
+      "glyphScales": [
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1, 0, 0, 1.4, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph uploaded-glyph--dot-trap",
+          "transform": "matrix(1.331, 0, 0, 1.331, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1, 0, 0, 1.4, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1, 0, 0, 1.4, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.2, -0.2, -0.2, 1.2, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph uploaded-glyph--dot-trap",
+          "transform": "matrix(1.331, 0, 0, 1.331, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph uploaded-glyph--dot-trap",
+          "transform": "matrix(1.331, 0, 0, 1.331, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.21, 0, 0, 1.21, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.2, 0.2, 0.2, 1.2, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.21, 0, 0, 1.21, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1, 0, 0, 1.4, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(-1, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(0, 1, -1, 0, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.21, 0, 0, 1.21, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(-1, 0, 0, -1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(0, -1, 1, 0, 0, 0)",
+          "scale": "none"
+        }
+      ]
+    },
+    {
+      "platform": "web",
+      "width": 390,
+      "height": 640,
+      "target": "아기",
+      "grid": "8",
+      "tileWidth": 34.25,
+      "tileHeight": 34.25,
+      "glyphDisplayWidth": 22.921875,
+      "glyphDisplayHeight": 22.921875,
+      "glyphFontPx": 22.932,
+      "glyphToTile": 0.6692518248175182,
+      "boardWidth": 302.015625,
+      "boardHeight": 302.015625,
+      "logicalWidth": 390,
+      "logicalHeight": 640,
+      "symbols": [
+        "ㅊ",
+        "ㅣ",
+        ",",
+        "ㅣ",
+        "ㅁ",
+        "ㅡ",
+        "ㅇ",
+        "ㄴ",
+        "ㅡ",
+        "ㅣ",
+        "ㄹ",
+        "╱",
+        "ㄴ",
+        "ㄴ",
+        "ㅅ",
+        "ㄷ",
+        "★",
+        "ㅡ",
+        "ㅂ",
+        "ㅡ",
+        "ㄴ",
+        "ㅁ",
+        "ㅍ",
+        "ㅂ",
+        "ㄴ",
+        "ㄱ",
+        "♥",
+        "Cheonjiin dot",
+        "╲",
+        "ㅊ",
+        "ㅈ",
+        "ㄴ",
+        "ㄱ",
+        "ㅂ",
+        "ㄴ",
+        "ㅋ",
+        "ㅊ",
+        "ㄴ",
+        "ㅈ",
+        "ㅈ",
+        "ㄹ",
+        "ㅡ",
+        "Cheonjiin dot",
+        "ㅡ",
+        "ㅣ",
+        "ㅌ",
+        "ㅈ",
+        "ㄹ",
+        "ㄱ",
+        "ㅋ",
+        "ㅇ",
+        "ㄹ",
+        "ㅇ",
+        "ㄴ",
+        "ㅌ",
+        "ㅁ",
+        "ㅈ",
+        "Cheonjiin dot",
+        "ㅈ",
+        "ㅋ",
+        "ㄷ",
+        "ㄹ",
+        "ㅊ",
+        "ㄷ"
+      ],
+      "glyphScales": [
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1, 0, 0, 1.4, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph uploaded-glyph--dot-trap",
+          "transform": "matrix(1.331, 0, 0, 1.331, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1, 0, 0, 1.4, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1, 0, 0, 1.4, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.2, -0.2, -0.2, 1.2, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph uploaded-glyph--dot-trap",
+          "transform": "matrix(1.331, 0, 0, 1.331, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph uploaded-glyph--dot-trap",
+          "transform": "matrix(1.331, 0, 0, 1.331, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.21, 0, 0, 1.21, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.2, 0.2, 0.2, 1.2, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.21, 0, 0, 1.21, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1, 0, 0, 1.4, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(-1, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(0, 1, -1, 0, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.21, 0, 0, 1.21, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(-1, 0, 0, -1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(0, -1, 1, 0, 0, 0)",
+          "scale": "none"
+        }
+      ]
+    },
+    {
+      "platform": "web",
+      "width": 390,
+      "height": 600,
+      "target": "아기",
+      "grid": "8",
+      "tileWidth": 29.25,
+      "tileHeight": 29.25,
+      "glyphDisplayWidth": 22.921875,
+      "glyphDisplayHeight": 22.921875,
+      "glyphFontPx": 22.932,
+      "glyphToTile": 0.7836538461538461,
+      "boardWidth": 262.015625,
+      "boardHeight": 262.015625,
+      "logicalWidth": 390,
+      "logicalHeight": 600,
+      "symbols": [
+        "ㅊ",
+        "ㅣ",
+        ",",
+        "ㅣ",
+        "ㅁ",
+        "ㅡ",
+        "ㅇ",
+        "ㄴ",
+        "ㅡ",
+        "ㅣ",
+        "ㄹ",
+        "╱",
+        "ㄴ",
+        "ㄴ",
+        "ㅅ",
+        "ㄷ",
+        "★",
+        "ㅡ",
+        "ㅂ",
+        "ㅡ",
+        "ㄴ",
+        "ㅁ",
+        "ㅍ",
+        "ㅂ",
+        "ㄴ",
+        "ㄱ",
+        "♥",
+        "Cheonjiin dot",
+        "╲",
+        "ㅊ",
+        "ㅈ",
+        "ㄴ",
+        "ㄱ",
+        "ㅂ",
+        "ㄴ",
+        "ㅋ",
+        "ㅊ",
+        "ㄴ",
+        "ㅈ",
+        "ㅈ",
+        "ㄹ",
+        "ㅡ",
+        "Cheonjiin dot",
+        "ㅡ",
+        "ㅣ",
+        "ㅌ",
+        "ㅈ",
+        "ㄹ",
+        "ㄱ",
+        "ㅋ",
+        "ㅇ",
+        "ㄹ",
+        "ㅇ",
+        "ㄴ",
+        "ㅌ",
+        "ㅁ",
+        "ㅈ",
+        "Cheonjiin dot",
+        "ㅈ",
+        "ㅋ",
+        "ㄷ",
+        "ㄹ",
+        "ㅊ",
+        "ㄷ"
+      ],
+      "glyphScales": [
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1, 0, 0, 1.4, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph uploaded-glyph--dot-trap",
+          "transform": "matrix(1.331, 0, 0, 1.331, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1, 0, 0, 1.4, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1, 0, 0, 1.4, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.2, -0.2, -0.2, 1.2, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph uploaded-glyph--dot-trap",
+          "transform": "matrix(1.331, 0, 0, 1.331, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph uploaded-glyph--dot-trap",
+          "transform": "matrix(1.331, 0, 0, 1.331, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.21, 0, 0, 1.21, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.2, 0.2, 0.2, 1.2, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.21, 0, 0, 1.21, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1, 0, 0, 1.4, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(-1, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(0, 1, -1, 0, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.21, 0, 0, 1.21, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(-1, 0, 0, -1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(0, -1, 1, 0, 0, 0)",
+          "scale": "none"
+        }
+      ]
+    },
+    {
+      "platform": "web",
+      "width": 430,
+      "height": 600,
+      "target": "아기",
+      "grid": "8",
+      "tileWidth": 29.25,
+      "tileHeight": 29.25,
+      "glyphDisplayWidth": 25.1875,
+      "glyphDisplayHeight": 25.1875,
+      "glyphFontPx": 25.2,
+      "glyphToTile": 0.8611111111111112,
+      "boardWidth": 262.015625,
+      "boardHeight": 262.015625,
+      "logicalWidth": 430,
+      "logicalHeight": 600,
+      "symbols": [
+        "ㅊ",
+        "ㅣ",
+        ",",
+        "ㅣ",
+        "ㅁ",
+        "ㅡ",
+        "ㅇ",
+        "ㄴ",
+        "ㅡ",
+        "ㅣ",
+        "ㄹ",
+        "╱",
+        "ㄴ",
+        "ㄴ",
+        "ㅅ",
+        "ㄷ",
+        "★",
+        "ㅡ",
+        "ㅂ",
+        "ㅡ",
+        "ㄴ",
+        "ㅁ",
+        "ㅍ",
+        "ㅂ",
+        "ㄴ",
+        "ㄱ",
+        "♥",
+        "Cheonjiin dot",
+        "╲",
+        "ㅊ",
+        "ㅈ",
+        "ㄴ",
+        "ㄱ",
+        "ㅂ",
+        "ㄴ",
+        "ㅋ",
+        "ㅊ",
+        "ㄴ",
+        "ㅈ",
+        "ㅈ",
+        "ㄹ",
+        "ㅡ",
+        "Cheonjiin dot",
+        "ㅡ",
+        "ㅣ",
+        "ㅌ",
+        "ㅈ",
+        "ㄹ",
+        "ㄱ",
+        "ㅋ",
+        "ㅇ",
+        "ㄹ",
+        "ㅇ",
+        "ㄴ",
+        "ㅌ",
+        "ㅁ",
+        "ㅈ",
+        "Cheonjiin dot",
+        "ㅈ",
+        "ㅋ",
+        "ㄷ",
+        "ㄹ",
+        "ㅊ",
+        "ㄷ"
+      ],
+      "glyphScales": [
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1, 0, 0, 1.4, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph uploaded-glyph--dot-trap",
+          "transform": "matrix(1.331, 0, 0, 1.331, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1, 0, 0, 1.4, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1, 0, 0, 1.4, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.2, -0.2, -0.2, 1.2, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph uploaded-glyph--dot-trap",
+          "transform": "matrix(1.331, 0, 0, 1.331, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph uploaded-glyph--dot-trap",
+          "transform": "matrix(1.331, 0, 0, 1.331, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.21, 0, 0, 1.21, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.2, 0.2, 0.2, 1.2, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.21, 0, 0, 1.21, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1, 0, 0, 1.4, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(-1, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(0, 1, -1, 0, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.21, 0, 0, 1.21, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(-1, 0, 0, -1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(0, -1, 1, 0, 0, 0)",
+          "scale": "none"
+        }
+      ]
+    },
+    {
+      "platform": "web",
+      "width": 800,
+      "height": 600,
+      "target": "아기",
+      "grid": "8",
+      "tileWidth": 29.25,
+      "tileHeight": 29.25,
+      "glyphDisplayWidth": 25.1875,
+      "glyphDisplayHeight": 25.1875,
+      "glyphFontPx": 25.2,
+      "glyphToTile": 0.8611111111111112,
+      "boardWidth": 262.015625,
+      "boardHeight": 262.015625,
+      "logicalWidth": 800,
+      "logicalHeight": 600,
+      "symbols": [
+        "ㅊ",
+        "ㅣ",
+        ",",
+        "ㅣ",
+        "ㅁ",
+        "ㅡ",
+        "ㅇ",
+        "ㄴ",
+        "ㅡ",
+        "ㅣ",
+        "ㄹ",
+        "╱",
+        "ㄴ",
+        "ㄴ",
+        "ㅅ",
+        "ㄷ",
+        "★",
+        "ㅡ",
+        "ㅂ",
+        "ㅡ",
+        "ㄴ",
+        "ㅁ",
+        "ㅍ",
+        "ㅂ",
+        "ㄴ",
+        "ㄱ",
+        "♥",
+        "Cheonjiin dot",
+        "╲",
+        "ㅊ",
+        "ㅈ",
+        "ㄴ",
+        "ㄱ",
+        "ㅂ",
+        "ㄴ",
+        "ㅋ",
+        "ㅊ",
+        "ㄴ",
+        "ㅈ",
+        "ㅈ",
+        "ㄹ",
+        "ㅡ",
+        "Cheonjiin dot",
+        "ㅡ",
+        "ㅣ",
+        "ㅌ",
+        "ㅈ",
+        "ㄹ",
+        "ㄱ",
+        "ㅋ",
+        "ㅇ",
+        "ㄹ",
+        "ㅇ",
+        "ㄴ",
+        "ㅌ",
+        "ㅁ",
+        "ㅈ",
+        "Cheonjiin dot",
+        "ㅈ",
+        "ㅋ",
+        "ㄷ",
+        "ㄹ",
+        "ㅊ",
+        "ㄷ"
+      ],
+      "glyphScales": [
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1, 0, 0, 1.4, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph uploaded-glyph--dot-trap",
+          "transform": "matrix(1.331, 0, 0, 1.331, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1, 0, 0, 1.4, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1, 0, 0, 1.4, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.2, -0.2, -0.2, 1.2, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph uploaded-glyph--dot-trap",
+          "transform": "matrix(1.331, 0, 0, 1.331, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph uploaded-glyph--dot-trap",
+          "transform": "matrix(1.331, 0, 0, 1.331, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.21, 0, 0, 1.21, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.2, 0.2, 0.2, 1.2, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.21, 0, 0, 1.21, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1, 0, 0, 1.4, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(-1, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(0, 1, -1, 0, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.21, 0, 0, 1.21, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(-1, 0, 0, -1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(0, -1, 1, 0, 0, 0)",
+          "scale": "none"
+        }
+      ]
+    },
+    {
+      "platform": "web",
+      "width": 1280,
+      "height": 800,
+      "target": "아기",
+      "grid": "8",
+      "tileWidth": 48,
+      "tileHeight": 48,
+      "glyphDisplayWidth": 25.1875,
+      "glyphDisplayHeight": 25.1875,
+      "glyphFontPx": 25.2,
+      "glyphToTile": 0.5247395833333334,
+      "boardWidth": 412.015625,
+      "boardHeight": 412.015625,
+      "logicalWidth": 1280,
+      "logicalHeight": 800,
+      "symbols": [
+        "ㅊ",
+        "ㅣ",
+        ",",
+        "ㅣ",
+        "ㅁ",
+        "ㅡ",
+        "ㅇ",
+        "ㄴ",
+        "ㅡ",
+        "ㅣ",
+        "ㄹ",
+        "╱",
+        "ㄴ",
+        "ㄴ",
+        "ㅅ",
+        "ㄷ",
+        "★",
+        "ㅡ",
+        "ㅂ",
+        "ㅡ",
+        "ㄴ",
+        "ㅁ",
+        "ㅍ",
+        "ㅂ",
+        "ㄴ",
+        "ㄱ",
+        "♥",
+        "Cheonjiin dot",
+        "╲",
+        "ㅊ",
+        "ㅈ",
+        "ㄴ",
+        "ㄱ",
+        "ㅂ",
+        "ㄴ",
+        "ㅋ",
+        "ㅊ",
+        "ㄴ",
+        "ㅈ",
+        "ㅈ",
+        "ㄹ",
+        "ㅡ",
+        "Cheonjiin dot",
+        "ㅡ",
+        "ㅣ",
+        "ㅌ",
+        "ㅈ",
+        "ㄹ",
+        "ㄱ",
+        "ㅋ",
+        "ㅇ",
+        "ㄹ",
+        "ㅇ",
+        "ㄴ",
+        "ㅌ",
+        "ㅁ",
+        "ㅈ",
+        "Cheonjiin dot",
+        "ㅈ",
+        "ㅋ",
+        "ㄷ",
+        "ㄹ",
+        "ㅊ",
+        "ㄷ"
+      ],
+      "glyphScales": [
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1, 0, 0, 1.4, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph uploaded-glyph--dot-trap",
+          "transform": "matrix(1.331, 0, 0, 1.331, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1, 0, 0, 1.4, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1, 0, 0, 1.4, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.2, -0.2, -0.2, 1.2, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph uploaded-glyph--dot-trap",
+          "transform": "matrix(1.331, 0, 0, 1.331, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph uploaded-glyph--dot-trap",
+          "transform": "matrix(1.331, 0, 0, 1.331, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.21, 0, 0, 1.21, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.2, 0.2, 0.2, 1.2, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.21, 0, 0, 1.21, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1, 0, 0, 1.4, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(-1, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(0, 1, -1, 0, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.21, 0, 0, 1.21, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(-1, 0, 0, -1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(0, -1, 1, 0, 0, 0)",
+          "scale": "none"
+        }
+      ]
+    },
+    {
+      "platform": "web",
+      "width": 1280,
+      "height": 600,
+      "target": "아기",
+      "grid": "8",
+      "tileWidth": 29.25,
+      "tileHeight": 29.25,
+      "glyphDisplayWidth": 25.1875,
+      "glyphDisplayHeight": 25.1875,
+      "glyphFontPx": 25.2,
+      "glyphToTile": 0.8611111111111112,
+      "boardWidth": 262.015625,
+      "boardHeight": 262.015625,
+      "logicalWidth": 1280,
+      "logicalHeight": 600,
+      "symbols": [
+        "ㅊ",
+        "ㅣ",
+        ",",
+        "ㅣ",
+        "ㅁ",
+        "ㅡ",
+        "ㅇ",
+        "ㄴ",
+        "ㅡ",
+        "ㅣ",
+        "ㄹ",
+        "╱",
+        "ㄴ",
+        "ㄴ",
+        "ㅅ",
+        "ㄷ",
+        "★",
+        "ㅡ",
+        "ㅂ",
+        "ㅡ",
+        "ㄴ",
+        "ㅁ",
+        "ㅍ",
+        "ㅂ",
+        "ㄴ",
+        "ㄱ",
+        "♥",
+        "Cheonjiin dot",
+        "╲",
+        "ㅊ",
+        "ㅈ",
+        "ㄴ",
+        "ㄱ",
+        "ㅂ",
+        "ㄴ",
+        "ㅋ",
+        "ㅊ",
+        "ㄴ",
+        "ㅈ",
+        "ㅈ",
+        "ㄹ",
+        "ㅡ",
+        "Cheonjiin dot",
+        "ㅡ",
+        "ㅣ",
+        "ㅌ",
+        "ㅈ",
+        "ㄹ",
+        "ㄱ",
+        "ㅋ",
+        "ㅇ",
+        "ㄹ",
+        "ㅇ",
+        "ㄴ",
+        "ㅌ",
+        "ㅁ",
+        "ㅈ",
+        "Cheonjiin dot",
+        "ㅈ",
+        "ㅋ",
+        "ㄷ",
+        "ㄹ",
+        "ㅊ",
+        "ㄷ"
+      ],
+      "glyphScales": [
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1, 0, 0, 1.4, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph uploaded-glyph--dot-trap",
+          "transform": "matrix(1.331, 0, 0, 1.331, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1, 0, 0, 1.4, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1, 0, 0, 1.4, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.2, -0.2, -0.2, 1.2, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph uploaded-glyph--dot-trap",
+          "transform": "matrix(1.331, 0, 0, 1.331, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph uploaded-glyph--dot-trap",
+          "transform": "matrix(1.331, 0, 0, 1.331, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.21, 0, 0, 1.21, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.2, 0.2, 0.2, 1.2, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.21, 0, 0, 1.21, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1, 0, 0, 1.4, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(-1, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(0, 1, -1, 0, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.21, 0, 0, 1.21, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(-1, 0, 0, -1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(0, -1, 1, 0, 0, 0)",
+          "scale": "none"
+        }
+      ]
+    },
+    {
+      "platform": "android-simulation",
+      "width": 390,
+      "height": 844,
+      "target": "아기",
+      "grid": "8",
+      "tileWidth": 42.25,
+      "tileHeight": 42.25,
+      "glyphDisplayWidth": 22.921875,
+      "glyphDisplayHeight": 22.921875,
+      "glyphFontPx": 22.932,
+      "glyphToTile": 0.5425295857988166,
+      "boardWidth": 366,
+      "boardHeight": 366,
+      "logicalWidth": 390,
+      "logicalHeight": 844,
+      "symbols": [
+        "ㅊ",
+        "ㅣ",
+        ",",
+        "ㅣ",
+        "ㅁ",
+        "ㅡ",
+        "ㅇ",
+        "ㄴ",
+        "ㅡ",
+        "ㅣ",
+        "ㄹ",
+        "╱",
+        "ㄴ",
+        "ㄴ",
+        "ㅅ",
+        "ㄷ",
+        "★",
+        "ㅡ",
+        "ㅂ",
+        "ㅡ",
+        "ㄴ",
+        "ㅁ",
+        "ㅍ",
+        "ㅂ",
+        "ㄴ",
+        "ㄱ",
+        "♥",
+        "Cheonjiin dot",
+        "╲",
+        "ㅊ",
+        "ㅈ",
+        "ㄴ",
+        "ㄱ",
+        "ㅂ",
+        "ㄴ",
+        "ㅋ",
+        "ㅊ",
+        "ㄴ",
+        "ㅈ",
+        "ㅈ",
+        "ㄹ",
+        "ㅡ",
+        "Cheonjiin dot",
+        "ㅡ",
+        "ㅣ",
+        "ㅌ",
+        "ㅈ",
+        "ㄹ",
+        "ㄱ",
+        "ㅋ",
+        "ㅇ",
+        "ㄹ",
+        "ㅇ",
+        "ㄴ",
+        "ㅌ",
+        "ㅁ",
+        "ㅈ",
+        "Cheonjiin dot",
+        "ㅈ",
+        "ㅋ",
+        "ㄷ",
+        "ㄹ",
+        "ㅊ",
+        "ㄷ"
+      ],
+      "glyphScales": [
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1, 0, 0, 1.4, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph uploaded-glyph--dot-trap",
+          "transform": "matrix(1.331, 0, 0, 1.331, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1, 0, 0, 1.4, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1, 0, 0, 1.4, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.2, -0.2, -0.2, 1.2, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph uploaded-glyph--dot-trap",
+          "transform": "matrix(1.331, 0, 0, 1.331, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph uploaded-glyph--dot-trap",
+          "transform": "matrix(1.331, 0, 0, 1.331, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.21, 0, 0, 1.21, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.2, 0.2, 0.2, 1.2, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.21, 0, 0, 1.21, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1, 0, 0, 1.4, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(-1, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(0, 1, -1, 0, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.21, 0, 0, 1.21, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(-1, 0, 0, -1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(0, -1, 1, 0, 0, 0)",
+          "scale": "none"
+        }
+      ]
+    },
+    {
+      "platform": "android-simulation",
+      "width": 390,
+      "height": 740,
+      "target": "아기",
+      "grid": "8",
+      "tileWidth": 41.0625,
+      "tileHeight": 41.0625,
+      "glyphDisplayWidth": 22.921875,
+      "glyphDisplayHeight": 22.921875,
+      "glyphFontPx": 22.932,
+      "glyphToTile": 0.5582191780821918,
+      "boardWidth": 356.515625,
+      "boardHeight": 356.515625,
+      "logicalWidth": 390,
+      "logicalHeight": 740,
+      "symbols": [
+        "ㅊ",
+        "ㅣ",
+        ",",
+        "ㅣ",
+        "ㅁ",
+        "ㅡ",
+        "ㅇ",
+        "ㄴ",
+        "ㅡ",
+        "ㅣ",
+        "ㄹ",
+        "╱",
+        "ㄴ",
+        "ㄴ",
+        "ㅅ",
+        "ㄷ",
+        "★",
+        "ㅡ",
+        "ㅂ",
+        "ㅡ",
+        "ㄴ",
+        "ㅁ",
+        "ㅍ",
+        "ㅂ",
+        "ㄴ",
+        "ㄱ",
+        "♥",
+        "Cheonjiin dot",
+        "╲",
+        "ㅊ",
+        "ㅈ",
+        "ㄴ",
+        "ㄱ",
+        "ㅂ",
+        "ㄴ",
+        "ㅋ",
+        "ㅊ",
+        "ㄴ",
+        "ㅈ",
+        "ㅈ",
+        "ㄹ",
+        "ㅡ",
+        "Cheonjiin dot",
+        "ㅡ",
+        "ㅣ",
+        "ㅌ",
+        "ㅈ",
+        "ㄹ",
+        "ㄱ",
+        "ㅋ",
+        "ㅇ",
+        "ㄹ",
+        "ㅇ",
+        "ㄴ",
+        "ㅌ",
+        "ㅁ",
+        "ㅈ",
+        "Cheonjiin dot",
+        "ㅈ",
+        "ㅋ",
+        "ㄷ",
+        "ㄹ",
+        "ㅊ",
+        "ㄷ"
+      ],
+      "glyphScales": [
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1, 0, 0, 1.4, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph uploaded-glyph--dot-trap",
+          "transform": "matrix(1.331, 0, 0, 1.331, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1, 0, 0, 1.4, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1, 0, 0, 1.4, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.2, -0.2, -0.2, 1.2, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph uploaded-glyph--dot-trap",
+          "transform": "matrix(1.331, 0, 0, 1.331, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph uploaded-glyph--dot-trap",
+          "transform": "matrix(1.331, 0, 0, 1.331, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.21, 0, 0, 1.21, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.2, 0.2, 0.2, 1.2, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.21, 0, 0, 1.21, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1, 0, 0, 1.4, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(-1, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(0, 1, -1, 0, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.21, 0, 0, 1.21, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(-1, 0, 0, -1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(0, -1, 1, 0, 0, 0)",
+          "scale": "none"
+        }
+      ]
+    },
+    {
+      "platform": "android-simulation",
+      "width": 390,
+      "height": 640,
+      "target": "아기",
+      "grid": "8",
+      "tileWidth": 32.71875,
+      "tileHeight": 32.734375,
+      "glyphDisplayWidth": 22.921875,
+      "glyphDisplayHeight": 22.921875,
+      "glyphFontPx": 22.932,
+      "glyphToTile": 0.7005730659025788,
+      "boardWidth": 289.78125,
+      "boardHeight": 289.78125,
+      "logicalWidth": 390,
+      "logicalHeight": 640,
+      "symbols": [
+        "ㅊ",
+        "ㅣ",
+        ",",
+        "ㅣ",
+        "ㅁ",
+        "ㅡ",
+        "ㅇ",
+        "ㄴ",
+        "ㅡ",
+        "ㅣ",
+        "ㄹ",
+        "╱",
+        "ㄴ",
+        "ㄴ",
+        "ㅅ",
+        "ㄷ",
+        "★",
+        "ㅡ",
+        "ㅂ",
+        "ㅡ",
+        "ㄴ",
+        "ㅁ",
+        "ㅍ",
+        "ㅂ",
+        "ㄴ",
+        "ㄱ",
+        "♥",
+        "Cheonjiin dot",
+        "╲",
+        "ㅊ",
+        "ㅈ",
+        "ㄴ",
+        "ㄱ",
+        "ㅂ",
+        "ㄴ",
+        "ㅋ",
+        "ㅊ",
+        "ㄴ",
+        "ㅈ",
+        "ㅈ",
+        "ㄹ",
+        "ㅡ",
+        "Cheonjiin dot",
+        "ㅡ",
+        "ㅣ",
+        "ㅌ",
+        "ㅈ",
+        "ㄹ",
+        "ㄱ",
+        "ㅋ",
+        "ㅇ",
+        "ㄹ",
+        "ㅇ",
+        "ㄴ",
+        "ㅌ",
+        "ㅁ",
+        "ㅈ",
+        "Cheonjiin dot",
+        "ㅈ",
+        "ㅋ",
+        "ㄷ",
+        "ㄹ",
+        "ㅊ",
+        "ㄷ"
+      ],
+      "glyphScales": [
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1, 0, 0, 1.4, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph uploaded-glyph--dot-trap",
+          "transform": "matrix(1.331, 0, 0, 1.331, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1, 0, 0, 1.4, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1, 0, 0, 1.4, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.2, -0.2, -0.2, 1.2, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph uploaded-glyph--dot-trap",
+          "transform": "matrix(1.331, 0, 0, 1.331, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph uploaded-glyph--dot-trap",
+          "transform": "matrix(1.331, 0, 0, 1.331, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.21, 0, 0, 1.21, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.2, 0.2, 0.2, 1.2, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.21, 0, 0, 1.21, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1, 0, 0, 1.4, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(-1, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(0, 1, -1, 0, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.21, 0, 0, 1.21, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(-1, 0, 0, -1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(0, -1, 1, 0, 0, 0)",
+          "scale": "none"
+        }
+      ]
+    },
+    {
+      "platform": "android-simulation",
+      "width": 390,
+      "height": 600,
+      "target": "아기",
+      "grid": "8",
+      "tileWidth": 30.673828125,
+      "tileHeight": 30.6884765625,
+      "glyphDisplayWidth": 22.9248046875,
+      "glyphDisplayHeight": 22.9248046875,
+      "glyphFontPx": 24.4608,
+      "glyphToTile": 0.7473734479465138,
+      "boardWidth": 271.669921875,
+      "boardHeight": 271.669921875,
+      "logicalWidth": 416,
+      "logicalHeight": 640,
+      "symbols": [
+        "ㅊ",
+        "ㅣ",
+        ",",
+        "ㅣ",
+        "ㅁ",
+        "ㅡ",
+        "ㅇ",
+        "ㄴ",
+        "ㅡ",
+        "ㅣ",
+        "ㄹ",
+        "╱",
+        "ㄴ",
+        "ㄴ",
+        "ㅅ",
+        "ㄷ",
+        "★",
+        "ㅡ",
+        "ㅂ",
+        "ㅡ",
+        "ㄴ",
+        "ㅁ",
+        "ㅍ",
+        "ㅂ",
+        "ㄴ",
+        "ㄱ",
+        "♥",
+        "Cheonjiin dot",
+        "╲",
+        "ㅊ",
+        "ㅈ",
+        "ㄴ",
+        "ㄱ",
+        "ㅂ",
+        "ㄴ",
+        "ㅋ",
+        "ㅊ",
+        "ㄴ",
+        "ㅈ",
+        "ㅈ",
+        "ㄹ",
+        "ㅡ",
+        "Cheonjiin dot",
+        "ㅡ",
+        "ㅣ",
+        "ㅌ",
+        "ㅈ",
+        "ㄹ",
+        "ㄱ",
+        "ㅋ",
+        "ㅇ",
+        "ㄹ",
+        "ㅇ",
+        "ㄴ",
+        "ㅌ",
+        "ㅁ",
+        "ㅈ",
+        "Cheonjiin dot",
+        "ㅈ",
+        "ㅋ",
+        "ㄷ",
+        "ㄹ",
+        "ㅊ",
+        "ㄷ"
+      ],
+      "glyphScales": [
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1, 0, 0, 1.4, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph uploaded-glyph--dot-trap",
+          "transform": "matrix(1.331, 0, 0, 1.331, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1, 0, 0, 1.4, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1, 0, 0, 1.4, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.2, -0.2, -0.2, 1.2, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph uploaded-glyph--dot-trap",
+          "transform": "matrix(1.331, 0, 0, 1.331, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph uploaded-glyph--dot-trap",
+          "transform": "matrix(1.331, 0, 0, 1.331, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.21, 0, 0, 1.21, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.2, 0.2, 0.2, 1.2, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.21, 0, 0, 1.21, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1, 0, 0, 1.4, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(-1, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(0, 1, -1, 0, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.21, 0, 0, 1.21, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(-1, 0, 0, -1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(0, -1, 1, 0, 0, 0)",
+          "scale": "none"
+        }
+      ]
+    },
+    {
+      "platform": "android-simulation",
+      "width": 430,
+      "height": 600,
+      "target": "아기",
+      "grid": "8",
+      "tileWidth": 30.673828125,
+      "tileHeight": 30.6884765625,
+      "glyphDisplayWidth": 23.61328125,
+      "glyphDisplayHeight": 23.61328125,
+      "glyphFontPx": 25.2,
+      "glyphToTile": 0.76981852913085,
+      "boardWidth": 271.669921875,
+      "boardHeight": 271.669921875,
+      "logicalWidth": 459,
+      "logicalHeight": 640,
+      "symbols": [
+        "ㅊ",
+        "ㅣ",
+        ",",
+        "ㅣ",
+        "ㅁ",
+        "ㅡ",
+        "ㅇ",
+        "ㄴ",
+        "ㅡ",
+        "ㅣ",
+        "ㄹ",
+        "╱",
+        "ㄴ",
+        "ㄴ",
+        "ㅅ",
+        "ㄷ",
+        "★",
+        "ㅡ",
+        "ㅂ",
+        "ㅡ",
+        "ㄴ",
+        "ㅁ",
+        "ㅍ",
+        "ㅂ",
+        "ㄴ",
+        "ㄱ",
+        "♥",
+        "Cheonjiin dot",
+        "╲",
+        "ㅊ",
+        "ㅈ",
+        "ㄴ",
+        "ㄱ",
+        "ㅂ",
+        "ㄴ",
+        "ㅋ",
+        "ㅊ",
+        "ㄴ",
+        "ㅈ",
+        "ㅈ",
+        "ㄹ",
+        "ㅡ",
+        "Cheonjiin dot",
+        "ㅡ",
+        "ㅣ",
+        "ㅌ",
+        "ㅈ",
+        "ㄹ",
+        "ㄱ",
+        "ㅋ",
+        "ㅇ",
+        "ㄹ",
+        "ㅇ",
+        "ㄴ",
+        "ㅌ",
+        "ㅁ",
+        "ㅈ",
+        "Cheonjiin dot",
+        "ㅈ",
+        "ㅋ",
+        "ㄷ",
+        "ㄹ",
+        "ㅊ",
+        "ㄷ"
+      ],
+      "glyphScales": [
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1, 0, 0, 1.4, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph uploaded-glyph--dot-trap",
+          "transform": "matrix(1.331, 0, 0, 1.331, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1, 0, 0, 1.4, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1, 0, 0, 1.4, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.2, -0.2, -0.2, 1.2, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph uploaded-glyph--dot-trap",
+          "transform": "matrix(1.331, 0, 0, 1.331, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph uploaded-glyph--dot-trap",
+          "transform": "matrix(1.331, 0, 0, 1.331, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.21, 0, 0, 1.21, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.2, 0.2, 0.2, 1.2, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.21, 0, 0, 1.21, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1, 0, 0, 1.4, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(-1, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(0, 1, -1, 0, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.21, 0, 0, 1.21, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(-1, 0, 0, -1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(0, -1, 1, 0, 0, 0)",
+          "scale": "none"
+        }
+      ]
+    },
+    {
+      "platform": "android-simulation",
+      "width": 800,
+      "height": 600,
+      "target": "아기",
+      "grid": "8",
+      "tileWidth": 30.673828125,
+      "tileHeight": 30.6884765625,
+      "glyphDisplayWidth": 23.61328125,
+      "glyphDisplayHeight": 23.61328125,
+      "glyphFontPx": 25.2,
+      "glyphToTile": 0.76981852913085,
+      "boardWidth": 271.669921875,
+      "boardHeight": 271.669921875,
+      "logicalWidth": 853,
+      "logicalHeight": 640,
+      "symbols": [
+        "ㅊ",
+        "ㅣ",
+        ",",
+        "ㅣ",
+        "ㅁ",
+        "ㅡ",
+        "ㅇ",
+        "ㄴ",
+        "ㅡ",
+        "ㅣ",
+        "ㄹ",
+        "╱",
+        "ㄴ",
+        "ㄴ",
+        "ㅅ",
+        "ㄷ",
+        "★",
+        "ㅡ",
+        "ㅂ",
+        "ㅡ",
+        "ㄴ",
+        "ㅁ",
+        "ㅍ",
+        "ㅂ",
+        "ㄴ",
+        "ㄱ",
+        "♥",
+        "Cheonjiin dot",
+        "╲",
+        "ㅊ",
+        "ㅈ",
+        "ㄴ",
+        "ㄱ",
+        "ㅂ",
+        "ㄴ",
+        "ㅋ",
+        "ㅊ",
+        "ㄴ",
+        "ㅈ",
+        "ㅈ",
+        "ㄹ",
+        "ㅡ",
+        "Cheonjiin dot",
+        "ㅡ",
+        "ㅣ",
+        "ㅌ",
+        "ㅈ",
+        "ㄹ",
+        "ㄱ",
+        "ㅋ",
+        "ㅇ",
+        "ㄹ",
+        "ㅇ",
+        "ㄴ",
+        "ㅌ",
+        "ㅁ",
+        "ㅈ",
+        "Cheonjiin dot",
+        "ㅈ",
+        "ㅋ",
+        "ㄷ",
+        "ㄹ",
+        "ㅊ",
+        "ㄷ"
+      ],
+      "glyphScales": [
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1, 0, 0, 1.4, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph uploaded-glyph--dot-trap",
+          "transform": "matrix(1.331, 0, 0, 1.331, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1, 0, 0, 1.4, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1, 0, 0, 1.4, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.2, -0.2, -0.2, 1.2, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph uploaded-glyph--dot-trap",
+          "transform": "matrix(1.331, 0, 0, 1.331, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph uploaded-glyph--dot-trap",
+          "transform": "matrix(1.331, 0, 0, 1.331, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.21, 0, 0, 1.21, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.2, 0.2, 0.2, 1.2, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.21, 0, 0, 1.21, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1, 0, 0, 1.4, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(-1, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(0, 1, -1, 0, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.21, 0, 0, 1.21, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(-1, 0, 0, -1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(0, -1, 1, 0, 0, 0)",
+          "scale": "none"
+        }
+      ]
+    },
+    {
+      "platform": "android-simulation",
+      "width": 1280,
+      "height": 800,
+      "target": "아기",
+      "grid": "8",
+      "tileWidth": 40.8984375,
+      "tileHeight": 40.91796875,
+      "glyphDisplayWidth": 31.484375,
+      "glyphDisplayHeight": 31.484375,
+      "glyphFontPx": 25.2,
+      "glyphToTile": 0.76981852913085,
+      "boardWidth": 362.2265625,
+      "boardHeight": 362.2265625,
+      "logicalWidth": 1024,
+      "logicalHeight": 640,
+      "symbols": [
+        "ㅊ",
+        "ㅣ",
+        ",",
+        "ㅣ",
+        "ㅁ",
+        "ㅡ",
+        "ㅇ",
+        "ㄴ",
+        "ㅡ",
+        "ㅣ",
+        "ㄹ",
+        "╱",
+        "ㄴ",
+        "ㄴ",
+        "ㅅ",
+        "ㄷ",
+        "★",
+        "ㅡ",
+        "ㅂ",
+        "ㅡ",
+        "ㄴ",
+        "ㅁ",
+        "ㅍ",
+        "ㅂ",
+        "ㄴ",
+        "ㄱ",
+        "♥",
+        "Cheonjiin dot",
+        "╲",
+        "ㅊ",
+        "ㅈ",
+        "ㄴ",
+        "ㄱ",
+        "ㅂ",
+        "ㄴ",
+        "ㅋ",
+        "ㅊ",
+        "ㄴ",
+        "ㅈ",
+        "ㅈ",
+        "ㄹ",
+        "ㅡ",
+        "Cheonjiin dot",
+        "ㅡ",
+        "ㅣ",
+        "ㅌ",
+        "ㅈ",
+        "ㄹ",
+        "ㄱ",
+        "ㅋ",
+        "ㅇ",
+        "ㄹ",
+        "ㅇ",
+        "ㄴ",
+        "ㅌ",
+        "ㅁ",
+        "ㅈ",
+        "Cheonjiin dot",
+        "ㅈ",
+        "ㅋ",
+        "ㄷ",
+        "ㄹ",
+        "ㅊ",
+        "ㄷ"
+      ],
+      "glyphScales": [
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1, 0, 0, 1.4, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph uploaded-glyph--dot-trap",
+          "transform": "matrix(1.331, 0, 0, 1.331, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1, 0, 0, 1.4, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1, 0, 0, 1.4, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.2, -0.2, -0.2, 1.2, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph uploaded-glyph--dot-trap",
+          "transform": "matrix(1.331, 0, 0, 1.331, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph uploaded-glyph--dot-trap",
+          "transform": "matrix(1.331, 0, 0, 1.331, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.21, 0, 0, 1.21, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.2, 0.2, 0.2, 1.2, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.21, 0, 0, 1.21, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1, 0, 0, 1.4, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(-1, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(0, 1, -1, 0, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.21, 0, 0, 1.21, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(-1, 0, 0, -1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(0, -1, 1, 0, 0, 0)",
+          "scale": "none"
+        }
+      ]
+    },
+    {
+      "platform": "android-simulation",
+      "width": 1280,
+      "height": 600,
+      "target": "아기",
+      "grid": "8",
+      "tileWidth": 30.673828125,
+      "tileHeight": 30.6884765625,
+      "glyphDisplayWidth": 23.61328125,
+      "glyphDisplayHeight": 23.61328125,
+      "glyphFontPx": 25.2,
+      "glyphToTile": 0.76981852913085,
+      "boardWidth": 271.669921875,
+      "boardHeight": 271.669921875,
+      "logicalWidth": 1365,
+      "logicalHeight": 640,
+      "symbols": [
+        "ㅊ",
+        "ㅣ",
+        ",",
+        "ㅣ",
+        "ㅁ",
+        "ㅡ",
+        "ㅇ",
+        "ㄴ",
+        "ㅡ",
+        "ㅣ",
+        "ㄹ",
+        "╱",
+        "ㄴ",
+        "ㄴ",
+        "ㅅ",
+        "ㄷ",
+        "★",
+        "ㅡ",
+        "ㅂ",
+        "ㅡ",
+        "ㄴ",
+        "ㅁ",
+        "ㅍ",
+        "ㅂ",
+        "ㄴ",
+        "ㄱ",
+        "♥",
+        "Cheonjiin dot",
+        "╲",
+        "ㅊ",
+        "ㅈ",
+        "ㄴ",
+        "ㄱ",
+        "ㅂ",
+        "ㄴ",
+        "ㅋ",
+        "ㅊ",
+        "ㄴ",
+        "ㅈ",
+        "ㅈ",
+        "ㄹ",
+        "ㅡ",
+        "Cheonjiin dot",
+        "ㅡ",
+        "ㅣ",
+        "ㅌ",
+        "ㅈ",
+        "ㄹ",
+        "ㄱ",
+        "ㅋ",
+        "ㅇ",
+        "ㄹ",
+        "ㅇ",
+        "ㄴ",
+        "ㅌ",
+        "ㅁ",
+        "ㅈ",
+        "Cheonjiin dot",
+        "ㅈ",
+        "ㅋ",
+        "ㄷ",
+        "ㄹ",
+        "ㅊ",
+        "ㄷ"
+      ],
+      "glyphScales": [
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1, 0, 0, 1.4, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph uploaded-glyph--dot-trap",
+          "transform": "matrix(1.331, 0, 0, 1.331, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1, 0, 0, 1.4, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1, 0, 0, 1.4, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.2, -0.2, -0.2, 1.2, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph uploaded-glyph--dot-trap",
+          "transform": "matrix(1.331, 0, 0, 1.331, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph uploaded-glyph--dot-trap",
+          "transform": "matrix(1.331, 0, 0, 1.331, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.21, 0, 0, 1.21, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.2, 0.2, 0.2, 1.2, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.21, 0, 0, 1.21, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.4, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1, 0, 0, 1.4, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(-1, 0, 0, 1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(0, 1, -1, 0, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(1.21, 0, 0, 1.21, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(-1, 0, 0, -1, 0, 0)",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "none",
+          "scale": "none"
+        },
+        {
+          "className": "uploaded-glyph",
+          "transform": "matrix(0, -1, 1, 0, 0, 0)",
+          "scale": "none"
+        }
+      ]
+    }
+  ],
+  "otherGames": [
+    {
+      "platform": "web",
+      "mode": "alphabet",
+      "tileWidth": 178,
+      "glyphWidth": 70.1875,
+      "glyphFontPx": 70.2
+    },
+    {
+      "platform": "web",
+      "mode": "syllable",
+      "tileWidth": 178,
+      "glyphWidth": 84.9268798828125,
+      "glyphFontPx": 70.2
+    },
+    {
+      "platform": "android-simulation",
+      "mode": "alphabet",
+      "tileWidth": 178,
+      "glyphWidth": 70.1875,
+      "glyphFontPx": 70.2
+    },
+    {
+      "platform": "android-simulation",
+      "mode": "syllable",
+      "tileWidth": 178,
+      "glyphWidth": 84.9268798828125,
+      "glyphFontPx": 70.2
+    }
+  ],
+  "screenshots": [
+    {
+      "file": "before-web-390x844.png",
+      "cssWidth": 390,
+      "cssHeight": 844,
+      "pngWidth": 780,
+      "pngHeight": 1688
+    },
+    {
+      "file": "before-web-390x600.png",
+      "cssWidth": 390,
+      "cssHeight": 600,
+      "pngWidth": 780,
+      "pngHeight": 1200
+    },
+    {
+      "file": "before-web-1280x800.png",
+      "cssWidth": 1280,
+      "cssHeight": 800,
+      "pngWidth": 2560,
+      "pngHeight": 1600
+    },
+    {
+      "file": "before-web-1280x600.png",
+      "cssWidth": 1280,
+      "cssHeight": 600,
+      "pngWidth": 2560,
+      "pngHeight": 1200
+    },
+    {
+      "file": "before-android-simulation-390x844.png",
+      "cssWidth": 390,
+      "cssHeight": 844,
+      "pngWidth": 780,
+      "pngHeight": 1688
+    },
+    {
+      "file": "before-android-simulation-390x600.png",
+      "cssWidth": 390,
+      "cssHeight": 600,
+      "pngWidth": 780,
+      "pngHeight": 1200
+    }
+  ],
+  "interactionChecks": [
+    {
+      "platform": "web",
+      "liveResize": "PASS",
+      "coordinateTap": "PASS",
+      "delete": "PASS"
+    },
+    {
+      "platform": "android-simulation",
+      "liveResize": "PASS",
+      "coordinateTap": "PASS",
+      "delete": "PASS"
+    }
+  ]
+}

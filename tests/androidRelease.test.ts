@@ -22,8 +22,8 @@ describe("Android release presentation contract", () => {
   it("keeps app identity, release signing and backup while increasing the version", () => {
     const gradle = read("android/app/build.gradle");
     expect(gradle).toContain('applicationId "io.github.junyyyong.taptotalk"');
-    expect(gradle).toContain("versionCode 6");
-    expect(gradle).toContain('versionName "1.0.4"');
+    expect(gradle).toContain("versionCode 7");
+    expect(gradle).toContain('versionName "1.0.5"');
     expect(gradle).toContain("signingConfig signingConfigs.release");
     expect(read("android/app/src/main/AndroidManifest.xml")).toContain('android:allowBackup="true"');
   });

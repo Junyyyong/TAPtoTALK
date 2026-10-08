@@ -1,5 +1,9 @@
 # 디자인과 콘텐츠 수정 경계
 
+## Vocabulary 작은 블록의 자소 크기 (2026-10-08 최신)
+
+Vocabulary만 각 `.letter-tile`을 inline-size container로 사용하며 안쪽 `.letter-glyph`의 크기를 `min(기존1em,57cqi)`로 제한한다. 390×844 기준의 자소 크기는 유지하고 타일이 작아지는 경우만 함께 축소한다. Alphabet/Syllable·제시어·보드 배치·SVG 원본·기호별 scale/회전·색/효과는 바꾸지 않는다. viewport 너비만으로 작은 타일의 글자를 크게 유지하는 스타일을 덮어쓰지 않는다. Android **1.0.5/versionCode7**에 반영하며 패키지·서명키·진도/기록 저장은 유지한다. [전후 검증·출시 안내](research/2026-10-08-vocabulary-glyph-sizing/README.md).
+
 ## 아이콘 full-bleed·앱 이름·진동 제거 (2026-10-02 최신)
 
 아래의 옛60/72 및40/48 아이콘 배치 설명을 대체한다. 사용자 원본 PNG는 변경하지 않는다. `build-android-icons.py`는 legacy48dp 전체와 adaptive72dp 가시 영역을 이미지로 채우고,108dp foreground의 외곽과 native background는#1D2087로 채운다. 정사각형 보정은 중앙fit이며2134×2135 원본의 극미세한 가장자리만 잘린다. 원형/둥근 모서리 자르기는 런처 mask의 동작이다. 설치 아이콘에 흰 inset·테두리를 다시 추가하지 않는다. mask 미리보기는 실제 홈 화면 캡처가 아니다.
