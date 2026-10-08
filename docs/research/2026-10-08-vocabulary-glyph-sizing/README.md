@@ -3,7 +3,7 @@
 ## 변경 제목
 
 - 사용자 승인: Vocabulary 블록 속 자소 크기 수정, 연구기록·전후 캡처, origin push, 새 AAB·출시명·출시노트 제공.
-- 적용 커밋: 이 기록을 최초 추가한 소스 커밋. 출시 검증 완료 후 아래에 실제 번호를 추가한다.
+- 적용 소스 커밋: `f145f67501e4abfe53c2622c0ff65fd0534f4009` (`f145f67`). 후속 커밋은 검증 결과·연구 문서만 추가하며 앱 소스는 바꾸지 않는다.
 - 비교 커밋: `2ae4559` — Android 1.0.4/versionCode6.
 - 과거 재현: 해당 커밋을 `git archive`로 별도 임시 폴더에 풀어 실제 실행했다. 현재 코드를 바꾸거나 과거 화면을 합성하지 않았다.
 - 비교 조건: Chrome, 독립 임시 브라우저 컨텍스트, 랜덤 seed1234, Vocabulary 첫 제시어 `아기`, 동일8×8 배열, Music/Sound OFF. 캡처 중 타이머만 정지한다. 로고 대기 시간 생략·테스트 접근은 브라우저 응답에만 적용하고 앱 소스에는 포함하지 않는다.
@@ -69,4 +69,11 @@ Vocabulary에서 화면 높이가 줄면 보드는 남은 높이에 맞춰 작�
 - 새 파일: `android/releases/TAPtoTALK-1.0.5-vc7-20261008.aab`.
 - 출시명: `1.0.5 - Vocabulary Display Fix`.
 - [영문 출시노트·한글 해석](release-notes.md).
-- 최종 서명/번들 검증 및 적용 커밋 번호는 완료 후 추가한다. Play Console 업로드/출시는 수행하지 않는다.
+- 크기: **56,706,849bytes** (약56.7MB).
+- SHA-256: `11cfef21bef8d9ba6039851168b1eec66128757690b83b44e16737eabb683505`.
+- 패키지: `io.github.junyyyong.taptotalk`, minSDK24 / targetSDK36 유지.
+- 기존1.0.4(6)과 업로드 인증서 동일. bundletool validate·jarsigner 검증 통과, 최신 dist89개 바이트 일치, 아이콘15개 픽셀 일치.
+- 기존 영상·음악·서체·아이콘89항목과 네이티브 DEX는 이전 AAB와 바이트 동일하다. 개인 서명 자료·외부 server URL은 포함되지 않는다.
+- [최종 AAB 검증](release-verification.json)은 `f145f67` 소스 작업 트리 clean 상태에서 수행했다. 이후 문서 커밋이 있어도 빌드 앱 코드는 동일하다.
+- AAB와 서명 비밀자료는 Git 제외다. 기존 AAB·사용자 미추적 시안은 보존한다. 다른 게임 저장소는 수정/push하지 않는다.
+- Play Console 업로드/출시와 실제 기기 검증은 수행하지 않는다.
